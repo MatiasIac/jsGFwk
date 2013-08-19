@@ -6,7 +6,6 @@ var jsGFwk = (function(){
 		_2Dbuffer: {},
 		_bufferCanvas: {},
 		_gameObjects: {},
-		_gameObjectsArray: [],
 		_intervalId: 0,
 		_lastFrame: 0,
 		
@@ -37,16 +36,23 @@ var jsGFwk = (function(){
 			object.destroy = function() {
 				delete jsGFwk._gameObjects[object.id];
 			};
+			
 			this._gameObjects[object.id] = object;
-			this._gameObjectsArray.push(object);
+			
+			if (object.init !== undefined) { object.init(); }
 		},
 		
 		sort: function () {
-			this._gameObjectsArray.sort(function(a,b){return a.zOrder - b.zOrder;});
+			var arr = [];
+			for (var prop in this._gameObjects) {
+				arr.push(this._gameObjects[prop]);
+			}
+		
+			arr.sort(function(a,b){return a.zOrder - b.zOrder;});
 			
-			for (var i = 0; i < this._gameObjectsArray.length; i++) {
-				delete jsGFwk._gameObjects[this._gameObjectsArray[i].id];
-				this._gameObjects[this._gameObjectsArray[i].id] = this._gameObjectsArray[i];
+			for (var i = 0; i < arr.length; i++) {
+				delete jsGFwk._gameObjects[arr[i].id];
+				this._gameObjects[arr[i].id] = arr[i];
 			}
 		},
 		
@@ -59,6 +65,10 @@ var jsGFwk = (function(){
 				this._bufferCanvas.width = this._canvas.width;
 				this._bufferCanvas.height = this._canvas.height;
 				this._2Dbuffer = this._bufferCanvas.getContext('2d');
+			
+				if (this.resources !== undefined) {
+					this.resources.start();
+				}
 			
 				this._intervalId = setInterval(function() { 
 					var thisFrame = new Date().getTime();

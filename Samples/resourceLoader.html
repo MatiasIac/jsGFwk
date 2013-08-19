@@ -1,0 +1,67 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../Framework/resourceManager.js"></script>
+<body>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+	
+	jsGFwk.resources.addSprite({ name: "character", source: "../SampleResources/jumpingBase.png" });
+	
+	//Simulation for a loading progress bar
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.resources.onResourcesLoadedCompleted = function() {
+				//Creates a new game object
+				createAGameObject();
+				//Destroy this loader
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) {
+			var a = (jsGFwk.resources._totalLoadedResources * 100) / jsGFwk.resources._totalResources;
+			this.barWidth = (a * 620) / 100;
+		},
+		draw: function (context) {
+			context.save();
+				context.fillStyle = "#FF0000";
+				context.fillRect(0,0, 640, 480);
+				
+				context.fillStyle = "#FFFFFF";
+				context.fillText("Loading...", 300, 240);
+				
+				context.strokeStyle = "#FFFFFF";
+				context.strokeRect(10, 260, 620, 30);
+				context.fillRect(10, 260, this.barWidth, 30);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.start();
+	
+	function createAGameObject() {
+		//Creates a new game object to handle a character
+		jsGFwk.createObject({
+			id: "character",
+			x: 10,
+			y: 10,
+			visible: true,
+			update: function(delta) {
+			},
+			draw: function (context) {
+				//Takes the graphic from the resources loaded.
+				context.drawImage(jsGFwk.resources.sprites.character.image,
+					10, 102, 100, 120,
+					this.x, this.y, 100, 120);
+			}
+		});
+	}
+</script>
+</html>
