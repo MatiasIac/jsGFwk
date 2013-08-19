@@ -1,0 +1,1 @@
+This is a simple minimalistic game framework for JavaScript and HTML5
