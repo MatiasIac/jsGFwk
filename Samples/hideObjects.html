@@ -1,0 +1,50 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<body>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.createObject({
+		id: "ball",
+		x: 10,
+		y: 10,
+		zOrder: 2,
+		visible: true,
+		update: function(delta) {
+			this.x++;
+			
+			if (this.x == 100) {
+				this.visible = false;
+			}
+			
+			if (this.x == 300) {
+				this.visible = true;
+			}
+		},
+		draw: function (context) {
+			context.fillStyle = "rgb(255,255,255)";
+			context.fillRect(this.x,this.y,10,10);
+		}
+	});
+	
+	jsGFwk.createObject({
+		id: "ball2",
+		x: 10,
+		y: 25,
+		zOrder: 1,
+		visible: true,
+		update: function(delta) {
+			this.x++;
+		},
+		draw: function (context) {
+			context.fillStyle = "rgb(255,255,0)";
+			context.fillRect(this.x,this.y,10,10);
+		}
+	});
+	
+	jsGFwk.start();
+</script>
+</html>
