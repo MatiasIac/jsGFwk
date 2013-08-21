@@ -3,15 +3,20 @@
 </head>
 <script language="Javascript" src="../Framework/jsGFwk.js"></script>
 <script language="Javascript" src="../Framework/jsGFwkRM.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkIO.js"></script>
 <body>
+	<h1>Use D key to move the game object with typing mode</h1>
+	<h1>Use RIGHT ARROW key to move the game object with flow mode</h1>
 	<canvas id="canvas" width="640" height="480"></canvas>
 </body>
 <script language="Javascript">
 	jsGFwk.settings.canvas = "canvas";
 	jsGFwk.settings.clearColor = "rgb(255,255,255)";
-
-	//Include resources handling library
+	
+	//Include external component libraries
 	jsGFwk.include("resources");
+	jsGFwk.include("IO");
+	//************************************
 	
 	jsGFwk.resources.addSprite({ name: "character", source: "../SampleResources/jumpingBase.png" });
 	
@@ -55,8 +60,22 @@
 			id: "character",
 			x: 10,
 			y: 10,
+			init: function () {
+				//Use this way to create UI for text typing
+				jsGFwk.IO.keyboard.registerKeypress(function (code) {
+					if (code == 68) { 
+						//Due the closure of JS, we access to this object
+						//using the internal game object collection
+						jsGFwk._gameObjects.character.x++; 
+					}
+				});
+			},
 			visible: true,
 			update: function(delta) {
+				//Use this way to handle game object movements
+				if (jsGFwk.IO.keyboard._activeKey[39]) {
+					this.x++;
+				}
 			},
 			draw: function (context) {
 				//Takes the graphic from the resources loaded.

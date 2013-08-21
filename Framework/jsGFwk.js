@@ -8,6 +8,7 @@ var jsGFwk = (function(){
 		_gameObjects: {},
 		_intervalId: 0,
 		_lastFrame: 0,
+		_includes: [],
 		
 		_processObjects: function() {
 			//Added
@@ -56,6 +57,10 @@ var jsGFwk = (function(){
 			}
 		},
 		
+		include: function (componentName) {
+			this._includes[this._includes.length] = componentName;
+		},
+		
 		start: function() {
 		
 			if (this._intervalId === 0) {
@@ -66,8 +71,11 @@ var jsGFwk = (function(){
 				this._bufferCanvas.height = this._canvas.height;
 				this._2Dbuffer = this._bufferCanvas.getContext('2d');
 			
-				if (this.resources !== undefined) {
-					this.resources.start();
+				//start all plug ins
+				for (var i = 0; i < this._includes.length; i++) {
+					if (this[this._includes[i]].start !== undefined) {
+						this[this._includes[i]].start();
+					}
 				}
 			
 				this._intervalId = setInterval(function() { 
