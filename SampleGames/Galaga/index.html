@@ -15,6 +15,7 @@
 	jsGFwk.include("IO");
 	
 	jsGFwk.resources.addSprite({ name: "sprites", source: "sprites.png" });
+	jsGFwk.resources.addSound({ name: "spaceShipShoot", source: "shoot.wav" });
 	
 	jsGFwk.createObject({
 		id: "progress",
@@ -49,6 +50,45 @@
 	
 	function buildGame() {
 		jsGFwk.createObject({
+			id: "starBackground",
+			zOrder: 0,
+			offset: 0,
+			starImage: {},
+			init: function () {	
+				var c = document.createElement("canvas");
+				c.width = 320;
+				c.height = 240;
+				var ctx = c.getContext("2d");
+				ctx.beginPath();
+				ctx.fillStyle="black";
+				ctx.rect(0,0,320,240);
+				ctx.fill();
+				ctx.beginPath();
+				for (var n=0; n < 100; n++){
+					var x=parseInt(Math.random() * canvas.width);
+					var y=parseInt(Math.random() * canvas.height);
+					var radius=Math.random() * 1;
+					ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+					ctx.closePath();
+				}
+				ctx.fillStyle="white";
+				ctx.fill();
+
+				this.starImage = new Image();
+				this.starImage.src = c.toDataURL();
+			},
+			visible: true,
+			update: function(delta) {
+				this.offset-=1;
+				if(this.offset < 0){ this.offset = 240; }
+			},
+			draw: function (context) {
+				context.drawImage(this.starImage,0, -this.offset);
+				context.drawImage(this.starImage,0, 240 - this.offset);
+			}
+		});
+	
+		jsGFwk.createObject({
 			id: "spaceShip",
 			x: 150,
 			y: 200,
@@ -57,6 +97,7 @@
 			bulletShootDelay: 0.7,
 			delayCounter: 0,
 			bullets: [],
+			zOrder: 1,
 			init: function () {	},
 			visible: true,
 			update: function(delta) {
@@ -68,6 +109,7 @@
 					if (this.bullets.length < 3 && this.delayCounter >= this.bulletShootDelay || this.bullets.length == 0) {
 						this.delayCounter = 0;
 						this.bullets.push({x: this.x + 7, y: this.y - 8});
+						jsGFwk.resources.sounds.spaceShipShoot.audio.play();
 					}
 				}
 				
@@ -86,6 +128,23 @@
 					context.drawImage(jsGFwk.resources.sprites.sprites.image,
 						351, 159, 3, 8,	this.bullets[bullet].x, this.bullets[bullet].y, 3, 8);
 				}
+			}
+		});
+		
+		jsGFwk.createObject({
+			id: "formation",
+			formation: [],
+			init: function () {	
+				this.formation[0] = [1,1,1,1,1,1];
+				this.formation[1] = [2,2,2,2,2,2];
+				this.formation[2] = [3,3,3,3,3,3];
+			},
+			visible: true,
+			update: function(delta) {
+				this.delayCounter+=delta;
+			},
+			draw: function (context) {
+				
 			}
 		});
 	}
