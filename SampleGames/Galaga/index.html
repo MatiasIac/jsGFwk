@@ -1,0 +1,93 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+<body style="background-color:#CCCCCC;">
+	<canvas id="canvas" width="320" height="240"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(0,0,0)";
+	
+	jsGFwk.include("resources");
+	jsGFwk.include("IO");
+	
+	jsGFwk.resources.addSprite({ name: "sprites", source: "sprites.png" });
+	
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.resources.onResourcesLoadedCompleted = function() {
+				buildGame();
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) {
+			var a = (jsGFwk.resources._totalLoadedResources * 100) / jsGFwk.resources._totalResources;
+			this.barWidth = (a * 320) / 100;
+		},
+		draw: function (context) {
+			context.save();
+				context.fillStyle = "#FF0000";
+				context.fillRect(0,0, 320, 240);
+				
+				context.fillStyle = "#FFFFFF";
+				context.fillText("Loading...", 140, 120);
+				
+				context.strokeStyle = "#FFFFFF";
+				context.strokeRect(10, 140, 300, 10);
+				context.fillRect(10, 140, this.barWidth, 10);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.start();
+	
+	function buildGame() {
+		jsGFwk.createObject({
+			id: "spaceShip",
+			x: 150,
+			y: 200,
+			shipSpeed: 1.5,
+			bulletSpeed: 2.5,
+			bulletShootDelay: 0.7,
+			delayCounter: 0,
+			bullets: [],
+			init: function () {	},
+			visible: true,
+			update: function(delta) {
+				this.delayCounter+=delta;
+				
+				if (jsGFwk.IO.keyboard._activeKey[39]) { this.x+=this.shipSpeed; }
+				if (jsGFwk.IO.keyboard._activeKey[37]) { this.x-=this.shipSpeed; }
+				if (jsGFwk.IO.keyboard._activeKey[32]) { 
+					if (this.bullets.length < 3 && this.delayCounter >= this.bulletShootDelay || this.bullets.length == 0) {
+						this.delayCounter = 0;
+						this.bullets.push({x: this.x + 7, y: this.y - 8});
+					}
+				}
+				
+				for (var i = 0; i < this.bullets.length;) {
+					this.bullets[i].y -= this.bulletSpeed;
+					if (this.bullets[i].y < -10) { 
+						this.bullets.splice(i, 1); 
+					} else { i++; }
+				}
+			},
+			draw: function (context) {
+				context.drawImage(jsGFwk.resources.sprites.sprites.image,
+					169, 19, 15, 16, this.x, this.y, 15, 16);
+				
+				for (var bullet in this.bullets) {
+					context.drawImage(jsGFwk.resources.sprites.sprites.image,
+						351, 159, 3, 8,	this.bullets[bullet].x, this.bullets[bullet].y, 3, 8);
+				}
+			}
+		});
+	}
+</script>
+</html>

@@ -80,7 +80,7 @@ var jsGFwk = (function(){
 			
 				this._intervalId = setInterval(function() { 
 					var thisFrame = new Date().getTime();
-					var delta = (thisFrame - this.lastFrame) / 1000;
+					var delta = (thisFrame - jsGFwk._lastFrame) / 1000;
 					jsGFwk._lastFrame = thisFrame;
 					
 					jsGFwk._2Dbuffer.fillStyle = jsGFwk.settings.clearColor;
