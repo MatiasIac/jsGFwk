@@ -1,0 +1,104 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkRM.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkIO.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkSprites.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkEffects.js"></script>
+<body>
+	<h1>Click to rotate sprite</h1>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+	
+	//Include external component libraries
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("IO");
+	jsGFwk.include("Sprites");
+	jsGFwk.include("Effects");
+	//************************************
+	
+	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });
+	
+	//Simulation for a loading progress bar
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+				//Creates a new game object
+				createAGameObject();
+				//Destroy this loader
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) {
+			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+			this.barWidth = (a * 620) / 100;
+		},
+		draw: function (context) {
+			context.save();
+				context.fillStyle = "#FF0000";
+				context.fillRect(0,0, 640, 480);
+				
+				context.fillStyle = "#FFFFFF";
+				context.fillText("Loading...", 300, 240);
+				
+				context.strokeStyle = "#FFFFFF";
+				context.strokeRect(10, 260, 620, 30);
+				context.fillRect(10, 260, this.barWidth, 30);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.start();
+	
+	function createAGameObject() {
+		jsGFwk.createObject({
+			id: "fallingCharacter",
+			
+			//You need this fields to handle the rotation
+			x: 320,
+			y: 200,
+			//RotationPoint set the point where you want to make the rotation
+			rotationPoint: { x: 350, y: 210 },
+			//****
+			
+			angle: 0,
+			
+			init: function () {
+				jsGFwk.Sprites.createSprite({
+					id: "fallingGuy",
+					graphic: jsGFwk.ResourceManager.graphics.character.image,
+					top: 409,
+					left: 34,
+					width: 66,
+					height: 26
+				});
+			},
+			visible: true,
+			update: function(delta) {
+				if (jsGFwk.IO.keyboard._activeKey[39]) {
+					jsGFwk._gameObjects.fallingCharacter.angle+=2.5;
+				}
+				
+				if (jsGFwk.IO.keyboard._activeKey[37]) {
+					jsGFwk._gameObjects.fallingCharacter.angle-=2.5;
+				}
+			},
+			draw: function (context) {
+				//Rotate expect an angle and a pointer to delegate the drawing action.
+				this.rotate(this.angle, function (drawingSurface) {
+					drawingSurface.drawImage(jsGFwk.Sprites.sprites.fallingGuy.image, 
+						jsGFwk._gameObjects.fallingCharacter.x,
+						jsGFwk._gameObjects.fallingCharacter.y);
+				});
+			}
+		});
+	}
+</script>
+</html>
