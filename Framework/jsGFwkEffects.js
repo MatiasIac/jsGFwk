@@ -9,7 +9,11 @@ jsGFwk.Effects = {
 	rotate: function (angle, func) {
 		if (angle == undefined || angle == null) { return; }
 		if (func == undefined) { return; }
-		if (!this.rotationPoint) { return; }
+		if (!this.rotationPoint) { 
+			var x = this.x;
+			var y = this.y;
+			this.rotationPoint = { x: x, y: y };
+		}
 	
 		var context = jsGFwk._2Dbuffer;
 		context.save();
