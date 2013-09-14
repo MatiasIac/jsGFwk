@@ -35,11 +35,15 @@ jsGFwk.ResourceManager = {
 		start: function() {
 			setTimeout(function () {
 				for (var imageSource in jsGFwk.ResourceManager.graphics) {
-					jsGFwk.ResourceManager.graphics[imageSource].image.src = jsGFwk.ResourceManager.graphics[imageSource].source;
+					if (jsGFwk.ResourceManager.graphics.hasOwnProperty(imageSource)) {
+						jsGFwk.ResourceManager.graphics[imageSource].image.src = jsGFwk.ResourceManager.graphics[imageSource].source;
+					}
 				}
 				
 				for (var soundSource in jsGFwk.ResourceManager.sounds) {
-					jsGFwk.ResourceManager.sounds[soundSource].audio.src = jsGFwk.ResourceManager.sounds[soundSource].source;
+					if (jsGFwk.ResourceManager.graphics.hasOwnProperty(imageSource)) {
+						jsGFwk.ResourceManager.sounds[soundSource].audio.src = jsGFwk.ResourceManager.sounds[soundSource].source;
+					}
 				}
 			}, 2000);
 		},
