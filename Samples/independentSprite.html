@@ -4,9 +4,9 @@
 <script language="Javascript" src="../Framework/jsGFwk.js"></script>
 <script language="Javascript" src="../Framework/jsGFwkRM.js"></script>
 <script language="Javascript" src="../Framework/jsGFwkIO.js"></script>
-<script language="Javascript" src="../Framework/jsGFwkCollisions.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkSprites.js"></script>
 <body>
-	<h1>Use mouse to move and collide</h1>
+	<h1>Use the mouse to move the sprite</h1>
 	<canvas id="canvas" width="640" height="480"></canvas>
 </body>
 <script language="Javascript">
@@ -16,7 +16,7 @@
 	//Include external component libraries
 	jsGFwk.include("ResourceManager");
 	jsGFwk.include("IO");
-	jsGFwk.include("Collisions");
+	jsGFwk.include("Sprites");
 	//************************************
 	
 	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });
@@ -57,37 +57,20 @@
 	
 	function createAGameObject() {
 		jsGFwk.createObject({
-			id: "character",
-			
-			//These fields are used to check box collition
+			id: "fallingCharacter",
 			x: 10,
 			y: 10,
-			width: 100,
-			height: 120,
-			//*****
-			
-			init: function () {	},
-			visible: true,
-			update: function(delta) {
-			},
-			draw: function (context) {
-				context.drawImage(jsGFwk.ResourceManager.graphics.character.image,
-					10, 102, 100, 120,
-					this.x, this.y, 100, 120);
-			}
-		});
-		
-		jsGFwk.createObject({
-			id: "fallingCharacter",
-			
-			//These fields are used to check box collition
-			x: 300,
-			y: 10,
-			width: 66,
-			height: 26,
-			//*****
-			
 			init: function () {
+				//Crop the sprite from a bigger sprite sheet
+				jsGFwk.Sprites.createSprite({
+					id: "fallingGuy",
+					graphic: jsGFwk.ResourceManager.graphics.character.image,
+					top: 409,
+					left: 34,
+					width: 66,
+					height: 26
+				});
+			
 				jsGFwk.IO.mouse.registerMove(function (coord) {
 					jsGFwk._gameObjects.fallingCharacter.x = coord.x;
 					jsGFwk._gameObjects.fallingCharacter.y = coord.y;
@@ -95,14 +78,10 @@
 			},
 			visible: true,
 			update: function(delta) {
-				if (this.isRectColliding(jsGFwk._gameObjects.character)) {
-					console.log('Colliding');
-				}
 			},
 			draw: function (context) {
-				context.drawImage(jsGFwk.ResourceManager.graphics.character.image,
-					409, 34, 66, 26,
-					this.x, this.y, 66, 26);
+				//You can create sprites for easy graphic handling
+				context.drawImage(jsGFwk.Sprites.sprites.fallingGuy.image, this.x, this.y);
 			}
 		});
 	}

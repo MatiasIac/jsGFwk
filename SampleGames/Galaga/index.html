@@ -11,25 +11,25 @@
 	jsGFwk.settings.canvas = "canvas";
 	jsGFwk.settings.clearColor = "rgb(0,0,0)";
 	
-	jsGFwk.include("resources");
+	jsGFwk.include("ResourceManager");
 	jsGFwk.include("IO");
 	
-	jsGFwk.resources.addSprite({ name: "sprites", source: "sprites.png" });
-	jsGFwk.resources.addSound({ name: "spaceShipShoot", source: "shoot.wav" });
-	jsGFwk.resources.addSound({ name: "generalExplosion", source: "explode.wav" });
+	jsGFwk.ResourceManager.addGraphic({ name: "sprites", source: "sprites.png" });
+	jsGFwk.ResourceManager.addSound({ name: "spaceShipShoot", source: "shoot.wav" });
+	jsGFwk.ResourceManager.addSound({ name: "generalExplosion", source: "explode.wav" });
 	
 	jsGFwk.createObject({
 		id: "progress",
 		visible: true,
 		barWidth: 0,
 		init: function() {
-			jsGFwk.resources.onResourcesLoadedCompleted = function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
 				buildGame();
 				jsGFwk._gameObjects.progress.destroy();
 			};
 		},
 		update: function(delta) {
-			var a = (jsGFwk.resources._totalLoadedResources * 100) / jsGFwk.resources._totalResources;
+			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
 			this.barWidth = (a * 320) / 100;
 		},
 		draw: function (context) {
@@ -94,19 +94,19 @@
 		jsGFwk.createObject({
 			//Draw actions
 			_drawAliveShip: function(context){
-				context.drawImage(jsGFwk.resources.sprites.sprites.image,
+				context.drawImage(jsGFwk.ResourceManager.graphics.sprites.image,
 					169, 19, 15, 16, 
 					jsGFwk._gameObjects.spaceShip.x, jsGFwk._gameObjects.spaceShip.y, 15, 16);
 					
 				for (var bullet in jsGFwk._gameObjects.spaceShip.bullets) {
-					context.drawImage(jsGFwk.resources.sprites.sprites.image,
+					context.drawImage(jsGFwk.ResourceManager.graphics.sprites.image,
 						351, 159, 3, 8,	
 						jsGFwk._gameObjects.spaceShip.bullets[bullet].x, 
 						jsGFwk._gameObjects.spaceShip.bullets[bullet].y, 3, 8);
 				}
 			},
 			_drawDeadShip: function(context) {
-				context.drawImage(jsGFwk.resources.sprites.sprites.image,
+				context.drawImage(jsGFwk.ResourceManager.graphics.sprites.image,
 					193 + (32 * this._deadCurrentFrame), 11, 32, 32, 
 					jsGFwk._gameObjects.spaceShip.x - 10, jsGFwk._gameObjects.spaceShip.y - 10, 32, 32);
 			},
@@ -238,7 +238,7 @@
 				for (var i = 0; i < this.formation.length; i++) {
 					for (var j = 0; j < this.formation[i].length; j++) {
 						if (this.formation[i][j] !== 5) {
-							context.drawImage(jsGFwk.resources.sprites.sprites.image,
+							context.drawImage(jsGFwk.ResourceManager.graphics.sprites.image,
 							146 + (15 * this._currentFrame), 67 + (24 * this.formation[i][j]), 15, 16, 
 							(j * 15), (i * 15), 15, 16);
 						}
