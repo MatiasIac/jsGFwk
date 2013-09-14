@@ -1,25 +1,25 @@
-jsGFwk.resources = {
+jsGFwk.ResourceManager = {
 		_totalResources: 0,
 		_totalLoadedResources: 0,
 		_loadDispatcher: function () {
-			jsGFwk.resources._totalLoadedResources++;
+			jsGFwk.ResourceManager._totalLoadedResources++;
 			
-			if (jsGFwk.resources._totalLoadedResources >= jsGFwk.resources._totalResources) {
-				jsGFwk.resources.onResourcesLoadedCompleted();
+			if (jsGFwk.ResourceManager._totalLoadedResources >= jsGFwk.ResourceManager._totalResources) {
+				jsGFwk.ResourceManager.onResourcesLoadedCompleted();
 			} else {
-				jsGFwk.resources.onResourcesLoaded();
+				jsGFwk.ResourceManager.onResourcesLoaded();
 			}
 		},
 		
 		sounds: {},
-		sprites: {},
+		graphics: {},
 		
 		//source: { name: "object Name", source: "sprite Path", image: created by the framework }
-		addSprite: function (source) {
+		addGraphic: function (source) {
 			var image = new Image();
 			image.onload = this._loadDispatcher;
 			source.image = image
-			this.sprites[source.name] = source;
+			this.graphics[source.name] = source;
 			this._totalResources++;
 		},
 		
@@ -34,12 +34,12 @@ jsGFwk.resources = {
 		
 		start: function() {
 			setTimeout(function () {
-				for (var imageSource in jsGFwk.resources.sprites) {
-					jsGFwk.resources.sprites[imageSource].image.src = jsGFwk.resources.sprites[imageSource].source;
+				for (var imageSource in jsGFwk.ResourceManager.graphics) {
+					jsGFwk.ResourceManager.graphics[imageSource].image.src = jsGFwk.ResourceManager.graphics[imageSource].source;
 				}
 				
-				for (var soundSource in jsGFwk.resources.sounds) {
-					jsGFwk.resources.sounds[soundSource].audio.src = jsGFwk.resources.sounds[soundSource].source;
+				for (var soundSource in jsGFwk.ResourceManager.sounds) {
+					jsGFwk.ResourceManager.sounds[soundSource].audio.src = jsGFwk.ResourceManager.sounds[soundSource].source;
 				}
 			}, 2000);
 		},

@@ -13,11 +13,11 @@
 	jsGFwk.settings.clearColor = "rgb(255,255,255)";
 	
 	//Include external component libraries
-	jsGFwk.include("resources");
+	jsGFwk.include("ResourceManager");
 	jsGFwk.include("IO");
 	//************************************
 	
-	jsGFwk.resources.addSprite({ name: "character", source: "../SampleResources/jumpingBase.png" });
+	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });
 	
 	//Simulation for a loading progress bar
 	jsGFwk.createObject({
@@ -25,7 +25,7 @@
 		visible: true,
 		barWidth: 0,
 		init: function() {
-			jsGFwk.resources.onResourcesLoadedCompleted = function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
 				//Creates a new game object
 				createAGameObject();
 				//Destroy this loader
@@ -33,7 +33,7 @@
 			};
 		},
 		update: function(delta) {
-			var a = (jsGFwk.resources._totalLoadedResources * 100) / jsGFwk.resources._totalResources;
+			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
 			this.barWidth = (a * 620) / 100;
 		},
 		draw: function (context) {
@@ -70,7 +70,7 @@
 			},
 			draw: function (context) {
 				//Takes the graphic from the resources loaded.
-				context.drawImage(jsGFwk.resources.sprites.character.image,
+				context.drawImage(jsGFwk.ResourceManager.graphics.character.image,
 					10, 102, 100, 120,
 					this.x, this.y, 100, 120);
 			}
@@ -91,7 +91,7 @@
 			},
 			draw: function (context) {
 				//Takes the graphic from the resources loaded.
-				context.drawImage(jsGFwk.resources.sprites.character.image,
+				context.drawImage(jsGFwk.ResourceManager.graphics.character.image,
 					409, 34, 66, 26,
 					this.x, this.y, 66, 26);
 			}
