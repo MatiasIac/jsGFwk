@@ -6,25 +6,22 @@ jsGFwk.Effects = {
 		return degree * this.DEGREE_CONVERTION_VALUE;
 	},
 	
-	rotate: function (angle, func) {
-		if (angle == undefined || angle == null) { return; }
-		if (func == undefined) { return; }
+	rotateAndDraw: function (params) {
+		if (params == undefined || params == null) { return; }
 		if (!this.rotationPoint) { 
-			var x = this.x;
-			var y = this.y;
-			this.rotationPoint = { x: x, y: y };
+			this.rotationPoint = { x: 0, y: 0 };
 		}
 	
 		var context = jsGFwk._2Dbuffer;
 		context.save();
 			context.translate(this.x, this.y);
-			context.rotate(jsGFwk.Effects.degreeToRadians(angle));
+			context.rotate(jsGFwk.Effects.degreeToRadians(params.angle));
 			context.translate(-this.rotationPoint.x, -this.rotationPoint.y);
-			func(context);
+			context.drawImage(params.sprite.image, 0, 0);
 		context.restore();
 	},
 
 	start: function () {
-		Object.prototype.rotate = this.rotate;
+		Object.prototype.rotateAndDraw = this.rotateAndDraw;
 	}
 };
