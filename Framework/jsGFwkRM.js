@@ -32,7 +32,7 @@ jsGFwk.ResourceManager = {
 			this._totalResources++;
 		},
 		
-		start: function() {
+		onStart: function() {
 			setTimeout(function () {
 				for (var imageSource in jsGFwk.ResourceManager.graphics) {
 					if (jsGFwk.ResourceManager.graphics.hasOwnProperty(imageSource)) {

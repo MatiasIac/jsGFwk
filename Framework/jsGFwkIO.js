@@ -57,7 +57,7 @@ jsGFwk.IO = {
 		}
 	},
 	
-	start: function() {
+	onStart: function() {
 		//Register all listeners
 		document.addEventListener("keydown", this.keyboard._keyPressed, false);
 		document.addEventListener("keyup", this.keyboard._keyReleased, false);

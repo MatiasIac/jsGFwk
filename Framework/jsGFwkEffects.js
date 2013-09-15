@@ -21,7 +21,7 @@ jsGFwk.Effects = {
 		context.restore();
 	},
 
-	start: function () {
+	onStart: function () {
 		Object.prototype.rotateAndDraw = this.rotateAndDraw;
 	}
 };

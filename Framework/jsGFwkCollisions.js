@@ -17,7 +17,12 @@ jsGFwk.Collisions = {
         return true;
 	},
 
-	start: function () {
+	onStart: function () {
 		Object.prototype.isRectColliding = this._rectColliding;
+	},
+	
+	onObjectCreated: function (newObject) {
+		if (!newObject.width) { newObject.width = 1; }
+		if (!newObject.height) { newObject.height = 1; }
 	}
 };

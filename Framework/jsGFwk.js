@@ -41,6 +41,12 @@ var jsGFwk = (function(){
 			this._gameObjects[object.id] = object;
 			
 			if (object.init !== undefined) { object.init(); }
+			
+			for (var i = 0; i < this._includes.length; i++) {
+				if (this[this._includes[i]].onObjectCreated !== undefined) {
+					this[this._includes[i]].onObjectCreated(this._gameObjects[object.id]);
+				}
+			}
 		},
 		
 		sort: function () {
@@ -73,8 +79,8 @@ var jsGFwk = (function(){
 			
 				//start all plug ins
 				for (var i = 0; i < this._includes.length; i++) {
-					if (this[this._includes[i]].start !== undefined) {
-						this[this._includes[i]].start();
+					if (this[this._includes[i]].onStart !== undefined) {
+						this[this._includes[i]].onStart();
 					}
 				}
 			
@@ -105,6 +111,12 @@ var jsGFwk = (function(){
 			if (this._intervalId !== 0) {
 				clearInterval(this._intervalId);
 				this._intervalId = 0;
+				
+				for (var i = 0; i < this._includes.length; i++) {
+					if (this[this._includes[i]].onStop !== undefined) {
+						this[this._includes[i]].onStop();
+					}
+				}
 			}
 		},
 		

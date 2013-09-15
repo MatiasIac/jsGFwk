@@ -22,7 +22,7 @@ jsGFwk.Sprites = {
 		jsGFwk.Sprites.sprites[spriteObject.id].image.src = tempCanvas.toDataURL();
 	},
 
-	start: function () {
+	onStart: function () {
 		
 	}
 };
