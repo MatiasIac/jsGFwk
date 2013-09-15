@@ -2,11 +2,19 @@ jsGFwk.IO = {
 	keyboard: {
 		_keyboardCallers: [],
 		_activeKey: [],
+		_stopPropagation: function () {},
+		_eventPropagation: function (propagate) {
+			if (propagate) {
+				this._stopPropagation = function () {};
+			} else {
+				this._stopPropagation = function (e) { e.preventDefault(); };
+			}
+		},
 		_keyReleased: function(e) {
 			delete jsGFwk.IO.keyboard._activeKey[e.which];
 		},
 		_keyPressed: function(e) {
-			e.preventDefault();
+			jsGFwk.IO.keyboard._stopPropagation();
 			for (i = 0; i < jsGFwk.IO.keyboard._keyboardCallers.length; jsGFwk.IO.keyboard._keyboardCallers[i++](e.which));
 			jsGFwk.IO.keyboard._activeKey[e.which] = true;
 		},
