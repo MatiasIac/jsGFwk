@@ -22,6 +22,9 @@ jsGFwk.Effects = {
 	},
 
 	onStart: function () {
-		Object.prototype.rotateAndDraw = this.rotateAndDraw;
+	},
+	
+	onObjectCreated: function (newObject) {
+		newObject.rotateAndDraw = this.rotateAndDraw;
 	}
 };
