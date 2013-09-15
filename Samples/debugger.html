@@ -5,6 +5,7 @@
 <script language="Javascript" src="../Framework/jsGFwkRM.js"></script>
 <script language="Javascript" src="../Framework/jsGFwkIO.js"></script>
 <script language="Javascript" src="../Framework/jsGFwkCollisions.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkDebugger.js"></script>
 <body>
 	<h1>Use mouse to move and collide</h1>
 	<canvas id="canvas" width="640" height="480"></canvas>
@@ -17,6 +18,9 @@
 	jsGFwk.include("ResourceManager");
 	jsGFwk.include("IO");
 	jsGFwk.include("Collisions");
+	jsGFwk.include("Debugger");
+	
+	jsGFwk.Debugger.on = true;
 	//************************************
 	
 	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });
@@ -85,6 +89,8 @@
 			y: 10,
 			radius: 10,
 			center: { x: 33, y: 14 },
+			width: 66,
+			height: 26,
 			//*****
 			
 			init: function () {
