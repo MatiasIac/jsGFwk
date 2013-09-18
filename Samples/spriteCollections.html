@@ -61,27 +61,27 @@
 			x: 10,
 			y: 10,
 			init: function () {
-				//Crop the sprite from a bigger sprite sheet
-				jsGFwk.Sprites.createSprite({
-					id: "fallingGuy",
-					graphic: jsGFwk.ResourceManager.graphics.character.image,
-					left: 409,
-					top: 34,
-					width: 66,
-					height: 26
-				});
+				//Create a graphic collection
+				jsGFwk.Sprites.createSpriteCollection("fallingGuy", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 409, top: 34, width: 66, height: 26}, //first crop
+					 {left: 480, top: 34, width: 66, height: 26}, //second crop
+					 {left: 558, top: 34, width: 66, height: 26}, //last crop
+					]);
 			
 				jsGFwk.IO.mouse.registerMove(function (coord) {
 					jsGFwk._gameObjects.fallingCharacter.x = coord.x;
 					jsGFwk._gameObjects.fallingCharacter.y = coord.y;
 				});
+				
+				jsGFwk.Sprites.fallingGuy.loop(true);
 			},
 			visible: true,
 			update: function(delta) {
+				jsGFwk.Sprites.fallingGuy.next();
 			},
 			draw: function (context) {
 				//You can create sprites for easy graphic handling
-				context.drawImage(jsGFwk.Sprites.fallingGuy.image, this.x, this.y);
+				context.drawImage(jsGFwk.Sprites.fallingGuy.sprite.image, this.x, this.y);
 			}
 		});
 	}
