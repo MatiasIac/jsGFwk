@@ -75,8 +75,8 @@
 				jsGFwk.Sprites.createSprite({
 					id: "fallingGuy",
 					graphic: jsGFwk.ResourceManager.graphics.character.image,
-					top: 409,
-					left: 34,
+					top: 34,
+					left: 409,
 					width: 66,
 					height: 26
 				});
@@ -97,7 +97,7 @@
 			},
 			draw: function (context) {
 				//Rotate and draw a sprite
-				this.rotateAndDraw({ angle: this.angle, sprite: jsGFwk.Sprites.sprites.fallingGuy });
+				this.rotateAndDraw({ angle: this.angle, sprite: jsGFwk.Sprites.fallingGuy });
 			}
 		});
 	}
