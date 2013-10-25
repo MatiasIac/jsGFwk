@@ -133,7 +133,7 @@
 					if (this.bullets.length < 3 && this.delayCounter >= this.bulletShootDelay || this.bullets.length == 0) {
 						this.delayCounter = 0;
 						this.bullets.push({x: this.x + 7, y: this.y - 8});
-						jsGFwk.resources.sounds.spaceShipShoot.audio.play();
+						jsGFwk.ResourceManager.sounds.spaceShipShoot.audio.play();
 					}
 				}
 				
@@ -147,12 +147,12 @@
 						var newValue = jsGFwk._gameObjects.formation.formation[coords.y][coords.x] === 0 ? 1 : 5;
 						jsGFwk._gameObjects.formation.formation[coords.y][coords.x] = newValue;
 						this.bullets.splice(i, 1);
-						jsGFwk.resources.sounds.generalExplosion.audio.play();
+						jsGFwk.ResourceManager.sounds.generalExplosion.audio.play();
 					} else { i++; }
 				}
 				
 				if (jsGFwk.IO.keyboard._activeKey[68]) {
-					jsGFwk.resources.sounds.generalExplosion.audio.play();
+					jsGFwk.ResourceManager.sounds.generalExplosion.audio.play();
 					this.delayCounter = 0;
 					this.bullets.splice(0, this.bullets.length);
 					this._updateShipAction = this._updateDeadShip;
