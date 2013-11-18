@@ -1,0 +1,66 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+<script language="Javascript" src="Scripts/controlador.js"></script>
+<script language="Javascript" src="Scripts/fondo.js"></script>
+<script language="Javascript" src="Scripts/chef.js"></script>
+<script language="Javascript" src="Scripts/pescado.js"></script>
+
+<body>
+	<canvas id="canvas" width="240" height="136"></canvas>
+</body>
+
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.width = 240;
+	jsGFwk.settings.height = 136;
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+			
+	//Include external component libraries
+	jsGFwk.include("IO");
+	jsGFwk.include("ResourceManager");
+	//************************************
+
+	jsGFwk.ResourceManager.addGraphic({ name: "sprites", source: "Graphics/sprites.png" });
+		
+	jsGFwk.createObject({
+			id: "progress",
+			visible: true,
+			barWidth: 0,
+			init: function() {
+				jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+						createGameObjects();
+						jsGFwk._gameObjects.progress.destroy();
+				};
+			},
+			update: function(delta) {
+				var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+				this.barWidth = (a * 320) / 100;
+			},
+			draw: function (context) {
+				context.save();
+						context.fillStyle = "#FF0000";
+						context.fillRect(0,0, 320, 240);
+						
+						context.fillStyle = "#FFFFFF";
+						context.fillText("Loading...", 130, 110);
+						
+						context.strokeStyle = "#FFFFFF";
+						context.strokeRect(10, 160, 300, 30);
+						context.fillRect(10, 160, this.barWidth, 30);
+				context.restore();
+			}
+	});
+	
+	function createGameObjects() {
+		jsGFwk.createObject(fondo);
+		jsGFwk.createObject(chef);
+		jsGFwk.createObject(controlador);
+	}
+	jsGFwk.start();
+
+</script>
+</html>

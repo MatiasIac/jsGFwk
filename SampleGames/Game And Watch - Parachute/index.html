@@ -1,0 +1,35 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+<script language="Javascript" src="Scripts/hud.js"></script>
+<script language="Javascript" src="Scripts/barco.js"></script>
+<script language="Javascript" src="Scripts/soldados.js"></script>
+<script language="Javascript" src="Scripts/shark.js"></script>
+
+<body>
+	<canvas id="canvas" width="240" height="161"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.width = 240;
+	jsGFwk.settings.height = 161;
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+			
+	//Include external component libraries
+	jsGFwk.include("IO");
+	jsGFwk.include("ResourceManager");
+	//************************************
+
+	jsGFwk.ResourceManager.addGraphic({ name: "sprites", source: "Graphics/sprites.png" });
+        
+	jsGFwk.createObject(hud);
+	jsGFwk.createObject(barco);
+	jsGFwk.createObject(soldados);
+	jsGFwk.createObject(shark);
+	
+	jsGFwk.start();
+</script>
+</html>
