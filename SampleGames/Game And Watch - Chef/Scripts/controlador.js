@@ -38,9 +38,7 @@ var controlador = {
 				return;
 			}
 			
-			if (jsGFwk._gameObjects.chef._goUp) {
-				jsGFwk._gameObjects.chef._goUp = false;
-			}
+			jsGFwk._gameObjects.chef._goUp = jsGFwk._gameObjects.chef._goUp && false;
 			
 			for (var i = 0; i < this._pescados.length; i++) {
 				this._pescados[i].update(delta);
