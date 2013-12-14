@@ -41,7 +41,7 @@ jsGFwk.ResourceManager = {
 				}
 				
 				for (var soundSource in jsGFwk.ResourceManager.sounds) {
-					if (jsGFwk.ResourceManager.graphics.hasOwnProperty(imageSource)) {
+					if (jsGFwk.ResourceManager.sounds.hasOwnProperty(soundSource)) {
 						jsGFwk.ResourceManager.sounds[soundSource].audio.src = jsGFwk.ResourceManager.sounds[soundSource].source;
 					}
 				}
