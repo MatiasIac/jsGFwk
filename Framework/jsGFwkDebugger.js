@@ -27,8 +27,12 @@ jsGFwk.Debugger = {
 	_drawBoundBox: function(context, target) {
 		if (isNaN(target.x) || isNaN(target.y)) { return; }
 		if (isNaN(target.width) || isNaN(target.height)) { return; }
+		if (!target.rotationPoint) { target.rotationPoint = { x: 0, y: 0 }; }
+
+		var x = target.x - target.rotationPoint.x;
+		var y = target.y - target.rotationPoint.y;		
 		
-		context.strokeRect(target.x, target.y, target.width, target.height);
+		context.strokeRect(x, y, target.width, target.height);
 	},
 	
 	on: false,

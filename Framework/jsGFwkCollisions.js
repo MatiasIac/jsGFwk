@@ -4,14 +4,22 @@ jsGFwk.Collisions = {
 		if (!otherObject) { return false; }
 		if (!this.width || !this.height || !this.x || !this.y) { return false; }
 		if (!otherObject.width || !otherObject.height || !otherObject.x || !otherObject.y) { return false; }
+		if (!this.rotationPoint) { this.rotationPoint = { x: 0, y: 0 }; }
+		if (!otherObject.rotationPoint) { otherObject.rotationPoint = { x: 0, y: 0 }; }
+
+		var thisX = this.x - this.rotationPoint.x;
+		var thisY = this.y - this.rotationPoint.y;
 		
-		if (this.x + this.width < otherObject.x)
+		var otherX = otherObject.x - otherObject.rotationPoint.x;
+		var otherY = otherObject.y - otherObject.rotationPoint.y;
+		
+		if (thisX + this.width < otherX)
             return false;
-        if (this.y + this.height < otherObject.y)
+        if (thisY + this.height < otherY)
             return false;
-        if (this.x > otherObject.x + otherObject.width)
+        if (thisX > otherX + otherObject.width)
             return false;
-        if (this.y > otherObject.y + otherObject.height)
+        if (thisY > otherY + otherObject.height)
             return false;
 
         return true;
