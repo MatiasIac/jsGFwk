@@ -10,17 +10,6 @@ var jsGFwk = (function(){
 		_lastFrame: 0,
 		_includes: [],
 		
-		_processObjects: function() {
-			//Added
-			/*if (objectToBeAdded.length != 0) {
-				for (var x = 0; x < objectToBeAdded.length; ++x) {
-					gameObjects.push(objectToBeAdded[x]);
-					objectToBeAdded[x].init();
-				}
-				objectToBeAdded.splice(0, objectToBeAdded.length);
-			}*/
-		},
-		
 		settings: {
 			canvas: "",
 			width: 640,
