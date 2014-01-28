@@ -1,0 +1,70 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkScenes.js"></script>
+<body>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	var html = document.getElementById("clonedCounter");
+
+	jsGFwk.settings.canvas = "canvas";
+	
+	//Include external component libraries
+	jsGFwk.include("Scenes");
+	//************************************
+	
+	//Create some game objects
+	var gameObject1 = {	id: "ball", x: 10, y: 10, visible: true,
+		update: function(delta) { 
+			this.x++;
+			//this object will hide the scene1
+			if (this.x > 150) {
+				jsGFwk.Scenes.scenes.scene1.disable();
+			}
+		},
+		draw: function (context) {	context.fillStyle = "rgb(255,255,255)";	context.fillRect(this.x,this.y,10,10); }
+	};
+	
+	var gameObject2 = {	id: "ball2", x: 10, y: 100, visible: true,
+		update: function(delta) { this.x++;	},
+		draw: function (context) { context.fillStyle = "rgb(0,255,255)"; context.fillRect(this.x,this.y,10,10);	} };
+	//********
+	
+	//Create a independent game object that calls the scene 2
+	jsGFwk.createObject({
+		id: "independent", x: 10, y: 50, visible: true,
+		update: function(delta) { 
+			this.x++;
+			
+			//this object will show the scene2
+			if (this.x > 200) {
+				jsGFwk.Scenes.scenes.scene2.enable();
+			}
+			
+			//Finally, destroy all
+			if (this.x > 600) {
+				jsGFwk.Scenes.scenes.scene2.disable();
+				this.destroy();
+			}
+		},
+		draw: function (context) { 
+			context.fillStyle = "rgb(0,0,255)"; 
+			context.fillRect(this.x,this.y,10,10);	
+		} 
+	});
+	
+	//Creates a new scene
+	jsGFwk.Scenes.create({name: "scene1" /*, gameObjects: [] */});
+	jsGFwk.Scenes.scenes.scene1.setGameObjects([gameObject1, gameObject2]);
+
+	jsGFwk.Scenes.create({name: "scene2", gameObjects: [gameObject2] });
+	
+	jsGFwk.start();
+	
+	//Enables scene 1
+	jsGFwk.Scenes.scenes.scene1.enable();
+	
+</script>
+</html>
