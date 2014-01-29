@@ -1,5 +1,7 @@
 jsGFwk.Scenes = (function() {
 
+	var _currentScene;
+
 	function scene(parameters) {
 		var self = this;
 		var _sceneObjects = parameters.gameObjects || [];
@@ -12,11 +14,15 @@ jsGFwk.Scenes = (function() {
 		this.disable = function() {
 			var i = 0;
 			for (; i < _sceneObjects.length; _sceneObjects[i++].destroy());
+			_currentScene = undefined;
 		};
 		
 		this.enable = function() {
+			if (_currentScene != undefined) { _currentScene.disable(); }
+		
 			var i = 0;
 			for (; i < _sceneObjects.length; jsGFwk.createObject(_sceneObjects[i++]));
+			_currentScene = this;
 		};
 	}
 
