@@ -35,7 +35,7 @@ jsGFwk.Effects = {
 			context.rotate(jsGFwk.Effects.degreeToRadians(params.angle));
 			context.translate(-this.rotationPoint.x, -this.rotationPoint.y);
 		
-			params.then(context);
+			params.then.call(this, context);
 		context.restore();
 	},
 
