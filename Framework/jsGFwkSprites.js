@@ -6,6 +6,11 @@ jsGFwk.Sprites = {
 		tempCanvas.height = spriteObject.height;
 		var tempContext = tempCanvas.getContext("2d");
 		
+		if (spriteObject.inverted) {
+			tempContext.translate(spriteObject.width, 0);
+			tempContext.scale(-1, 1);
+		}
+		
 		tempContext.drawImage(spriteObject.graphic, 
 			spriteObject.left, spriteObject.top, spriteObject.width, spriteObject.height,
 			0,0,spriteObject.width, spriteObject.height);
@@ -42,7 +47,9 @@ jsGFwk.Sprites = {
 		};
 		
 		for (var i = 0; i < values.length; i++) {
-			var spriteObject = { top: values[i].top, left: values[i].left, width: values[i].width, height: values[i].height, graphic: graphic };
+			var spriteObject = { top: values[i].top, left: values[i].left, 
+								 width: values[i].width, height: values[i].height, 
+								 graphic: graphic, inverted: values[i].inverted || false };
 			var image = new Image();
 			image.src = this._genSprite(spriteObject);
 			spriteObject.image = image;
@@ -61,6 +68,7 @@ jsGFwk.Sprites = {
 		jsGFwk.Sprites[spriteObject.id].width = spriteObject.width;
 		jsGFwk.Sprites[spriteObject.id].height = spriteObject.height;
 		jsGFwk.Sprites[spriteObject.id].image = new Image();
+		
 		jsGFwk.Sprites[spriteObject.id].image.src = this._genSprite(spriteObject);
 	},
 

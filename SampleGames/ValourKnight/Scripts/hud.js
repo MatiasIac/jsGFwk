@@ -49,11 +49,13 @@ var hud = {
 				context.font = "20pt zxFont";
 				context.fillText("Tap to play", 90, 150);
 			}
-			
+		context.restore();
+
+		/*context.save();
+			*/
 			context.drawImage(jsGFwk.ResourceManager.graphics.main.image,
 				0, 0, 25, 29,
 				50, 130, 25, 29);
-			
-		context.restore();
+		/*context.restore();*/
 	}
 }
