@@ -63,10 +63,20 @@ jsGFwk.IO = {
 		
 		registerClick: function(f) {
 			this._mouseClickCallers.push(f);
+			return (this._mouseClickCallers.length - 1);
+		},
+		
+		unregisterClick: function(callerId) {
+			this._mouseClickCallers.splice(callerId, 1);
 		},
 		
 		registerMove: function(f) {
 			this._mouseMoveCallers.push(f);
+			return (this._mouseMoveCallers.length - 1);
+		},
+		
+		unregisterMove: function(callerId) {
+			this._mouseMoveCallers.splice(callerId, 1);
 		}
 	},
 	
