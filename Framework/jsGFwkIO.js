@@ -21,6 +21,11 @@ jsGFwk.IO = {
 		
 		registerKeypress: function(f) {
 			this._keyboardCallers.push(f);
+			return (this._keyboardCallers.length - 1);
+		},
+		
+		unregisterKeypress: function(callerId) {
+			this._keyboardCallers.splice(callerId, 1);
 		}
 	},
 	
