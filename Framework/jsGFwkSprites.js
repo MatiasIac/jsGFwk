@@ -43,6 +43,10 @@ jsGFwk.Sprites = {
 				this._moveFrame();				
 				this.sprite = this.spriteBag[this.seeker];
 			},
+			reset: function () {
+				this.seeker = -1;
+				this.next();
+			},
 			sprite: {},
 		};
 		

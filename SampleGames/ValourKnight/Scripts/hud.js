@@ -5,26 +5,47 @@ var hud = {
 	
 	deltaCounter: 0,
 	deltaRainbown: 0,
-	blink: false,
 	colorRainbow: ["#0000FF", "#CD0000", "#FF0000", "#0000FF", "#CD00CD", "#FF00FF", 
 				   "#00CD00", "#00FF00", "#00CDCD", "#00FFFF", "#CDCD00", "#FFFF00", "#CDCDCD", "#FFFFFF"],
 	colorStartingPoint: 0,
+	selectedOption: 0,
+	keyPressId: -1,
 	
-	init: function () {	
-		jsGFwk.IO.mouse.registerClick(function (coord) {
-			// Change scene 2
-		});	
+	init: function () {	},
+	
+	start: function () {
+		jsGFwk._gameObjects.progress.destroy();
+		jsGFwk.Sprites.walkingRight.next();
+		jsGFwk.Sprites.walkingLeft.next();
+		this.keyPressId = jsGFwk.IO.keyboard.registerKeypress(function (code) {
+			switch(code) {
+				case 49:
+					GLOBALS.SELECTED_GAME = 0;
+					jsGFwk._gameObjects.hud.selectedOption = 0;
+					jsGFwk.ResourceManager.sounds.selection.audio.play();
+					break;
+				/*case 50:
+					GLOBALS.SELECTED_GAME = 1;
+					jsGFwk._gameObjects.hud.selectedOption = 1;
+					break;*/
+				case 51:
+					//start game
+					jsGFwk.ResourceManager.sounds.selection.audio.play();
+					jsGFwk.IO.keyboard.unregisterKeypress(jsGFwk._gameObjects.hud.keyPressId);
+					jsGFwk.Scenes.scenes["game"].enable();
+					jsGFwk._gameObjects.game.startGame();
+					break;
+			}			
+		});
 	},
+	
 	update: function (delta) {	
 		this.deltaCounter += delta;
 		this.deltaRainbown += delta;
 		
-		if (this.deltaCounter > 0.5) {
-			this.deltaCounter = 0;
-			this.blink = !this.blink;
-		}
-		
 		if (this.deltaRainbown > 0.1) {
+			jsGFwk.Sprites.walkingRight.next();
+			jsGFwk.Sprites.walkingLeft.next();
 			this.deltaRainbown = 0;
 			this.colorStartingPoint++;
 			if (this.colorStartingPoint >= this.colorRainbow.length) { this.colorStartingPoint = 0; }
@@ -44,18 +65,18 @@ var hud = {
 				if (rCounter >= this.colorRainbow.length) { rCounter = 0; }
 			}
 			
-			if (!this.blink) {
-				context.fillStyle = "white";
-				context.font = "20pt zxFont";
-				context.fillText("Tap to play", 90, 150);
-			}
-		context.restore();
+			context.font = "20pt zxFontNormal";
+			
+			context.fillStyle = "#FF00FF";
+			context.fillRect(65, 135 + (this.selectedOption * 20), 210, 20);
 
-		/*context.save();
-			*/
-			context.drawImage(jsGFwk.ResourceManager.graphics.main.image,
-				0, 0, 25, 29,
-				50, 130, 25, 29);
-		/*context.restore();*/
+			context.fillStyle = "white";			
+			context.fillText("1. HUMAN Vs. CPU", 70, 150);
+			//context.fillText("2. HUMAN Vs. HUMAN", 70, 170);
+			context.fillText("3. START GAME", 70, 190);
+			
+			context.drawImage(jsGFwk.Sprites.walkingRight.sprite.image, 20, 130 + (this.selectedOption * 20));
+			context.drawImage(jsGFwk.Sprites.walkingLeft.sprite.image, 290, 130 + (this.selectedOption * 20));
+		context.restore();
 	}
 }

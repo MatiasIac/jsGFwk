@@ -6,22 +6,34 @@
 	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="scripts/loader.js"></script>
+	<script language="Javascript" src="scripts/game.js"></script>
+	<script language="Javascript" src="scripts/background.js"></script>
 	<script language="Javascript" src="scripts/hud.js"></script>
+	<script language="Javascript" src="scripts/share.js"></script>
+	<script language="Javascript" src="scripts/knights.js"></script>
 	<style>
 		@font-face {
 			font-family: 'zxFont';
 			src: url('fonts/zxBold.ttf');
 		}
+		
+		@font-face {
+			font-family: 'zxFontNormal';
+			src: url('fonts/zxNormal.ttf');
+		}
 	</style>
 </head>
-<body style="background-color:#black; cursor:none">
+<body style="background-color:black;">
 	<canvas id="canvas" width="320" height="240"></canvas>
 </body>
 <script language="Javascript">
 	var GLOBALS = { 
 		CANVAS_SIZE : { width: 320, height: 240 },
-		SPEED: 4.5,
-		COINS: 0
+		SELECTED_GAME: 0,
+		WONS: 0,
+		RECORD: 0,
 	};
 	
 	jsGFwk.settings.canvas = "canvas";
@@ -30,58 +42,33 @@
 	jsGFwk.include("ResourceManager");
 	jsGFwk.include("IO");
 	jsGFwk.include("Collisions");
+	jsGFwk.include("Sprites");
 	jsGFwk.include("Scenes");
 	
 	jsGFwk.ResourceManager.addGraphic({ name: "main", source: "graphics/mainGraphics.png" });
-	jsGFwk.Scenes.create({name: "scene1", gameObjects: [hud] });
 	
-	jsGFwk.createObject({
-		id: "progress",
-		visible: true,
-		barWidth: 0,
-		ran: 10,
-		blinking: false,
-		init: function() {
-			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
-				setTimeout(function () {
-					jsGFwk.Scenes.scenes.scene1.enable();
-					jsGFwk._gameObjects.progress.destroy();
-				}, 1000);
-			};
-		},
-		update: function(delta) {
-			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
-			this.barWidth = (a * 270) / 100;
-			this.blinking = !this.blinking;
-			this.ran++;
-			if (this.ran >= 200) { this.ran = 0; }
-		},
-		draw: function (context) {
-			context.save();
-				context.fillStyle = "#00FF00";
-				context.fillRect(0,0, 320, 240);
-				
-				if (this.blinking) {
-					for (var i = 0; i <= 10; i++) {
-						for (var j = 0; j <= 3; j++) {
-							context.fillStyle = "#FF00FF";
-							context.fillRect(j * 110, ((i * 50) + (j * 10) + this.ran) - 200, 110, 20);
-						}
-					}
-				}
-			
-				context.fillStyle = "#FFFF00";
-				context.fillRect(20, 20, 280, 200);
-				
-				context.fillStyle = "#000000";
-				context.fillText("Loading...", 130, 100);
-				
-				context.strokeStyle = "#FFFFFF";
-				context.strokeRect(25, 120, 270, 30);
-				context.fillRect(25, 120, this.barWidth, 30);
-			context.restore();
-		}
-	});
+	var selectionSources = {};
+	selectionSources[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/selection.wav" };
+	selectionSources[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/selection.ogg" };
+	selectionSources[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/selection.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "selection", sources: selectionSources});
+	
+	var hitSources = {};
+	hitSources[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/hit.wav" };
+	hitSources[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/hit.ogg" };
+	hitSources[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/hit.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "hit", sources: hitSources});
+	
+	var wonSources = {};
+	wonSources[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/won.wav" };
+	wonSources[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/won.ogg" };
+	wonSources[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/won.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "won", sources: wonSources});
+	
+	jsGFwk.Scenes.create({name: "scene1", gameObjects: [hud] });
+	jsGFwk.Scenes.create({name: "game", gameObjects: [background, game, knights, share] });
+	
+	jsGFwk.createObject(loader);
 
 	jsGFwk.start();
 </script>

@@ -4,10 +4,19 @@ jsGFwk.ResourceManager = {
 		_loadDispatcher: function () {
 			jsGFwk.ResourceManager._totalLoadedResources++;
 			
-			if (jsGFwk.ResourceManager._totalLoadedResources >= jsGFwk.ResourceManager._totalResources) {
+			if (jsGFwk.ResourceManager._totalLoadedResources == jsGFwk.ResourceManager._totalResources) {
+				jsGFwk.ResourceManager._detachEvents();
 				jsGFwk.ResourceManager.onResourcesLoadedCompleted();
 			} else {
 				jsGFwk.ResourceManager.onResourcesLoaded();
+			}
+		},
+		
+		_detachEvents: function () {
+			for (var soundSource in jsGFwk.ResourceManager.sounds) {
+				if (jsGFwk.ResourceManager.sounds.hasOwnProperty(soundSource) && soundSource !== 'format') {
+					jsGFwk.ResourceManager.sounds[soundSource].audio.removeEventListener('canplaythrough', jsGFwk.ResourceManager._loadDispatcher);
+				}
 			}
 		},
 		
