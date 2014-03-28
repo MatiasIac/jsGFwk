@@ -35,6 +35,9 @@ var loader = {
 				jsGFwk.Sprites.createSprite({id: "floor", graphic: jsGFwk.ResourceManager.graphics.environment1.image, 
 					left: 0, top: 0, width: 690, height: 128, inverted: false});
 					
+				jsGFwk.Sprites.createSprite({id: "alertSign", graphic: jsGFwk.ResourceManager.graphics.mainGraphics.image, 
+					left: 352, top: 8, width: 100, height: 101, inverted: false});
+					
 				jsGFwk.Sprites.createSprite({id: "clouds", graphic: jsGFwk.ResourceManager.graphics.environment1.image, 
 					left: 0, top: 144, width: 690, height: 320, inverted: false});
 							

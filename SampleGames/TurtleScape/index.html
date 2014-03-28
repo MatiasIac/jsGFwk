@@ -9,11 +9,13 @@
 	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
 	<script language="Javascript" src="scripts/loader.js"></script>
 	<script language="Javascript" src="scripts/hud.js"></script>
+	<script language="Javascript" src="scripts/endHud.js"></script>
 	<script language="Javascript" src="scripts/background.js"></script>
 	<script language="Javascript" src="scripts/keyHelper.js"></script>
 	<script language="Javascript" src="scripts/metter.js"></script>
 	<script language="Javascript" src="scripts/counters.js"></script>
 	<script language="Javascript" src="scripts/magma.js"></script>
+	<script language="Javascript" src="scripts/hurrySign.js"></script>
 	<script language="Javascript" src="scripts/particle.js"></script>
 	<script language="Javascript" src="scripts/turtle.js"></script>
 	<style>
@@ -52,7 +54,8 @@
 	jsGFwk.ResourceManager.addGraphic({ name: "mainGraphics", source: "graphics/main.png" });	
 	
 	jsGFwk.Scenes.create({name: "intro", gameObjects: [hud] });
-	jsGFwk.Scenes.create({name: "game", gameObjects: [background, turtle, magma, counters, metter, keyHelper] });
+	jsGFwk.Scenes.create({name: "game", gameObjects: [background, hurrySign, turtle, magma, counters, metter, keyHelper] });
+	jsGFwk.Scenes.create({name: "end", gameObjects: [endHud] });
 	
 	jsGFwk.createObject(loader);
 

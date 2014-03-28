@@ -2,8 +2,8 @@ jsGFwk.Collisions = {
 
 	_rectColliding: function (otherObject) {
 		if (!otherObject) { return false; }
-		if (!this.width || !this.height || !this.x || !this.y) { return false; }
-		if (!otherObject.width || !otherObject.height || !otherObject.x || !otherObject.y) { return false; }
+		if (this.width == undefined || this.height == undefined || this.x == undefined || this.y == undefined) { return false; }
+		if (otherObject.width == undefined || otherObject.height == undefined || otherObject.x == undefined || otherObject.y == undefined) { return false; }
 		if (!this.rotationPoint) { this.rotationPoint = { x: 0, y: 0 }; }
 		if (!otherObject.rotationPoint) { otherObject.rotationPoint = { x: 0, y: 0 }; }
 

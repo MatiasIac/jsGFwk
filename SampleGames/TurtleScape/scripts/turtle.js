@@ -10,18 +10,27 @@ var turtle = {
 	state: 0,
 	needItMode: 1,
 	imageToDraw: {},
+	
 	x: 100,
+	y: 250,
+	width: 29,
+	height: 45,
 	
 	mouseClickId: -1,
 	hitSpeed: 0,
-	accumulatorSpeed: 1,
+	accumulatorSpeed: 1.25,
 	decumulatorSpeed: 0.25,
 
 	meterCounter: 0,
 	
 	dummyMouse: { width: 1,	height: 1, x: 0, y: 0 },
 	
-	init: function () {	
+	init: function () {
+		this.hitSpeed = 0;
+		this.accumulatorSpeed = 1.25;
+		this.decumulatorSpeed = 0.25;
+		this.meterCounter = 0;
+	
 		jsGFwk.Sprites.turtleIdle.next();
 		this.imageToDraw = jsGFwk.Sprites.turtleIdle.sprite.image;
 		
@@ -40,6 +49,12 @@ var turtle = {
 	},
 	
 	update: function (delta) {
+		if (this.isRectColliding(jsGFwk._gameObjects.magma)) {
+			jsGFwk.IO.mouse.unregisterClick(jsGFwk._gameObjects.turtle.mouseClickId);
+			jsGFwk.Scenes.scenes.end.enable();
+			return;
+		}
+	
 		this.deltaCount += delta;
 
 		if (this.hitSpeed > 0) {
@@ -88,7 +103,7 @@ var turtle = {
 	},
 	draw: function (context) { 
 		context.save();
-			context.drawImage(this.imageToDraw, this.x, 250);
+			context.drawImage(this.imageToDraw, this.x, this.y);
 		context.restore();
 	}
 }
