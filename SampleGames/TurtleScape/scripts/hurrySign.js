@@ -15,7 +15,6 @@ var hurrySign = {
 	
 	update: function (delta) {
 		this.deltaCount += 1 / (jsGFwk._gameObjects.turtle.x - jsGFwk._gameObjects.magma.x) * 10.00;
-		console.log(this.deltaCount);
         if (this.deltaCount >= 2) { this.deltaCount = 0; }
 	
 		if ((jsGFwk._gameObjects.turtle.x - jsGFwk._gameObjects.magma.x) < 150 ) {

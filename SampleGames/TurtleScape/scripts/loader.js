@@ -40,6 +40,12 @@ var loader = {
 					
 				jsGFwk.Sprites.createSprite({id: "clouds", graphic: jsGFwk.ResourceManager.graphics.environment1.image, 
 					left: 0, top: 144, width: 690, height: 320, inverted: false});
+					
+				jsGFwk.Sprites.createSpriteCollection("obstacles", jsGFwk.ResourceManager.graphics.mainGraphics.image, 
+					[{left: 183, top: 616, width: 28, height: 51, inverted: false},
+					 {left: 249, top: 618, width: 28, height: 51, inverted: false},
+					 {left: 179, top: 699, width: 28, height: 51, inverted: false}]);
+				jsGFwk.Sprites.obstacles.loop(false);
 							
 				jsGFwk.Scenes.scenes.intro.enable();
 				jsGFwk._gameObjects.progress.destroy();

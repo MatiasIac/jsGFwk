@@ -2,11 +2,14 @@
 <head>
 </head>
 <script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkBasicAnimation.js"></script>
 <body>
 	<canvas id="canvas" width="640" height="480"></canvas>
 </body>
 <script language="Javascript">
 	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.include("BasicAnimation");
+	
 	jsGFwk.createObject({
 		id: "ball",
 		x: 10,

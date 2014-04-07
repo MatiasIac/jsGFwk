@@ -1,13 +1,7 @@
 var jsGFwk = (function(){
 	return {
 		
-		_2Dcontext: {},
-		_canvas: {},
-		_2Dbuffer: {},
-		_bufferCanvas: {},
 		_gameObjects: {},
-		_intervalId: 0,
-		_lastFrame: 0,
 		_includes: [],
 		
 		settings: {
@@ -57,54 +51,18 @@ var jsGFwk = (function(){
 		},
 		
 		start: function() {
-		
-			if (this._intervalId === 0) {
-				this._canvas = document.getElementById(this.settings.canvas);
-				this._2Dcontext = this._canvas.getContext("2d");
-				this._bufferCanvas = document.createElement('canvas');
-				this._bufferCanvas.width = this._canvas.width;
-				this._bufferCanvas.height = this._canvas.height;
-				this._2Dbuffer = this._bufferCanvas.getContext('2d');
-			
-				//start all plug ins
-				for (var i = 0; i < this._includes.length; i++) {
-					if (this[this._includes[i]].onStart !== undefined) {
-						this[this._includes[i]].onStart();
-					}
+			//start all plugins
+			for (var i = 0; i < this._includes.length; i++) {
+				if (this[this._includes[i]].onStart !== undefined) {
+					this[this._includes[i]].onStart();
 				}
-			
-				this._intervalId = setInterval(function() { 
-					var thisFrame = new Date().getTime();
-					var delta = (thisFrame - jsGFwk._lastFrame) / 1000;
-					jsGFwk._lastFrame = thisFrame;
-					
-					jsGFwk._2Dbuffer.fillStyle = jsGFwk.settings.clearColor;
-					jsGFwk._2Dbuffer.fillRect(0, 0, jsGFwk._canvas.width, jsGFwk._canvas.height);
-					
-					for (var name in jsGFwk._gameObjects) {
-						if (jsGFwk._gameObjects[name] !== null) {
-							var o = jsGFwk._gameObjects[name];
-							if (o.update) { o.update(delta); }
-							if (o.draw && o.visible) { o.draw(jsGFwk._2Dbuffer); }
-						}
-					}
-					
-					jsGFwk._2Dcontext.drawImage(jsGFwk._bufferCanvas, 0, 0);
-					//jsGFwk._processObjects();
-					
-				}, this.settings.frameRate);
-			}			
+			}
 		},
 		
 		stop: function () {
-			if (this._intervalId !== 0) {
-				clearInterval(this._intervalId);
-				this._intervalId = 0;
-				
-				for (var i = 0; i < this._includes.length; i++) {
-					if (this[this._includes[i]].onStop !== undefined) {
-						this[this._includes[i]].onStop();
-					}
+			for (var i = 0; i < this._includes.length; i++) {
+				if (this[this._includes[i]].onStop !== undefined) {
+					this[this._includes[i]].onStop();
 				}
 			}
 		},

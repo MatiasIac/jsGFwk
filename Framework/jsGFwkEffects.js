@@ -12,7 +12,7 @@ jsGFwk.Effects = {
 			this.rotationPoint = { x: 0, y: 0 };
 		}
 	
-		var context = jsGFwk._2Dbuffer;
+		var context = jsGFwk.BasicAnimation._2Dbuffer;
 		context.save();
 			context.translate(this.x, this.y);
 			context.rotate(jsGFwk.Effects.degreeToRadians(params.angle));
@@ -29,7 +29,7 @@ jsGFwk.Effects = {
 			this.rotationPoint = { x: 0, y: 0 };
 		}
 	
-		var context = jsGFwk._2Dbuffer;
+		var context = jsGFwk.BasicAnimation._2Dbuffer;
 		context.save();
 			context.translate(this.x, this.y);
 			context.rotate(jsGFwk.Effects.degreeToRadians(params.angle));

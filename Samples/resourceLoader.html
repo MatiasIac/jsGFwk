@@ -2,6 +2,7 @@
 <head>
 </head>
 <script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkBasicAnimation.js"></script>
 <script language="Javascript" src="../Framework/jsGFwkRM.js"></script>
 <body>
 	<canvas id="canvas" width="640" height="480"></canvas>
@@ -11,6 +12,7 @@
 	jsGFwk.settings.clearColor = "rgb(255,255,255)";
 
 	//Include resources handling library
+	jsGFwk.include("BasicAnimation");
 	jsGFwk.include("ResourceManager");
 	
 	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });

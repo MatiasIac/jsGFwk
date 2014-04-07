@@ -2,6 +2,7 @@
 <head>
 	<title></title>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkBasicAnimation.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
@@ -17,6 +18,7 @@
 	<script language="Javascript" src="scripts/magma.js"></script>
 	<script language="Javascript" src="scripts/hurrySign.js"></script>
 	<script language="Javascript" src="scripts/particle.js"></script>
+	<script language="Javascript" src="scripts/obstacle.js"></script>
 	<script language="Javascript" src="scripts/turtle.js"></script>
 	<style>
 		@font-face {
@@ -40,6 +42,7 @@
 	jsGFwk.settings.width = 600;
 	jsGFwk.settings.height = 400;
 	
+	jsGFwk.include("BasicAnimation");
 	jsGFwk.include("ResourceManager");
 	jsGFwk.include("IO");
 	jsGFwk.include("Collisions");
@@ -54,7 +57,7 @@
 	jsGFwk.ResourceManager.addGraphic({ name: "mainGraphics", source: "graphics/main.png" });	
 	
 	jsGFwk.Scenes.create({name: "intro", gameObjects: [hud] });
-	jsGFwk.Scenes.create({name: "game", gameObjects: [background, hurrySign, turtle, magma, counters, metter, keyHelper] });
+	jsGFwk.Scenes.create({name: "game", gameObjects: [background, hurrySign, turtle, obstacle, magma, counters, metter, keyHelper] });
 	jsGFwk.Scenes.create({name: "end", gameObjects: [endHud] });
 	
 	jsGFwk.createObject(loader);

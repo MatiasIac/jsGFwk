@@ -9,7 +9,9 @@ var keyHelper = {
 	width: 133,
 	height: 133,
 	
-	init: function () {	},
+	init: function () {	
+		this.isPressed = false;
+	},
 	
 	update: function (delta) { },
 	

@@ -1,6 +1,6 @@
 var turtle = {
 	id: "turtle",
-	zOrder: 1,
+	zOrder: 8,
 	visible: true,
 	
 	deltaCount: 0,
@@ -30,6 +30,8 @@ var turtle = {
 		this.accumulatorSpeed = 1.25;
 		this.decumulatorSpeed = 0.25;
 		this.meterCounter = 0;
+		this.state = 0;
+		this.deltaHit = 0;
 	
 		jsGFwk.Sprites.turtleIdle.next();
 		this.imageToDraw = jsGFwk.Sprites.turtleIdle.sprite.image;
