@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<title>BoxJumper</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkBasicAnimation.js"></script>
+	<body>
+		<canvas id="canvas" width="640" height="480"></canvas>
+	</body>
+	<script>
+		jsGFwk.settings.canvas = "canvas";
+		jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
+		
+		jsGFwk.include("BasicAnimation");
+		
+		jsGFwk.createObject({
+			id: "player",
+			visible: true,
+			x: 10,
+			y: 10,
+			update: function (delta) {
+				this.x++;
+				this.y++;
+				if (this.x > 200) {
+					//this.destroy();
+					this.visible = false;
+				}
+				
+				if (this.x > 300) {
+					this.visible = true;
+				}
+			},
+			draw: function (context) {
+				context.save();
+					context.fillStyle = "white";
+					context.fillRect(this.x, this.y, 50, 50);
+				context.restore();
+			}
+		});
+		
+		jsGFwk.start();
+	</script>
+</html>
