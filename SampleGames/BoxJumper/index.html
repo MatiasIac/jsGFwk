@@ -4,6 +4,8 @@
 	</head>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkBasicAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
 	</body>
@@ -12,23 +14,91 @@
 		jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
 		
 		jsGFwk.include("BasicAnimation");
+		jsGFwk.include("Container");
+		jsGFwk.include("IO");
+		
+		jsGFwk.Container.createContainer("bala", {
+			x: 0,
+			y: 0,
+			onInit: function (parameters) {
+				this.x = parameters.x;
+				this.y = parameters.y;
+			},
+			onUpdate: function (delta) {
+				this.x+= 5;
+				
+				if (this.x > 640) {
+					this.destroy();
+				}
+			},
+			onDraw: function (context) {
+				context.save();
+					context.fillStyle = "red";
+					context.fillRect(this.x, this.y, 10, 10);
+				context.restore();
+			}
+		});
 		
 		jsGFwk.createObject({
 			id: "player",
 			visible: true,
 			x: 10,
 			y: 10,
+			
+			disparoAcumulador: 0,
+			disparoIntervalo: 0.5,
+			
+			velX: 0,
+			velY: 0,
+			friccion: 0.95,
+			velocidad: 20,
+			
 			update: function (delta) {
-				this.x++;
-				this.y++;
-				if (this.x > 200) {
-					//this.destroy();
-					this.visible = false;
+				//D
+				if (jsGFwk.IO.keyboard._activeKey[68]) { 
+					if (this.velX < this.velocidad) {
+						this.velX++;
+					}
 				}
 				
-				if (this.x > 300) {
-					this.visible = true;
+				//A
+				if (jsGFwk.IO.keyboard._activeKey[65]) { 
+					if (this.velX > -this.velocidad) {
+						this.velX--;
+					}
 				}
+				
+				//W
+				if (jsGFwk.IO.keyboard._activeKey[87]) { 
+					if (this.velY > -this.velocidad) {
+						this.velY--;
+					}
+				}
+				
+				//S
+				if (jsGFwk.IO.keyboard._activeKey[83]) { 
+					if (this.velY < this.velocidad) {
+						this.velY++;
+					}
+				}
+				
+				//SPACEBAR
+				this.disparoAcumulador += delta;
+				
+				if (jsGFwk.IO.keyboard._activeKey[32]) {
+					if (this.disparoAcumulador >= this.disparoIntervalo) {
+						jsGFwk._gameObjects.bala.cloneObject({
+							x: this.x + 50,
+							y: this.y + 20
+						});
+						this.disparoAcumulador = 0;
+					}
+				}
+				
+				this.velY *= this.friccion;
+				this.y += this.velY;
+				this.velX *= this.friccion;
+				this.x += this.velX;
 			},
 			draw: function (context) {
 				context.save();

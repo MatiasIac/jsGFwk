@@ -22,6 +22,25 @@ jsGFwk.Container = (function() {
 		};
 		//**************
 		
+		this.length = function () {
+			var count = 0;
+			for (var p in _allObjects) {
+				if (_allObjects.hasOwnProperty(p)) {
+					count++;
+				}
+			}
+			
+			return count;
+		};
+		
+		this.eachCloned = function (f) {
+			for (var p in _allObjects) {
+				if (_allObjects.hasOwnProperty(p)) {
+					f(_allObjects[p]);
+				}
+			}
+		};
+		
 		this.cloneObject = function (initParameters) {
 			var cloned = Object.create(self._settings);
 			
