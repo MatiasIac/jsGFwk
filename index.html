@@ -54,39 +54,38 @@
 				</code>
 				<p>Import the proper scripts</p>
 				<code>
-					&#60;script src="/Framework/jsGFwk.js"&#62;&#60;/script&#62;
+					&#60;script src="/Framework/jsGFwk.js"&#62;&#60;/script&#62; <br>
 					&#60;script src="/Framework/jsGFwkBasicAnimation.js"&#62;&#60;/script&#62;
 				</code>
 				<p>Set up the framework and add objects</p>
 				<code>
-					jsGFwk.settings.canvas = "canvas";
-					jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
+					jsGFwk.settings.canvas = "canvas"; <br>
+					jsGFwk.settings.clearColor = "rgb(0, 0, 0)"; <br>
 					
-					// Include the plugin
-					jsGFwk.include("BasicAnimation");
-					
-					// Create an object game
-					jsGFwk.createObject({
-						id: "enemy",
-						visible: true,
-						x: 650,
-						y: 200,
-						width: 50,
-						height: 50,
-						update: function (delta) {
-							this.x -= 1.5;
-							
-							if (this.x + this.width < 0) {
-								this.x = 650;
-							}
-						},
-						draw: function (context) {
-							context.save();
-								context.fillStyle = "blue";
-								context.fillRect(this.x, this.y, this.width, this.height);
-							context.restore();
-						}
-					});					
+					// Include the plugin <br>
+					jsGFwk.include("BasicAnimation"); <br>
+					 <br>
+					// Create an object game <br>
+					jsGFwk.createObject({ <br>
+						id: "enemy", <br>
+						visible: true, <br>
+						x: 650, <br>
+						y: 200, <br>
+						width: 50, <br>
+						height: 50, <br>
+						update: function (delta) { <br>
+							this.x -= 1.5; <br>
+							if (this.x + this.width < 0) { <br>
+								this.x = 650; <br>
+							} <br>
+						}, <br>
+						draw: function (context) { <br>
+							context.save(); <br>
+								context.fillStyle = "blue"; <br>
+								context.fillRect(this.x, this.y, this.width, this.height); <br>
+							context.restore(); <br>
+						} <br>
+					}); <br>		
 				</code>
 			</div>
 			<br>
