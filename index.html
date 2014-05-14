@@ -43,6 +43,8 @@
 				Use the left and right arrow to move the ship. Space bar to shoot, and D to die.</p>
 				<canvas id="canvas" width="320" height="240"></canvas>
 			</div>
+			<br>
+			<br>
 			<h3>First steps</h3>
 			<div>
 				<h4>Set up your page</h4>
@@ -50,7 +52,46 @@
 				<code>
 					&#60;canvas id="canvas" width="640" height="480"&#62;
 				</code>
+				<p>Import the proper scripts</p>
+				<code>
+					&#60;script src="/Framework/jsGFwk.js"&#62;&#60;/script&#62;
+					&#60;script src="/Framework/jsGFwkBasicAnimation.js"&#62;&#60;/script&#62;
+				</code>
+				<p>Set up the framework and add objects</p>
+				<code>
+					jsGFwk.settings.canvas = "canvas";
+					jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
+					
+					// Include the plugin
+					jsGFwk.include("BasicAnimation");
+					
+					// Create an object game
+					jsGFwk.createObject({
+						id: "enemy",
+						visible: true,
+						x: 650,
+						y: 200,
+						width: 50,
+						height: 50,
+						update: function (delta) {
+							this.x -= 1.5;
+							
+							if (this.x + this.width < 0) {
+								this.x = 650;
+							}
+						},
+						draw: function (context) {
+							context.save();
+								context.fillStyle = "blue";
+								context.fillRect(this.x, this.y, this.width, this.height);
+							context.restore();
+						}
+					});					
+				</code>
 			</div>
+			<br>
+			<br>
+			<br>
 			<h3>Learn to use it with videos (Spanish only)</h3>
 			<div>
 				<iframe width="560" height="315" src="//www.youtube.com/embed/6BPy_haAHmE?list=PLL6dtBDFEE6egmnLlCLsxx0hjGvpy1cuZ" frameborder="0" allowfullscreen></iframe>
