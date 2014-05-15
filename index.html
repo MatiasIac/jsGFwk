@@ -238,7 +238,7 @@
 				_updateAliveShip: function(delta) {
 					if (jsGFwk.IO.keyboard._activeKey[39] && this.x <= 300) { this.x+=this.shipSpeed; }
 					if (jsGFwk.IO.keyboard._activeKey[37] && this.x >= 5) { this.x-=this.shipSpeed; }
-					if (jsGFwk.IO.keyboard._activeKey[32]) { 
+					if (jsGFwk.IO.keyboard._activeKey[88]) { 
 						if (this.bullets.length < 3 && this.delayCounter >= this.bulletShootDelay || this.bullets.length == 0) {
 							this.delayCounter = 0;
 							this.bullets.push({x: this.x + 7, y: this.y - 8});
