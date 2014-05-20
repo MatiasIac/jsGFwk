@@ -1,6 +1,6 @@
 jsGFwk.Sprites = {
 
-	_genSprite: function (spriteObject) {
+	_genSprite: function (spriteObject, filter) {
 		var tempCanvas = document.createElement("canvas");
 		tempCanvas.width = spriteObject.width;
 		tempCanvas.height = spriteObject.height;
@@ -14,11 +14,15 @@ jsGFwk.Sprites = {
 		tempContext.drawImage(spriteObject.graphic, 
 			spriteObject.left, spriteObject.top, spriteObject.width, spriteObject.height,
 			0,0,spriteObject.width, spriteObject.height);
-			
+		
+		if (filter !== undefined) {
+			filter(tempContext, spriteObject);
+		}
+		
 		return tempCanvas.toDataURL();
 	},
 	
-	createSpriteCollection: function (collectionId, graphic, values) {
+	createSpriteCollection: function (collectionId, graphic, values, filter) {
 		jsGFwk.Sprites[collectionId] = {
 			_looper: function() {
 				this.seeker++;
@@ -55,7 +59,7 @@ jsGFwk.Sprites = {
 								 width: values[i].width, height: values[i].height, 
 								 graphic: graphic, inverted: values[i].inverted || false };
 			var image = new Image();
-			image.src = this._genSprite(spriteObject);
+			image.src = this._genSprite(spriteObject, filter);
 			spriteObject.image = image;
 			delete spriteObject.graphic;
 			
@@ -65,7 +69,7 @@ jsGFwk.Sprites = {
 	},
 	
 	//{ id: 'Sprite Name', graphic: image, top: 0, left: 0, width: 0, height: 0 }
-	createSprite: function (spriteObject) {
+	createSprite: function (spriteObject, filter) {
 		jsGFwk.Sprites[spriteObject.id] = {};
 		jsGFwk.Sprites[spriteObject.id].top = spriteObject.top;
 		jsGFwk.Sprites[spriteObject.id].left = spriteObject.left;
@@ -73,7 +77,32 @@ jsGFwk.Sprites = {
 		jsGFwk.Sprites[spriteObject.id].height = spriteObject.height;
 		jsGFwk.Sprites[spriteObject.id].image = new Image();
 		
-		jsGFwk.Sprites[spriteObject.id].image.src = this._genSprite(spriteObject);
+		jsGFwk.Sprites[spriteObject.id].image.src = this._genSprite(spriteObject, filter);
+	},
+	
+	filters: {
+		GRAYSCALE: function (context, img) {
+			var imageData = context.getImageData(0, 0, img.width, img.height);
+			var data = imageData.data;
+
+			for (var i = 0; i < data.length; i += 4) {
+				var brightness = 0.34 * data[i] + 0.5 * data[i + 1] + 0.16 * data[i + 2];
+				data[i] = brightness;
+				data[i + 1] = brightness;
+				data[i + 2] = brightness;
+			}
+			context.putImageData(imageData, 0, 0);
+		},
+		INVERTCOLOR: function (context, img) {
+			var imageData = context.getImageData(0, 0, img.width, img.height);
+			var data = imageData.data;
+			for (var i = 0; i < data.length; i += 4) {
+				data[i] = 255 - data[i];
+				data[i + 1] = 255 - data[i + 1];
+				data[i + 2] = 255 - data[i + 2];
+			}
+			context.putImageData(imageData, 0, 0);
+		}
 	},
 
 	onStart: function () {
