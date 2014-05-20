@@ -70,6 +70,19 @@
 					 {left: 558, top: 34, width: 66, height: 26}, //last crop
 					],
 					jsGFwk.Sprites.filters.GRAYSCALE);
+					
+				jsGFwk.Sprites.createSpriteCollection("fallingGuyNormal", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 409, top: 34, width: 66, height: 26}, //first crop
+					 {left: 480, top: 34, width: 66, height: 26}, //second crop
+					 {left: 558, top: 34, width: 66, height: 26}, //last crop
+					]);
+					
+				jsGFwk.Sprites.createSpriteCollection("fallingGuyInverted", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 409, top: 34, width: 66, height: 26}, //first crop
+					 {left: 480, top: 34, width: 66, height: 26}, //second crop
+					 {left: 558, top: 34, width: 66, height: 26}, //last crop
+					],
+					jsGFwk.Sprites.filters.INVERTCOLOR);;
 			
 				jsGFwk.IO.mouse.registerMove(function (coord) {
 					jsGFwk._gameObjects.fallingCharacter.x = coord.x;
@@ -77,14 +90,20 @@
 				});
 				
 				jsGFwk.Sprites.fallingGuy.loop(true);
+				jsGFwk.Sprites.fallingGuyNormal.loop(true);
+				jsGFwk.Sprites.fallingGuyInverted.loop(true);
 			},
 			visible: true,
 			update: function(delta) {
 				jsGFwk.Sprites.fallingGuy.next();
+				jsGFwk.Sprites.fallingGuyNormal.next();
+				jsGFwk.Sprites.fallingGuyInverted.next();
 			},
 			draw: function (context) {
 				//You can create sprites for easy graphic handling
 				context.drawImage(jsGFwk.Sprites.fallingGuy.sprite.image, this.x, this.y);
+				context.drawImage(jsGFwk.Sprites.fallingGuyNormal.sprite.image, this.x + 90, this.y);
+				context.drawImage(jsGFwk.Sprites.fallingGuyInverted.sprite.image, this.x + 180, this.y);
 			}
 		});
 	}
