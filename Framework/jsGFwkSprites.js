@@ -113,6 +113,55 @@ jsGFwk.Sprites = {
 		        data[i + 2] = (data[i + 2] - 50 < 0 ? 0 : data[i + 2] - 50);
 		    }
 		    context.putImageData(imageData, 0, 0);
+		},
+		BLUR: function (context, img) {
+			var weights = [1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9];
+			var side = Math.round(Math.sqrt(weights.length));
+			var halfSide = Math.floor(side / 2);
+			var pixels = context.getImageData(0, 0, img.width, img.height); //getPixelData(v, w, h);
+			var src = pixels.data;
+			var sw = pixels.width;
+			var sh = pixels.height;
+			var w = pixels.width;
+			var h = pixels.height;
+			
+			var tempCanvas = document.createElement("canvas");
+			tempCanvas.width = w;
+			tempCanvas.height = h;
+			var tempContext = tempCanvas.getContext("2d");
+			var pixelData = tempContext.createImageData(w, h);
+			var dst = pixelData.data;
+			
+			// Iterate through the destination image pixels
+			var alphaFac = 0;
+			for (var y = 0; y < h; y++) {
+				for (var x = 0; x < w; x++) {
+					var sy = y;
+					var sx = x;
+					var dstOff = (y * w + x) * 4;
+					var r = 0, g = 0, b = 0, a = 0;
+					for (var cy = 0; cy < side; cy++) {
+						for (var cx = 0; cx < side; cx++) {
+							var scy = sy + cy - halfSide;
+							var scx = sx + cx - halfSide;
+							if (scy >= 0 && scy < sh && scx >= 0 && scx < sw) {
+								var srcOff = (scy * sw + scx) * 4;
+								var wt = weights[cy * side + cx];
+								r += src[srcOff] * wt;
+								g += src[srcOff+1] * wt;
+								b += src[srcOff+2] * wt;
+								a += src[srcOff+3] * wt;
+							}
+						}
+					}
+					dst[dstOff] = r;
+					dst[dstOff+1] = g;
+					dst[dstOff+2] = b;
+					dst[dstOff+3] = a + alphaFac * (255 - a);
+				}
+			}
+			
+			context.putImageData(pixelData, 0, 0);
 		}
 	},
 
