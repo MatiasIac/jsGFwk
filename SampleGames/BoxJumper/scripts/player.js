@@ -57,8 +57,8 @@ var player = {
 		if (jsGFwk.IO.keyboard._activeKey[32]) {
 			if (this.disparoAcumulador >= this.disparoIntervalo) {
 				jsGFwk._gameObjects.bala.cloneObject({
-					x: this.x + 50,
-					y: this.y + 20
+					x: this.x + 25,
+					y: this.y + 15
 				});
 				this.disparoAcumulador = 0;
 			}

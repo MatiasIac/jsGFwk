@@ -14,8 +14,10 @@ var bala = {
 			this.destroy();
 		}
 		
-		if (jsGFwk._gameObjects.enemigo.isRectColliding(this)) {
+		if (jsGFwk._gameObjects.enemigo.isRectColliding(this) && 
+			!jsGFwk._gameObjects.enemigo.isDestruido) {
 			jsGFwk._gameObjects.enemigo.destruido();
+			GLOBALS.score += 10;
 			this.destroy();
 		}
 	},

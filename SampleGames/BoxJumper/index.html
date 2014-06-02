@@ -3,37 +3,63 @@
 		<title>BoxJumper</title>
 	</head>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
-	<script language="Javascript" src="../../Framework/jsGFwkBasicAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
 	
 	<script language="Javascript" src="scripts/bala.js"></script>
 	<script language="Javascript" src="scripts/player.js"></script>
 	<script language="Javascript" src="scripts/enemigo.js"></script>
+	<script language="Javascript" src="scripts/score.js"></script>
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
 	</body>
 	<script>
+		var GLOBALS = {
+			score: 0
+		};
+	
 		jsGFwk.settings.canvas = "canvas";
 		jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
 		
-		jsGFwk.include("BasicAnimation");
+		jsGFwk.include("FastAnimation");
 		jsGFwk.include("Container");
 		jsGFwk.include("IO");
 		jsGFwk.include("Collisions");
 		jsGFwk.include("ResourceManager");
+		jsGFwk.include("Sprites");
+		jsGFwk.include("Fonts");
 		
 		jsGFwk.ResourceManager.addGraphic({
 			name: "nave",
 			source: "images/ship.png"
 		});
 		
+		jsGFwk.Fonts.createFont({
+			name: 'zxBold', 
+			source: 'zxBold.ttf'
+		});
+		
 		jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+		
+			jsGFwk.Sprites.createSpriteCollection("explosion", 
+				jsGFwk.ResourceManager.graphics.nave.image,
+				[{top: 12, left: 144, width: 53, height: 58},
+				 {top: 12, left: 210, width: 53, height: 58},
+				 {top: 12, left: 274, width: 53, height: 58},
+				 {top: 12, left: 341, width: 53, height: 58},
+				 {top: 12, left: 407, width: 53, height: 58}]);
+				 
+			jsGFwk.Sprites.explosion.loop(true);
+		
 			jsGFwk.Container.createContainer("bala", bala);
 			jsGFwk.createObject(enemigo);
 			jsGFwk.createObject(player);
+			jsGFwk.createObject(score);
 		};
 		
 		jsGFwk.start();
