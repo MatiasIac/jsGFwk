@@ -1,3 +1,6 @@
+/** @title: jsGFwk.FastAnimation
+ * @description: Recommended plugin implementation for 2D games.<br>This is faster than BasicAnimation plugin.
+ * @usage: jsGFwk.include(<b>"FastAnimation"</b>) */
 jsGFwk.FastAnimation = {
 
 	//_intervalId: 0,

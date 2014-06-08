@@ -1,3 +1,6 @@
+/** @title: jsGFwk.BasicAnimation
+ * @description: Low performance plugin for 2D games.<br>For a better performance see <i>jsGFwk2dFastAnimation</i>.
+ * @usage: jsGFwk.include(<b>"BasicAnimation"</b>) */
 jsGFwk.BasicAnimation = {
 
 	_intervalId: 0,
