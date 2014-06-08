@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<title>jsGFwk Documentation</title>
+		<link href="styles.css" rel="stylesheet"/>
+	</head>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<body>
+		<ul>
+			<li><a href="#jsGFwk">jsGFwk</a></li>
+			<li><a href="#jsGFwk2dFastAnimation">jsGFwk2dFastAnimation</a></li>
+			<li><a href="#jsGFwkBasicAnimation">jsGFwkBasicAnimation</a></li>
+			<li><a href="#jsGFwkCollisions">jsGFwkCollisions</a></li>
+			<li><a href="#jsGFwkContainer">jsGFwkContainer</a></li>
+			<li><a href="#jsGFwkEffects">jsGFwkEffects</a></li>
+			<li><a href="#jsGFwkFonts">jsGFwkFonts</a></li>
+			<li><a href="#jsGFwkIO">jsGFwkIO</a></li>
+			<li><a href="#jsGFwkRM">jsGFwkRM</a></li>
+			<li><a href="#jsGFwkScenes">jsGFwkScenes</a></li>
+			<li><a href="#jsGFwkSprites">jsGFwkSprites</a></li>
+		</ul>
+		<div class="content"></div>
+	</body>
+</html>
+<script>
+	$(document).ready(function () {
+		function readFile(t) {
+			var targetUrl = "https://rawgithub.com/MatiasIac/jsGFwk/master/Framework/" + t + ".js?" + (new Date()).getTime();
+			var r = "";
+			
+			$.ajax({
+				url: targetUrl,
+				type: "GET",
+				async: false,
+				success: function (result) {
+					r = result;
+				},
+				error: function () {
+					throw { error: "Can't read the file: " + targetUrl };
+				}
+			});
+			
+			return r;
+		}
+	
+		function generateHtml(text) {
+			if (text.length == 0) {
+				return { type: "", text: "", html: "<div class='divition'></div>" };
+			}
+		
+			var type = text.split(':')[0].replace("@","");
+			var text = text.replace('@title: ', '').replace('@subtitle: ', '').replace('@description: ', '').replace('@usage: ', '');
+			var html = "<div class='" + type + "'>" + text.replace('@title: ', '').replace('@subtitle: ', '').replace('@description: ', '').replace('@usage: ', '') + "</div>";
+		
+			return { type: type, text: text, html: html };
+
+		}
+	
+		$('li a').on('click', function (ev) {
+			ev.preventDefault();
+			var target = $(this).attr('href').substring(1);
+			
+			try {
+				var fileContent = readFile(target);
+				
+				var docblock = /\/\*{2}([\s\S]+?)\*\//g
+				var trim = function(string){ return string.replace(/^\s+|\s+$/g, ''); }
+				var split = function(string) { return string.split(/[\r\n]\s*\*\s+/); };
+				
+				var parsedText = fileContent.match(docblock);
+				
+				var htmlResult = "";
+				var content = "<div class='tableOfContent'>Table of content: <br><ul>";
+				
+				var anchorCounters = 0;
+				
+				var match;
+				while (match = docblock.exec(parsedText)) {
+					var splitted = split(match[1]);
+					
+					for (i = 0; i < splitted.length; i++) {
+						var cleared = splitted[i].trim();
+						var result = generateHtml(cleared);
+						
+						if (result.type === "title" || 
+							result.type === "subtitle") {
+							content += "<li><a href='#an_" + anchorCounters + "'>" + result.text + "</a></li>"
+							htmlResult += "<a name='an_" + anchorCounters + "' id='an_" + anchorCounters + "'>"
+							anchorCounters++;
+						}
+						
+						htmlResult += result.html;
+					}
+					
+					htmlResult += generateHtml("").html;
+				}
+				
+				content += "</ul></div>";
+				htmlResult = content + htmlResult;
+				$('.content').html(htmlResult);
+			} catch (err) {
+				alert(err.error);
+			}
+		});
+	});
+	//
+</script>
