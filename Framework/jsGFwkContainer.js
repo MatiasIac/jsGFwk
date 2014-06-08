@@ -1,3 +1,6 @@
+/** @title: jsGFwk.Container
+ * @description: This plugin allows to contain and clone game objects, handling each as part of the same group.
+ * @usage: jsGFwk.include(<b>"Container"</b>) */
 jsGFwk.Container = (function() {
 
 	function container(settings) {
@@ -5,7 +8,6 @@ jsGFwk.Container = (function() {
 		var _allObjects = {};
 		var _objectCounter = 0;
 		
-		//Public settings for framework handling
 		this._settings = settings;
 		this.id = "";
 		this.visible = true;
@@ -20,7 +22,6 @@ jsGFwk.Container = (function() {
 				if (_allObjects[o].onDraw != undefined) { _allObjects[o].onDraw(context); }
 			}
 		};
-		//**************
 		
 		this.length = function () {
 			var count = 0;
@@ -55,6 +56,9 @@ jsGFwk.Container = (function() {
 		};
 	}
 	
+	/** @subtitle: createContainer
+	 * @description: Creates a new container.
+	 * @usage: jsGFwk.<i>Container</i>.createContainer(<b>"[container_name]", [object_to_clone]</b>) */
 	_createContainer = function (containerName, settings) {
 		var newContainer = new container(settings);
 		newContainer.id = containerName;
