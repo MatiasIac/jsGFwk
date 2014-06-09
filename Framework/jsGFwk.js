@@ -70,7 +70,7 @@ var jsGFwk = (function(){
 		
 		/** @subtitle: include
 		* @description: Includes an external plugin to be handled by the framework.
-		* @usage: jsGFwk.<i>include</i>("[plugin_name]")<br><br><i>Sample</i><br><br>
+		* @usage: jsGFwk.<i>include</i>("[plugin_name]")
 		*/		
 		include: function (componentName) {
 			this._includes[this._includes.length] = componentName;
