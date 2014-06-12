@@ -32,23 +32,29 @@ jsGFwk.IO = {
 	mouse: {
 		_mouseClickCallers: [],
 		_mouseMoveCallers: [],
+		_mouseDownCallers: [],
+	    _mouseWhellCallers: [],
 		
 		_lastDownCoords: {},
 		_lastMoveCoords: {},
 		_isMousePressed: false,
 		
-		_getCoordinates: function(e) {
+		_getCoordinates: function (e) {
+		    var deltaWheel = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+		    var originalWheelValue = (e.wheelDelta || -e.detail);
+
 			if (e.offsetX)
-				return { x: e.offsetX, y: e.offsetY };
+			    return { x: e.offsetX, y: e.offsetY, wheel: { normalized: deltaWheel, delta: originalWheelValue } };
 			else if (e.layerX)
-				return { x: e.layerX, y: e.layerY };
+			    return { x: e.layerX, y: e.layerY, wheel: { normalized: deltaWheel, delta: originalWheelValue } };
 			else
-				return { x: e.pageX - jsGFwk._canvas.offsetLeft, y: e.pageY - jsGFwk._canvas.offsetTop };
+			    return { x: e.pageX - jsGFwk._canvas.offsetLeft, y: e.pageY - jsGFwk._canvas.offsetTop, wheel: { normalized: deltaWheel, delta: originalWheelValue } };
 		},
 		
 		_mouseDown: function(e) {
 			jsGFwk.IO.mouse._isMousePressed = true;
 			jsGFwk.IO.mouse._lastDownCoords = jsGFwk.IO.mouse._getCoordinates(e);
+			for (var i = 0; i < jsGFwk.IO.mouse._mouseDownCallers.length; jsGFwk.IO.mouse._mouseDownCallers[i++](jsGFwk.IO.mouse._lastDownCoords));
 		},
 		
 		_mouseUp: function() {
@@ -59,6 +65,11 @@ jsGFwk.IO = {
 		_mouseMove: function(e) {
 			jsGFwk.IO.mouse._lastMoveCoords = jsGFwk.IO.mouse._getCoordinates(e);
 			for (var i = 0; i < jsGFwk.IO.mouse._mouseMoveCallers.length; jsGFwk.IO.mouse._mouseMoveCallers[i++](jsGFwk.IO.mouse._lastMoveCoords));
+		},
+
+		_mouseWheel: function (e) {
+		    jsGFwk.IO.mouse._lastMoveCoords = jsGFwk.IO.mouse._getCoordinates(e);
+		    for (var i = 0; i < jsGFwk.IO.mouse._mouseWhellCallers.length; jsGFwk.IO.mouse._mouseWhellCallers[i++](jsGFwk.IO.mouse._lastMoveCoords));		    
 		},
 		
 		registerClick: function(f) {
@@ -77,7 +88,25 @@ jsGFwk.IO = {
 		
 		unregisterMove: function(callerId) {
 			this._mouseMoveCallers.splice(callerId, 1);
-		}
+		},
+
+	    registerDown: function(f) {
+	        this._mouseDownCallers.push(f);
+	        return (this._mouseDownCallers.length - 1);
+	    },
+		
+        unregisterDown: function(callerId) {
+            this._mouseDownCallers.splice(callerId, 1);
+        },
+
+        registerWheel: function (f) {
+            this._mouseWhellCallers.push(f);
+            return (this._mouseWhellCallers.length - 1);
+        },
+
+        unregisterWheel: function (callerId) {
+            this._mouseWhellCallers.splice(callerId, 1);
+        }
 	},
 	
 	onStart: function() {
@@ -88,5 +117,7 @@ jsGFwk.IO = {
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("mousedown", this.mouse._mouseDown, false);
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("mouseup", this.mouse._mouseUp, false);
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("mousemove", this.mouse._mouseMove, false);
+		document.getElementById(jsGFwk.settings.canvas).addEventListener("mousewheel", this.mouse._mouseWheel, false);
+		document.getElementById(jsGFwk.settings.canvas).addEventListener("DOMMouseScroll", this.mouse._mouseWheel, false);
 	}
 };
