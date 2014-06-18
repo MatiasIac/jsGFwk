@@ -1,0 +1,154 @@
+<html>
+	<head>
+		<title>PongTwist</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkDebugger.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkEffects.js"></script>
+	
+	<script language="Javascript" src="scripts/player.js"></script>
+	<script language="Javascript" src="scripts/bola.js"></script>
+	<script language="Javascript" src="scripts/score.js"></script>
+	<body>
+		<canvas id="canvas" width="640" height="480"></canvas>
+	</body>
+	<script>
+		var GLOBALS = {
+			score: 0
+		};
+	
+		jsGFwk.settings.canvas = "canvas";
+		jsGFwk.settings.clearColor = "orange";
+		jsGFwk.settings.frameRate = 1000 / 60;
+		
+		jsGFwk.include("FastAnimation");
+		jsGFwk.include("Container");
+		jsGFwk.include("IO");
+		jsGFwk.include("Collisions");
+		jsGFwk.include("Sprites");
+		jsGFwk.include("Fonts");
+		jsGFwk.include("Debugger");
+		jsGFwk.include("Effects");
+		
+		jsGFwk.Debugger.on = false;
+		
+		jsGFwk.Fonts.createFont({
+			name: 'zxBold', 
+			source: '../../SampleResources/zxBold.ttf'
+		});		
+		
+		jsGFwk.Container.createContainer("pelota", {
+		onInit: function (initializationParameters) {
+			jsGFwk.Effects.onObjectCreated(this);
+			this.x = initializationParameters.x;
+			this.y = initializationParameters.y;
+			this.width = 14;
+			this.height = 14;
+			this.radius = 10;
+			this.center = { x: 8 , y: 8 }
+			this.banderaX = false;
+			this.banderaY = false;
+			this.velY = 0;
+			this.velX = 0;
+			this.velocidad = 5;
+			this.innerRadius = 0;
+			this.outerRadius = 10;
+			this.size = ((Math.random() *7) +5);
+			this.score = false;
+	
+			
+		},
+		onUpdate: function (delta) {
+			
+			// REBOTE EN Y
+
+			if (this.y < 475 && this.banderaY == false){
+				
+				if(this.velY <= this.velocidad){
+					this.velY += 0.01; 	
+					this.y += this.velX;
+				}else{
+					this.velY = 4;
+				}	
+				
+			}else{
+				this.banderaY = true;
+			}
+
+			if (this.y > 5 && this.banderaY == true){
+			
+				if(this.velY <= this.velocidad){
+					this.velY += 0.01; 	
+					this.y -= this.velX;
+				}else{
+					this.velY = 4;
+				}
+			
+			}else{
+				this.banderaY = false;
+			}
+
+			//REBOTE EN X
+
+			if (this.x < 635 && this.banderaX == false){
+				
+				if(this.velX <= this.velocidad){
+					this.velX += 0.01; 	
+					this.x += this.velX;
+
+				}else{
+					this.velX = 5;
+
+				}	
+				
+			}else{
+				this.banderaX = true;
+				if(this.x > 635){
+					GLOBALS.score++;
+				}
+			}
+
+			if (!jsGFwk._gameObjects.player.isRectColliding(this) && this.banderaX == true){
+
+				if(this.velX <= this.velocidad){
+					this.velX += 0.01; 	
+					this.x -= this.velX;
+				}else{
+					this.velX = 5;
+				}					
+		
+			}else{
+				this.banderaX = false;
+			}
+			if(this.x < 0){
+				this.destroy();
+			}
+			
+		},
+		onDraw: function (context) {
+			
+			var gradiente = context.createRadialGradient(this.x,this.y,this.innerRadius,this.x,this.y,this.outerRadius);
+			gradiente.addColorStop(0,"white");
+			gradiente.addColorStop(1,"black");
+			context.fillStyle = gradiente;
+			context.beginPath();
+			context.arc(this.x, this.y,this.size,0,2*Math.PI);
+			context.fill();	
+
+		}
+	});
+		
+		jsGFwk.createObject(score);
+		jsGFwk.createObject(player);
+		jsGFwk.createObject(bola);
+	
+		
+		jsGFwk.start();
+	</script>
+</html>
