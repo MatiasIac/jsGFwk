@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>BoxJumper</title>
+		<title>Platformer Advance</title>
 	</head>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
@@ -10,12 +10,8 @@
 	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
-	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
 	
-	<script language="Javascript" src="scripts/hud.js"></script>
-	<script language="Javascript" src="scripts/bala.js"></script>
 	<script language="Javascript" src="scripts/player.js"></script>
-	<script language="Javascript" src="scripts/enemigo.js"></script>
 	<script language="Javascript" src="scripts/score.js"></script>
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
@@ -36,16 +32,10 @@
 		jsGFwk.include("ResourceManager");
 		jsGFwk.include("Sprites");
 		jsGFwk.include("Fonts");
-		jsGFwk.include("Scenes");
 		
 		jsGFwk.ResourceManager.addGraphic({
-			name: "nave",
-			source: "images/ship.png"
-		});
-		
-		jsGFwk.ResourceManager.addGraphic({
-			name: "splash",
-			source: "images/boxJumperSplash.png"
+			name: "guy",
+			source: "images/guy.png"
 		});
 		
 		jsGFwk.Fonts.createFont({
@@ -55,25 +45,43 @@
 		
 		jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
 		
-			jsGFwk.Sprites.createSpriteCollection("explosion", 
-				jsGFwk.ResourceManager.graphics.nave.image,
-				[{top: 12, left: 144, width: 53, height: 58},
-				 {top: 12, left: 210, width: 53, height: 58},
-				 {top: 12, left: 274, width: 53, height: 58},
-				 {top: 12, left: 341, width: 53, height: 58},
-				 {top: 12, left: 407, width: 53, height: 58}]);
+			jsGFwk.Sprites.createSpriteCollection("guyRight", 
+				jsGFwk.ResourceManager.graphics.guy.image,
+				[{top: 0, left: 306, width: 32, height: 48},
+				 {top: 0, left: 338, width: 27, height: 48},
+				 {top: 0, left: 365, width: 29, height: 48},
+				 {top: 0, left: 396, width: 38, height: 48},
+				 {top: 0, left: 437, width: 36, height: 48},
+				 {top: 0, left: 476, width: 28, height: 48},
+				 {top: 0, left: 507, width: 21, height: 48},
+				 {top: 0, left: 531, width: 32, height: 48},
+				 {top: 0, left: 566, width: 37, height: 48}]);
 				 
-			jsGFwk.Sprites.explosion.loop(true);
+			jsGFwk.Sprites.createSprite({id: "floor", 
+				graphic: jsGFwk.ResourceManager.graphics.guy.image,
+				top: 69, left: 14, width: 256, height: 221});
+				 
+			jsGFwk.Sprites.guyRight.loop(true);
 		
-			jsGFwk.Scenes.create({name: "pantallaPrincipal", 
-				gameObjects: [hud] });
+			jsGFwk.createObject(score);
 		
-			jsGFwk.Scenes.create({name: "juego", 
-				gameObjects: [enemigo, player, score] });
-		
-			jsGFwk.Container.createContainer("bala", bala);
+			jsGFwk.Container.createContainer("plataforma", {
+				x: 0, y: 300, width: 256, height: 221, 
+				onInit: function (parameters) {
+					this.x = parameters.x;
+				},
+				onUpdate: function (delta) { },
+				onDraw: function (context) {
+					context.save();
+						context.drawImage(jsGFwk.Sprites.floor.image, this.x, this.y);
+					context.restore();
+				}
+			});
 			
-			jsGFwk.Scenes.scenes.pantallaPrincipal.enable();
+			jsGFwk._gameObjects.plataforma.cloneObject({ x: 0 });
+			jsGFwk._gameObjects.plataforma.cloneObject({ x: 256 });
+			
+			jsGFwk.createObject(player);
 		};
 		
 		jsGFwk.start();

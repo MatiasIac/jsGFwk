@@ -27,7 +27,13 @@ jsGFwk.FastAnimation = {
 					if (o.draw && o.visible) { o.draw(jsGFwk.FastAnimation._2Dbuffer); }
 				}
 			}
-				
+
+			for (var i = 0; i < jsGFwk._includes.length; i++) {
+				if (jsGFwk[jsGFwk._includes[i]].onPreRender !== undefined) {
+					jsGFwk[jsGFwk._includes[i]].onPreRender(jsGFwk.FastAnimation._2Dbuffer);
+				}
+			}
+			
 			jsGFwk.FastAnimation._2Dcontext.drawImage(jsGFwk.FastAnimation._bufferCanvas, 0, 0);
 			
 			requestAnimFrame(jsGFwk.FastAnimation._pointer);
