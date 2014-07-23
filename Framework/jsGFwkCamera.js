@@ -21,9 +21,10 @@ jsGFwk.Camera = {
 	_applyCamera: function (context) {
 		context.drawImage(this._tempCanvas, 0, 0);
 	},
-	
+		
 	onPreRender: function (context) {
 		this._applyCameraPointer = this._applyCameraNull;
+		
 		this._tempContext.save();
 			this._tempContext.fillStyle = jsGFwk.settings.clearColor;
 			this._tempContext.fillRect(0, 0, jsGFwk.FastAnimation._canvas.width, jsGFwk.FastAnimation._canvas.height);
@@ -40,7 +41,8 @@ jsGFwk.Camera = {
 						currentCamera.originPosition.x, currentCamera.originPosition.y,
 						currentCamera.originPosition.width, currentCamera.originPosition.height,
 						0, 0,
-						currentCamera.targetPosition.width, currentCamera.targetPosition.height);
+						currentCamera.targetPosition.width * currentCamera.zoomFactor,
+						currentCamera.targetPosition.height * currentCamera.zoomFactor);
 						
 					currentCamera.filter(this._tempContextFilter, 
 						{ width: currentCamera.originPosition.width, 
@@ -50,6 +52,7 @@ jsGFwk.Camera = {
 						currentCamera.originPosition.width, currentCamera.originPosition.height,
 						currentCamera.targetPosition.x, currentCamera.targetPosition.y,
 						currentCamera.targetPosition.width, currentCamera.targetPosition.height);
+					
 					this._applyCameraPointer = this._applyCamera;
 				}
 			}
