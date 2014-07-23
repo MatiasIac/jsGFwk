@@ -2,6 +2,8 @@ jsGFwk.Camera = {
 	
 	_tempCanvas: {},
 	_tempContext: {},
+	_tempCanvasFilter: {},
+	_tempContextFilter: {},
 	cameras: {},
 	
 	createCamera: function (camera) {
@@ -9,7 +11,8 @@ jsGFwk.Camera = {
 			targetPosition: camera.targetPosition || { x: 0, y: 0, width: 100, height: 100 },
 			originPosition: camera.originPosition || { x: 0, y: 0, width: 100, height: 100 },
 			zoomFactor: camera.zoomFactor || 1,
-			enabled: camera.enabled
+			enabled: camera.enabled,
+			filter: camera.filter || function () {}
 		};
 	},
 
@@ -30,8 +33,20 @@ jsGFwk.Camera = {
 			if (this.cameras.hasOwnProperty(cam)) {
 				var currentCamera = this.cameras[cam];
 				if (currentCamera.enabled) {
-					this._tempContext.drawImage(jsGFwk.FastAnimation._bufferCanvas, 
+					this._tempContextFilter.clearRect(0, 0, 
+						jsGFwk.FastAnimation._canvas.width, jsGFwk.FastAnimation._canvas.height);
+
+					this._tempContextFilter.drawImage(jsGFwk.FastAnimation._bufferCanvas, 
 						currentCamera.originPosition.x, currentCamera.originPosition.y,
+						currentCamera.originPosition.width, currentCamera.originPosition.height,
+						0, 0,
+						currentCamera.targetPosition.width, currentCamera.targetPosition.height);
+						
+					currentCamera.filter(this._tempContextFilter, 
+						{ width: currentCamera.originPosition.width, 
+						  height: currentCamera.originPosition.height });
+				
+					this._tempContext.drawImage(this._tempCanvasFilter, 0, 0, 
 						currentCamera.originPosition.width, currentCamera.originPosition.height,
 						currentCamera.targetPosition.x, currentCamera.targetPosition.y,
 						currentCamera.targetPosition.width, currentCamera.targetPosition.height);
@@ -48,6 +63,11 @@ jsGFwk.Camera = {
 		this._tempCanvas.width = jsGFwk.FastAnimation._canvas.width;
 		this._tempCanvas.height = jsGFwk.FastAnimation._canvas.height;
 		this._tempContext = this._tempCanvas.getContext("2d");
+		
+		this._tempCanvasFilter = document.createElement("canvas");
+		this._tempCanvasFilter.width = jsGFwk.FastAnimation._canvas.width;
+		this._tempCanvasFilter.height = jsGFwk.FastAnimation._canvas.height;
+		this._tempContextFilter = this._tempCanvasFilter.getContext("2d");
 	},
 	onObjectCreated: function (newObject) {	},
 	onStop: function () {}
