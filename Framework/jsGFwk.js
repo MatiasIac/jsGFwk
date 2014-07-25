@@ -41,13 +41,13 @@ var jsGFwk = (function(){
 			
 			this._gameObjects[object.id] = object;
 			
-			if (object.init !== undefined) { object.init(); }
-			
 			for (var i = 0; i < this._includes.length; i++) {
 				if (this[this._includes[i]].onObjectCreated !== undefined) {
 					this[this._includes[i]].onObjectCreated(this._gameObjects[object.id]);
 				}
 			}
+			
+			if (object.init !== undefined) { object.init(); }
 		},
 		
 		/** @subtitle: sort

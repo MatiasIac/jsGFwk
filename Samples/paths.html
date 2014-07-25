@@ -1,0 +1,99 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../Framework/jsGFwk2dFastAnimation.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkRM.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkIO.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkSprites.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkPath.js"></script>
+<body>
+	<h1>Paths</h1>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+	
+	jsGFwk.include("FastAnimation");
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("IO");
+	jsGFwk.include("Sprites");
+	jsGFwk.include("Path");
+	
+	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });
+	
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+				createAGameObject();
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) {
+			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+			this.barWidth = (a * 620) / 100;
+		},
+		draw: function (context) {
+			context.save();
+				context.fillStyle = "#FF0000";
+				context.fillRect(0,0, 640, 480);
+				
+				context.fillStyle = "#FFFFFF";
+				context.fillText("Loading...", 300, 240);
+				
+				context.strokeStyle = "#FFFFFF";
+				context.strokeRect(10, 260, 620, 30);
+				context.fillRect(10, 260, this.barWidth, 30);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.start();
+	
+	function createAGameObject() {
+				
+		jsGFwk.createObject({
+			id: "fallingCharacter",
+			x: 10,
+			y: 10,
+			
+			pathSegment: 0,
+			pathSteps: 0.1,
+			pathDirection: 1,
+			
+			init: function () {
+				jsGFwk.Sprites.createSpriteCollection("fallingGuy", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 409, top: 34, width: 66, height: 26},
+					 {left: 480, top: 34, width: 66, height: 26},
+					 {left: 558, top: 34, width: 66, height: 26},
+					]);
+				jsGFwk.Sprites.fallingGuy.loop(true);
+				
+				this.path.setPath({ x: 300, y: 300}, //Point 1
+								  { x: 400, y: 300} //Point 2
+				); 
+			},
+			visible: true,
+			update: function(delta) {
+				jsGFwk.Sprites.fallingGuy.next();
+				this.pathSegment += this.pathSteps;
+				if (this.pathSegment >= 1 || 
+					this.pathSegment <= 0) {
+					this.pathSteps *= -1;
+				}
+				
+				var point = this.path.getPointAt(this.pathSegment);
+				this.x = point.x;
+				this.y = point.y;
+			},
+			draw: function (context) {
+				context.drawImage(jsGFwk.Sprites.fallingGuy.sprite.image, this.x, this.y);
+			}
+		});
+	}
+</script>
+</html>
