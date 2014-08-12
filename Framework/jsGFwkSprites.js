@@ -79,7 +79,7 @@ jsGFwk.Sprites = {
 		
 		jsGFwk.Sprites[spriteObject.id].image.src = this._genSprite(spriteObject, filter);
 	},
-	
+		
 	filters: {
 		GRAYSCALE: function (context, img) {
 			var imageData = context.getImageData(0, 0, img.width, img.height);

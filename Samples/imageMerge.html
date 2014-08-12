@@ -1,0 +1,69 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../Framework/jsGFwk.js"></script>
+<script language="Javascript" src="../Framework/jsGFwk2dFastAnimation.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkRM.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkSprites.js"></script>
+<script language="Javascript" src="../Framework/jsGFwkImages.js"></script>
+<body>
+	<h1>Two images are merged in one</h1>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+	
+	jsGFwk.include("FastAnimation");
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("Sprites");
+	jsGFwk.include("Images");
+	
+	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });
+	
+	jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+		jsGFwk.Sprites.createSpriteCollection("fallingGuy", jsGFwk.ResourceManager.graphics.character.image, 
+			[{left: 409, top: 34, width: 66, height: 26},
+			 {left: 480, top: 34, width: 66, height: 26},
+			 {left: 558, top: 34, width: 66, height: 26},
+			]);
+		
+		jsGFwk.createObject({
+			id: "fallingCharacter",
+			finalImage: {},
+			x: 0,
+			init: function () {	
+			
+				this.finalImage = jsGFwk.Images.merge(
+				{
+					image: jsGFwk.Sprites.fallingGuy.spriteBag[0].image,
+					crop: {x: 10, y: 0, width: 56, height: 26},
+					target: {x: 50, y: 20, width: 56, height: 26}
+				},
+				{
+					image: jsGFwk.Sprites.fallingGuy.spriteBag[1].image,
+					crop: {x: 0, y: 0, width: 66, height: 26},
+					target: {x: 0, y: 0, width: 66, height: 26}
+				},
+				{
+					width: 100, height: 100, 
+					//filter: jsGFwk.Sprites.filters.GRAYSCALE,
+					//backgroundColor: "red"
+				});
+			
+			},
+			visible: true,
+			update: function(delta) {
+				this.x++;
+			},
+			draw: function (context) {
+				context.drawImage(this.finalImage, this.x, 10);
+			}
+		});
+	};
+	
+	jsGFwk.start();
+	
+	
+</script>
+</html>
