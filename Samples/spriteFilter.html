@@ -12,7 +12,7 @@
 </body>
 <script language="Javascript">
 	jsGFwk.settings.canvas = "canvas";
-	jsGFwk.settings.clearColor = "rgb(0,255,255)";
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
 	
 	//Include external component libraries
 	jsGFwk.include("BasicAnimation");
@@ -21,7 +21,7 @@
 	jsGFwk.include("Sprites");
 	//************************************
 	
-	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/jumpingBase.png" });
+	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "../SampleResources/ship.png" });
 	
 	//Simulation for a loading progress bar
 	jsGFwk.createObject({
@@ -59,71 +59,82 @@
 	
 	function createAGameObject() {
 		jsGFwk.createObject({
-			id: "fallingCharacter",
+			id: "ships",
 			x: 10,
 			y: 10,
 			init: function () {
 				//Create a graphic collection
-				jsGFwk.Sprites.createSpriteCollection("fallingGuy", jsGFwk.ResourceManager.graphics.character.image, 
-					[{left: 409, top: 34, width: 66, height: 26}, //first crop
-					 {left: 480, top: 34, width: 66, height: 26}, //second crop
-					 {left: 558, top: 34, width: 66, height: 26}, //last crop
-					],
-					jsGFwk.Sprites.filters.GRAYSCALE);
+				jsGFwk.Sprites.createSpriteCollection("shipGray", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.GRAYSCALE);
 					
-				jsGFwk.Sprites.createSpriteCollection("fallingGuyNormal", jsGFwk.ResourceManager.graphics.character.image, 
-					[{left: 409, top: 34, width: 66, height: 26}, //first crop
-					 {left: 480, top: 34, width: 66, height: 26}, //second crop
-					 {left: 558, top: 34, width: 66, height: 26}, //last crop
-					]);
+				jsGFwk.Sprites.createSpriteCollection("shipNormal", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}]);
 					
-				jsGFwk.Sprites.createSpriteCollection("fallingGuyInverted", jsGFwk.ResourceManager.graphics.character.image, 
-					[{left: 409, top: 34, width: 66, height: 26}, //first crop
-					 {left: 480, top: 34, width: 66, height: 26}, //second crop
-					 {left: 558, top: 34, width: 66, height: 26}, //last crop
-					],
-					jsGFwk.Sprites.filters.INVERTCOLOR);
+				jsGFwk.Sprites.createSpriteCollection("shipInverted", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.INVERTCOLOR);
 					
-				jsGFwk.Sprites.createSpriteCollection("fallingGuyDarker", jsGFwk.ResourceManager.graphics.character.image, 
-					[{left: 409, top: 34, width: 66, height: 26}, //first crop
-					 {left: 480, top: 34, width: 66, height: 26}, //second crop
-					 {left: 558, top: 34, width: 66, height: 26}, //last crop
-					],
-					jsGFwk.Sprites.filters.DARKER);
+				jsGFwk.Sprites.createSpriteCollection("shipDarker", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.DARKER);
 					
-				jsGFwk.Sprites.createSpriteCollection("fallingGuyBlur", jsGFwk.ResourceManager.graphics.character.image, 
-					[{left: 409, top: 34, width: 66, height: 26}, //first crop
-					 {left: 480, top: 34, width: 66, height: 26}, //second crop
-					 {left: 558, top: 34, width: 66, height: 26}, //last crop
-					],
-					jsGFwk.Sprites.filters.BLUR);
+				jsGFwk.Sprites.createSpriteCollection("shipEmbossSubtle", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.EMBOSSSUBTLE);
+					
+				jsGFwk.Sprites.createSpriteCollection("shipSharpen", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.SHARPEN);
+
+				jsGFwk.Sprites.createSpriteCollection("shipBlur", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.BLUR);
+					
+				jsGFwk.Sprites.createSpriteCollection("shipEmboss", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.EMBOSS);
+					
+				jsGFwk.Sprites.createSpriteCollection("shipEdgeDetect1", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.EDGEDETECT);
+					
+				jsGFwk.Sprites.createSpriteCollection("shipEdgeDetect2", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 40, top: 0, width: 40, height: 31}], jsGFwk.Sprites.filters.EDGEDETECT2);
 			
 				jsGFwk.IO.mouse.registerMove(function (coord) {
-					jsGFwk._gameObjects.fallingCharacter.x = coord.x;
-					jsGFwk._gameObjects.fallingCharacter.y = coord.y;
+					jsGFwk._gameObjects.ships.x = coord.x;
+					jsGFwk._gameObjects.ships.y = coord.y;
 				});
 				
-				jsGFwk.Sprites.fallingGuy.loop(true);
-				jsGFwk.Sprites.fallingGuyNormal.loop(true);
-				jsGFwk.Sprites.fallingGuyInverted.loop(true);
-				jsGFwk.Sprites.fallingGuyDarker.loop(true);
-				jsGFwk.Sprites.fallingGuyBlur.loop(true);
+				jsGFwk.Sprites.shipGray.loop(true);
+				jsGFwk.Sprites.shipNormal.loop(true);
+				jsGFwk.Sprites.shipInverted.loop(true);
+				jsGFwk.Sprites.shipDarker.loop(true);
+				jsGFwk.Sprites.shipEmbossSubtle.loop(true);
+				jsGFwk.Sprites.shipSharpen.loop(true);
+				jsGFwk.Sprites.shipBlur.loop(true);
+				jsGFwk.Sprites.shipEmboss.loop(true);
+				jsGFwk.Sprites.shipEdgeDetect1.loop(true);
+				jsGFwk.Sprites.shipEdgeDetect2.loop(true);
+				
+				jsGFwk.Sprites.shipGray.reset();
+				jsGFwk.Sprites.shipNormal.reset();
+				jsGFwk.Sprites.shipInverted.reset();
+				jsGFwk.Sprites.shipDarker.reset();
+				jsGFwk.Sprites.shipEmbossSubtle.reset();
+				jsGFwk.Sprites.shipSharpen.reset();
+				jsGFwk.Sprites.shipBlur.reset();
+				jsGFwk.Sprites.shipEmboss.reset();
+				jsGFwk.Sprites.shipEdgeDetect1.reset();
+				jsGFwk.Sprites.shipEdgeDetect2.reset();
 			},
 			visible: true,
-			update: function(delta) {
-				jsGFwk.Sprites.fallingGuy.next();
-				jsGFwk.Sprites.fallingGuyNormal.next();
-				jsGFwk.Sprites.fallingGuyInverted.next();
-				jsGFwk.Sprites.fallingGuyDarker.next();
-				jsGFwk.Sprites.fallingGuyBlur.next();
-			},
+			update: function(delta) { },
 			draw: function (context) {
 				//You can create sprites for easy graphic handling
-				context.drawImage(jsGFwk.Sprites.fallingGuy.sprite.image, this.x, this.y);
-				context.drawImage(jsGFwk.Sprites.fallingGuyNormal.sprite.image, this.x + 90, this.y);
-				context.drawImage(jsGFwk.Sprites.fallingGuyInverted.sprite.image, this.x + 180, this.y);
-				context.drawImage(jsGFwk.Sprites.fallingGuyDarker.sprite.image, this.x + 270, this.y);
-				context.drawImage(jsGFwk.Sprites.fallingGuyBlur.sprite.image, this.x + 360, this.y);
+				context.drawImage(jsGFwk.Sprites.shipGray.sprite.image, this.x, this.y);
+				context.drawImage(jsGFwk.Sprites.shipNormal.sprite.image, this.x + 50, this.y);
+				context.drawImage(jsGFwk.Sprites.shipInverted.sprite.image, this.x + 100, this.y);
+				context.drawImage(jsGFwk.Sprites.shipDarker.sprite.image, this.x + 150, this.y);
+				context.drawImage(jsGFwk.Sprites.shipEmbossSubtle.sprite.image, this.x + 200, this.y);
+				context.drawImage(jsGFwk.Sprites.shipSharpen.sprite.image, this.x + 250, this.y);
+				context.drawImage(jsGFwk.Sprites.shipBlur.sprite.image, this.x + 300, this.y);
+				context.drawImage(jsGFwk.Sprites.shipEmboss.sprite.image, this.x + 350, this.y);
+				context.drawImage(jsGFwk.Sprites.shipEdgeDetect1.sprite.image, this.x + 400, this.y);
+				context.drawImage(jsGFwk.Sprites.shipEdgeDetect2.sprite.image, this.x + 450, this.y);
 			}
 		});
 	}
