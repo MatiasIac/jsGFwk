@@ -23,36 +23,69 @@ jsGFwk.Sprites = {
 	},
 	
 	createSpriteCollection: function (collectionId, graphic, values, filter) {
-		jsGFwk.Sprites[collectionId] = {
-			_looper: function() {
-				this.seeker++;
-				this.seeker = this.seeker % this.spriteBag.length;
-			},
-			_oneWay: function() {
-				if (this.seeker < this.spriteBag.length) {	
-					this.seeker++;
-				}
-			},
-			_moveFrame: function() {},
-			spriteBag: [],
-			seeker: -1,
-			loop: function(on) {
-				if (on) {
-					this._moveFrame = this._looper;
-				} else {
-					this._moveFrame = this._oneWay;
-				}
-			},
-			next: function () {
-				this._moveFrame();				
-				this.sprite = this.spriteBag[this.seeker];
-			},
-			reset: function () {
-				this.seeker = -1;
-				this.next();
-			},
-			sprite: {},
-		};
+	    var coll = function () {
+	        var self = this;
+	        this._isLooping = false;
+	        this._looper = function() {
+	            self.seeker++;
+	            self.seeker = self.seeker % self.spriteBag.length;
+	        };
+
+	        this._oneWay = function() {
+	            if (self.seeker < self.spriteBag.length) {	
+	                self.seeker++;
+	            }
+	        };
+
+	        this._moveFrame = function() {};
+	        this.spriteBag = [];
+	        this.seeker = -1;
+
+	        this.loop = function(on) {
+	            if (on) {
+	                self._moveFrame = self._looper;
+	            } else {
+	                self._moveFrame = self._oneWay;
+	            }
+
+	            self._isLooping = on;
+	        };
+
+	        this.next = function () {
+	            self._moveFrame();				
+	            self.sprite = self.spriteBag[self.seeker];
+	        };
+
+	        this.reset = function () {
+	            self.seeker = -1;
+	            self.next();
+	        };
+
+	        this.sprite = {};
+
+	        this.clone = function () {
+	            var cloned = new coll();
+
+	            for (var i = 0; i < self.spriteBag.length; i++) {
+	                var img = new Image();
+	                img.src = self.spriteBag[i].image.src;
+	                cloned.spriteBag.push({
+	                    height: self.spriteBag[i].height,
+	                    image: img,
+	                    inverted: self.spriteBag[i].inverted,
+	                    left: self.spriteBag[i].left,
+	                    top: self.spriteBag[i].top,
+	                    width: self.spriteBag[i].width,
+	                });
+	            }
+
+	            cloned.loop(self._isLooping);
+
+	            return cloned;
+	        };
+	    }
+
+	    jsGFwk.Sprites[collectionId] = new coll();
 		
 		for (var i = 0; i < values.length; i++) {
 			var spriteObject = { top: values[i].top, left: values[i].left, 
