@@ -73,7 +73,41 @@ var jsGFwk = (function(){
 		* @usage: jsGFwk.<i>include</i>("[plugin_name]")
 		*/		
 		include: function (componentName) {
+			for (var i = 0; i < this._includes.length; i++) {
+				if (componentName === this._includes[i]) { return; }
+			}
 			this._includes[this._includes.length] = componentName;
+		},
+		
+		/** @subtitle: load
+		* @description: Includes an external plugin to be handled by the framework, loading it from the file name.
+		* @usage: jsGFwk.<i>load</i>("[plugin_file_name]")
+		*/	
+		load: function (fileName) {
+			var self = this;
+			if (fileName !== undefined && typeof fileName === "string") {
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				/*if (script.readyState){
+					script.onreadystatechange = function(){
+						if (script.readyState == "loaded" ||
+								script.readyState == "complete"){
+							script.onreadystatechange = null;
+							callback();
+						}
+					};
+				}*/
+				script.onload = function(){
+					for (var p in jsGFwk) {
+						if (jsGFwk[p].onLoadReady !== undefined) {
+							jsGFwk[p].onLoadReady();
+						}
+					}
+				};
+			
+				script.src = fileName;
+				document.getElementsByTagName("head")[0].appendChild(script);
+			}
 		},
 		
 		/** @title: start

@@ -8,16 +8,26 @@ var enemigo = {
 
 	acumularDeltaDestruido: 0,
 	
+	segment: 1,
+	
 	init: function () {
 		this.updatePuntero = this.updateNormal;
 		this.drawPuntero = this.drawNormal;
 		this.isDestruido = false;
+		
+		this.path.setPath(
+			{x: -20, y: 200},
+			{x: 660, y: 200},
+			{x: 320, y: 20},
+			{x: 320, y: 400}
+		);
 	},
 	
 	updateDestruido: function (delta) {
 		this.acumularDeltaDestruido += delta;
 		
 		if (jsGFwk.Sprites.explosion.seeker == 4) {
+			this.segment = 1;
 			this.x = 650;
 			this.updatePuntero = this.updateNormal;
 			this.drawPuntero = this.drawNormal;
@@ -36,9 +46,13 @@ var enemigo = {
 	},
 	
 	updateNormal: function (delta) {
-		this.x -= 1.5;
-		if (this.x + this.width < 0) {
-			this.x = 650;
+		this.segment -= 0.005;
+		var point = this.path.getPointAt(this.segment);
+		this.x = point.x;
+		this.y = point.y;
+	
+		if (this.segment <= 0) {
+			this.segment = 1;
 		}
 	},
 	drawNormal: function (context) {
@@ -52,6 +66,8 @@ var enemigo = {
 	drawPuntero: function () {},
 	
 	destruido: function() {
+		jsGFwk.ResourceManager.sounds.explosion.audio.play();
+		
 		this.isDestruido = true;
 		jsGFwk.Sprites.explosion.reset();
 		

@@ -69,8 +69,14 @@ jsGFwk.Container = (function() {
 	_onObjectCreated = function (newObject) { };
 	
 	return {
+		_plugInName: "Container",
+		_loaded: false,
 		onStart: _onStart,
 		onObjectCreated: _onObjectCreated,
-		createContainer: _createContainer
+		createContainer: _createContainer,
+		onLoadReady: function () {
+			jsGFwk.include(this._plugInName);
+			if (!this._loaded) { this._loaded = true; this.onStart(); }
+		}
 	};
 })();

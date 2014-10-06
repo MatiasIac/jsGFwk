@@ -1,4 +1,6 @@
 jsGFwk.IO = {
+	_plugInName: "IO",
+	_loaded: false,
 	keyboard: {
 		_keyboardCallers: [],
 		_activeKey: [],
@@ -119,5 +121,9 @@ jsGFwk.IO = {
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("mousemove", this.mouse._mouseMove, false);
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("mousewheel", this.mouse._mouseWheel, false);
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("DOMMouseScroll", this.mouse._mouseWheel, false);
+	},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
 };

@@ -11,12 +11,14 @@
 	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkPath.js"></script>
 	
 	<script language="Javascript" src="scripts/hud.js"></script>
 	<script language="Javascript" src="scripts/bala.js"></script>
 	<script language="Javascript" src="scripts/player.js"></script>
 	<script language="Javascript" src="scripts/enemigo.js"></script>
 	<script language="Javascript" src="scripts/score.js"></script>
+	<script language="Javascript" src="scripts/background.js"></script>
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
 	</body>
@@ -37,10 +39,21 @@
 		jsGFwk.include("Sprites");
 		jsGFwk.include("Fonts");
 		jsGFwk.include("Scenes");
+		jsGFwk.include("Path");
 		
 		jsGFwk.ResourceManager.addGraphic({
 			name: "nave",
 			source: "images/ship.png"
+		});
+		
+		jsGFwk.ResourceManager.addGraphic({
+			name: "estrellas",
+			source: "images/layer1.png"
+		});
+		
+		jsGFwk.ResourceManager.addGraphic({
+			name: "estrellas2",
+			source: "images/layer2.png"
 		});
 		
 		jsGFwk.ResourceManager.addGraphic({
@@ -52,6 +65,18 @@
 			name: 'zxBold', 
 			source: 'zxBold.ttf'
 		});
+		
+		var explosion = {};
+		explosion[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/explosion.mp3" };
+		explosion[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/explosion.ogg" };
+		explosion[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/explosion.wav" };
+		jsGFwk.ResourceManager.addSound({ name: "explosion", sources: explosion });
+		
+		var shoot = {};
+		shoot[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/laser.mp3" };
+		shoot[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/laser.ogg" };
+		shoot[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/laser.wav" };
+		jsGFwk.ResourceManager.addSound({ name: "disparo", sources: shoot });
 		
 		jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
 		
@@ -69,9 +94,7 @@
 				gameObjects: [hud] });
 		
 			jsGFwk.Scenes.create({name: "juego", 
-				gameObjects: [enemigo, player, score] });
-		
-			jsGFwk.Container.createContainer("bala", bala);
+				gameObjects: [background, enemigo, player, score] });
 			
 			jsGFwk.Scenes.scenes.pantallaPrincipal.enable();
 		};

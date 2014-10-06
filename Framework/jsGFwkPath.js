@@ -1,5 +1,7 @@
 jsGFwk.Path = {
 	
+	_plugInName: "Path",
+	_loaded: false,
 	_path: (function () {
 	
 		var path = function () {
@@ -41,5 +43,9 @@ jsGFwk.Path = {
 			newObject.path = new this._path();
 		}
 	},
-	onStop: function () {}
+	onStop: function () {},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
+	}
 }

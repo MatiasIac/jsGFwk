@@ -1,5 +1,6 @@
 jsGFwk.Debugger = {
-
+	_plugInName: "Debugger",
+	_loaded: false,
 	_settings: {
 		textFillStyle: "rgb(0,255,0)",
 		textSize: "8pt arial",
@@ -59,5 +60,9 @@ jsGFwk.Debugger = {
 				context.restore();
 			}
 		};
+	},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
 };

@@ -1,4 +1,6 @@
 jsGFwk.Camera = {
+	_plugInName: "Camera",
+	_loaded: false,
 	
 	_tempCanvas: {},
 	_tempContext: {},
@@ -73,5 +75,9 @@ jsGFwk.Camera = {
 		this._tempContextFilter = this._tempCanvasFilter.getContext("2d");
 	},
 	onObjectCreated: function (newObject) {	},
-	onStop: function () {}
+	onStop: function () {},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
+	}
 }

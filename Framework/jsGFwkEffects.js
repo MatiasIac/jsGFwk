@@ -1,5 +1,6 @@
 jsGFwk.Effects = {
-
+	_plugInName: "Effects",
+	_loaded: false,
 	DEGREE_CONVERTION_VALUE: 0.0174532925199432957,
 
 	degreeToRadians: function(degree) {
@@ -45,5 +46,9 @@ jsGFwk.Effects = {
 	onObjectCreated: function (newObject) {
 		newObject.rotateAndDraw = this.rotateAndDraw;
 		newObject.rotate = this.rotate;
+	},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
 };

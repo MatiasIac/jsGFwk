@@ -1,5 +1,6 @@
 jsGFwk.Fonts = {
-	
+	_plugInName: "Fonts",
+	_loaded: false,
 	_error: {
 		hasError: false,
 		message: ""
@@ -30,5 +31,9 @@ jsGFwk.Fonts = {
 		this._styles.innerHTML = fonts;
 		
 		head[0].appendChild(this._styles);
+	},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
 };

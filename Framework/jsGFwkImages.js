@@ -1,5 +1,6 @@
 jsGFwk.Images = {
-	
+	_plugInName: "Images",
+	_loaded: false;
 	merge: function (fromData, toData, settings) {
 		var tempCanvas = document.createElement("canvas");
 		tempCanvas.width = settings.width;
@@ -29,5 +30,9 @@ jsGFwk.Images = {
 		return image;
 	},
 
-	onStart: function () { }
+	onStart: function () { },
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
+	}
 };

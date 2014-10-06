@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title id="page-title">Zafiro - </title>
+		
+		<link href="content/codemirror.css" rel="stylesheet" type="text/css" />
+		<link href="content/styles.css" rel="stylesheet" type="text/css" />
+		
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="scripts/externals/codemirror.js"></script>
+		<script src="scripts/linq/additiveTools.linq.js"></script>
+		<script src="scripts/externals/mode/javascript/javascript.js"></script>
+		<script src="scripts/externals/addon/selection/active-line.js"></script>
+		<script src="scripts/externals/addon/edit/matchbrackets.js"></script>
+		
+		<script src="scripts/toolBar.js"></script>
+		<script src="scripts/menuActions.js"></script>
+		<script src="scripts/projectTemplate.js"></script>
+		<script src="scripts/zafiroMain.js"></script>
+		<script src="scripts/zafiroGameObject.js"></script>
+		<script src="scripts/zafiroFreeCodeObject.js"></script>
+		<script src="scripts/errorConsole.js"></script>
+	</head>
+	<body>
+		<div class="tool-bar">
+			<img src="content/zafiroLogo.png" class="logo">
+			<ul>
+				<li class="fileMenuItem">Project</li>
+				<li class="objectMenuItem">Objects</li>
+				<li class="testMenuItem">Run</li>
+			</ul>
+		</div>
+		
+		<!-- menu options -->
+		<div class="fileMenu">
+			<ul>
+				<li class="newProject">New Project</li>
+				<li class="renameProject">Rename</li>
+				<hr>
+				<li class="loadProject">Load</li>
+				<li class="saveProject">Save</li>
+			</ul>
+		</div>
+		<div class="objectMenu">
+			<!-- GAME OBJECTS -->
+			<div class="objectsActionBar">
+				<span class="innerTitleMenu">Objects</span>
+					<span class="newObject" title="New Object">+</span>
+					<span class="newFreeCode" title="New Code">+</span>
+			</div>
+			<div class="objectList"></div>
+			<!-- GAME OBJECTS -->
+			
+			<!-- GAME OBJECTS -->
+			<div class="resourcesActionBar">
+				<span class="innerTitleMenu">Resources</span> <span class="newAudio" title="New Audio">+</span> <span class="newImage" title="New Image">+</span>
+			</div>
+			<div class="resourcesList"></div>
+			<!-- GAME OBJECTS -->
+			
+			<!-- INCLUDES -->
+			<div class="includesActionBar">
+				<span class="innerTitleMenu">Includes</span>
+			</div>
+			<div class="includesList"></div>
+			<!-- INCLUDES -->
+			
+			<div class="objectElementTemplate" style="display: none;">
+				<div class="object">
+					<div class="itemIdentifier"></div><div class="objectName"></div><div class="objectActions"><span class="removeObject" title="Remove this object">-</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="testMenu">
+			<ul>
+				<li class="runProject"><span class="underlined">R</span>un</li>
+				<li class="runProjectWithDebugger">Run with <span class="underlined">D</span>ebugger</li>
+			</ul>
+		</div>
+		<!-- menu options -->
+		
+		<div class="main-container">
+			<div class="scripts-container">
+				<div class="welcomeContainer" style="padding: 20px;">
+					<div style="font-size: 24pt; padding-bottom: 10px;">Welcome to jsGHIDE</div>
+					<div>This is the first online beta IDE for game development with jsGFwk</div>
+				</div>
+				
+				<div class="graphicResourceContainer">
+				</div>
+				
+				<div class="title-header">
+					<div class="fileTitle">File Name</div>
+					<div class="properties">
+					</div>
+				</div>
+				<div class="codeContainer" style="height:100%">
+					<textarea id="code" name="code"></textarea>
+				</div>
+				<div class="errorConsole">
+					<span class="innerTitleMenu">Error Console</span>
+					<div class="errorContainer"></div>
+				</div>
+			</div>
+			<div class="hMover"></div>
+			<div class="results-container">
+				<iframe src="javascript:document.write('no results, yet!');" id="testResults-iFrame"></iframe>
+			</div>
+		</div>
+	</body>
+</html>

@@ -3,6 +3,9 @@
  * @usage: jsGFwk.include(<b>"Collisions"</b>) */
 jsGFwk.Collisions = {
 
+	_plugInName: "Collisions",
+	_loaded: false,
+
 	/** @title: Setup for Box collision
 	 * @description: You need the following public properties in your game object to activate the box collisions.
 	 * @usage: x: [numeric_x_position_of_your_rectangle]<br>y: [numeric_y_position_of_your_rectangle]<br>width: [numeric_width_of_your_rectangle]<br>height: [numeric_height_of_your_rectangle]*/
@@ -65,5 +68,9 @@ jsGFwk.Collisions = {
 		if (!newObject.center) { newObject.center = { x: 0, y: 0 }; }
 		newObject.isRectColliding = this._rectColliding;
 		newObject.isRadColliding = this._disColliding;
+	},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
 };

@@ -3,6 +3,9 @@
  * @usage: jsGFwk.include(<b>"BasicAnimation"</b>) */
 jsGFwk.BasicAnimation = {
 
+	_plugInName: "BasicAnimation",
+	_loaded: false,
+
 	_intervalId: 0,
 	_2Dcontext: {},
 	_canvas: {},
@@ -49,6 +52,9 @@ jsGFwk.BasicAnimation = {
 			clearInterval(this._intervalId);
 			this._intervalId = 0;
 		}
+	},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
-	
 }

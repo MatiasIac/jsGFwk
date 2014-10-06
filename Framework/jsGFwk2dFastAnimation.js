@@ -3,6 +3,9 @@
  * @usage: jsGFwk.include(<b>"FastAnimation"</b>) */
 jsGFwk.FastAnimation = {
 
+	_plugInName: "FastAnimation",
+	_loaded: false,
+
 	//_intervalId: 0,
 	_2Dcontext: {},
 	_canvas: {},
@@ -62,6 +65,9 @@ jsGFwk.FastAnimation = {
 	},
 	
 	onObjectCreated: function (newObject) {	},
-	onStop: function () {}
-	
+	onStop: function () {},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
+	}
 }

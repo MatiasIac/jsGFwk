@@ -1,5 +1,8 @@
 jsGFwk.Sprites = {
 
+	_loaded: false,
+	_plugInName: "Sprites",
+
 	_genSprite: function (spriteObject, filter) {
 		var tempCanvas = document.createElement("canvas");
 		tempCanvas.width = spriteObject.width;
@@ -268,7 +271,13 @@ jsGFwk.Sprites = {
 		}		
 	},
 
-	onStart: function () {
-		
+	onStart: function () { },
+	onLoadReady: function () {
+		jsGFwk.include("FastAnimation");
+		this.onStart();
+	},
+	onLoadReady: function () {
+		jsGFwk.include(this._plugInName);
+		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
 };

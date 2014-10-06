@@ -30,12 +30,18 @@ jsGFwk.Scenes = (function() {
 	_onObjectCreated = function (newObject) { };
 	
 	return {
+		_plugInName: "Scenes",
+		_loaded: false,
 		onStart: _onStart,
 		onObjectCreated: _onObjectCreated,
 		scenes: {},
 		create: function (parameters) {
 			if (parameters.name == undefined) { return; }
 			this.scenes[parameters.name] = new scene(parameters);
+		},
+		onLoadReady: function () {
+			jsGFwk.include(this._plugInName);
+			if (!this._loaded) { this._loaded = true; this.onStart(); }
 		}
 	};
 })();

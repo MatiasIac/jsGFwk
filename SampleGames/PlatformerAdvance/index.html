@@ -10,6 +10,7 @@
 	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCamera.js"></script>
 	
 	<script language="Javascript" src="scripts/player.js"></script>
 	<script language="Javascript" src="scripts/score.js"></script>
@@ -32,6 +33,7 @@
 		jsGFwk.include("ResourceManager");
 		jsGFwk.include("Sprites");
 		jsGFwk.include("Fonts");
+		jsGFwk.include("Camera");
 		
 		jsGFwk.ResourceManager.addGraphic({
 			name: "guy",
@@ -77,9 +79,24 @@
 					context.restore();
 				}
 			});
-			
+						
 			jsGFwk._gameObjects.plataforma.cloneObject({ x: 0 });
 			jsGFwk._gameObjects.plataforma.cloneObject({ x: 256 });
+			
+			jsGFwk.Camera.createCamera({
+				name: "camera1",
+				originPosition: { x: 0, y: 0, width: 320, height: 480 },
+				targetPosition: { x: 320, y: 0, width: 320, height: 480 },
+				enabled: true
+			});
+			
+			jsGFwk.Camera.createCamera({
+				name: "camera2",
+				originPosition: { x: 320, y: 0, width: 320, height: 480 },
+				targetPosition: { x: 0, y: 0, width: 320, height: 480 },
+				enabled: true,
+				filter: jsGFwk.Sprites.filters.BLUR
+			});
 			
 			jsGFwk.createObject(player);
 		};

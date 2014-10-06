@@ -1,4 +1,6 @@
 jsGFwk.ResourceManager = {
+		_plugInName: "ResourceManager",
+		_loaded: false,
 		_totalResources: 0,
 		_totalLoadedResources: 0,
 		_loadDispatcher: function () {
@@ -85,5 +87,10 @@ jsGFwk.ResourceManager = {
 		
 		onResourcesLoadedCompleted: function () {},
 		
-		onResourcesLoaded: function() {}
+		onResourcesLoaded: function() {},
+		
+		onLoadReady: function () {
+			jsGFwk.include(this._plugInName);
+			if (!this._loaded) { this._loaded = true; this.onStart(); }
+		}
 };

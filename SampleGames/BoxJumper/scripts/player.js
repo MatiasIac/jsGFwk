@@ -61,6 +61,8 @@ var player = {
 					y: this.y + 15
 				});
 				this.disparoAcumulador = 0;
+				
+				jsGFwk.ResourceManager.sounds.disparo.audio.play();
 			}
 		}
 		
