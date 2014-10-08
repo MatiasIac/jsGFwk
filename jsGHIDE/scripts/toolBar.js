@@ -19,11 +19,11 @@ var toolbar = function() {
 	function hideMenuContainer() {
 		settings.fileMenu.container.hide();
 		settings.objectMenu.container.hide();
-		settings.testMenu.container.hide();
+		//settings.testMenu.container.hide();
 		
 		settings.fileMenu.container.css('width', '0px');
 		settings.objectMenu.container.css('width', '0px');
-		settings.testMenu.container.css('width', '0px');
+		//settings.testMenu.container.css('width', '0px');
 		zafiro.resize();
 	};
 	
@@ -49,18 +49,16 @@ var toolbar = function() {
 	});
 	
 	settings.testMenu.menuItem.on('click', function() {
-		if ($(this).hasClass('disabled')) {	return;	}
-		showMenu(settings.testMenu.container);
+		settings.testMenu.container.show();
 	});
 	
 	this.onResize = function (height) {
 		settings.fileMenu.container.css('height', height + 'px');
 		settings.objectMenu.container.css('height', height + 'px');
-		settings.testMenu.container.css('height', height + 'px');
 	};
 	
 	this.getActiveMenuWidth = function() {
-		return settings.fileMenu.container.width() || settings.objectMenu.container.width() || settings.testMenu.container.width();
+		return settings.fileMenu.container.width() || settings.objectMenu.container.width();
 	};
 
 };

@@ -27,7 +27,6 @@ body {
 
 .tool-bar ul li {
 	display: inline;
-	margin: 10px;
 	cursor: pointer;
 }
 
@@ -53,8 +52,17 @@ body {
 	opacity: 1;
 }
 
+.main-container .title-header .fileProperty {
+	float: left;
+	font-weight: bolder;
+	padding-right: 10px;
+	font-style: italic;
+	cursor: pointer;
+}
+
 .main-container .title-header .fileTitle {
 	cursor: pointer;
+	float: left;
 }
 
 .main-container .title-header .properties {
@@ -146,7 +154,7 @@ body {
 	cursor: default;
 }
 
-.fileMenu, .objectMenu, .testMenu {
+.fileMenu, .objectMenu/*, .testMenu*/ {
 	float: left;
 	width: 0px;
 	display: none;
@@ -155,7 +163,18 @@ body {
 	overflow-x: hidden;
 }
 
-.fileMenu ul, .objectMenu ul, .testMenu ul {
+.fileMenu ul {
+	list-style-type:none;
+	padding-left: 15px;
+	color: black;
+}
+
+.fileMenu ul li {
+	cursor: pointer;
+	font-size: 10pt;
+}
+
+/*.fileMenu ul, .objectMenu ul, .testMenu ul {
 	list-style-type:none;
 	padding-left: 15px;
 	color: black;
@@ -164,7 +183,7 @@ body {
 .fileMenu ul li, .objectMenu ul li, .testMenu ul li {
 	cursor: pointer;
 	font-size: 10pt;
-}
+}*/
 
 .CodeMirror {
   border: 1px solid #eee;
@@ -280,4 +299,47 @@ hr {
 
 span.underlined {
 	text-decoration: underline;
+}
+
+span.testMenu {
+	display: none;
+}
+
+span.runProject {
+	background-color: #30DF37;
+	padding: 5px;
+	margin: 5px;
+	border-radius: 3px;
+	color: black;
+	font-size: 8pt;
+	cursor: pointer;
+}
+
+span.runProjectWithDebugger {
+	background-color: #FC7575;
+	padding: 5px;
+	border-radius: 3px;
+	color: black;
+	font-size: 8pt;
+	cursor: pointer;
+}
+
+li.testMenuItem, li.objectMenuItem, li.fileMenuItem {
+	padding: 10px;
+}
+
+li.testMenuItem:hover, li.objectMenuItem:hover, li.fileMenuItem:hover {
+	background-color: rgb(67, 182, 226);
+	border-radius: 5px;
+}
+
+.popoutIcon {
+	position: absolute;
+	top: 40px;
+	right: 5px;
+	z-index: 10000000;
+	background-color: white;
+	padding: 3px;
+	border-radius: 3px;
+	cursor: pointer;
 }

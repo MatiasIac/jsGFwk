@@ -27,18 +27,25 @@
 			<ul>
 				<li class="fileMenuItem">Project</li>
 				<li class="objectMenuItem">Objects</li>
-				<li class="testMenuItem">Run</li>
+				<li class="testMenuItem"><span>Run</span>
+					<span class="testMenu">
+						<span class="runProject" title="Run">R</span>
+						<span class="runProjectWithDebugger" title="Run with debug">D</span>
+					</span>
+				</li>
 			</ul>
 		</div>
 		
 		<!-- menu options -->
 		<div class="fileMenu">
-			<ul>
+			<ul class="projectOptionList">
 				<li class="newProject">New Project</li>
 				<li class="renameProject">Rename</li>
 				<hr>
 				<li class="loadProject">Load</li>
 				<li class="saveProject">Save</li>
+				<hr>
+				<li class="settingsProject">Settings</li>
 			</ul>
 		</div>
 		<div class="objectMenu">
@@ -71,12 +78,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="testMenu">
-			<ul>
-				<li class="runProject"><span class="underlined">R</span>un</li>
-				<li class="runProjectWithDebugger">Run with <span class="underlined">D</span>ebugger</li>
-			</ul>
-		</div>
 		<!-- menu options -->
 		
 		<div class="main-container">
@@ -90,7 +91,10 @@
 				</div>
 				
 				<div class="title-header">
-					<div class="fileTitle">File Name</div>
+					<div>
+						<div class="fileProperty">Properties: </div>
+						<div class="fileTitle">File Name</div>
+					</div>
 					<div class="properties">
 					</div>
 				</div>
@@ -103,9 +107,16 @@
 				</div>
 			</div>
 			<div class="hMover"></div>
+			<div class="popoutIcon"><img src="content/popout.png" style="width: 20px;" title="Popup out"></div>
 			<div class="results-container">
 				<iframe src="javascript:document.write('no results, yet!');" id="testResults-iFrame"></iframe>
 			</div>
+		</div>
+		
+		<div style="display:none;">
+			<div class="projectSettingsPanel"></div>
+			<div class="projectJsonSave"></div>
+			<div class="projectResultPopout"></div>
 		</div>
 	</body>
 </html>

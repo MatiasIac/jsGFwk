@@ -45,7 +45,11 @@ zafiro = (function() {
 			viewportMargin: 10
 		});
 		
-		$('.fileTitle').on('click', _fileNameClick);
+		$('.fileTitle, .fileProperty').on('click', _fileNameClick);
+		
+		window.onbeforeunload = function(e) {
+			return "Are you sure you want to exit from jsGHIDE?";
+		};
 	}
 	
 	function _createNewProject() {
