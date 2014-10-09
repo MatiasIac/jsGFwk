@@ -82,7 +82,7 @@ body {
 .main-container .hMover {
 	border-right: 5px solid #D1D1D1;
 	float:left;
-	cursor:e-resize;
+	/*cursor:e-resize;*/
 }
 
 .objectMenu .objectList .object {
@@ -342,4 +342,19 @@ li.testMenuItem:hover, li.objectMenuItem:hover, li.fileMenuItem:hover {
 	padding: 3px;
 	border-radius: 3px;
 	cursor: pointer;
+}
+
+.ui-dialog-title {
+	font-size: 10pt;
+	color: #000000 !important;
+	font-family: arial;
+}
+
+.ui-button-text {
+	font-size: 10pt;
+	font-family: arial;
+}
+
+textarea {
+	resize: none;
 }

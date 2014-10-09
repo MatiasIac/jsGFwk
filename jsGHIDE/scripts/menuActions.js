@@ -1,10 +1,20 @@
 var menuActions = function() {
 	var self = this;
 	
+	// PROJECT
 	$('.newProject').on('click', function() {
 		if (confirm('Are you sure you want to create a new project?')) {
 			$(self).trigger('newProject');
 		}
+	});
+	
+	$('.settingsProject').on('click', function() {
+		$(self).trigger('projectSettings');
+	});
+	
+	//
+	$('.popoutIcon').on('click', function () {
+		$(self).trigger('projectResultCode');
 	});
 	
 	$('.renameProject').on('click', function() {

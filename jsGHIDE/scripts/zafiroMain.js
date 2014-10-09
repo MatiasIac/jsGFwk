@@ -50,6 +50,20 @@ zafiro = (function() {
 		window.onbeforeunload = function(e) {
 			return "Are you sure you want to exit from jsGHIDE?";
 		};
+		
+		/*$('.hMover').draggable({ 
+			axis: "x", 
+			stop: function (e, o) {
+				var scriptContainer = $('.scripts-container');
+				var iFrame = $('.results-container');
+				var main = $('.main-container');
+				
+				scriptContainer.css('width', o.offset.left + 'px');
+				iFrame.css('width', ((main.width() - o.offset.left) - 5) + 'px');
+				
+				console.log(o.offset.left);
+			}
+		});*/
 	}
 	
 	function _createNewProject() {
@@ -125,9 +139,59 @@ zafiro = (function() {
 					Console.write("<i>Object:</i> <b>" + zafiro.project.errors[i].object.properties.id + "</b> - <i>Throws:</i> <b>" + zafiro.project.errors[i].error + "</b>");
 				}
 				Console.expand();
+			} else {
+				zafiro.settings.isRunned = true;
+				zafiro.settings.wasWithDebug = withDebug;
 			}
 		});
 	}
+	
+	function _projectSettings() {
+		$(zafiro.actions).on('projectSettings', function () {
+			zafiro.settings.panels.projectSettings.dialog({
+				width: 230,
+				modal: true,
+				draggable: false,
+				buttons: {
+					"Save": function () {
+						zafiro.project.properties.canvas.width = parseFloat($('.widthProject', zafiro.settings.panels.projectSettings).val());
+						zafiro.project.properties.canvas.height = parseFloat($('.heightProject', zafiro.settings.panels.projectSettings).val());
+						zafiro.project.properties.clearColor = $('.clearColorProject', zafiro.settings.panels.projectSettings).val();
+						$(this).dialog("close");
+					},
+					Cancel: function () {
+						$(this).dialog("close");
+					}
+				},
+			}).css("font-size", "10pt").css('font-family','arial');
+			$('.widthProject', zafiro.settings.panels.projectSettings).val(zafiro.project.properties.canvas.width);
+			$('.heightProject', zafiro.settings.panels.projectSettings).val(zafiro.project.properties.canvas.height);
+			$('.clearColorProject', zafiro.settings.panels.projectSettings).val(zafiro.project.properties.clearColor);
+		});
+	}
+	
+	function _projectResultsCode() {
+		$(zafiro.actions).on('projectResultCode', function () {
+		
+			if (zafiro.settings.isRunned) {
+				var executionResult = zafiro.project.run(zafiro.settings.wasWithDebug);
+				zafiro.settings.panels.projectResultPopout.dialog({
+					width: 500,
+					height: 570,
+					modal: true,
+					draggable: false,
+					buttons: {
+						"Close": function () {
+							$(this).dialog("close");
+						}
+					},
+				}).css("font-size", "10pt").css('font-family','arial');
+				var escaped = $('<div/>').text(executionResult).html();
+				$('.resultCodeBox', zafiro.settings.panels.projectResultPopout).html(escaped);
+				$('.resultCodeBox', zafiro.settings.panels.projectResultPopout).select();
+			}
+		});
+	};
 	
 	function _removeObject(e, o) {
 		//Clear UI if it is the selected
@@ -213,10 +277,14 @@ zafiro = (function() {
 			bindNewObject: _newObject,
 			bindNewFreeCode: _newFreeCode,
 			bindRunProject: _runProject,
+			bindProjectSettings: _projectSettings,
+			bindProjectResults: _projectResultsCode,
 			createNewProject: _createNewProject
 		},
 		settings: {
 			selectedObject: null,
+			isRunned: false,
+			wasWithDebug: false,
 			panels: { }
 		},
 		project: {},
@@ -237,13 +305,17 @@ $(document).ready(function () {
 		code: $('.codeContainer'),
 		fileTitle: $('.title-header'),
 		errorConsole: $('.errorConsole') ,
-		graphicResource: $('.graphicResourceContainer')
+		graphicResource: $('.graphicResourceContainer'),
+		projectSettings: $('.projectSettingsPanel').clone(),
+		projectResultPopout: $('.projectResultPopout').clone()
 	};
 	
 	zafiro.functions.createNewProject();
 	zafiro.functions.bindNewProject();
 	zafiro.functions.bindNewObject();
 	zafiro.functions.bindNewFreeCode();
+	zafiro.functions.bindProjectSettings();
+	zafiro.functions.bindProjectResults();
 	zafiro.functions.bindRunProject();
 	
 	zafiro.resize();

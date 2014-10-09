@@ -5,8 +5,11 @@
 		
 		<link href="content/codemirror.css" rel="stylesheet" type="text/css" />
 		<link href="content/styles.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
 		
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+
 		<script src="scripts/externals/codemirror.js"></script>
 		<script src="scripts/linq/additiveTools.linq.js"></script>
 		<script src="scripts/externals/mode/javascript/javascript.js"></script>
@@ -107,16 +110,29 @@
 				</div>
 			</div>
 			<div class="hMover"></div>
-			<div class="popoutIcon"><img src="content/popout.png" style="width: 20px;" title="Popup out"></div>
+			<div class="popoutIcon"><img src="content/popout.png" style="width: 20px;" title="Get generated code"></div>
 			<div class="results-container">
 				<iframe src="javascript:document.write('no results, yet!');" id="testResults-iFrame"></iframe>
 			</div>
 		</div>
 		
 		<div style="display:none;">
-			<div class="projectSettingsPanel"></div>
+			<div class="projectSettingsPanel" title="Project Settings">
+				<div><span>Clear Color</span><br>
+					 <span><input type="text" class="clearColorProject" value=""></span>
+				</div>
+				<div><span>Width</span><br>
+					 <span><input type="text" class="widthProject" value=""></span>
+				</div>
+				<div><span>Height</span><br>
+				     <span><input type="text" class="heightProject" value=""></span>
+			    </div>
+			</div>
 			<div class="projectJsonSave"></div>
-			<div class="projectResultPopout"></div>
+			<div class="projectResultPopout" title="Project Result Code">
+				<div>Copy & paste the code in a new file.</div>
+				<textarea class="resultCodeBox" style="width: 470px; height: 400px;"></textarea>
+			</div>
 		</div>
 	</body>
 </html>
