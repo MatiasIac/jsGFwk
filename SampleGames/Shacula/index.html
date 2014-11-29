@@ -1,0 +1,229 @@
+<html>
+	<head>
+		<title>Shacula</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkEffects.js"></script>
+	
+	<script language="Javascript" src="scripts/hud.js"></script>
+	<script language="Javascript" src="scripts/gameController.js"></script>
+	<script language="Javascript" src="scripts/background.js"></script>
+	<script language="Javascript" src="scripts/levels.js"></script>
+	<script language="Javascript" src="scripts/coffin.js"></script>
+	<script language="Javascript" src="scripts/dracul.js"></script>
+	<script language="Javascript" src="scripts/dayCounter.js"></script>
+	
+	<body>
+		<canvas id="canvas" width="630" height="480"></canvas>
+	</body>
+	<script>
+		jsGFwk.settings.canvas = "canvas";
+		jsGFwk.settings.clearColor = "#7E997B";
+		jsGFwk.settings.frameRate = 1000 / 60;
+		
+		jsGFwk.include("FastAnimation");
+		jsGFwk.include("Container");
+		jsGFwk.include("IO");
+		jsGFwk.include("Collisions");
+		jsGFwk.include("ResourceManager");
+		jsGFwk.include("Sprites");
+		jsGFwk.include("Scenes");
+		jsGFwk.include("Fonts");
+		jsGFwk.include("Effects");
+		
+		jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'fonts/zxBold.ttf' });
+		
+		jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/main.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "all", source: "images/all.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "dayNight", source: "images/sol.png" });
+		
+		var GLOBAL = {
+			currentLevel: -1
+		};
+		
+		/*var sources = {};
+		sources[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/vultureDead.wav" };
+		sources[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/vultureDead.ogg" };
+		sources[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/vultureDead.mp3" };
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead0", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead1", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead2", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead3", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead4", sources: sources});*/
+				
+		jsGFwk.createObject({
+			id: "progress",
+			visible: true,
+			barWidth: 0,
+			init: function() {
+				jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+					
+					jsGFwk.Sprites.createSprite({id: "background1", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 77, left: 702, width: 610, height: 480});
+					
+					jsGFwk.Sprites.createSprite({id: "goal", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 15, left: 396, width: 24, height: 36});
+
+					jsGFwk.Sprites.createSpriteCollection("oilWave", 
+						jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 120, top: 560, width: 26, height: 5},
+						 {left: 120, top: 571, width: 26, height: 5},
+						 {left: 120, top: 584, width: 26, height: 5}]);
+					jsGFwk.Sprites.oilWave.loop(true);
+						
+					jsGFwk.Sprites.createSprite({id: "topPipe", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 503, left: 116, width: 36, height: 26});
+						
+					jsGFwk.Sprites.createSprite({id: "lowerPipe", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 531, left: 116, width: 36, height: 26});
+					
+					jsGFwk.Sprites.createSprite({id: "oilPipe", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 503, left: 63, width: 25, height: 258});
+						
+					jsGFwk.Sprites.createSprite({id: "oil", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 503, left: 90, width: 25, height: 258});
+					
+					jsGFwk.Sprites.createSprite({id: "wall1", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 102, left: 20, width: 30, height: 30});
+						
+					jsGFwk.Sprites.createSprite({id: "wall2", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 102, left: 64, width: 30, height: 30});
+						
+					jsGFwk.Sprites.createSprite({id: "wall3", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 102, left: 107, width: 30, height: 30});
+
+					jsGFwk.Sprites.createSpriteCollection("startButton", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 498, top: 137, width: 75, height: 48},
+						 {left: 577, top: 137, width: 75, height: 48}]);
+					jsGFwk.Sprites.startButton.loop(false);
+					
+					jsGFwk.Sprites.createSpriteCollection("powerUp", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 737, top: 20, width: 12, height: 31},
+						 {left: 756, top: 20, width: 12, height: 31},
+						 {left: 775, top: 20, width: 12, height: 31},
+						 {left: 793, top: 20, width: 12, height: 31},
+						 {left: 775, top: 20, width: 12, height: 31},
+						 {left: 756, top: 20, width: 12, height: 31},
+						 {left: 737, top: 20, width: 12, height: 31}]);
+					jsGFwk.Sprites.powerUp.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("portal", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 847, top: 15, width: 35, height: 36},
+						 {left: 889, top: 15, width: 35, height: 36},
+						 {left: 928, top: 15, width: 35, height: 36}]);
+					jsGFwk.Sprites.portal.loop(true);
+						
+					jsGFwk.Sprites.createSpriteCollection("idle", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 24, top: 15, width: 13, height: 36}, {left: 41, top: 15, width: 13, height: 36}]);
+					jsGFwk.Sprites.idle.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("idleRight", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 24, top: 15, width: 13, height: 36}, {left: 41, top: 15, width: 13, height: 36}]);
+					jsGFwk.Sprites.idleRight.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("idleLeft", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 24, top: 15, width: 13, height: 36, inverted: true}, {left: 41, top: 15, width: 13, height: 36, inverted: true}]);
+					jsGFwk.Sprites.idleLeft.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("walkRight", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 77, top: 15, width: 13, height: 36}, {left: 94, top: 15, width: 13, height: 36}]);
+					jsGFwk.Sprites.walkRight.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("walkLeft", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 77, top: 15, width: 13, height: 36, inverted: true}, {left: 94, top: 15, width: 13, height: 36, inverted: true}]);
+					jsGFwk.Sprites.walkLeft.loop(true);
+
+					jsGFwk.Sprites.createSpriteCollection("hangedRight", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 551, top: 15, width: 17, height: 36},
+						 {left: 583, top: 15, width: 17, height: 36}]);
+					jsGFwk.Sprites.hangedRight.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("hangedLeft", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 551, top: 15, width: 17, height: 36, inverted: true},
+						 {left: 583, top: 15, width: 17, height: 36, inverted: true}]);
+					jsGFwk.Sprites.hangedLeft.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("actionRight", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 125, top: 15, width: 19, height: 36}]);
+					jsGFwk.Sprites.actionRight.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("actionLeft", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 125, top: 15, width: 19, height: 36, inverted: true}]);
+					jsGFwk.Sprites.actionLeft.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("jumpRight", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 297, top: 15, width: 21, height: 36}, {left: 329, top: 14, width: 21, height: 35}]);
+					jsGFwk.Sprites.jumpRight.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("jumpLeft", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 297, top: 15, width: 21, height: 36, inverted: true}, {left: 329, top: 14, width: 21, height: 35, inverted: true}]);
+					jsGFwk.Sprites.jumpLeft.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("die", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 161, top: 15, width: 28, height: 36},
+						 {left: 199, top: 15, width: 34, height: 36},
+						 {left: 246, top: 15, width: 24, height: 36}]);
+					jsGFwk.Sprites.die.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("spike", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 173, top: 95, width: 27, height: 7},
+						 {left: 206, top: 95, width: 27, height: 7}]);
+					jsGFwk.Sprites.spike.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("lever", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 461, top: 21, width: 23, height: 30},
+						 {left: 502, top: 21, width: 21, height: 30}]);
+					jsGFwk.Sprites.lever.loop(false);
+					
+					jsGFwk.Scenes.create({name: "main", gameObjects: [hud] });
+							
+					jsGFwk.Scenes.create({name: "game", 
+						gameObjects: [background, gameController,
+							dracul, dayCounter] });
+								
+					jsGFwk.Scenes.scenes.main.enable();
+					
+					jsGFwk._gameObjects.progress.destroy();
+				};
+			},
+			update: function(delta) {
+				var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+				this.barWidth = (a * 300) / 100;
+			},
+			draw: function (context) {
+				context.save();
+					context.fillStyle = "#15181F";
+					context.fillRect(0,0, 630, 480);
+								
+					context.strokeStyle = "#AA0000";
+					context.fillStyle = "red";
+					context.strokeRect(150, 180, 300, 20);
+					context.fillRect(150, 180, this.barWidth, 20);
+					
+					context.fillStyle = "white";
+					context.font = "11pt times";
+					context.fillText("Sucking blood...", 250, 220);
+				context.restore();
+			}
+		});
+		
+		jsGFwk.start();
+	</script>
+</html>

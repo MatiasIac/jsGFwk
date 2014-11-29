@@ -35,11 +35,17 @@ jsGFwk.Container = (function() {
 		};
 		
 		this.eachCloned = function (f) {
+			var event = { cancel: false };
 			for (var p in _allObjects) {
 				if (_allObjects.hasOwnProperty(p)) {
-					f(_allObjects[p]);
+					f(_allObjects[p], event);
+					if (event.cancel) { break; }
 				}
 			}
+		};
+		
+		this.clearAll = function () {
+			for (var o in _allObjects) { _allObjects[o].destroy(); }
 		};
 		
 		this.cloneObject = function (initParameters) {

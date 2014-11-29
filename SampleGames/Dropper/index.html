@@ -1,0 +1,58 @@
+<html>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkPath.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
+	
+	<script language="Javascript" src="scripts/player.js"></script>
+	<script language="Javascript" src="scripts/asteroid.js"></script>
+	<script language="Javascript" src="scripts/estela.js"></script>
+	<body>
+		<canvas width="640" height="480" id="canvas" ></canvas>
+	</body>
+</html>
+<script>
+	//http://www.somethinghitme.com/2013/11/13/snippets-i-always-forget-movement/
+	var satX = 0, satY = 0, satAcc = 0, satRad = 7,
+		DEGREE_CONVERTION_VALUE = 0.0174532925199432957,
+		finalDegree = 0,
+		bombSpeed = 10, bombAngle = 0, isDropping = false,
+		bombX = 0, bombY = 0, bombRad = 3, targetX = 320, targetY = 240,
+		asterX = 320, asterY = 240, asterRad = 50;
+	
+	/*c.addEventListener("click", function () {
+		if (!isDropping) {
+			bombAngle = satAcc * -1;
+			bombX = satX;
+			bombY = satY;
+			isDropping = true;
+		}
+	}, false);*/
+	
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
+	jsGFwk.settings.frameRate = 1000 / 60;
+	
+	jsGFwk.include("FastAnimation");
+	jsGFwk.include("Container");
+	jsGFwk.include("IO");
+	jsGFwk.include("Collisions");
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("Sprites");
+	jsGFwk.include("Fonts");
+	jsGFwk.include("Scenes");
+	jsGFwk.include("Path");
+	
+	jsGFwk.Container.createContainer("estela", estela);
+	jsGFwk.createObject(asteroid);
+	jsGFwk.createObject(player);
+	
+	jsGFwk.start();
+</script>

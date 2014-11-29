@@ -16,7 +16,6 @@ jsGFwk.Path = {
 			if (!tension1) { tension1 = point1; }
 			if (!tension2) { tension2 = point2; }
 			
-			console.log('d', 'M' + point1.x + ',' + point1.y + 'C' + tension1.x + ',' + tension1.y + ' ' + tension2.x + ',' + tension2.y + ' ' + point2.x + ',' + point2.y);
 			self._path.setAttribute('d', 'M' + point1.x + ',' + point1.y + 'C' + tension1.x + ',' + tension1.y + ' ' + tension2.x + ',' + tension2.y + ' ' + point2.x + ',' + point2.y);
 			self.length = self._path.getTotalLength();
 		};
