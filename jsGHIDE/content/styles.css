@@ -344,6 +344,17 @@ li.testMenuItem:hover, li.objectMenuItem:hover, li.fileMenuItem:hover {
 	cursor: pointer;
 }
 
+.popzipIcon {
+	position: absolute;
+	top: 40px;
+	right: 40px;
+	z-index: 10000000;
+	background-color: white;
+	padding: 3px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
 .ui-dialog-title {
 	font-size: 10pt;
 	color: #000000 !important;

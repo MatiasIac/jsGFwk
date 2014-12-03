@@ -45,6 +45,15 @@ zafiro = (function() {
 			viewportMargin: 10
 		});
 		
+		zafiro.editor.on("blur", function () {
+			if (zafiro.settings.selectedObject !== null) {
+				zafiro.settings.selectedObject.properties.code = zafiro.editor.doc.getValue();
+				
+				//$('.title-header .properties').empty();
+				//$('.title-header .properties').hide();
+			}
+		});
+		
 		$('.fileTitle, .fileProperty').on('click', _fileNameClick);
 		
 		window.onbeforeunload = function(e) {
@@ -103,6 +112,17 @@ zafiro = (function() {
 		$(zafiro.project).unbind('newProject');
 		$(zafiro.actions).bind('newProject', _createNewProject);
 	}
+	
+	function _projectRename() {
+		$(zafiro.actions).on('projectRename', function () {
+			
+			var result = prompt('Rename project', zafiro.project.projectName);
+			if (result !== null) {
+				zafiro.project.projectName = result;
+				$('#page-title').html(zafiro.project.projectName);
+			}			
+		});
+	};
 	
 	function _newObject() {
 		$(zafiro.actions).on('newObject', function () {
@@ -193,6 +213,18 @@ zafiro = (function() {
 		});
 	};
 	
+	function _projectZipCode() {
+		$(zafiro.actions).on('projectZipCode', function () {
+			if (zafiro.settings.isRunned) {
+				var executionResult = zafiro.project.run(zafiro.settings.wasWithDebug);
+				var zip = new JSZip();
+				zip.file("index.html", executionResult);
+				var content = zip.generate({type:"blob"});
+				saveAs(content, zafiro.project.projectName + ".zip");
+			}
+		});
+	};
+	
 	function _removeObject(e, o) {
 		//Clear UI if it is the selected
 		if (zafiro.settings.selectedObject !== null) {
@@ -279,6 +311,8 @@ zafiro = (function() {
 			bindRunProject: _runProject,
 			bindProjectSettings: _projectSettings,
 			bindProjectResults: _projectResultsCode,
+			bindProjectZipResults: _projectZipCode,
+			bindProjectRename: _projectRename,
 			createNewProject: _createNewProject
 		},
 		settings: {
@@ -317,6 +351,8 @@ $(document).ready(function () {
 	zafiro.functions.bindProjectSettings();
 	zafiro.functions.bindProjectResults();
 	zafiro.functions.bindRunProject();
+	zafiro.functions.bindProjectRename();
+	zafiro.functions.bindProjectZipResults();	
 	
 	zafiro.resize();
 	

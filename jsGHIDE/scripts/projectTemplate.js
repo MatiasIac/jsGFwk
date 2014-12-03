@@ -9,6 +9,7 @@ var zafiroProject = function () {
 		clearColor: "black",
 		includes: [
 			{ name: "2D Fast Animation", path: "http://localhost/jsgfwk/Framework/jsGFwk2dFastAnimation.js", enabled: false, instructions: 'jsGFwk.include("FastAnimation");' },
+			{ name: "Timers", path: "http://localhost/jsgfwk/Framework/jsGFwkTimers.js", enabled: false, instructions: '' },
 			{ name: "Resource Manager", path: "http://localhost/jsgfwk/Framework/jsGFwkRM.js", enabled: false, instructions: 'jsGFwk.include("ResourceManager");' },
 			{ name: "IO", path: "http://localhost/jsgfwk/Framework/jsGFwkIO.js", enabled: false, instructions: 'jsGFwk.include("IO");' },
 			{ name: "Cameras", path: "http://localhost/jsgfwk/Framework/jsGFwkCamera.js", enabled: false, instructions: 'jsGFwk.include("Camera");' },
@@ -57,7 +58,7 @@ var zafiroProject = function () {
 	this.run = function (withDebug) {
 		self.errors.splice(0);
 		
-		var stringBuilder = "<html><head></head>";
+		var stringBuilder = "<html>\n<head><title>" + self.projectName + "</title></head>\n";
 		
 		stringBuilder += "<script language='Javascript' src='http://localhost/jsgfwk/Framework/jsGFwk.js'></script>\n";
 		

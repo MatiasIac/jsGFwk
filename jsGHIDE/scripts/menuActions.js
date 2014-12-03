@@ -17,8 +17,12 @@ var menuActions = function() {
 		$(self).trigger('projectResultCode');
 	});
 	
-	$('.renameProject').on('click', function() {
+	$('.popzipIcon').on('click', function () {
+		$(self).trigger('projectZipCode');
+	});
 	
+	$('.renameProject').on('click', function() {
+		$(self).trigger('projectRename');
 	});
 	
 	$('.newObject').on('click', function () {
