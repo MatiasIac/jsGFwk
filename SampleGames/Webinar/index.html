@@ -1,0 +1,42 @@
+<html>
+	<body>
+		<canvas id="canvas" width="300" height="200"></canvas>
+	</body>
+	<script>
+		
+		var c = document.getElementById("canvas");
+		var ctx = c.getContext("2d");
+		
+		var background = new Image();
+		background.src = "background.png";
+		
+		var x = 10;
+		var y = 10;
+		var xBackground = 0;
+		
+		c.addEventListener("click", mouseClick, false);
+		
+		setInterval(function () {
+			ctx.fillStyle = "white";
+			ctx.fillRect(0, 0, 300, 200);
+			
+			ctx.drawImage(background, xBackground, 0);
+			ctx.drawImage(background, xBackground + 511, 0);
+			
+			ctx.fillStyle = "red";
+			ctx.fillRect(x, y, 40, 40);
+			//x++;
+			
+			xBackground--;
+			
+			if (xBackground < -511) {
+				xBackground = 0;
+			}
+		}, 1000/33);
+		
+		function mouseClick(e) {
+			x = e.x;
+			y = e.y;
+		}
+	</script>
+</html>
