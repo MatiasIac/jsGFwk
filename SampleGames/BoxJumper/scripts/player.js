@@ -8,13 +8,26 @@ var player = {
 	
 	areaRecorteX: 40,
 	
-	disparoAcumulador: 0,
 	disparoIntervalo: 0.5,
+	disparoTimer: null,
 	
 	velX: 0,
 	velY: 0,
 	friccion: 0.95,
 	velocidad: 20,
+	
+	init: function () {
+		var self = this;
+		
+		self.disparoTimer = new jsGFwk.Timer({
+			action: function () {
+				
+				jsGFwk._gameObjects.bala.cloneObject({ x: self.x + 25, y: self.y + 15});
+				jsGFwk.ResourceManager.sounds.disparo.audio.play();
+				
+			}, tickTime: self.disparoIntervalo
+		});
+	},
 	
 	update: function (delta) {
 		//D
@@ -52,18 +65,8 @@ var player = {
 		}
 		
 		//SPACEBAR
-		this.disparoAcumulador += delta;
-		
 		if (jsGFwk.IO.keyboard._activeKey[32]) {
-			if (this.disparoAcumulador >= this.disparoIntervalo) {
-				jsGFwk._gameObjects.bala.cloneObject({
-					x: this.x + 25,
-					y: this.y + 15
-				});
-				this.disparoAcumulador = 0;
-				
-				jsGFwk.ResourceManager.sounds.disparo.audio.play();
-			}
+			this.disparoTimer.tick(delta);
 		}
 		
 		this.velY *= this.friccion;
