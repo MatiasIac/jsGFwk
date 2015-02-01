@@ -59,16 +59,22 @@ jsGFwk.Container = (function() {
 			
 			if (cloned.onInit != undefined) { cloned.onInit(initParameters); }
 			_allObjects[_objectCounter] = cloned;
+			
+			return cloned;
 		};
 	}
 	
 	/** @subtitle: createContainer
 	 * @description: Creates a new container.
 	 * @usage: jsGFwk.<i>Container</i>.createContainer(<b>"[container_name]", [object_to_clone]</b>) */
-	_createContainer = function (containerName, settings) {
+	_createContainer = function (containerName, settings, notActivateNow) {
 		var newContainer = new container(settings);
 		newContainer.id = containerName;
-		jsGFwk.createObject(newContainer);
+		if (!notActivateNow) {
+			jsGFwk.createObject(newContainer);
+		}
+		
+		return newContainer;
 	};
 
 	_onStart = function () { };

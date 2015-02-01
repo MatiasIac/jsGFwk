@@ -135,5 +135,8 @@ var jsGFwk = (function(){
 			}
 		},
 		
+		getGameObjects: function () {
+			return this._gameObjects;
+		}
 	};
 })();
