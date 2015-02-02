@@ -2,8 +2,7 @@ var global = {
 	players: 1,
 	trenches: 1,
 	trenchConfig: {
-		maxYTiles: 4,
-		maxXTiles: 4,
+		maxOffsetX: 3,
         trenchDefinition: {
             width: 63,
             height: 63
