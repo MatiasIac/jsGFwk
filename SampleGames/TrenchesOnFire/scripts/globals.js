@@ -4,11 +4,13 @@ var global = {
     playersConfig: {
         player1: {
             topSpeed: 20,
-            friction: 0.7
+            friction: 0.7,
+            breathInterval: 0.01
         },
         player2: {
             topSpeed: 10,
-            friction: 0.95
+            friction: 0.95,
+            breathInterval: 0.01
         }
     },
 	trenchConfig: {

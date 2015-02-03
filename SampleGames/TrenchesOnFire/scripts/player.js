@@ -15,11 +15,27 @@ var player = (function () {
     player.prototype.y = 0;
     player.prototype.currentYSpeed = 0;
     player.prototype.currentXSpeed = 0;
+    player.prototype.sin = 0;
+    player.prototype.height = 56;
+    player.prototype.shadowHeight = 31;
+    
+    player.prototype.breathTimer = null;
 
 	player.prototype.init = function (data) {
         var self = this;
         
         self.config.graphic.reset();
+        
+        self.breathTimer = new jsGFwk.Timer({
+			action: function () {
+				self.height = (Math.sin(self.sin) * 3) + 55;
+                self.shadowHeight = (Math.sin(self.sin) * 3) + 30;
+                
+                self.sin += 0.1;
+                self.sin = self.sin % 3;
+			},
+            tickTime: self.config.generalConfiguration.breathInterval
+		});
         
         if (self.config.player === global.sides.left) {
             self.captureKeys = function (delta) {
@@ -50,7 +66,7 @@ var player = (function () {
                         self.currentYSpeed += 1;
                     }
                 }
-
+                                
                 //SPACEBAR
                 //if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR]) { }
             };
@@ -64,7 +80,9 @@ var player = (function () {
 	
 	player.prototype.update = function (delta) {
         var self = this;
+        
         self.captureKeys(delta);
+        self.breathTimer.tick(delta);
         
         self.currentYSpeed *= self.config.generalConfiguration.friction;
 		self.y += self.currentYSpeed;
@@ -76,8 +94,8 @@ var player = (function () {
 	
 	player.prototype.draw = function (ctx) {
         ctx.save();
-        ctx.drawImage(this.config.shadow.image, this.x - 10, this.y + 24);
-        ctx.drawImage(this.config.graphic.sprite.image, this.x, this.y);
+        ctx.drawImage(this.config.shadow.image, this.x - 10, (this.y + 24) + (31 - this.shadowHeight), 46, this.shadowHeight);
+        ctx.drawImage(this.config.graphic.sprite.image, this.x, this.y + (56 - this.height), 40, this.height);
         ctx.restore();
 	};
     
