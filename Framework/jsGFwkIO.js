@@ -21,6 +21,18 @@ jsGFwk.IO = {
 			jsGFwk.IO.keyboard._activeKey[e.which] = true;
 		},
 		
+		key: {
+			"A": 65,
+			"D": 68,
+			"S": 83,
+			"W": 87,
+			"SPACEBAR": 32
+		},
+		
+		getActiveKeys: function() {
+			return this._activeKey;
+		},
+		
 		registerKeypress: function(f) {
 			this._keyboardCallers.push(f);
 			return (this._keyboardCallers.length - 1);

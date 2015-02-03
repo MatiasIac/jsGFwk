@@ -20,6 +20,7 @@
     <script language="Javascript" src="scripts/hud.js"></script>
 	<script language="Javascript" src="scripts/trenchController.js"></script>
 	<script language="Javascript" src="scripts/trench.js"></script>
+    <script language="Javascript" src="scripts/player.js"></script>
 	
 	<body style="border:0px; margin:0px; padding:0px; background-color: white;">
 		<canvas width="640" height="480" id="canvas"></canvas>
@@ -67,6 +68,13 @@
     var mainHud = new hud();
     var gBackground = new gameBackground();
     
+    var player1 = new player({ player: global.sides.left, generalConfiguration: global.playersConfig.player1 });
+    player1.id = "player1";
+    
+    var player2 = new player({ player: global.sides.right, generalConfiguration: global.playersConfig.player2 });
+    player2.id = "player2";
+    //End of object creation
+    
     jsGFwk.ResourceManager.addGraphic({ name: "face", source: "images/face.png" });
     jsGFwk.ResourceManager.addGraphic({ name: "mainSprite", source: "images/mainSprites.png" });
     jsGFwk.ResourceManager.addGraphic({ name: "hudSprite", source: "images/hud.png" });
@@ -82,29 +90,42 @@
                 jsGFwk.Sprites.createSprite({
                     id: "background", 
                     graphic: jsGFwk.ResourceManager.graphics.mainSprite.image, 
-                    top: 189, 
-                    left: 0, 
-                    width: 640, 
-                    height: 480
+                    top: 189, left: 0, width: 640, height: 480
                 });
                 
                 jsGFwk.Sprites.createSprite({
                     id: "cactusShadow", 
                     graphic: jsGFwk.ResourceManager.graphics.mainSprite.image, 
-                    top: 0, 
-                    left: 126, 
-                    width: 51, 
-                    height: 32
+                    top: 0, left: 126, width: 51, height: 32
                 });
                 
                 jsGFwk.Sprites.createSprite({
                     id: "cactus", 
                     graphic: jsGFwk.ResourceManager.graphics.mainSprite.image, 
-                    top: 1, 
-                    left: 178, 
-                    width: 40, 
-                    height: 57
+                    top: 1, left: 178, width: 40, height: 57
                 });
+                
+                jsGFwk.Sprites.createSprite({
+                    id: "player1Shadow", 
+                    graphic: jsGFwk.ResourceManager.graphics.mainSprite.image, 
+                    top: 154, left: 247, width: 46, height: 31
+                });
+                
+                jsGFwk.Sprites.createSprite({
+                    id: "player2Shadow", 
+                    graphic: jsGFwk.ResourceManager.graphics.mainSprite.image, 
+                    top: 151, left: 330, width: 46, height: 31
+                });
+                
+                jsGFwk.Sprites.createSpriteCollection("allySoldier", 
+                    jsGFwk.ResourceManager.graphics.mainSprite.image, 
+                    [{top: 90, left: 249, width: 40, height: 56 }]);
+                jsGFwk.Sprites.allySoldier.loop(true);
+                
+                jsGFwk.Sprites.createSpriteCollection("axisSoldier", 
+                    jsGFwk.ResourceManager.graphics.mainSprite.image, 
+                    [{top: 91, left: 339, width: 40, height: 56}]);
+                jsGFwk.Sprites.axisSoldier.loop(true);
                 
                 jsGFwk.Sprites.createSpriteCollection("route", 
                     jsGFwk.ResourceManager.graphics.mainSprite.image, 
@@ -124,6 +145,11 @@
                      {left: 491, top: 371, width: 85, height: 99},
                      {left: 608, top: 371, width: 32, height: 99}]);
                 
+                player1.config.graphic = jsGFwk.Sprites.allySoldier;
+                player1.config.shadow = jsGFwk.Sprites.player1Shadow;
+                player2.config.graphic = jsGFwk.Sprites.axisSoldier;
+                player2.config.shadow = jsGFwk.Sprites.player2Shadow;
+                
 				jsGFwk.Scenes.create({name: "hud", 
 					gameObjects: [mainHud] });
 			
@@ -131,7 +157,8 @@
 					gameObjects: [gBackground, 
                                   leftTrenchController, 
                                   rightTrenchController, 
-                                  trenchContainer] });
+                                  trenchContainer,
+                                  player1, player2] });
 					
 				jsGFwk.Scenes.scenes.hud.enable();
                 //jsGFwk.Scenes.scenes.game.enable();

@@ -1,6 +1,16 @@
 var global = {
 	players: 1,
 	trenches: 1,
+    playersConfig: {
+        player1: {
+            topSpeed: 20,
+            friction: 0.7
+        },
+        player2: {
+            topSpeed: 10,
+            friction: 0.95
+        }
+    },
 	trenchConfig: {
 		maxOffsetX: 3,
         trenchDefinition: {
