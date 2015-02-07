@@ -1,4 +1,4 @@
-/*global jsGFwk, global*/
+/*global jsGFwk, global, Bullet*/
 
 var player = (function () {
     "use strict";
@@ -18,13 +18,20 @@ var player = (function () {
     player.prototype.sin = 0;
     player.prototype.height = 56;
     player.prototype.shadowHeight = 31;
+    player.prototype.lookingAt = global.sides.right;
+    player.prototype.bulletContainer = null;
     
     player.prototype.breathTimer = null;
+    player.prototype.bulletFiringTimer = null;
 
 	player.prototype.init = function (data) {
         var self = this;
+                
+        self.config.idle.reset();
+        self.config.walkingRight.reset();
+        self.config.walkingLeft.reset();
         
-        self.config.graphic.reset();
+        self.config.graphic = self.config.idle;
         
         self.breathTimer = new jsGFwk.Timer({
 			action: function () {
@@ -37,6 +44,19 @@ var player = (function () {
             tickTime: self.config.generalConfiguration.breathInterval
 		});
         
+        self.bulletFiringTimer = new jsGFwk.Timer({
+			action: function () {
+				self.bulletContainer.cloneObject({
+                    x: self.x,
+                    y: self.y,
+                    side: self.config.player,
+                    direction: self.lookingAt === global.sides.right ? 1 : -1,
+                    data: self.config.generalConfiguration
+                });
+			},
+            tickTime: self.config.generalConfiguration.bulletFiringInterval
+		});
+        
         if (self.config.player === global.sides.left) {
             self.captureKeys = function (delta) {
                 //D
@@ -44,6 +64,8 @@ var player = (function () {
                     if (self.currentXSpeed < self.config.generalConfiguration.topSpeed) {
                         self.currentXSpeed += 1;
                     }
+                    self.config.graphic = self.config.walkingRight;
+                    self.lookingAt = global.sides.right;
                 }
 
                 //A
@@ -51,6 +73,8 @@ var player = (function () {
                     if (self.currentXSpeed > -self.config.generalConfiguration.topSpeed) {
                         self.currentXSpeed -= 1;
                     }
+                    self.config.graphic = self.config.walkingLeft;
+                    self.lookingAt = global.sides.left;
                 }
 
                 //W
@@ -58,6 +82,7 @@ var player = (function () {
                     if (self.currentYSpeed > -self.config.generalConfiguration.topSpeed) {
                         self.currentYSpeed -= 1;
                     }
+                    self.config.graphic = self.lookingAt === global.sides.right ? self.config.walkingRight : self.config.walkingLeft;
                 }
 
                 //S
@@ -65,10 +90,17 @@ var player = (function () {
                     if (self.currentYSpeed < self.config.generalConfiguration.topSpeed) {
                         self.currentYSpeed += 1;
                     }
+                    self.config.graphic = self.lookingAt === global.sides.right ? self.config.walkingRight : self.config.walkingLeft;
+                }
+                
+                if (!jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+                    self.config.graphic = self.config.idle;
                 }
                                 
                 //SPACEBAR
-                //if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR]) { }
+                if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR]) {
+                    self.bulletFiringTimer.tick(delta);
+                }
             };
         } else {
             self.captureKeys = function () {

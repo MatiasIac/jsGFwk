@@ -19,15 +19,19 @@ jsGFwk.FastAnimation = {
 			jsGFwk.FastAnimation._lastFrame = thisFrame;
 			
 			jsGFwk.FastAnimation._2Dbuffer.save();
-					jsGFwk.FastAnimation._2Dbuffer.fillStyle = jsGFwk.settings.clearColor;
-					jsGFwk.FastAnimation._2Dbuffer.fillRect(0, 0, jsGFwk.FastAnimation._canvas.width, jsGFwk.FastAnimation._canvas.height);
+				jsGFwk.FastAnimation._2Dbuffer.fillStyle = jsGFwk.settings.clearColor;
+				jsGFwk.FastAnimation._2Dbuffer.fillRect(0, 0, jsGFwk.FastAnimation._canvas.width, jsGFwk.FastAnimation._canvas.height);
 			jsGFwk.FastAnimation._2Dbuffer.restore();
 			
 			for (var name in jsGFwk._gameObjects) {
 				if (jsGFwk._gameObjects[name] !== null) {
 					var o = jsGFwk._gameObjects[name];
 					if (o.update) { o.update(delta); }
-					if (o.draw && o.visible) { o.draw(jsGFwk.FastAnimation._2Dbuffer); }
+					if (o.draw && o.visible) {
+						jsGFwk.FastAnimation._2Dbuffer.save();
+						o.draw(jsGFwk.FastAnimation._2Dbuffer);
+						jsGFwk.FastAnimation._2Dbuffer.restore();
+					}
 				}
 			}
 

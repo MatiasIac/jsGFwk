@@ -104,6 +104,20 @@ jsGFwk.Sprites = {
 		}
 	},
 	
+	generateStandardCrop: function (base, howMany, inverted) {
+		var values = [];
+		for (var i = 0; i < howMany; i++) {
+			values.push({
+				left: base.left + (i * base.width),
+				top: base.top,
+				width: base.width,
+				height: base.height,
+				inverted: inverted !== undefined && inverted
+			});
+		}
+		return values;
+	},
+	
 	//{ id: 'Sprite Name', graphic: image, top: 0, left: 0, width: 0, height: 0 }
 	createSprite: function (spriteObject, filter) {
 		jsGFwk.Sprites[spriteObject.id] = {};

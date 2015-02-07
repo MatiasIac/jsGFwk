@@ -45,12 +45,10 @@ var hud = (function () {
 	};
 	
 	hud.prototype.draw = function (ctx) {
-        ctx.save();
         ctx.drawImage(jsGFwk.Sprites.hud.spriteBag[0].image, 0, 0);
         ctx.drawImage(jsGFwk.Sprites.hud.spriteBag[1].image, 0, 0);
         ctx.drawImage(jsGFwk.Sprites.hud.spriteBag[2].image, 0, 0);
         ctx.drawImage(jsGFwk.Sprites.hud.spriteBag[3].image, 0, 0);
-        ctx.restore();
 	};
     
     return hud;

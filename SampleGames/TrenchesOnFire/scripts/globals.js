@@ -5,12 +5,16 @@ var global = {
         player1: {
             topSpeed: 20,
             friction: 0.7,
-            breathInterval: 0.01
+            breathInterval: 0.01,
+            bulletSpeed: 2,
+            bulletFiringInterval: 0.5
         },
         player2: {
             topSpeed: 10,
             friction: 0.95,
-            breathInterval: 0.01
+            breathInterval: 0.01,
+            bulletSpeed: 2,
+            bulletFiringInterval: 0.5
         }
     },
 	trenchConfig: {
