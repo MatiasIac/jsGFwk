@@ -168,10 +168,24 @@
                     jsGFwk.Sprites.generateStandardCrop({left: 0, top: 0, width: 7, height: 7}, 2));
                 jsGFwk.Sprites.bullet.loop(true);
                 
+                jsGFwk.Sprites.createSpriteCollection("gun", 
+                    jsGFwk.ResourceManager.graphics.mainSprite.image, 
+                    [{left: 408, top: 137, width: 12, height: 43},
+                     {left: 432, top: 137, width: 12, height: 43},
+                     {left: 460, top: 158, width: 43, height: 9},
+                     {left: 514, top: 137, width: 23, height: 41},
+                     {left: 556, top: 140, width: 28, height: 38},
+                     {left: 607, top: 158, width: 43, height: 9},
+                     {left: 664, top: 138, width: 22, height: 40},
+                     {left: 704, top: 140, width: 27, height: 37}
+                    ]);
+                
                 player1.config.idle = jsGFwk.Sprites.allySoldier;
                 player1.config.walkingRight = jsGFwk.Sprites.allyWalkingRight;
                 player1.config.walkingLeft = jsGFwk.Sprites.allyWalkingLeft;
                 player1.config.shadow = jsGFwk.Sprites.player1Shadow;
+                player1.config.gun = jsGFwk.Sprites.gun;
+                
                 player2.config.graphic = jsGFwk.Sprites.axisSoldier;
                 player2.config.shadow = jsGFwk.Sprites.player2Shadow;
                 

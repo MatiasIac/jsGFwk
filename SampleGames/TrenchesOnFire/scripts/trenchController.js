@@ -102,7 +102,9 @@ var trenchController = (function () {
                     self.createAClone(global.nodeTypes.horizontal);
                 }
                 
+                self.nextX += global.trenchConfig.trenchDefinition.width;
                 self.createAClone(global.nodeTypes.codeRightUp);
+                
                 self.lastNode = global.nodeTypes.codeRightUp;
                 self.nextNode = self.calculateNextNode();
                 
@@ -121,6 +123,7 @@ var trenchController = (function () {
                     self.createAClone(global.nodeTypes.horizontal);
                 }
                 
+                self.nextX -= global.trenchConfig.trenchDefinition.width;
                 self.createAClone(global.nodeTypes.codeLeftUp);
                 
                 self.lastNode = global.nodeTypes.codeLeftUp;
