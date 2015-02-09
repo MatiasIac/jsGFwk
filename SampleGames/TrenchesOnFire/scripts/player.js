@@ -55,8 +55,8 @@ var player = (function () {
         self.bulletFiringTimer = new jsGFwk.Timer({
 			action: function () {
 				self.bulletContainer.cloneObject({
-                    x: self.x,
-                    y: self.y,
+                    x: self.x + 20,
+                    y: self.y + 23,
                     side: self.config.player,
                     direction: self.lookingAt === global.sides.right ? 1 : -1,
                     data: self.config.generalConfiguration,
@@ -123,11 +123,6 @@ var player = (function () {
                 } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
                     self.gunPosition = global.gunPositions.left;
                 }
-                    
-                //Reset the visual state of the gun
-                //if (!jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
-                //    self.config.graphic = self.lookingAt === global.sides.right ? self.config.walkingRight : self.config.walkingLeft; //self.config.idle;
-                //}
                                 
                 //SPACEBAR
                 if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR]) {
@@ -138,7 +133,64 @@ var player = (function () {
             self.config.graphic = self.config.walkingLeft;
             self.gunPosition = global.gunPositions.left;
             
-            self.captureKeys = function () {
+            self.captureKeys = function (delta) {
+                //L
+                if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.L]) {
+                    if (self.currentXSpeed < self.config.generalConfiguration.topSpeed) {
+                        self.currentXSpeed += 1;
+                    }
+                    self.config.graphic = self.config.walkingRight;
+                    self.lookingAt = global.sides.right;
+                }
+
+                //J
+                if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.J]) {
+                    if (self.currentXSpeed > -self.config.generalConfiguration.topSpeed) {
+                        self.currentXSpeed -= 1;
+                    }
+                    self.config.graphic = self.config.walkingLeft;
+                    self.lookingAt = global.sides.left;
+                }
+
+                //I
+                if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.I]) {
+                    if (self.currentYSpeed > -self.config.generalConfiguration.topSpeed) {
+                        self.currentYSpeed -= 1;
+                    }
+                    self.config.graphic = self.lookingAt === global.sides.right ? self.config.walkingRight : self.config.walkingLeft;
+                }
+
+                //K
+                if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.K]) {
+                    if (self.currentYSpeed < self.config.generalConfiguration.topSpeed) {
+                        self.currentYSpeed += 1;
+                    }
+                    self.config.graphic = self.lookingAt === global.sides.right ? self.config.walkingRight : self.config.walkingLeft;
+                }
+                
+                //Verify the gun position
+                if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.L] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.I]) {
+                    self.gunPosition = global.gunPositions.upRight;
+                } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.L] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.K]) {
+                    self.gunPosition = global.gunPositions.downRight;
+                } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.J] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.K]) {
+                    self.gunPosition = global.gunPositions.downLeft;
+                } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.J] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.I]) {
+                    self.gunPosition = global.gunPositions.upLeft;
+                } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.K]) {
+                    self.gunPosition = global.gunPositions.down;
+                } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.I]) {
+                    self.gunPosition = global.gunPositions.up;
+                } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.L]) {
+                    self.gunPosition = global.gunPositions.right;
+                } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.J]) {
+                    self.gunPosition = global.gunPositions.left;
+                }
+                                
+                //SPACEBAR
+                if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.N]) {
+                    self.bulletFiringTimer.tick(delta);
+                }
             };
         }
 	};
@@ -152,12 +204,16 @@ var player = (function () {
         self.breathTimer.tick(delta);
         
         self.currentYSpeed *= self.config.generalConfiguration.friction;
-		self.y += self.currentYSpeed;
+        if ((self.y + self.currentYSpeed) + 56 <= global.gameDimension.height && (self.y + self.currentYSpeed) >= 0) {
+            self.y += self.currentYSpeed;
+        }
+        
 		self.currentXSpeed *= self.config.generalConfiguration.friction;
-		self.x += self.currentXSpeed;
+        if ((self.x + self.currentXSpeed) >= 0 && (self.x + self.currentXSpeed) + 40 <= global.gameDimension.width) {
+            self.x += self.currentXSpeed;
+        }
         
         self.walkingTimer.tick(delta);
-        //this.config.graphic.next();
 	};
 	
 	player.prototype.draw = function (ctx) {
