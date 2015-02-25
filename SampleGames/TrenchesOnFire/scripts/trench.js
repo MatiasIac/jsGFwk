@@ -10,26 +10,21 @@ var trench = (function () {
     trench.prototype.imageIndex = 0;
     	
 	trench.prototype.onInit = function (data) {
-		var self = this;
-		self.x = data.x;
-        self.y = data.y;
-        self.imageIndex = data.imageIndex;
+		this.x = data.x;
+        this.y = data.y;
+        this.imageIndex = data.imageIndex;
 	};
 	
 	trench.prototype.onUpdate = function (delta) {
-        var self = this;
-        self.y += global.gameSpeed;
+        this.y += global.gameSpeed;
         
-        if (self.y > global.gameDimension.height) {
-            self.destroy();
+        if (this.y > global.gameDimension.height) {
+            this.destroy();
         }
 	};
 	
 	trench.prototype.onDraw = function (ctx) {
-        var self = this;
-        ctx.save();
-        ctx.drawImage(jsGFwk.Sprites.route.spriteBag[self.imageIndex].image, self.x, self.y);
-        ctx.restore();
+        ctx.drawImage(jsGFwk.Sprites.route.spriteBag[this.imageIndex].image, this.x, this.y);
 	};
     
     return trench;

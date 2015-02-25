@@ -29,7 +29,7 @@ var player = (function () {
 
 	player.prototype.init = function (data) {
         var self = this;
-                
+        
         self.config.idle.reset();
         self.config.walkingRight.reset();
         self.config.walkingLeft.reset();
