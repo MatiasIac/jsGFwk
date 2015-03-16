@@ -14,13 +14,18 @@ var EndGame = (function () {
     };
     
     end.prototype.update = function (delta) {
-
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER]) {
+            jsGFwk.Scenes.scenes.hud.enable();
+        }
     };
     
     end.prototype.draw = function (ctx) {
         ctx.fillStyle = "white";
         ctx.font = "50pt pixelated";
-        ctx.fillText("You are dead, Wake", 40, 200);
+        ctx.fillText("You are dead, Alan", 40, 200);
+        
+        ctx.font = '20pt pixelated';
+        ctx.fillText("Press Enter", 240, 350);
     };
     
     return end;

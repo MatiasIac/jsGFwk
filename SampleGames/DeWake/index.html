@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Trenches on Fire</title>
+		<title>DeWake</title>
 	</head>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
@@ -15,12 +15,14 @@
 	<script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkJukebox.js"></script>
 	
+    <script language="Javascript" src="scripts/hud.js"></script>
     <script language="Javascript" src="scripts/bullet.js"></script>
     <script language="Javascript" src="scripts/points.js"></script>
     <script language="Javascript" src="scripts/player.js"></script>
     <script language="Javascript" src="scripts/enemyController.js"></script>
     <script language="Javascript" src="scripts/enemy.js"></script>
     <script language="Javascript" src="scripts/endgame.js"></script>
+    <script language="Javascript" src="scripts/page.js"></script>
     <script language="Javascript" src="scripts/particle.js"></script>
     
 	<body style="border:0px; margin:0px; padding:0px; background-color: white;">
@@ -29,6 +31,7 @@
 </html>
 <script>
     var point = 0;
+    var screensCount = 0;
 	
 	jsGFwk.settings.canvas = "canvas";
 	jsGFwk.settings.clearColor = "rgb(10, 10, 10)";
@@ -46,6 +49,8 @@
 	
 	jsGFwk.Fonts.createFont({ name: 'pixelated', source: 'fonts/zxBold.ttf' });
 
+    var hud = new Hud();
+    
     var alanWake = new player();
     var bulletContainer = jsGFwk.Container.createContainer("bulletCloner", new Bullet(), true);
     alanWake.bulletContainer = bulletContainer;
@@ -53,12 +58,18 @@
     var enemyCloner = jsGFwk.Container.createContainer("enemyCloner", new Enemy(), true);
     var enemyControl = new enemyController();
     enemyControl.enemies = enemyCloner;
+    alanWake.badCloner = enemyCloner;
     
     var myPoints = new points();
     var endGame = new EndGame();
     
+    var page = new Page();
+
+    jsGFwk.Scenes.create({name: "hud", 
+        gameObjects: [hud] });
+    
     jsGFwk.Scenes.create({name: "game", 
-        gameObjects: [bulletContainer, enemyCloner, alanWake, enemyControl, myPoints] });
+        gameObjects: [bulletContainer, enemyCloner, alanWake, enemyControl, myPoints, page] });
     
     jsGFwk.Scenes.create({name: "endGame", 
         gameObjects: [endGame] });
@@ -83,7 +94,7 @@
         });
     });
     
-    jsGFwk.Scenes.scenes.game.enable();
+    jsGFwk.Scenes.scenes.hud.enable();
     
     /*jsGFwk.createObject({
 		id: "progress",

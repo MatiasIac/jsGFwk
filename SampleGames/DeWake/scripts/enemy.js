@@ -14,8 +14,11 @@ var Enemy = (function () {
     enemy.prototype.height = 30;
     enemy.prototype.isRectColliding = null;
     enemy.prototype.particles = null;
+    enemy.prototype.speedTimer = null;
 	
 	enemy.prototype.onInit = function (parameters) {
+        var self = this;
+        
 		this.x = parameters.x;
 		this.y = parameters.y;
 		this.enemySpeed = parameters.speed;
@@ -32,6 +35,15 @@ var Enemy = (function () {
 		this.particles.size = 10;
 		this.particles.sizeRandom = 5;
 		this.particles.lifeSpan = 0.5;
+        
+        this.speedTimer = new jsGFwk.Timer({
+			action: function () {
+                if (self.enemySpeed > 5) {
+                    self.enemySpeed -= 5;
+                }
+			},
+            tickTime: 0.5
+		});
 	};
     
 	enemy.prototype.onUpdate = function (delta) {
@@ -53,6 +65,7 @@ var Enemy = (function () {
         }
         
         this.particles.update(delta);
+        this.speedTimer.tick(delta);
 	};
     
 	enemy.prototype.onDraw = function (ctx) {

@@ -19,9 +19,15 @@ var player = (function () {
     p.prototype.position = 0;
     p.prototype.availableBullets = 10;
     p.prototype.live = 255;
+    p.prototype.badCloner = null;
     
     p.prototype.init = function () {
         var self = this;
+        
+        self.x = 310;
+        self.y = 210;
+        self.availableBullets = 10;
+        self.live = 255;
                 
         self.bulletFiringTimer = new jsGFwk.Timer({
 			action: function () {
@@ -108,6 +114,22 @@ var player = (function () {
         
         if (self.live <= 0) {
             jsGFwk.Scenes.scenes.endGame.enable();
+        }
+        
+        if (this.y > 480 || this.y < -10 || this.x < -10 || this.x > 640) {
+            self.bulletContainer.clearAll();
+            self.badCloner.clearAll();
+            
+            screensCount += 1;
+            if (screensCount >= 10) {
+                screensCount = 0;
+                jsGFwk.getGameObjects().page.showPage();
+            }
+            
+            if (this.y > 480) { this.y = 0; }
+            if (this.y < -10) { this.y = 470; }
+            if (this.x < -10) { this.x = 630; }
+            if (this.x > 640) { this.x = 0; }
         }
     };
     

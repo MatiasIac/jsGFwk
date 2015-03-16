@@ -31,7 +31,8 @@ jsGFwk.IO = {
 			"N": 78,
 			"S": 83,
 			"W": 87,
-			"SPACEBAR": 32
+			"SPACEBAR": 32,
+			"ENTER": 13
 		},
 		
 		getActiveKeys: function() {
