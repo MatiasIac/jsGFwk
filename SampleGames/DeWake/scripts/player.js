@@ -20,9 +20,12 @@ var player = (function () {
     p.prototype.availableBullets = 10;
     p.prototype.live = 255;
     p.prototype.badCloner = null;
+    p.prototype.walls = [];
     
     p.prototype.init = function () {
         var self = this;
+        
+        self.walls = [false, false, false, false];
         
         self.x = 310;
         self.y = 210;
@@ -63,27 +66,56 @@ var player = (function () {
         
     };
     
+    p.prototype.getRandom = function () {
+        return ((Math.random() * 10) + 1) < 5;
+    };
+    
+    p.prototype.resetScreen = function () {
+        var self = this;
+        
+        self.bulletContainer.clearAll();
+        self.badCloner.clearAll();
+
+        screensCount += 1;
+        if (screensCount >= 10) {
+            screensCount = 0;
+            jsGFwk.getGameObjects().page.showPage();
+        }
+    };
+    
     p.prototype.update = function (delta) {
         var self = this;
         
         //D
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
             self.x += self.speed;
+            if (self.walls[3] && self.x > 620) {
+                self.x = 620;
+            }
         }
 
         //A
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
             self.x -= self.speed;
+            if (self.walls[1] && self.x < 10) {
+                self.x = 10;
+            }
         }
 
         //W
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
             self.y -= self.speed;
+            if (self.walls[0] && self.y < 10) {
+                self.y = 10;
+            }
         }
 
         //S
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
             self.y += self.speed;
+            if (self.walls[2] && self.y > 460) {
+                self.y = 460;
+            }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR]) {
@@ -116,21 +148,30 @@ var player = (function () {
             jsGFwk.Scenes.scenes.endGame.enable();
         }
         
-        if (this.y > 480 || this.y < -10 || this.x < -10 || this.x > 640) {
-            self.bulletContainer.clearAll();
-            self.badCloner.clearAll();
-            
-            screensCount += 1;
-            if (screensCount >= 10) {
-                screensCount = 0;
-                jsGFwk.getGameObjects().page.showPage();
-            }
-            
-            if (this.y > 480) { this.y = 0; }
-            if (this.y < -10) { this.y = 470; }
-            if (this.x < -10) { this.x = 630; }
-            if (this.x > 640) { this.x = 0; }
+        if (this.y > 480) {
+            self.resetScreen();
+            this.y = 0;
+            this.walls = [false, self.getRandom(), self.getRandom(), self.getRandom()];
         }
+
+        if (this.y < -10) {
+            self.resetScreen();
+            this.y = 470;
+            this.walls = [self.getRandom(), self.getRandom(), false, self.getRandom()];
+        }
+        
+        if (this.x < -10) {
+            self.resetScreen();
+            this.x = 630;
+            this.walls = [self.getRandom(), self.getRandom(), self.getRandom(), false];
+        }
+        
+        if (this.x > 640) {
+            self.resetScreen();
+            this.x = 0;
+            this.walls = [self.getRandom(), false, self.getRandom(), self.getRandom()];
+        }
+        
     };
     
     p.prototype.draw = function (ctx) {
@@ -141,6 +182,27 @@ var player = (function () {
         ctx.fillStyle = "gray";
         for (i = 0; i < self.availableBullets; i += 1) {
             ctx.fillRect((10 * i) + 5, 460, 5, 5);
+        }
+        
+        ctx.fillStyle = "#cccccc";
+        //Up
+        if (self.walls[0]) {
+            ctx.fillRect(0, 0, 640, 10);
+        }
+        
+        //left
+        if (self.walls[1]) {
+            ctx.fillRect(0, 0, 10, 480);
+        }
+        
+        //down
+        if (self.walls[2]) {
+            ctx.fillRect(0, 470, 640, 10);
+        }
+
+        //rigth
+        if (self.walls[3]) {
+            ctx.fillRect(630, 0, 10, 480);
         }
     };
     
