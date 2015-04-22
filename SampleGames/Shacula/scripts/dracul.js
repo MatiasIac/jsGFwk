@@ -1,13 +1,12 @@
 var dracul = {
-	id: "dracul",
-	visible: true,
+	id: "dracul", visible: true,
+		
+	isRight: true, movementSpeed: 1,
 	
-	isJumping: false, isFalling: true, canFly: false,
+	x: 560, y: 30, width: 15, height: 30,
 	
-	isRight: true,
-	
-	x: 560, y: 30, width: 15, height: 28, xTemp: 560, yTemp: 30,
-	
+    targetPosition: { up: false, right: true, left: false },
+    
 	gravity: 0.1, initialVel: 0, fallVel: 0,
 	
 	animCounter: 0, animDelay: 0.2,
@@ -113,15 +112,18 @@ var dracul = {
 	},
 	
 	drawDead: function (context) {
-		context.save();
-			context.drawImage(jsGFwk.Sprites.die.sprite.image,
-				this.x, this.y - 4);
-		context.restore();
+        context.drawImage(jsGFwk.Sprites.die.sprite.image, this.x, this.y - 4);
 	},
 	/*END DEAD*/
 	
 	/*NORMAL STATE*/
 	updateNormal: function (delta) {
+        var isUpPressed = false;
+        
+        this.targetPosition.up = false;
+        this.targetPosition.right = false;
+        this.targetPosition.left = false;
+        
 		this.animCounter += delta;
 		
 		// SPACE BAR
@@ -159,42 +161,38 @@ var dracul = {
 				this.currentGraphic = jsGFwk.Sprites.jumpLeft.sprite.image;
 				this.graphicPointer = jsGFwk.Sprites.jumpLeft;
 			}
-			this.yTemp = this.y;
-			this.y -= 0.1;
-			this.isJumping = true;
-			this.fallVel = this.initialVel;
-		} else { 
-			this.yTemp = this.y;
-			//this.fallVel += this.gravity;
-			this.y++ //= this.fallVel;
-			this.isJumping = false; 
+            isUpPressed = true;
+            this.targetPosition.up = true;
+		} else {
+            isUpPressed = false;
+            this.targetPosition.up = false;
 		}
 				
 		//A: 65
 		if (jsGFwk.IO.keyboard._activeKey[65] && 
 			!jsGFwk.IO.keyboard._activeKey[67]) {
-			if (!this.isJumping && !this.isFalling) {
+            
+			if (!isUpPressed) {
 				this.currentGraphic = jsGFwk.Sprites.walkLeft.sprite.image;
 				this.graphicPointer = jsGFwk.Sprites.walkLeft;
-			} else if (!this.isJumping && this.isFalling) {
-				this.currentGraphic = jsGFwk.Sprites.hangedLeft.sprite.image;
-				this.graphicPointer = jsGFwk.Sprites.hangedLeft;
 			}
-			this.isRight = false;
-			this.xTemp = this.x;
-			this.x--;
+
+            this.targetPosition.right = false;
+            this.targetPosition.left = true;
+            this.isRight = false;
+            
 		} else if (jsGFwk.IO.keyboard._activeKey[68] && 
 			!jsGFwk.IO.keyboard._activeKey[67]) {
-			if (!this.isJumping && !this.isFalling) {
+            //D: 68
+            
+			if (!isUpPressed) {
 				this.currentGraphic = jsGFwk.Sprites.walkRight.sprite.image;
 				this.graphicPointer = jsGFwk.Sprites.walkRight;
-			} else if (!this.isJumping && this.isFalling) {
-				this.currentGraphic = jsGFwk.Sprites.hangedRight.sprite.image;
-				this.graphicPointer = jsGFwk.Sprites.hangedRight;
 			}
-			this.isRight = true;
-			this.xTemp = this.x;
-			this.x++;
+			
+            this.targetPosition.right = true;
+            this.targetPosition.left = false;
+            this.isRight = true;
 		}
 		
 		if (!jsGFwk.IO.keyboard._activeKey[65] && 
@@ -207,10 +205,13 @@ var dracul = {
 					this.currentGraphic = jsGFwk.Sprites.idleLeft.sprite.image;
 					this.graphicPointer = jsGFwk.Sprites.idleLeft;
 				}
-				this.isJumping = false;
+				isUpPressed = false;
+                this.targetPosition.right = false;
+                this.targetPosition.left = false;
 		}
 		
-		if (jsGFwk.IO.keyboard._activeKey[67] && !this.isFalling && !this.isJumping) {
+        //Action
+		if (jsGFwk.IO.keyboard._activeKey[67]) {
 			if (this.isRight) {
 				this.currentGraphic = jsGFwk.Sprites.actionRight.sprite.image;
 				this.graphicPointer = jsGFwk.Sprites.actionRight;
@@ -235,92 +236,8 @@ var dracul = {
 			});
 		}
 		
-		/*if (!this.isJumping) {
-			//this.yTemp = this.y;
-			this.fallVel += this.gravity;
-			this.yTemp += this.fallVel;
-			//this.y += this.fallVel;
-		} /*else {
-			if (this.canFly) {
-				this.yTemp = this.y;
-				this.y -= 0.1;
-			}
-		}*/
-		
-		var colliders = [];
-		
-		jsGFwk._gameObjects.container.eachCloned(function (clon, event) {		
-			if (clon.tileType < 4) {
-				var collide = jsGFwk._gameObjects.dracul.isRectColliding(clon);
-				
-				if (collide) {
-					colliders.push(clon);
-				}
-				
-				//if (collide) { event.cancel = true; }
-				
-				/*if (collide && 
-				   ((jsGFwk._gameObjects.dracul.yTemp + jsGFwk._gameObjects.dracul.height) < clon.y)
-				   && !jsGFwk._gameObjects.dracul.isJumping) {
-					jsGFwk._gameObjects.dracul.fallVel = jsGFwk._gameObjects.dracul.initialVel;
-					jsGFwk._gameObjects.dracul.isFalling = false;
-					jsGFwk._gameObjects.dracul.y = jsGFwk._gameObjects.dracul.yTemp;
-				} else {
-					jsGFwk._gameObjects.dracul.fallVel = jsGFwk._gameObjects.dracul.initialVel;
-					jsGFwk._gameObjects.dracul.isFalling = true;
-				}
-
-				if (collide && 
-					((jsGFwk._gameObjects.dracul.xTemp > clon.x) || 
-					 (jsGFwk._gameObjects.dracul.xTemp + jsGFwk._gameObjects.dracul.width < clon.x))) {
-					jsGFwk._gameObjects.dracul.x = jsGFwk._gameObjects.dracul.xTemp;
-				}
-
-				if (collide && (jsGFwk._gameObjects.dracul.yTemp < (clon.y + clon.height))
-					&& jsGFwk._gameObjects.dracul.isJumping) {
-					jsGFwk._gameObjects.dracul.y = jsGFwk._gameObjects.dracul.yTemp;
-				    jsGFwk._gameObjects.dracul.canFly = false;
-				} else {
-					jsGFwk._gameObjects.dracul.canFly = true;
-				}*/
-			}
-		});
-		
-		var canFall = true;
-		var canLeftOrRight = true;
-		var canFly = false;
-			
-		if (colliders.length > 0) {
-			var drac = jsGFwk._gameObjects.dracul;
-			
-			for (var i = 0; i < colliders.length;i++) {
-				var clon = colliders[i];
-				
-				if ((drac.yTemp + drac.height) > clon.y &&
-					) {
-					canFall = false;
-				}
-				
-				if ((drac.x < clon.x) || (drac.x + drac.width > clon.x) 
-					&& !((drac.yTemp + drac.height) < clon.y)) {
-					canLeftOrRight = false;
-				}
-			}			
-			//var flying = collide && ()
-		}
-		
-		if (canFall) {
-			this.isFalling = true;
-		} else {
-			this.y = this.yTemp;
-			this.fallVel = this.initialVel;
-			this.isFalling = false;
-		}
-		
-		if (!canLeftOrRight) {
-			this.x = this.xTemp;
-		}
-			
+        this.validateMovement();
+                
 		if (this.animCounter >= this.animDelay) {
 			this.animCounter = 0;
 			this.graphicPointer.next();
@@ -329,12 +246,66 @@ var dracul = {
 	},
 	
 	drawNormal: function (context) {
-		context.save();
-			context.drawImage(this.currentGraphic, this.x, this.y - 6);
-		context.restore();
+        context.drawImage(this.currentGraphic, this.x, this.y - 6);
 	},
 	/*END NORMAL*/
 	
+    validateMovement: function () {
+        var self = this;
+        var target = { 
+            x: this.x, 
+            y: this.y,
+            width: 15,
+            height: 28,
+            collider: jsGFwk.Collisions._rectColliding
+        };
+        
+        if (this.targetPosition.up) {
+            target.y -= this.movementSpeed;
+            if (this.notCollide(target)) {
+                this.y = target.y;
+            }
+        } else {
+            target.y += this.movementSpeed;
+            if (this.notCollide(target)) {
+                this.y = target.y;
+            } else {
+                this.y = this.clonFound.y - this.clonFound.height;
+            }
+        }
+        
+        if (this.targetPosition.left) {
+            target.x -= this.movementSpeed;
+            if (this.notCollide(target)) {
+                this.x = target.x;
+            }
+        } else if (this.targetPosition.right) {
+            target.x += this.movementSpeed;
+            if (this.notCollide(target)) {
+                this.x = target.x;
+            }
+        }
+        
+    },
+    
+    clonFound: {},
+    
+    notCollide: function (target) {
+        var notCollide = true;
+        var self = this;
+        
+        jsGFwk._gameObjects.container.eachCloned(function (clon, event) {		
+            if (clon.tileType < 4) {
+                if (target.collider(clon)) {
+                    self.clonFound = clon;
+                    notCollide = false;
+                    event.cancel = true;
+                }
+            }
+        });
+        return notCollide;
+    },
+    
 	updateSonarPointer: function () {},
 	drawSonarPointer: function () {},
 	
@@ -342,22 +313,20 @@ var dracul = {
 	drawPointer: function () {},
 	
 	drawOil: function (context) {
-		context.save();
-			var totalOil = (((this.lightOil * 100) / this.maxOil) * 258) / 100;
-			totalOil = totalOil < 1 ? 1 : totalOil;
-					
-			context.drawImage(jsGFwk.Sprites.oil.image,
-				0, 0, 25, totalOil,
-				576 + this.oilOffsetX, 
-				(26 + this.oilOffsetY) + (258 - totalOil),
-				25, totalOil);
-			context.drawImage(jsGFwk.Sprites.oilWave.sprite.image, 
-				576 + this.oilOffsetX, 
-				(24 + this.oilOffsetY) + (258 - totalOil));
-			context.drawImage(jsGFwk.Sprites.oilPipe.image, 576 + this.oilOffsetX, 25 + this.oilOffsetY);
-			context.drawImage(jsGFwk.Sprites.topPipe.image, 570 + this.oilOffsetX, 0 + this.oilOffsetY);
-			context.drawImage(jsGFwk.Sprites.lowerPipe.image, 570 + this.oilOffsetX, 283 + this.oilOffsetY);
-		context.restore();
+        var totalOil = (((this.lightOil * 100) / this.maxOil) * 258) / 100;
+        totalOil = totalOil < 1 ? 1 : totalOil;
+
+        context.drawImage(jsGFwk.Sprites.oil.image,
+            0, 0, 25, totalOil,
+            576 + this.oilOffsetX, 
+            (26 + this.oilOffsetY) + (258 - totalOil),
+            25, totalOil);
+        context.drawImage(jsGFwk.Sprites.oilWave.sprite.image, 
+            576 + this.oilOffsetX, 
+            (24 + this.oilOffsetY) + (258 - totalOil));
+        context.drawImage(jsGFwk.Sprites.oilPipe.image, 576 + this.oilOffsetX, 25 + this.oilOffsetY);
+        context.drawImage(jsGFwk.Sprites.topPipe.image, 570 + this.oilOffsetX, 0 + this.oilOffsetY);
+        context.drawImage(jsGFwk.Sprites.lowerPipe.image, 570 + this.oilOffsetX, 283 + this.oilOffsetY);
 	},
 	
 	update: function (delta) {

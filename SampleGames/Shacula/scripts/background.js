@@ -5,8 +5,6 @@ var background = {
 	init: function () {},
 	update: function (delta) {},
 	draw: function (context) {
-		context.save();
-			context.drawImage(jsGFwk.Sprites.background1.image, this.x, this.y);
-		context.restore();
+        context.drawImage(jsGFwk.Sprites.background1.image, this.x, this.y);
 	}
 };

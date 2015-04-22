@@ -23,12 +23,10 @@ var dayCounter = {
 		//this.angle++;
 	},
 	draw: function (context) {
-		context.save();
-			this.rotate({ angle: this.angle, then: function (c) {
-				context.drawImage(jsGFwk.ResourceManager.graphics.dayNight.image,
-					0, 0, 100, 100);
-				}
-			});
-		context.restore();
+        this.rotate({ angle: this.angle, then: function (c) {
+            context.drawImage(jsGFwk.ResourceManager.graphics.dayNight.image,
+                0, 0, 100, 100);
+            }
+        });
 	}
 };

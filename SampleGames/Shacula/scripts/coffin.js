@@ -5,8 +5,6 @@ var coffin = {
 	init: function () {},
 	update: function (delta) {},
 	draw: function (context) {
-		context.save();
-			context.drawImage(jsGFwk.Sprites.goal.image, this.x, this.y - 6);
-		context.restore();
+        context.drawImage(jsGFwk.Sprites.goal.image, this.x, this.y - 6);
 	}
 };
