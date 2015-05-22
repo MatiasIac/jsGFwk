@@ -41,18 +41,21 @@ var Bullet = (function () {
         } else {
             jsGFwk.getGameObjects().enemyCloner.eachCloned(function (item) {
                 if (self.isRectColliding(item)) {
-                    if (item.width === 10) {
+                    if (item.width <= 10) {
                         point += 1;
                         item.destroy();
-                        self.destroy();
+                    } else {
+                        item.shrink();
                     }
+                    explodeJuke.play();
+                    self.destroy();
                 }
             });
         }
 	};
 	
 	bullet.prototype.onDraw = function (ctx) {
-        ctx.fillStyle = "gray";
+        ctx.fillStyle = "cyan";
         ctx.fillRect(this.x, this.y, 5, 5);
 	};
     

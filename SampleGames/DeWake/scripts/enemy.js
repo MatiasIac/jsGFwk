@@ -16,6 +16,14 @@ var Enemy = (function () {
     enemy.prototype.particles = null;
     enemy.prototype.speedTimer = null;
 	
+    enemy.prototype.shrink = function () {
+        var self = this;
+        self.width -= 5;
+        self.height -= 5;
+        self.x -= 2.5;
+        self.y -= 2.5;
+    };
+    
 	enemy.prototype.onInit = function (parameters) {
         var self = this;
         

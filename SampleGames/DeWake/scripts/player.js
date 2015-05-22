@@ -9,7 +9,7 @@ var player = (function () {
     p.prototype.id = "alan";
     p.prototype.visible = true;
     
-    p.prototype.bulletFiringInterval = 0.5;
+    p.prototype.bulletFiringInterval = 0.2;
     p.prototype.x = 310;
     p.prototype.y = 210;
     p.prototype.width = 10;
@@ -21,11 +21,17 @@ var player = (function () {
     p.prototype.live = 255;
     p.prototype.badCloner = null;
     p.prototype.walls = [];
+    p.prototype.wallsCloner = null;
+    p.prototype.wallPassTimer = null;
+    p.prototype.wallAlreadyTicked = true;
     
     p.prototype.init = function () {
         var self = this;
         
         self.walls = [false, false, false, false];
+        
+        point = 0;
+        screensCount = 0;
         
         self.x = 310;
         self.y = 210;
@@ -41,6 +47,7 @@ var player = (function () {
                         direction: self.position
                     });
                     self.availableBullets -= 1;
+                    laserJuke.play();
                 }
 			},
             tickTime: self.bulletFiringInterval
@@ -64,6 +71,21 @@ var player = (function () {
             tickTime: self.bulletFiringInterval
 		});
         
+        self.wallPassTimer = new jsGFwk.Timer({
+			action: function () {
+                if (!self.wallAlreadyTicked) {
+                    self.walls = [self.getRandom(), 
+                        self.getRandom(),
+                        self.getRandom(),
+                        self.getRandom()];
+                    self.wallAlreadyTicked = true;
+                    jsGFwk.ResourceManager.sounds.doors.audio.play();
+                    
+                    self.walls[0] = self.walls.join() == 'true,true,true,true' ? false : self.walls[0];
+                }
+			},
+            tickTime: 0
+		});
     };
     
     p.prototype.getRandom = function () {
@@ -75,12 +97,32 @@ var player = (function () {
         
         self.bulletContainer.clearAll();
         self.badCloner.clearAll();
+        self.wallsCloner.clearAll();
 
         screensCount += 1;
-        if (screensCount >= 10) {
-            screensCount = 0;
-            jsGFwk.getGameObjects().page.showPage();
-        }
+        
+        jsGFwk.getGameObjects().wallsController.enterOnScene();
+        self.wallPassTimer.tickTime = screensCount;
+        self.wallAlreadyTicked = false;
+        
+        jsGFwk.getGameObjects().page.showPage();
+    };
+    
+    p.prototype.checkWallCollision = function (whereToMove) {
+        var self = this,
+            collide = false;
+        
+        whereToMove.width = self.width;
+        whereToMove.height = self.height;
+        
+        jsGFwk.getGameObjects().wallCloner.eachCloned(function (item, event) {
+            if (item.isRectColliding(whereToMove)) {
+                collide = true;
+                event.cancel = true;
+            }
+        });
+        
+        return collide;
     };
     
     p.prototype.update = function (delta) {
@@ -88,33 +130,41 @@ var player = (function () {
         
         //D
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
-            self.x += self.speed;
-            if (self.walls[3] && self.x > 620) {
-                self.x = 620;
+            if (!self.checkWallCollision({ x: self.x + self.speed, y: self.y })) {
+                self.x += self.speed;
+                if (self.walls[3] && self.x > 620) {
+                    self.x = 620;
+                }
             }
         }
 
         //A
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
-            self.x -= self.speed;
-            if (self.walls[1] && self.x < 10) {
-                self.x = 10;
+            if (!self.checkWallCollision({ x: self.x - self.speed, y: self.y })) {            
+                self.x -= self.speed;
+                if (self.walls[1] && self.x < 10) {
+                    self.x = 10;
+                }
             }
         }
 
         //W
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
-            self.y -= self.speed;
-            if (self.walls[0] && self.y < 10) {
-                self.y = 10;
+            if (!self.checkWallCollision({ x: self.x, y: self.y - self.speed })) {
+                self.y -= self.speed;
+                if (self.walls[0] && self.y < 10) {
+                    self.y = 10;
+                }
             }
         }
 
         //S
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
-            self.y += self.speed;
-            if (self.walls[2] && self.y > 460) {
-                self.y = 460;
+            if (!self.checkWallCollision({ x: self.x, y: self.y + self.speed })) {
+                self.y += self.speed;
+                if (self.walls[2] && self.y > 460) {
+                    self.y = 460;
+                }
             }
         }
         
@@ -125,58 +175,63 @@ var player = (function () {
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
-            self.position = 3;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
-            self.position = 4;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
             self.position = 7;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
             self.position = 6;
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
+            self.position = 3;
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+            self.position = 4;
         } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
-            self.position = 0;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
             self.position = 1;
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+            self.position = 0;
         } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
-            self.position = 2;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
             self.position = 5;
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+            self.position = 2;
         }
         
         self.liveTimer.tick(delta);
+        self.wallPassTimer.tick(delta);
         
-        if (self.live <= 0) {
-            jsGFwk.Scenes.scenes.endGame.enable();
+        if (self.live <= 50) {
+            jsGFwk.Scenes.scenes.hud.enable();
         }
         
         if (this.y > 480) {
             self.resetScreen();
             this.y = 0;
-            this.walls = [false, self.getRandom(), self.getRandom(), self.getRandom()];
+            this.walls = [true, true, true, true];
+            //this.walls = [false, self.getRandom(), self.getRandom(), self.getRandom()];
         }
 
         if (this.y < -10) {
             self.resetScreen();
             this.y = 470;
-            this.walls = [self.getRandom(), self.getRandom(), false, self.getRandom()];
+            this.walls = [true, true, true, true];
+            //this.walls = [self.getRandom(), self.getRandom(), false, self.getRandom()];
         }
         
         if (this.x < -10) {
             self.resetScreen();
             this.x = 630;
-            this.walls = [self.getRandom(), self.getRandom(), self.getRandom(), false];
+            this.walls = [true, true, true, true];
+            //this.walls = [self.getRandom(), self.getRandom(), self.getRandom(), false];
         }
         
         if (this.x > 640) {
             self.resetScreen();
             this.x = 0;
-            this.walls = [self.getRandom(), false, self.getRandom(), self.getRandom()];
+            this.walls = [true, true, true, true];
+            //this.walls = [self.getRandom(), false, self.getRandom(), self.getRandom()];
         }
         
     };
     
     p.prototype.draw = function (ctx) {
         var self = this, i;
-        ctx.fillStyle = "rgb(" + self.live + ", " + self.live + ", " + self.live + ")";
+        ctx.fillStyle = "rgb(" + (self.live / 0.5) + ", " + (self.live) + ", " + self.live + ")";
         ctx.fillRect(self.x, self.y, self.width, self.height);
         
         ctx.fillStyle = "gray";
@@ -184,7 +239,7 @@ var player = (function () {
             ctx.fillRect((10 * i) + 5, 460, 5, 5);
         }
         
-        ctx.fillStyle = "#cccccc";
+        ctx.fillStyle = "magenta";
         //Up
         if (self.walls[0]) {
             ctx.fillRect(0, 0, 640, 10);

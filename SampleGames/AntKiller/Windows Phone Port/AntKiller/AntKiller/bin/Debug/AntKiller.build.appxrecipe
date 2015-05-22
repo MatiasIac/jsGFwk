@@ -7,118 +7,118 @@
     <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
     <PackageIdentityName>71b25391-ad87-4959-baba-d1e2fbd93175</PackageIdentityName>
-    <IntermediateOutputPath>D:\AntKiller\AntKiller\bld\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="D:\AntKiller\AntKiller\bin\Debug\AppxManifest.xml">
+    <AppXManifest Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bin\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\default.html">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\default.html">
       <PackagePath>default.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\images\ant.png">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\images\ant.png">
       <PackagePath>images\ant.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\images\Square150x150Logo.scale-240.png">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\images\Square150x150Logo.scale-240.png">
       <PackagePath>images\Square150x150Logo.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\images\Square44x44Logo.scale-240.png">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\images\Square44x44Logo.scale-240.png">
       <PackagePath>images\Square44x44Logo.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\images\Wide310x150Logo.scale-240.png">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\images\Wide310x150Logo.scale-240.png">
       <PackagePath>images\Wide310x150Logo.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\images\Square71x71Logo.scale-240.png">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\images\Square71x71Logo.scale-240.png">
       <PackagePath>images\Square71x71Logo.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\images\SplashScreen.scale-240.png">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\images\SplashScreen.scale-240.png">
       <PackagePath>images\SplashScreen.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\images\StoreLogo.scale-240.png">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\images\StoreLogo.scale-240.png">
       <PackagePath>images\StoreLogo.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\default.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\default.js">
       <PackagePath>js\default.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwk.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwk.js">
       <PackagePath>js\Framework\jsGFwk.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwk2dFastAnimation.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwk2dFastAnimation.js">
       <PackagePath>js\Framework\jsGFwk2dFastAnimation.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkBasicAnimation.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkBasicAnimation.js">
       <PackagePath>js\Framework\jsGFwkBasicAnimation.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkCamera.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkCamera.js">
       <PackagePath>js\Framework\jsGFwkCamera.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkCollisions.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkCollisions.js">
       <PackagePath>js\Framework\jsGFwkCollisions.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkContainer.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkContainer.js">
       <PackagePath>js\Framework\jsGFwkContainer.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkDebugger.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkDebugger.js">
       <PackagePath>js\Framework\jsGFwkDebugger.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkEffects.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkEffects.js">
       <PackagePath>js\Framework\jsGFwkEffects.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkFonts.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkFonts.js">
       <PackagePath>js\Framework\jsGFwkFonts.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkImages.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkImages.js">
       <PackagePath>js\Framework\jsGFwkImages.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkIO.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkIO.js">
       <PackagePath>js\Framework\jsGFwkIO.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkJukebox.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkJukebox.js">
       <PackagePath>js\Framework\jsGFwkJukebox.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkPath.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkPath.js">
       <PackagePath>js\Framework\jsGFwkPath.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkRM.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkRM.js">
       <PackagePath>js\Framework\jsGFwkRM.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkScenes.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkScenes.js">
       <PackagePath>js\Framework\jsGFwkScenes.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkSprites.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkSprites.js">
       <PackagePath>js\Framework\jsGFwkSprites.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\Framework\jsGFwkTimers.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\Framework\jsGFwkTimers.js">
       <PackagePath>js\Framework\jsGFwkTimers.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\hormiga.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\hormiga.js">
       <PackagePath>js\hormiga.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\js\score.js">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\js\score.js">
       <PackagePath>js\score.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\css\default.css">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\css\default.css">
       <PackagePath>css\default.css</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\css\ui-themed.css">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\css\ui-themed.css">
       <PackagePath>css\ui-themed.css</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\css\ui-themed.theme-dark.css">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\css\ui-themed.theme-dark.css">
       <PackagePath>css\ui-themed.theme-dark.css</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\css\ui-themed.theme-light.css">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\css\ui-themed.theme-light.css">
       <PackagePath>css\ui-themed.theme-light.css</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="D:\AntKiller\AntKiller\bin\Debug\ReverseMap\resources.pri">
+    <AppxPackagedFile Include="C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bin\Debug\ReverseMap\resources.pri">
       <PackagePath>resources.pri</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>

@@ -14,7 +14,7 @@ var Page = (function () {
     page.prototype.height = 15;
     page.prototype.fillColor = "white";
     page.prototype.fillColorTime = null;
-    
+        
     page.prototype.init = function () {
         var self = this;
         
@@ -28,6 +28,11 @@ var Page = (function () {
 			},
             tickTime: 0.01
 		});
+    };
+    
+    page.prototype.hidePage = function () {
+        var self = this;
+        self.visible = false;
     };
     
     page.prototype.showPage = function () {
@@ -48,6 +53,8 @@ var Page = (function () {
             if (this.isRectColliding(jsGFwk.getGameObjects().alan)) {
                 this.visible = false;
                 point += 10;
+                jsGFwk.getGameObjects().alan.availableBullets += 5;
+                jsGFwk.getGameObjects().alan.live = Math.min(255, jsGFwk.getGameObjects().alan.live + 10);
             }
         }
     };

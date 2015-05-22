@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>DeWake</title>
+		<title>TecNoVirus</title>
 	</head>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
@@ -20,8 +20,9 @@
     <script language="Javascript" src="scripts/points.js"></script>
     <script language="Javascript" src="scripts/player.js"></script>
     <script language="Javascript" src="scripts/enemyController.js"></script>
+    <script language="Javascript" src="scripts/wallsController.js"></script>
+    <script language="Javascript" src="scripts/walls.js"></script>
     <script language="Javascript" src="scripts/enemy.js"></script>
-    <script language="Javascript" src="scripts/endgame.js"></script>
     <script language="Javascript" src="scripts/page.js"></script>
     <script language="Javascript" src="scripts/particle.js"></script>
     
@@ -49,6 +50,21 @@
 	
 	jsGFwk.Fonts.createFont({ name: 'pixelated', source: 'fonts/zxBold.ttf' });
 
+    var doorSound = {};
+		doorSound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/doors.mp3" };
+        doorSound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/doors.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "doors", sources: doorSound});
+    
+    var explodeSound = {};
+		explodeSound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/explosion.mp3" };
+        explodeSound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/explosion.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "explode", sources: explodeSound});
+    
+    var laserSound = {};
+		laserSound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/laser.mp3" };
+        laserSound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/laser.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "laser", sources: laserSound});
+        
     var hud = new Hud();
     
     var alanWake = new player();
@@ -60,63 +76,30 @@
     enemyControl.enemies = enemyCloner;
     alanWake.badCloner = enemyCloner;
     
-    var myPoints = new points();
-    var endGame = new EndGame();
+    var wallsCloner = jsGFwk.Container.createContainer("wallCloner", new Walls(), true);
+    var wallsControl = new wallsController();
+    wallsControl.walls = wallsCloner;
+    alanWake.wallsCloner = wallsCloner;
     
+    var myPoints = new points();
     var page = new Page();
 
     jsGFwk.Scenes.create({name: "hud", 
         gameObjects: [hud] });
     
     jsGFwk.Scenes.create({name: "game", 
-        gameObjects: [bulletContainer, enemyCloner, alanWake, enemyControl, myPoints, page] });
+        gameObjects: [bulletContainer, enemyCloner, wallsCloner,
+                      alanWake, enemyControl, wallsControl, myPoints, page] });
     
-    jsGFwk.Scenes.create({name: "endGame", 
-        gameObjects: [endGame] });
+    var laserJuke = {},
+        explodeJuke = {};
     
-    var fakeMouse = {
-        x: 0,
-        y: 0
+    jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+        laserJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.laser });
+        explodeJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.explode });
+        jsGFwk.Scenes.scenes.hud.enable();
     };
-    jsGFwk.Collisions.onObjectCreated(fakeMouse);
     
-    var mouseClickId = jsGFwk.IO.mouse.registerClick(function (coord) {
-        fakeMouse.x = coord.x;
-        fakeMouse.y = coord.y;
-        
-        enemyCloner.eachCloned(function (item) {
-            if (fakeMouse.isRectColliding(item)) {
-                if (item.width > 10) {
-                    item.width -= 10;
-                    item.height -= 10;
-                }
-            }
-        });
-    });
-    
-    jsGFwk.Scenes.scenes.hud.enable();
-    
-    /*jsGFwk.createObject({
-		id: "progress",
-		visible: true,
-		barWidth: 0,
-        loaded: 0,
-		init: function() {
-			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
-		
-    			jsGFwk._gameObjects.progress.destroy();
-			};
-		},
-		update: function(delta) { 
-            this.loaded = parseInt((jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources);
-        },
-		draw: function (context) { 
-			context.fillStyle = "white";
-            context.textAlign = "center";
-            context.fillText("Charging up..." + this.loaded + "%" , 325, 290);
-		}
-	});*/
-	
     jsGFwk.start();
     
 </script>
