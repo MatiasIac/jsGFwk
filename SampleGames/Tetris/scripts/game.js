@@ -17,6 +17,8 @@ var game = {
         this.xGridPos = 0;
         this.yGridPos = 0;
         this.acc = 0;
+        this.rows = 30;
+        this.cols = 10;
     },
     
     cadaBloque: function (blockType, x, y, rotation, drawPointer) {
@@ -35,11 +37,30 @@ var game = {
         }
     },
     
+    ocupado: function (targetX, targetY, targetRotation) {
+        var self = this,
+            bloque = self.blocks[self.currentBlock],
+            resultado = false;
+        
+        self.cadaBloque(bloque, targetX, targetY, targetRotation, function (x, y) {
+            if ((x < 0) || (x >= self.cols) || (y < 0) || (y >= self.rows)) {
+                resultado = true;
+            }
+        });
+        
+        return resultado;
+    },
+    
     update: function (delta) {
         this.acc += delta;
-        if (this.acc >= 1) {
+        if (this.acc >= 0.5) {
             this.acc = 0;
-            this.yGridPos++;
+            
+            if (!this.ocupado(this.xGridPos, this.yGridPos + 1, this.currentRotation)) {
+                this.yGridPos++;
+            } else {
+                //Este elemento pasa a la matrix
+            }
         }
     },
     draw: function (ctx) {
