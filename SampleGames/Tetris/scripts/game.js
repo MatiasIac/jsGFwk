@@ -18,7 +18,7 @@ var game = {
         this.yGridPos = 0;
         this.acc = 0;
         this.rows = 30;
-        this.cols = 10;
+        this.cols = 15;
     },
     
     cadaBloque: function (blockType, x, y, rotation, drawPointer) {
@@ -53,8 +53,35 @@ var game = {
     
     update: function (delta) {
         this.acc += delta;
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
+            if (!this.ocupado(this.xGridPos + 1, this.yGridPos, this.currentRotation)) {
+                this.xGridPos++;
+            }
+        }
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+            if (!this.ocupado(this.xGridPos - 1, this.yGridPos, this.currentRotation)) {
+                this.xGridPos--;
+            }
+        }
+                
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
+            this.yGridPos = 28;
+        }
+        
         if (this.acc >= 0.5) {
             this.acc = 0;
+            
+            if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+                var nextRotation = this.currentRotation + 1;
+                if (nextRotation > 3) {
+                    nextRotation = 0;
+                }
+                if (!this.ocupado(this.xGridPos, this.yGridPos, nextRotation)) {
+                    this.currentRotation = nextRotation;
+                }
+            }
             
             if (!this.ocupado(this.xGridPos, this.yGridPos + 1, this.currentRotation)) {
                 this.yGridPos++;
