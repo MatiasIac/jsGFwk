@@ -15,6 +15,10 @@ var Enemy = (function () {
     enemy.prototype.isRectColliding = null;
     enemy.prototype.particles = null;
     enemy.prototype.speedTimer = null;
+    enemy.prototype.backTimer = null;
+    enemy.prototype.proximity = true;
+    enemy.prototype.cos = 0;
+    enemy.prototype.cosAcc = 0;
 	
     enemy.prototype.shrink = function () {
         var self = this;
@@ -22,6 +26,7 @@ var Enemy = (function () {
         self.height -= 5;
         self.x -= 2.5;
         self.y -= 2.5;
+        self.proximity = false;
     };
     
 	enemy.prototype.onInit = function (parameters) {
@@ -34,16 +39,6 @@ var Enemy = (function () {
 		this.targetY = jsGFwk.getGameObjects().alan.y;
         this.isRectColliding = jsGFwk.Collisions._rectColliding;
         
-        this.particles = new cParticleEmitter();
-		this.particles.init();
-		this.particles.position.y = this.y;
-		this.particles.position.x = this.x;
-		this.particles.positionRandom.x = 0;
-		this.particles.maxParticles = 20;
-		this.particles.size = 10;
-		this.particles.sizeRandom = 5;
-		this.particles.lifeSpan = 0.5;
-        
         this.speedTimer = new jsGFwk.Timer({
 			action: function () {
                 if (self.enemySpeed > 5) {
@@ -52,34 +47,47 @@ var Enemy = (function () {
 			},
             tickTime: 0.5
 		});
+        
+        this.backTimer = new jsGFwk.Timer({
+			action: function () {
+                self.proximity = true;
+			},
+            tickTime: 0.4
+		});
 	};
     
 	enemy.prototype.onUpdate = function (delta) {
         var self = this;
         
-		this.x += (this.targetX - this.x) / this.enemySpeed;
-		this.y += (this.targetY - this.y) / this.enemySpeed;
+        if (this.proximity) {
+            this.x += (this.targetX - this.x) / this.enemySpeed;
+            this.y += (this.targetY - this.y) / this.enemySpeed;
+        } else {
+            this.x -= (this.targetX - this.x) / 40;
+            this.y -= (this.targetY - this.y) / 40;
+        }
 		
 		this.targetX = jsGFwk.getGameObjects().alan.x - 5;
 		this.targetY = jsGFwk.getGameObjects().alan.y - 5;
         
         if (self.isRectColliding(jsGFwk.getGameObjects().alan)) {
             jsGFwk.getGameObjects().alan.live -= 1;
-            this.particles.active = true;
-            this.particles.position.x = this.x;
-            this.particles.position.y = this.y;
-        } else {
-            this.particles.stopParticleEmitter();
+            jsGFwk.getGameObjects().cameraHandler.shake();
         }
         
-        this.particles.update(delta);
         this.speedTimer.tick(delta);
+        this.backTimer.tick(delta);
+        
+        this.cosAcc += 0.1;
+        this.cos = 50 + parseInt(Math.cos(this.cosAcc) * 50);
 	};
     
 	enemy.prototype.onDraw = function (ctx) {
-        this.particles.renderParticles(ctx);
-        ctx.fillStyle = "rgb(" + (255 - this.width) + ", 0, 0)";
+        ctx.strokeStyle = "rgb(" + this.cos + ", " + this.cos + ", " + this.cos + ")";
+        ctx.fillStyle = "rgb(255, 0, 0)";
+        ctx.lineWidth = 5;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
 	};
     
     return enemy;

@@ -14,6 +14,7 @@
 	<script language="Javascript" src="../../Framework/jsGFwkPath.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkJukebox.js"></script>
+    <script language="Javascript" src="../../Framework/jsGFwkCamera.js"></script>
 	
     <script language="Javascript" src="scripts/hud.js"></script>
     <script language="Javascript" src="scripts/bullet.js"></script>
@@ -24,7 +25,8 @@
     <script language="Javascript" src="scripts/walls.js"></script>
     <script language="Javascript" src="scripts/enemy.js"></script>
     <script language="Javascript" src="scripts/page.js"></script>
-    <script language="Javascript" src="scripts/particle.js"></script>
+    <script language="Javascript" src="scripts/cameraHandler.js"></script>
+    <script language="Javascript" src="scripts/tracer.js"></script>
     
 	<body style="border:0px; margin:0px; padding:0px; background-color: white;">
 		<canvas width="640" height="480" id="canvas"></canvas>
@@ -47,6 +49,7 @@
 	jsGFwk.include("Fonts");
 	jsGFwk.include("Scenes");
 	jsGFwk.include("Path");
+    jsGFwk.include("Camera");
 	
 	jsGFwk.Fonts.createFont({ name: 'pixelated', source: 'fonts/zxBold.ttf' });
 
@@ -81,15 +84,27 @@
     wallsControl.walls = wallsCloner;
     alanWake.wallsCloner = wallsCloner;
     
+    var tracerContainer = jsGFwk.Container.createContainer("tracerCloner", new Tracer(), true);
+    alanWake.tracerContainer = tracerContainer;
+    
     var myPoints = new points();
     var page = new Page();
+    var cameraHandler = new CameraHandler();
+    
+    jsGFwk.Camera.createCamera({
+		name: "mainCamera",
+		originPosition: { x: 0, y: 0, width: 640, height: 480 },
+		targetPosition: { x: 0, y: 0, width: 640, height: 480 },
+		enabled: true
+	});
+    cameraHandler.camera = jsGFwk.Camera.cameras.mainCamera;
 
     jsGFwk.Scenes.create({name: "hud", 
         gameObjects: [hud] });
     
     jsGFwk.Scenes.create({name: "game", 
-        gameObjects: [bulletContainer, enemyCloner, wallsCloner,
-                      alanWake, enemyControl, wallsControl, myPoints, page] });
+        gameObjects: [bulletContainer, tracerContainer, enemyCloner, wallsCloner,
+                      alanWake, enemyControl, wallsControl, myPoints, page, cameraHandler] });
     
     var laserJuke = {},
         explodeJuke = {};

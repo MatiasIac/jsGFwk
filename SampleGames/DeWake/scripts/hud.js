@@ -12,8 +12,13 @@ var Hud = (function () {
     hud.prototype.init = function () {
         var self = this;
         
+        jsGFwk.settings.clearColor = "black";
+        jsGFwk.Camera.cameras.mainCamera.originPosition.x = 0;
+        jsGFwk.Camera.cameras.mainCamera.originPosition.y = 0;
+        
         enemyCloner.clearAll();
         bulletContainer.clearAll();
+        wallsCloner.clearAll();
         
         self.showTextTime = new jsGFwk.Timer({
 			action: function () {

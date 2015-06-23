@@ -12,8 +12,8 @@ var player = (function () {
     p.prototype.bulletFiringInterval = 0.2;
     p.prototype.x = 310;
     p.prototype.y = 210;
-    p.prototype.width = 10;
-    p.prototype.height = 10;
+    p.prototype.width = 15;
+    p.prototype.height = 15;
     p.prototype.speed = 4;
     p.prototype.bulletContainer = null;
     p.prototype.position = 0;
@@ -22,8 +22,11 @@ var player = (function () {
     p.prototype.badCloner = null;
     p.prototype.walls = [];
     p.prototype.wallsCloner = null;
-    p.prototype.wallPassTimer = null;
+    p.prototype.wallPassTimer = null
+    p.prototype.wallCollideTimer = null;
     p.prototype.wallAlreadyTicked = true;
+    p.prototype.tracerContainer = null;
+    p.prototype.tracerTimer = null;
     
     p.prototype.init = function () {
         var self = this;
@@ -86,6 +89,23 @@ var player = (function () {
 			},
             tickTime: 0
 		});
+        
+        self.wallCollideTimer = new jsGFwk.Timer({
+			action: function () {
+                jsGFwk.settings.clearColor = "black";
+			},
+            tickTime: 0.2
+		});
+        
+        self.tracerTimer = new jsGFwk.Timer({
+			action: function () {
+                self.tracerContainer.cloneObject({ 
+                    x: self.x + (Math.floor(Math.random() * 10) - 5),
+                    y: self.y + (Math.floor(Math.random() * 30) - 15),
+                    size: (Math.random() * 15) + 2 });
+			},
+            tickTime: 0.1
+		});
     };
     
     p.prototype.getRandom = function () {
@@ -98,6 +118,7 @@ var player = (function () {
         self.bulletContainer.clearAll();
         self.badCloner.clearAll();
         self.wallsCloner.clearAll();
+        self.tracerContainer.clearAll();
 
         screensCount += 1;
         
@@ -134,6 +155,7 @@ var player = (function () {
                 self.x += self.speed;
                 if (self.walls[3] && self.x > 620) {
                     self.x = 620;
+                    jsGFwk.settings.clearColor = "red";
                 }
             }
         }
@@ -144,6 +166,7 @@ var player = (function () {
                 self.x -= self.speed;
                 if (self.walls[1] && self.x < 10) {
                     self.x = 10;
+                    jsGFwk.settings.clearColor = "red";
                 }
             }
         }
@@ -154,6 +177,7 @@ var player = (function () {
                 self.y -= self.speed;
                 if (self.walls[0] && self.y < 10) {
                     self.y = 10;
+                    jsGFwk.settings.clearColor = "red";
                 }
             }
         }
@@ -164,6 +188,7 @@ var player = (function () {
                 self.y += self.speed;
                 if (self.walls[2] && self.y > 460) {
                     self.y = 460;
+                    jsGFwk.settings.clearColor = "red";
                 }
             }
         }
@@ -194,8 +219,10 @@ var player = (function () {
         
         self.liveTimer.tick(delta);
         self.wallPassTimer.tick(delta);
+        self.wallCollideTimer.tick(delta);
+        self.tracerTimer.tick(delta);
         
-        if (self.live <= 50) {
+        if (self.live <= 20) {
             jsGFwk.Scenes.scenes.hud.enable();
         }
         
@@ -231,13 +258,32 @@ var player = (function () {
     
     p.prototype.draw = function (ctx) {
         var self = this, i;
-        ctx.fillStyle = "rgb(" + (self.live / 0.5) + ", " + (self.live) + ", " + self.live + ")";
+        
+        ctx.fillStyle = "red";
         ctx.fillRect(self.x, self.y, self.width, self.height);
+        
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(self.x, self.y, self.width, self.height);
+        
+        ctx.fillStyle = "white";
+        ctx.fillRect(self.x - 1, self.y - 1, (((self.live * 100) / 255) * self.width) / 100, self.height + 2);
         
         ctx.fillStyle = "gray";
         for (i = 0; i < self.availableBullets; i += 1) {
             ctx.fillRect((10 * i) + 5, 460, 5, 5);
         }
+        
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 1;
+        ctx.font = "9pt pixelated";
+        ctx.fillText("power :> 10%", this.x + 40, this.y - 40);
+        ctx.beginPath();
+        ctx.moveTo(this.x + 20, this.y - 5);
+        ctx.lineTo(this.x + 40, this.y - 30);
+        ctx.lineTo(this.x + 100, this.y - 30);
+        ctx.stroke();
         
         ctx.fillStyle = "magenta";
         //Up
