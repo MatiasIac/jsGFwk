@@ -27,6 +27,8 @@ var player = (function () {
     p.prototype.wallAlreadyTicked = true;
     p.prototype.tracerContainer = null;
     p.prototype.tracerTimer = null;
+    p.prototype.cycleColorAccumulator = 0;
+    p.prototype.cicleColorValue = 0;
     
     p.prototype.init = function () {
         var self = this;
@@ -222,7 +224,7 @@ var player = (function () {
         self.wallCollideTimer.tick(delta);
         self.tracerTimer.tick(delta);
         
-        if (self.live <= 20) {
+        if (self.live <= 5) {
             jsGFwk.Scenes.scenes.hud.enable();
         }
         
@@ -254,36 +256,30 @@ var player = (function () {
             //this.walls = [self.getRandom(), false, self.getRandom(), self.getRandom()];
         }
         
+        this.cycleColorAccumulator += 0.5;
+        this.cicleColorValue = 150 + parseInt(Math.cos(this.cycleColorAccumulator) * 50);
     };
     
-    p.prototype.draw = function (ctx) {
-        var self = this, i;
+    p.prototype._showLiveStatus = function (ctx) {
+        var self = this,
+            livePer = (self.live * 100) / 255; 
         
-        ctx.fillStyle = "red";
-        ctx.fillRect(self.x, self.y, self.width, self.height);
-        
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(self.x, self.y, self.width, self.height);
-        
-        ctx.fillStyle = "white";
-        ctx.fillRect(self.x - 1, self.y - 1, (((self.live * 100) / 255) * self.width) / 100, self.height + 2);
-        
-        ctx.fillStyle = "gray";
-        for (i = 0; i < self.availableBullets; i += 1) {
-            ctx.fillRect((10 * i) + 5, 460, 5, 5);
+        if (livePer <= 40) {
+            ctx.fillStyle = "rgb(" + self.cicleColorValue + "," + self.cicleColorValue + "," + self.cicleColorValue + ")";
+            ctx.strokeStyle =  "rgb(" + self.cicleColorValue + "," + self.cicleColorValue + "," + self.cicleColorValue + ")";
+            ctx.lineWidth = 1;
+            ctx.font = "11pt pixelated";
+            ctx.fillText("power :: " + Math.round(livePer) + "%", self.x + 45, self.y - 35);
+            ctx.beginPath();
+            ctx.moveTo(self.x + 20, self.y - 5);
+            ctx.lineTo(self.x + 40, self.y - 30);
+            ctx.lineTo(self.x + 120, self.y - 30);
+            ctx.stroke();
         }
-        
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 1;
-        ctx.font = "9pt pixelated";
-        ctx.fillText("power :> 10%", this.x + 40, this.y - 40);
-        ctx.beginPath();
-        ctx.moveTo(this.x + 20, this.y - 5);
-        ctx.lineTo(this.x + 40, this.y - 30);
-        ctx.lineTo(this.x + 100, this.y - 30);
-        ctx.stroke();
+    };
+    
+    p.prototype._showWalls = function (ctx) {
+        var self = this;
         
         ctx.fillStyle = "magenta";
         //Up
@@ -305,6 +301,28 @@ var player = (function () {
         if (self.walls[3]) {
             ctx.fillRect(630, 0, 10, 480);
         }
+    };
+    
+    p.prototype.draw = function (ctx) {
+        var self = this, i;
+        
+        ctx.fillStyle = "red";
+        ctx.fillRect(self.x, self.y, self.width, self.height);
+        
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(self.x, self.y, self.width, self.height);
+        
+        ctx.fillStyle = "white";
+        ctx.fillRect(self.x - 1, self.y - 1, (((self.live * 100) / 255) * self.width) / 100, self.height + 2);
+        
+        ctx.fillStyle = "gray";
+        for (i = 0; i < self.availableBullets; i += 1) {
+            ctx.fillRect((10 * i) + 5, 460, 5, 5);
+        }
+        
+        self._showLiveStatus(ctx);
+        self._showWalls(ctx);
     };
     
     return p;
