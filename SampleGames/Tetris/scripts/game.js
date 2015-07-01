@@ -19,9 +19,17 @@ var game = {
         this.acc = 0;
         this.rows = 30;
         this.cols = 15;
+        
+        this.board = [];
+        for (var i = 0; i < this.rows; i++) {
+            this.board.push([]);
+            for (var j = 0; j < this.cols; j++) {
+                this.board[i].push(0);
+            }
+        }
     },
     
-    cadaBloque: function (blockType, x, y, rotation, drawPointer) {
+    eachBlock: function (blockType, x, y, rotation, drawPointer) {
         var result, row = 0, col = 0,
             blocks = blockType.positions[rotation];
         
@@ -37,31 +45,47 @@ var game = {
         }
     },
     
-    ocupado: function (targetX, targetY, targetRotation) {
+    isBoardFilled: function (x, y) {
+        return this.board[y][x] === 1;
+    },
+    
+    filled: function (targetX, targetY, targetRotation) {
         var self = this,
-            bloque = self.blocks[self.currentBlock],
-            resultado = false;
+            block = self.blocks[self.currentBlock],
+            result = false;
         
-        self.cadaBloque(bloque, targetX, targetY, targetRotation, function (x, y) {
-            if ((x < 0) || (x >= self.cols) || (y < 0) || (y >= self.rows)) {
-                resultado = true;
+        self.eachBlock(block, targetX, targetY, targetRotation, function (x, y) {
+            if ((x < 0) || (x >= self.cols) || (y < 0) || (y >= self.rows) || self.isBoardFilled(x, y)) {
+                result = true;
             }
         });
         
-        return resultado;
+        return result;
+    },
+    
+    drawBoard: function (ctx) {
+        for (var i = 0; i < this.board.length; i++) {
+            for (var j = 0; j < this.board[i].length; j++) {
+                if (this.board[i][j] === 1) {
+                    ctx.fillStyle = "gray";
+                    ctx.fillRect(j * this.blockSize, i * this.blockSize, this.blockSize, this.blockSize);
+                    ctx.strokeRect(j * this.blockSize, i * this.blockSize, this.blockSize, this.blockSize);
+                }
+            }
+        }
     },
     
     update: function (delta) {
         this.acc += delta;
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
-            if (!this.ocupado(this.xGridPos + 1, this.yGridPos, this.currentRotation)) {
+            if (!this.filled(this.xGridPos + 1, this.yGridPos, this.currentRotation)) {
                 this.xGridPos++;
             }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
-            if (!this.ocupado(this.xGridPos - 1, this.yGridPos, this.currentRotation)) {
+            if (!this.filled(this.xGridPos - 1, this.yGridPos, this.currentRotation)) {
                 this.xGridPos--;
             }
         }
@@ -78,12 +102,12 @@ var game = {
                 if (nextRotation > 3) {
                     nextRotation = 0;
                 }
-                if (!this.ocupado(this.xGridPos, this.yGridPos, nextRotation)) {
+                if (!this.filled(this.xGridPos, this.yGridPos, nextRotation)) {
                     this.currentRotation = nextRotation;
                 }
             }
             
-            if (!this.ocupado(this.xGridPos, this.yGridPos + 1, this.currentRotation)) {
+            if (!this.filled(this.xGridPos, this.yGridPos + 1, this.currentRotation)) {
                 this.yGridPos++;
             } else {
                 //Este elemento pasa a la matrix
@@ -93,12 +117,14 @@ var game = {
     draw: function (ctx) {
         var self = this;
         
-        this.cadaBloque(self.blocks[self.currentBlock], 
+        this.eachBlock(self.blocks[self.currentBlock], 
                         self.xGridPos, self.yGridPos, 
                         self.currentRotation, function(x, y) {
             ctx.fillStyle = self.blocks[self.currentBlock].color;
             ctx.fillRect(x * self.blockSize, y * self.blockSize, self.blockSize, self.blockSize);
             ctx.strokeRect(x * self.blockSize, y * self.blockSize, self.blockSize, self.blockSize);
         });
+        
+        this.drawBoard(ctx);
     }
 };
