@@ -9,12 +9,11 @@ var player = (function () {
     p.prototype.id = "alan";
     p.prototype.visible = true;
     
-    p.prototype.bulletFiringInterval = 0.2;
+    //p.prototype.bulletFiringInterval = 0.2;
     p.prototype.x = 310;
     p.prototype.y = 210;
     p.prototype.width = 15;
     p.prototype.height = 15;
-    p.prototype.speed = 4;
     p.prototype.bulletContainer = null;
     p.prototype.position = 0;
     p.prototype.availableBullets = 10;
@@ -28,15 +27,14 @@ var player = (function () {
     p.prototype.tracerContainer = null;
     p.prototype.tracerTimer = null;
     p.prototype.cycleColorAccumulator = 0;
-    p.prototype.cicleColorValue = 0;
     
     p.prototype.init = function () {
         var self = this;
         
         self.walls = [false, false, false, false];
         
-        point = 0;
-        screensCount = 0;
+        //gameParameters.point = 0;
+        gameParameters.screensCount = 0;
         
         self.x = 310;
         self.y = 210;
@@ -55,7 +53,7 @@ var player = (function () {
                     laserJuke.play();
                 }
 			},
-            tickTime: self.bulletFiringInterval
+            tickTime: gameParameters.fireRate
 		});
         
         self.reloadTimer = new jsGFwk.Timer({
@@ -64,7 +62,7 @@ var player = (function () {
                     self.availableBullets += 1;
                 }
 			},
-            tickTime: self.bulletFiringInterval
+            tickTime: gameParameters.reloadRate
 		});
         
         self.liveTimer = new jsGFwk.Timer({
@@ -73,7 +71,7 @@ var player = (function () {
                     self.live += 1;
                 }
 			},
-            tickTime: self.bulletFiringInterval
+            tickTime: gameParameters.liveRecover
 		});
         
         self.wallPassTimer = new jsGFwk.Timer({
@@ -122,10 +120,10 @@ var player = (function () {
         self.wallsCloner.clearAll();
         self.tracerContainer.clearAll();
 
-        screensCount += 1;
+        gameParameters.screensCount += 1;
         
         jsGFwk.getGameObjects().wallsController.enterOnScene();
-        self.wallPassTimer.tickTime = screensCount;
+        self.wallPassTimer.tickTime = gameParameters.screensCount;
         self.wallAlreadyTicked = false;
         
         jsGFwk.getGameObjects().page.showPage();
@@ -153,8 +151,8 @@ var player = (function () {
         
         //D
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
-            if (!self.checkWallCollision({ x: self.x + self.speed, y: self.y })) {
-                self.x += self.speed;
+            if (!self.checkWallCollision({ x: self.x + gameParameters.speed, y: self.y })) {
+                self.x += gameParameters.speed;
                 if (self.walls[3] && self.x > 620) {
                     self.x = 620;
                     jsGFwk.settings.clearColor = "red";
@@ -164,8 +162,8 @@ var player = (function () {
 
         //A
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
-            if (!self.checkWallCollision({ x: self.x - self.speed, y: self.y })) {            
-                self.x -= self.speed;
+            if (!self.checkWallCollision({ x: self.x - gameParameters.speed, y: self.y })) {            
+                self.x -= gameParameters.speed;
                 if (self.walls[1] && self.x < 10) {
                     self.x = 10;
                     jsGFwk.settings.clearColor = "red";
@@ -175,8 +173,8 @@ var player = (function () {
 
         //W
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
-            if (!self.checkWallCollision({ x: self.x, y: self.y - self.speed })) {
-                self.y -= self.speed;
+            if (!self.checkWallCollision({ x: self.x, y: self.y - gameParameters.speed })) {
+                self.y -= gameParameters.speed;
                 if (self.walls[0] && self.y < 10) {
                     self.y = 10;
                     jsGFwk.settings.clearColor = "red";
@@ -186,8 +184,8 @@ var player = (function () {
 
         //S
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
-            if (!self.checkWallCollision({ x: self.x, y: self.y + self.speed })) {
-                self.y += self.speed;
+            if (!self.checkWallCollision({ x: self.x, y: self.y + gameParameters.speed })) {
+                self.y += gameParameters.speed;
                 if (self.walls[2] && self.y > 460) {
                     self.y = 460;
                     jsGFwk.settings.clearColor = "red";
@@ -257,7 +255,7 @@ var player = (function () {
         }
         
         this.cycleColorAccumulator += 0.5;
-        this.cicleColorValue = 150 + parseInt(Math.cos(this.cycleColorAccumulator) * 50);
+        cicleColorValue = 150 + parseInt(Math.cos(this.cycleColorAccumulator) * 50);
     };
     
     p.prototype._showLiveStatus = function (ctx) {
@@ -265,8 +263,8 @@ var player = (function () {
             livePer = (self.live * 100) / 255; 
         
         if (livePer <= 40) {
-            ctx.fillStyle = "rgb(" + self.cicleColorValue + "," + self.cicleColorValue + "," + self.cicleColorValue + ")";
-            ctx.strokeStyle =  "rgb(" + self.cicleColorValue + "," + self.cicleColorValue + "," + self.cicleColorValue + ")";
+            ctx.fillStyle = "rgb(" + cicleColorValue + "," + cicleColorValue + "," + cicleColorValue + ")";
+            ctx.strokeStyle =  "rgb(" + cicleColorValue + "," + cicleColorValue + "," + cicleColorValue + ")";
             ctx.lineWidth = 1;
             ctx.font = "11pt pixelated";
             ctx.fillText("power :: " + Math.round(livePer) + "%", self.x + 45, self.y - 35);
@@ -316,10 +314,12 @@ var player = (function () {
         ctx.fillStyle = "white";
         ctx.fillRect(self.x - 1, self.y - 1, (((self.live * 100) / 255) * self.width) / 100, self.height + 2);
         
-        ctx.fillStyle = "gray";
-        for (i = 0; i < self.availableBullets; i += 1) {
-            ctx.fillRect((10 * i) + 5, 460, 5, 5);
-        }
+        //Bullets
+        ctx.fillStyle = "rgb(100,100," + cicleColorValue + ")";
+        ctx.fillRect(self.x, self.y + 20, Math.min(((((self.availableBullets * 100) / 10) * 15) / 100), 15), 3);
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(self.x - 1, self.y + 19, 17, 4);
         
         self._showLiveStatus(ctx);
         self._showWalls(ctx);

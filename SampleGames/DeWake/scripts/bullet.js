@@ -42,8 +42,10 @@ var Bullet = (function () {
             jsGFwk.getGameObjects().enemyCloner.eachCloned(function (item) {
                 if (self.isRectColliding(item)) {
                     if (item.width <= 10) {
-                        point += 1;
+                        gameParameters.point += 1;
                         item.destroy();
+                        
+                        pointsContainer.cloneObject({ x: item.x, y: item.y, value: 1 });
                     } else {
                         item.shrink();
                     }

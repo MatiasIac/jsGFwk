@@ -41,7 +41,7 @@ var Enemy = (function () {
         
         this.speedTimer = new jsGFwk.Timer({
 			action: function () {
-                if (self.enemySpeed > 5) {
+                if (self.enemySpeed > 5 && self.proximity) {
                     self.enemySpeed -= 5;
                 }
 			},
@@ -63,8 +63,8 @@ var Enemy = (function () {
             this.x += (this.targetX - this.x) / this.enemySpeed;
             this.y += (this.targetY - this.y) / this.enemySpeed;
         } else {
-            this.x -= (this.targetX - this.x) / 40;
-            this.y -= (this.targetY - this.y) / 40;
+            /*this.x -= (this.targetX - this.x) / 40;
+            this.y -= (this.targetY - this.y) / 40;*/
         }
 		
 		this.targetX = jsGFwk.getGameObjects().alan.x - 5;

@@ -15,10 +15,10 @@
 	<script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkJukebox.js"></script>
     <script language="Javascript" src="../../Framework/jsGFwkCamera.js"></script>
+    <script language="Javascript" src="../../Framework/jsGFwkWebStorage.js"></script>
 	
     <script language="Javascript" src="scripts/hud.js"></script>
     <script language="Javascript" src="scripts/bullet.js"></script>
-    <script language="Javascript" src="scripts/points.js"></script>
     <script language="Javascript" src="scripts/player.js"></script>
     <script language="Javascript" src="scripts/enemyController.js"></script>
     <script language="Javascript" src="scripts/wallsController.js"></script>
@@ -27,15 +27,22 @@
     <script language="Javascript" src="scripts/page.js"></script>
     <script language="Javascript" src="scripts/cameraHandler.js"></script>
     <script language="Javascript" src="scripts/tracer.js"></script>
+    <script language="Javascript" src="scripts/points.js"></script>
     
 	<body style="border:0px; margin:0px; padding:0px; background-color: white;">
 		<canvas width="640" height="480" id="canvas"></canvas>
 	</body>
 </html>
 <script>
-    var point = 0;
-    var screensCount = 0;
-	
+    var gameParameters = {
+            point: 0,
+            screensCount: 0,
+            fireRate: 0.25,
+            liveRecover: 0.2,
+            reloadRate: 3,
+            speed: 4 },
+        cicleColorValue = 0;
+
 	jsGFwk.settings.canvas = "canvas";
 	jsGFwk.settings.clearColor = "rgb(10, 10, 10)";
 	jsGFwk.settings.frameRate = 1000 / 60;
@@ -50,6 +57,7 @@
 	jsGFwk.include("Scenes");
 	jsGFwk.include("Path");
     jsGFwk.include("Camera");
+    jsGFwk.include("Storage");
 	
 	jsGFwk.Fonts.createFont({ name: 'pixelated', source: 'fonts/zxBold.ttf' });
 
@@ -67,7 +75,10 @@
 		laserSound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/laser.mp3" };
         laserSound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/laser.ogg" };
 	jsGFwk.ResourceManager.addSound({ name: "laser", sources: laserSound});
-        
+    
+    //Load game images
+    jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/hud.png" });
+    
     var hud = new Hud();
     
     var alanWake = new player();
@@ -87,9 +98,10 @@
     var tracerContainer = jsGFwk.Container.createContainer("tracerCloner", new Tracer(), true);
     alanWake.tracerContainer = tracerContainer;
     
-    var myPoints = new points();
     var page = new Page();
     var cameraHandler = new CameraHandler();
+    
+    var pointsContainer = jsGFwk.Container.createContainer("pointsCloner", new Points(), true);
     
     jsGFwk.Camera.createCamera({
 		name: "mainCamera",
@@ -104,7 +116,8 @@
     
     jsGFwk.Scenes.create({name: "game", 
         gameObjects: [bulletContainer, tracerContainer, enemyCloner, wallsCloner,
-                      alanWake, enemyControl, wallsControl, myPoints, page, cameraHandler] });
+                      alanWake, pointsContainer, enemyControl, 
+                      wallsControl, page, cameraHandler] });
     
     var laserJuke = {},
         explodeJuke = {};
@@ -112,6 +125,20 @@
     jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         laserJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.laser });
         explodeJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.explode });
+        
+        var storedValues = jsGFwk.Storage.getFromJson('tecnoVirus_stored_game');
+        gameParameters = storedValues !== null ? storedValues : gameParameters;
+        
+        jsGFwk.Sprites.createSprite({
+            id: "logo", graphic: jsGFwk.ResourceManager.graphics.main.image,
+            left: 5, top: 22, width: 386, height: 197
+        });
+        
+        jsGFwk.Sprites.createSprite({
+            id: "holder", graphic: jsGFwk.ResourceManager.graphics.main.image,
+            left: 421, top: 24, width: 194, height: 83
+        });
+        
         jsGFwk.Scenes.scenes.hud.enable();
     };
     

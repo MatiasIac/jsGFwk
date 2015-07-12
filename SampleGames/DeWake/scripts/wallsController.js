@@ -13,7 +13,7 @@ var wallsController = (function () {
 	};
     
     wallsController.prototype.enterOnScene = function () {
-		var howMany = parseInt(Math.random() * 25) + Math.min(screensCount, 10);
+		var howMany = parseInt(Math.random() * 25) + Math.min(gameParameters.screensCount, 10);
         
         for (var i = 0; i < howMany; i++) {
             this.walls.cloneObject({

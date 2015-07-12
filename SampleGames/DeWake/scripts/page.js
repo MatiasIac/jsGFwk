@@ -50,11 +50,14 @@ var Page = (function () {
         this.fillColorTime.tick(delta);
         
         if (this.visible) {
-            if (this.isRectColliding(jsGFwk.getGameObjects().alan)) {
+            var alan = jsGFwk.getGameObjects().alan;
+            if (this.isRectColliding(alan)) {
                 this.visible = false;
-                point += 10;
+                gameParameters.point += 10;
                 jsGFwk.getGameObjects().alan.availableBullets += 5;
                 jsGFwk.getGameObjects().alan.live = Math.min(255, jsGFwk.getGameObjects().alan.live + 10);
+                
+                pointsContainer.cloneObject({ x: alan.x, y: alan.y, value: 10 });
             }
         }
     };
