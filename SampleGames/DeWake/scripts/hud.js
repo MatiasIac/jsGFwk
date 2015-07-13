@@ -10,9 +10,14 @@ var Hud = (function () {
     hud.prototype.showText = true;
     hud.prototype.cosBarAccumulator = 0;
     hud.prototype.cosBars = 0;
+    hud.prototype.clickId = 0;
+    hud.prototype.mouse = { x: 1, y: 1, width: 1, height: 1 };
+    hud.prototype.button = { x: 1, y: 1, width: 194, height: 83};
     
     hud.prototype.init = function () {
         var self = this;
+        
+        jsGFwk.Collisions.onObjectCreated(self.button);
         
         jsGFwk.settings.clearColor = "#FFCC00";
         jsGFwk.Camera.cameras.mainCamera.originPosition.x = 0;
@@ -29,13 +34,58 @@ var Hud = (function () {
             tickTime: 0.3
 		});
         
+        gameParameters.totalScreenCount += (gameParameters.totalScreenCount > gameParameters.screensCount ? 0 : gameParameters.screensCount - gameParameters.totalScreenCount);
+        
         jsGFwk.Storage.setData({name: 'tecnoVirus_stored_game', data: gameParameters})
+        
+        self.clickId = jsGFwk.IO.mouse.registerClick(function (coord) {
+            self.mouse.x = coord.x;
+            self.mouse.y = coord.y;
+                        
+            self.button.x = 446;
+            self.button.y = 70;
+            if (self.button.isRectColliding(self.mouse)) {
+                if (gameParameters.fireRate.toFixed(2) > 0.05 && 
+                    gameParameters.point - 50 >= 0) {
+                    gameParameters.fireRate -= 0.01;
+                    gameParameters.point -= 50;
+                }                
+            }
+            
+            self.button.y = 175;
+            if (self.button.isRectColliding(self.mouse)) {
+                if (gameParameters.liveRecover.toFixed(2) > 0.05 && 
+                    gameParameters.point - 50 >= 0) {
+                    gameParameters.liveRecover -= 0.01;
+                    gameParameters.point -= 50;
+                }  
+            }
+            
+            self.button.y = 284;
+            if (self.button.isRectColliding(self.mouse)) {
+                if (gameParameters.reloadRate.toFixed(2) > 0.1 && 
+                    gameParameters.point - 150 >= 0) {
+                    gameParameters.reloadRate -= 0.1;
+                    gameParameters.point -= 150;
+                }  
+            }
+            
+            self.button.y = 389;
+            if (self.button.isRectColliding(self.mouse)) {
+                if (gameParameters.speed.toFixed(2) < 5 && 
+                    gameParameters.point - 200 >= 0) {
+                    gameParameters.speed += 0.25;
+                    gameParameters.point -= 200;
+                }
+            }
+        });
     };
     
     hud.prototype.update = function (delta) {
         this.showTextTime.tick(delta);
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER]) {
+            jsGFwk.IO.mouse.unregisterClick(this.clickId);
             jsGFwk.Scenes.scenes.game.enable();
         }
         
@@ -55,10 +105,10 @@ var Hud = (function () {
         ctx.drawImage(jsGFwk.Sprites.holder.image, 446, 389);
         
         ctx.font = '30pt pixelated';
-        ctx.fillText(gameParameters.fireRate, 445, 110);        
-        ctx.fillText(gameParameters.liveRecover, 445, 215);
-        ctx.fillText(gameParameters.reloadRate, 470, 320);
-        ctx.fillText(gameParameters.speed, 470, 430);
+        ctx.fillText(gameParameters.fireRate.toFixed(2) <= 0.05 ? "max" : gameParameters.fireRate.toFixed(2), 445, 110);
+        ctx.fillText(gameParameters.liveRecover.toFixed(2) <= 0.05 ? "max" : gameParameters.liveRecover.toFixed(2), 445, 215);
+        ctx.fillText(gameParameters.reloadRate.toFixed(2) <= 0.1 ? "max" : gameParameters.reloadRate.toFixed(2), 445, 320);
+        ctx.fillText(gameParameters.speed.toFixed(2) >= 5 ? "max" : gameParameters.speed.toFixed(2), 445, 430);
 
         ctx.fillText("Fire", 525, 105);
         ctx.fillText("Rate", 540, 120);
@@ -73,6 +123,12 @@ var Hud = (function () {
         ctx.fillText("Speed", 525, 425);
         
         ctx.font = '18pt pixelated';
+        ctx.fillText("- = 50", 540, 150);
+        ctx.fillText("- = 50", 540, 255);
+        ctx.fillText("- = 150", 540, 362);
+        ctx.fillText("+ = 200", 540, 470);
+        
+        ctx.font = '18pt pixelated';
         ctx.fillText("A, S, D, W, SPACEBAR", 100, 350);
         
         if (this.showText) {
@@ -84,8 +140,12 @@ var Hud = (function () {
         ctx.fillRect(397 - this.cosBars, 0, 8, 480);
         ctx.fillRect(388 + this.cosBars, 0, 5, 480);
         
-        /*ctx.font = '22pt pixelated';
-        ctx.fillText("Last score: " + gameParameters.point, 240, 400);*/
+        ctx.font = '16pt pixelated';
+        ctx.fillStyle = "white";
+        ctx.fillText("Credits: " + gameParameters.point, 450, 30);
+        
+        ctx.fillText("Systems hacked: " + gameParameters.totalScreenCount, 450, 50);
+        
     };
     
     return hud;

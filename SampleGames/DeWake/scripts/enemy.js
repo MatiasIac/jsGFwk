@@ -19,6 +19,7 @@ var Enemy = (function () {
     enemy.prototype.proximity = true;
     enemy.prototype.cos = 0;
     enemy.prototype.cosAcc = 0;
+    enemy.prototype.reshrinkTimer = null;
 	
     enemy.prototype.shrink = function () {
         var self = this;
@@ -46,6 +47,18 @@ var Enemy = (function () {
                 }
 			},
             tickTime: 0.5
+		});
+        
+        this.reshrinkTimer = new jsGFwk.Timer({
+			action: function () {
+                if (self.width < 50) {
+                    self.width += 5;
+                    self.height += 5;
+                    self.x += 2.5;
+                    self.y += 2.5;
+                }
+			},
+            tickTime: 1
 		});
         
         this.backTimer = new jsGFwk.Timer({
@@ -77,6 +90,7 @@ var Enemy = (function () {
         
         this.speedTimer.tick(delta);
         this.backTimer.tick(delta);
+        this.reshrinkTimer.tick(delta);
         
         this.cosAcc += 0.1;
         this.cos = 50 + parseInt(Math.cos(this.cosAcc) * 50);
