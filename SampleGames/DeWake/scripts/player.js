@@ -147,10 +147,22 @@ var player = (function () {
     };
     
     p.prototype.update = function (delta) {
-        var self = this;
+        var self = this,
+            padButtonPressed = false,
+            axisX = 0,
+            axisY = 0;
+        
+        if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined) {
+            axisX = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[0].toFixed(2);
+            axisY = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[1].toFixed(2);
+
+            if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[0].pressed) {
+                padButtonPressed = true;
+            }
+        }
         
         //D
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] || axisX > 0) {
             if (!self.checkWallCollision({ x: self.x + gameParameters.speed, y: self.y })) {
                 self.x += gameParameters.speed;
                 if (self.walls[3] && self.x > 620) {
@@ -161,7 +173,7 @@ var player = (function () {
         }
 
         //A
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] || axisX < 0) {
             if (!self.checkWallCollision({ x: self.x - gameParameters.speed, y: self.y })) {            
                 self.x -= gameParameters.speed;
                 if (self.walls[1] && self.x < 10) {
@@ -172,7 +184,7 @@ var player = (function () {
         }
 
         //W
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || axisY < 0) {
             if (!self.checkWallCollision({ x: self.x, y: self.y - gameParameters.speed })) {
                 self.y -= gameParameters.speed;
                 if (self.walls[0] && self.y < 10) {
@@ -183,7 +195,7 @@ var player = (function () {
         }
 
         //S
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] || axisY > 0) {
             if (!self.checkWallCollision({ x: self.x, y: self.y + gameParameters.speed })) {
                 self.y += gameParameters.speed;
                 if (self.walls[2] && self.y > 460) {
@@ -193,27 +205,31 @@ var player = (function () {
             }
         }
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] || padButtonPressed) {
             self.bulletFiringTimer.tick(delta);
         } else {
             self.reloadTimer.tick(delta);
         }
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] ||
+            (axisX > 0 && axisY < 0)) {
             self.position = 7;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] ||
+                   (axisX > 0 && axisY > 0)) {
             self.position = 6;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] ||
+                    (axisX < 0 && axisY > 0)) {
             self.position = 3;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] ||
+                    (axisX < 0 && axisY < 0)) {
             self.position = 4;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] || axisY > 0) {
             self.position = 1;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || axisY < 0) {
             self.position = 0;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] || axisX > 0) {
             self.position = 5;
-        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+        } else if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] || axisX < 0) {
             self.position = 2;
         }
         
