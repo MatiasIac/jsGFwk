@@ -14,7 +14,7 @@ var game = {
         this.blockSize = 20;
         this.currentBlock = 0;
         this.currentRotation = 0;
-        this.xGridPos = 0;
+        this.xGridPos = 5;
         this.yGridPos = 0;
         this.acc = 0;
         this.rows = 30;
@@ -75,7 +75,36 @@ var game = {
         }
     },
     
+    scanBoard: function () {
+        for (var i = this.board.length - 1; i > 0; i--) {
+            var count = 0;
+            for (var j = 0; j < this.board[i].length; j++) {
+                if (this.board[i][j] === 1) {
+                    count++;
+                }
+            }
+            
+            if (count === this.cols) {
+                for (var j = 0; j < this.board[i].length; j++) {
+                    this.board[i][j] = 0;
+                }
+                
+                this.downAll();
+                i++;
+            }
+        }
+    },
+    
+    downAll: function () {
+        for (var i = this.board.length - 1; i > 0; i--) {
+            for (var j = 0; j < this.board[i].length; j++) {
+                this.board[i][j] = this.board[i - 1][j];
+            }
+        }
+    },
+    
     update: function (delta) {
+        var self = this;
         this.acc += delta;
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
@@ -94,7 +123,7 @@ var game = {
             this.yGridPos = 28;
         }
         
-        if (this.acc >= 0.5) {
+        if (this.acc >= 0.3) {
             this.acc = 0;
             
             if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
@@ -110,7 +139,17 @@ var game = {
             if (!this.filled(this.xGridPos, this.yGridPos + 1, this.currentRotation)) {
                 this.yGridPos++;
             } else {
-                //Este elemento pasa a la matrix
+	           this.eachBlock(self.blocks[self.currentBlock], 
+                           self.xGridPos, self.yGridPos, self.currentRotation,
+                           function(x, y) {
+                    self.board[y][x] = 1;
+                });
+                
+                this.currentRotation = 0;
+                this.yGridPos = 0;
+                this.xGridPos = 5;
+                this.currentBlock = parseInt(Math.random() * 7, 10).toFixed(0);
+                this.scanBoard();
             }
         }
     },
