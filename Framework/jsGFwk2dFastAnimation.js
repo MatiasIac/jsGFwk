@@ -37,8 +37,16 @@ jsGFwk.FastAnimation = {
 
 			for (var i = 0; i < jsGFwk._includes.length; i++) {
 				if (jsGFwk[jsGFwk._includes[i]].onPreRender !== undefined) {
+					jsGFwk.FastAnimation._2Dbuffer.save();
 					jsGFwk[jsGFwk._includes[i]].onPreRender(jsGFwk.FastAnimation._2Dbuffer);
+					jsGFwk.FastAnimation._2Dbuffer.restore();
 				}
+			}
+			
+			for (var name in jsGFwk._gameObjects) {
+				jsGFwk.FastAnimation._2Dbuffer.save();
+				jsGFwk._gameObjects[name].postRender !== undefined && jsGFwk._gameObjects[name].postRender(jsGFwk.FastAnimation._2Dbuffer);
+				jsGFwk.FastAnimation._2Dbuffer.restore();
 			}
 			
 			jsGFwk.FastAnimation._2Dcontext.drawImage(jsGFwk.FastAnimation._bufferCanvas, 0, 0);

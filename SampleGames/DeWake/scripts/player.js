@@ -27,6 +27,9 @@ var player = (function () {
     p.prototype.tracerContainer = null;
     p.prototype.tracerTimer = null;
     p.prototype.cycleColorAccumulator = 0;
+    p.prototype.showLevel = false;
+    p.prototype.showLevelTimer = null;
+    p.prototype.cycleShadowAccumulator = 0;
     
     p.prototype.init = function () {
         var self = this;
@@ -106,6 +109,19 @@ var player = (function () {
 			},
             tickTime: 0.1
 		});
+        
+        self.showLevelTimer = new jsGFwk.Timer({
+			action: function () {
+                self.showLevel = false;
+			},
+            tickTime: 0.5
+		});
+    };
+    
+    p.prototype.explodeTracer = function () {
+        this.tracerContainer.eachCloned(function (item) {
+            item.explode();
+        });
     };
     
     p.prototype.getRandom = function () {
@@ -121,6 +137,8 @@ var player = (function () {
         self.tracerContainer.clearAll();
 
         gameParameters.screensCount += 1;
+        
+        self.showLevel = true;
         
         jsGFwk.getGameObjects().wallsController.enterOnScene();
         self.wallPassTimer.tickTime = gameParameters.screensCount;
@@ -149,6 +167,7 @@ var player = (function () {
     p.prototype.update = function (delta) {
         var self = this,
             padButtonPressed = false,
+            padButton2Pressed = false,
             axisX = 0,
             axisY = 0;
         
@@ -158,6 +177,10 @@ var player = (function () {
 
             if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[0].pressed) {
                 padButtonPressed = true;
+            }
+            
+            if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[1].pressed) {
+                padButton2Pressed = true;
             }
         }
         
@@ -211,6 +234,10 @@ var player = (function () {
             self.reloadTimer.tick(delta);
         }
         
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.M] || padButton2Pressed) {
+            self.explodeTracer();
+        }
+        
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] && jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] ||
             (axisX > 0 && axisY < 0)) {
             self.position = 7;
@@ -237,6 +264,7 @@ var player = (function () {
         self.wallPassTimer.tick(delta);
         self.wallCollideTimer.tick(delta);
         self.tracerTimer.tick(delta);
+        self.showLevel && self.showLevelTimer.tick(delta);
         
         if (self.live <= 5) {
             jsGFwk.Scenes.scenes.hud.enable();
@@ -271,7 +299,9 @@ var player = (function () {
         }
         
         this.cycleColorAccumulator += 0.5;
+        this.cycleShadowAccumulator += 0.1;
         cicleColorValue = 150 + parseInt(Math.cos(this.cycleColorAccumulator) * 50);
+        cicleShadow = 40 + parseInt(Math.cos(this.cycleShadowAccumulator) * 10);
     };
     
     p.prototype._showLiveStatus = function (ctx) {
@@ -294,7 +324,7 @@ var player = (function () {
     
     p.prototype._showWalls = function (ctx) {
         var self = this;
-        
+        ctx.shadowColor = 'magenta';
         ctx.fillStyle = "magenta";
         //Up
         if (self.walls[0]) {
@@ -328,6 +358,11 @@ var player = (function () {
         ctx.strokeRect(self.x, self.y, self.width, self.height);
         
         ctx.fillStyle = "white";
+        ctx.shadowColor = 'white';
+        ctx.shadowBlur = cicleShadow;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        
         ctx.fillRect(self.x - 1, self.y - 1, (((self.live * 100) / 255) * self.width) / 100, self.height + 2);
         
         //Bullets
@@ -339,6 +374,14 @@ var player = (function () {
         
         self._showLiveStatus(ctx);
         self._showWalls(ctx);
+    };
+    
+    p.prototype.postRender = function (ctx) {
+        if (this.showLevel) {
+            ctx.fillStyle = "rgb(100," + cicleColorValue + "," + cicleColorValue + ")";;
+            ctx.font = "100pt pixelated";
+            ctx.fillText("Level " + gameParameters.screensCount, 180, 250);
+        }
     };
     
     return p;

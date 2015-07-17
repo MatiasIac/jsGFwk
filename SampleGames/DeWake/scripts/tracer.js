@@ -21,18 +21,16 @@ var Tracer = (function () {
     
     c.prototype.explode = function () {
         var self = this;
-        self.onUpdate = self._explodeUpdate;
-    };
-    
-    c.prototype._explodeUpdate = function (delta) {
-        var self = this;
         
-        if (self.height <= 0) {
-            self.destroy();
-        }
+        bulletContainer.cloneObject({
+            x: self.x + (this.size / 2),
+            y: self.y + (this.size / 2),
+            direction: parseInt(Math.random() * 8)
+        });
         
-        this.height -= 0.5;
-        self.y -= 0.25;
+        laserJuke.play();
+        jsGFwk.getGameObjects().alan.live -= 4;
+        self.destroy();
     };
     
     c.prototype.onUpdate = function (delta) {

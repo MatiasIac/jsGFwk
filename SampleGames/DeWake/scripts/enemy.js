@@ -20,6 +20,7 @@ var Enemy = (function () {
     enemy.prototype.cos = 0;
     enemy.prototype.cosAcc = 0;
     enemy.prototype.reshrinkTimer = null;
+    enemy.prototype.rotationAngle = 45;
 	
     enemy.prototype.shrink = function () {
         var self = this;
@@ -28,6 +29,7 @@ var Enemy = (function () {
         self.x -= 2.5;
         self.y -= 2.5;
         self.proximity = false;
+        self.enemySpeed += 10;
     };
     
 	enemy.prototype.onInit = function (parameters) {
@@ -42,7 +44,7 @@ var Enemy = (function () {
         
         this.speedTimer = new jsGFwk.Timer({
 			action: function () {
-                if (self.enemySpeed > 5 && self.proximity) {
+                if (self.enemySpeed > 5) {
                     self.enemySpeed -= 5;
                 }
 			},
@@ -65,21 +67,13 @@ var Enemy = (function () {
 			action: function () {
                 self.proximity = true;
 			},
-            tickTime: 0.4
+            tickTime: 0.7
 		});
 	};
     
 	enemy.prototype.onUpdate = function (delta) {
         var self = this;
-        
-        if (this.proximity) {
-            this.x += (this.targetX - this.x) / this.enemySpeed;
-            this.y += (this.targetY - this.y) / this.enemySpeed;
-        } else {
-            /*this.x -= (this.targetX - this.x) / 40;
-            this.y -= (this.targetY - this.y) / 40;*/
-        }
-		
+        		
 		this.targetX = jsGFwk.getGameObjects().alan.x - 5;
 		this.targetY = jsGFwk.getGameObjects().alan.y - 5;
         
@@ -88,8 +82,16 @@ var Enemy = (function () {
             jsGFwk.getGameObjects().cameraHandler.shake();
         }
         
-        this.speedTimer.tick(delta);
-        this.backTimer.tick(delta);
+        this.rotationAngle += 0.001;
+        
+        if (!this.proximity) {
+            this.backTimer.tick(delta);
+        } else {
+            this.speedTimer.tick(delta);
+            this.x += (this.targetX - this.x) / this.enemySpeed;
+            this.y += (this.targetY - this.y) / this.enemySpeed;
+        }
+        
         this.reshrinkTimer.tick(delta);
         
         this.cosAcc += 0.1;
@@ -97,11 +99,33 @@ var Enemy = (function () {
 	};
     
 	enemy.prototype.onDraw = function (ctx) {
+        ctx.save();
+        ctx.translate(this.x + (this.width / 2), this.y + (this.height / 2));
+		ctx.rotate(this.rotationAngle * (180/Math.PI));
+		ctx.translate(-(this.x + (this.width / 2)), -(this.y + (this.height / 2)));
+        
         ctx.strokeStyle = "rgb(" + this.cos + ", " + this.cos + ", " + this.cos + ")";
         ctx.fillStyle = "rgb(255, 0, 0)";
         ctx.lineWidth = 5;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        
+        ctx.shadowColor = 'red';
+        ctx.shadowBlur = cicleShadow;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        
+        ctx.translate(this.x, this.y);
+        var h = this.width * (Math.sqrt(3)/2);
+        ctx.beginPath();
+        ctx.moveTo(0, -h / 2);
+        ctx.lineTo( -this.width / 2, h / 2);
+        ctx.lineTo(this.width / 2, h / 2);
+        ctx.lineTo(0, -h / 2);
+        ctx.stroke();
+        ctx.fill(); 
+        ctx.closePath();
+        //ctx.fillRect(this.x, this.y, this.width, this.height);
+        //ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.restore();
 	};
     
     return enemy;

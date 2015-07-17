@@ -64,6 +64,11 @@ var Page = (function () {
     
     page.prototype.draw = function (ctx) {
         ctx.fillStyle = this.fillColor;
+        ctx.shadowColor = "white";
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
         ctx.fillRect(this.x, this.y, this.width, this.height);
     };
     

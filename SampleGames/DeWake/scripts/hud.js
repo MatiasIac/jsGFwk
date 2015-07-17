@@ -13,6 +13,7 @@ var Hud = (function () {
     hud.prototype.clickId = 0;
     hud.prototype.mouse = { x: 1, y: 1, width: 1, height: 1 };
     hud.prototype.button = { x: 1, y: 1, width: 194, height: 83};
+    hud.prototype.gamePadConnected = false;
     
     hud.prototype.init = function () {
         var self = this;
@@ -79,12 +80,16 @@ var Hud = (function () {
                 }
             }
         });
+        self.gamePadConnected = false;
     };
     
     hud.prototype.update = function (delta) {
         this.showTextTime.tick(delta);
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER]) {
+        this.gamePadConnected = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined;
+                
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER] ||
+            (this.gamePadConnected && jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[0].pressed)) {
             jsGFwk.IO.mouse.unregisterClick(this.clickId);
             jsGFwk.Scenes.scenes.game.enable();
         }
@@ -127,13 +132,23 @@ var Hud = (function () {
         ctx.fillText("- = 50", 540, 255);
         ctx.fillText("- = 150", 540, 362);
         ctx.fillText("+ = 200", 540, 470);
+                
+        if (this.gamePadConnected) {
+            ctx.font = '28pt pixelated';
+            ctx.fillText("A gamepad is connected", 50, 450);
+            
+            if (this.showText) {
+                ctx.font = '26pt pixelated';
+                ctx.fillText("Press Fire to start", 70, 390);
+            }
+        } else {
+            ctx.font = '18pt pixelated';
+            ctx.fillText("A, S, D, W, SPACEBAR, M", 90, 350);
         
-        ctx.font = '18pt pixelated';
-        ctx.fillText("A, S, D, W, SPACEBAR", 100, 350);
-        
-        if (this.showText) {
-            ctx.font = '26pt pixelated';
-            ctx.fillText("Press Enter to start", 70, 390);
+            if (this.showText) {
+                ctx.font = '26pt pixelated';
+                ctx.fillText("Press Enter to start", 60, 390);
+            }
         }
         
         ctx.fillRect(408 + this.cosBars, 0, 13, 480);

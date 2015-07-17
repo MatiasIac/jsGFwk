@@ -29,6 +29,11 @@ var Walls = (function () {
     
 	wall.prototype.onDraw = function (ctx) {
         ctx.fillStyle = "rgb(" + this.cos + ", " + this.cos + ", " + this.cos + ")";
+        ctx.shadowColor = "rgb(" + this.cos + ", " + this.cos + ", " + this.cos + ")";
+        ctx.shadowBlur = cicleShadow;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        
         ctx.fillRect(this.x, this.y, this.width, this.height);
 	};
     
