@@ -41,7 +41,7 @@ var Bullet = (function () {
         } else {
             jsGFwk.getGameObjects().enemyCloner.eachCloned(function (item) {
                 if (self.isRectColliding(item)) {
-                    if (item.width <= 10) {
+                    if (item.width <= 20) {
                         gameParameters.point += 1;
                         item.destroy();
                         
@@ -49,6 +49,15 @@ var Bullet = (function () {
                     } else {
                         item.shrink();
                     }
+                    
+                    for (var i = 0; i <= 4; i++) {
+                        tracerContainer.cloneObject({ 
+                            x: self.x + Math.floor(Math.random() * 10),
+                            y: self.y + Math.floor(Math.random() * 10),
+                            size: (Math.random() * 5) + 5,
+                            color: "cyan"});
+                    }
+                    
                     explodeJuke.play();
                     self.destroy();
                 }

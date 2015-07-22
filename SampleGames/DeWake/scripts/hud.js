@@ -14,6 +14,7 @@ var Hud = (function () {
     hud.prototype.mouse = { x: 1, y: 1, width: 1, height: 1 };
     hud.prototype.button = { x: 1, y: 1, width: 194, height: 83};
     hud.prototype.gamePadConnected = false;
+    hud.prototype.showScanline = false;
     
     hud.prototype.init = function () {
         var self = this;
@@ -27,6 +28,8 @@ var Hud = (function () {
         enemyCloner.clearAll();
         bulletContainer.clearAll();
         wallsCloner.clearAll();
+        tracerContainer.clearAll();
+        bulletEnemyContainer.clearAll();
         
         self.showTextTime = new jsGFwk.Timer({
 			action: function () {
@@ -84,6 +87,8 @@ var Hud = (function () {
     };
     
     hud.prototype.update = function (delta) {
+        this.showScanline = !this.showScanline;
+        
         this.showTextTime.tick(delta);
         
         this.gamePadConnected = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined;
@@ -162,6 +167,11 @@ var Hud = (function () {
         ctx.fillText("Systems hacked: " + gameParameters.totalScreenCount, 450, 50);
         
     };
+    
+    hud.prototype.postRender = function (ctx) {
+        this.showScanline && ctx.drawImage(jsGFwk.ResourceManager.graphics.scanLines.image, 0, 0);
+        crt(ctx);
+    }
     
     return hud;
 }());

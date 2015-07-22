@@ -10,6 +10,8 @@ var Tracer = (function () {
     c.prototype.x = 0;
     c.prototype.y = 0;
     c.prototype.size = 15;
+    c.prototype.color = "white";
+    c.prototype.creator = undefined;
     
     c.prototype.onInit = function (parameters) {
         var self = this;
@@ -17,11 +19,15 @@ var Tracer = (function () {
 		self.y = parameters.y;
         self.width = parameters.size;
         self.height = parameters.size;
+        self.color = parameters.color;
+        self.creator = parameters.creator;
     };
     
     c.prototype.explode = function () {
-        var self = this;
+        if (this.creator === undefined) { return; }
         
+        var self = this;
+
         bulletContainer.cloneObject({
             x: self.x + (this.size / 2),
             y: self.y + (this.size / 2),
@@ -40,14 +46,14 @@ var Tracer = (function () {
             self.destroy();
         }
         
-        this.width -= 0.1;
-        this.height -= 0.1;
+        this.width -= 0.3;
+        this.height -= 0.3;
         self.x -= 0.05;
         self.y -= 0.05;
     };
     
     c.prototype.onDraw = function (ctx) {
-        ctx.strokeStyle = "gray";
+        ctx.strokeStyle = this.color;
         ctx.strokeRect(this.x, this.y, this.width, this.height);
     };
         

@@ -21,11 +21,15 @@ var Enemy = (function () {
     enemy.prototype.cosAcc = 0;
     enemy.prototype.reshrinkTimer = null;
     enemy.prototype.rotationAngle = 45;
+    enemy.prototype.powerShadow = 0;
+    enemy.prototype.powerShadowTimer = null;
+    enemy.prototype.color = '';
+    enemy.prototype.powerChargerSpeed = 0.5;
 	
     enemy.prototype.shrink = function () {
         var self = this;
-        self.width -= 5;
-        self.height -= 5;
+        self.width -= 10;
+        self.height -= 10;
         self.x -= 2.5;
         self.y -= 2.5;
         self.proximity = false;
@@ -38,29 +42,55 @@ var Enemy = (function () {
 		this.x = parameters.x;
 		this.y = parameters.y;
 		this.enemySpeed = parameters.speed;
+        this.color = parameters.color;
+
 		this.targetX = jsGFwk.getGameObjects().alan.x;
 		this.targetY = jsGFwk.getGameObjects().alan.y;
         this.isRectColliding = jsGFwk.Collisions._rectColliding;
         
+        this.setEnemyType();
+        
+        this.powerShadowTimer = new jsGFwk.Timer({
+			action: function () {
+                if (self.powerShadow < 50) {
+                    self.powerShadow += 5;
+                } else {
+                    self.powerShadow = 0;
+                    self.shot();
+                }
+			},
+            tickTime: this.powerChargerSpeed
+		});
+        
         this.speedTimer = new jsGFwk.Timer({
 			action: function () {
                 if (self.enemySpeed > 5) {
-                    self.enemySpeed -= 5;
+                    self.enemySpeed -= 2.5;
+                    self.powerChargerSpeed = Math.max(0.1, (self.powerChargerSpeed - 0.1));
+                    self.powerShadowTimer.tickTime = self.powerChargerSpeed;
                 }
 			},
             tickTime: 0.5
 		});
         
+        this.randomerTimer = new jsGFwk.Timer({
+			action: function () {
+                self.targetX = (Math.random() * 600) + 20;
+                self.targetY = (Math.random() * 440) + 20;
+			},
+            tickTime: 2
+		});
+        
         this.reshrinkTimer = new jsGFwk.Timer({
 			action: function () {
                 if (self.width < 50) {
-                    self.width += 5;
-                    self.height += 5;
-                    self.x += 2.5;
-                    self.y += 2.5;
+                    self.width += 1;
+                    self.height += 1;
+                    self.x += 0.5;
+                    self.y += 0.5;
                 }
 			},
-            tickTime: 1
+            tickTime: 0.2
 		});
         
         this.backTimer = new jsGFwk.Timer({
@@ -71,11 +101,52 @@ var Enemy = (function () {
 		});
 	};
     
+    enemy.prototype.setEnemyType = function () {
+        var self = this,
+            rndType = parseInt(Math.random() * 2);
+        
+        switch (rndType) {
+            case 0:
+                this.updateAction = this.follower;
+                break;
+            case 1:
+                this.updateAction = this.randomer;
+                break;
+            default:
+                this.updateAction = this.follower;
+                break;
+        }
+    };
+    
+    enemy.prototype.shot = function () {
+        bulletEnemyContainer.cloneObject({ x: this.x, y: this.y, color: this.color });
+    };
+    
+    enemy.prototype.updateAction = function () { };
+    
+    //Enemy types
+    enemy.prototype.follower = function (delta) {
+        this.targetX = jsGFwk.getGameObjects().alan.x - 5;
+		this.targetY = jsGFwk.getGameObjects().alan.y - 5;
+        
+        this.speedTimer.tick(delta);
+        this.powerShadowTimer.tick(delta);
+        
+        this.x += (this.targetX - this.x) / this.enemySpeed;
+        this.y += (this.targetY - this.y) / this.enemySpeed;
+    };
+    
+    enemy.prototype.randomer = function (delta) {
+        this.randomerTimer.tick(delta);
+        this.powerShadowTimer.tick(delta);
+        this.x += (this.targetX - this.x) / this.enemySpeed;
+        this.y += (this.targetY - this.y) / this.enemySpeed;
+    };
+    
+    //End enemy types
+    
 	enemy.prototype.onUpdate = function (delta) {
         var self = this;
-        		
-		this.targetX = jsGFwk.getGameObjects().alan.x - 5;
-		this.targetY = jsGFwk.getGameObjects().alan.y - 5;
         
         if (self.isRectColliding(jsGFwk.getGameObjects().alan)) {
             jsGFwk.getGameObjects().alan.live -= 1;
@@ -87,9 +158,7 @@ var Enemy = (function () {
         if (!this.proximity) {
             this.backTimer.tick(delta);
         } else {
-            this.speedTimer.tick(delta);
-            this.x += (this.targetX - this.x) / this.enemySpeed;
-            this.y += (this.targetY - this.y) / this.enemySpeed;
+            this.updateAction(delta);
         }
         
         this.reshrinkTimer.tick(delta);
@@ -100,16 +169,18 @@ var Enemy = (function () {
     
 	enemy.prototype.onDraw = function (ctx) {
         ctx.save();
+        
+        ctx.lineCap = "round";
         ctx.translate(this.x + (this.width / 2), this.y + (this.height / 2));
 		ctx.rotate(this.rotationAngle * (180/Math.PI));
 		ctx.translate(-(this.x + (this.width / 2)), -(this.y + (this.height / 2)));
         
         ctx.strokeStyle = "rgb(" + this.cos + ", " + this.cos + ", " + this.cos + ")";
-        ctx.fillStyle = "rgb(255, 0, 0)";
+        ctx.fillStyle = this.color;
         ctx.lineWidth = 5;
         
-        ctx.shadowColor = 'red';
-        ctx.shadowBlur = cicleShadow;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = this.powerShadow + cicleShadow;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         

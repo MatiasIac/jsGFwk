@@ -9,14 +9,13 @@ var player = (function () {
     p.prototype.id = "alan";
     p.prototype.visible = true;
     
-    //p.prototype.bulletFiringInterval = 0.2;
     p.prototype.x = 310;
     p.prototype.y = 210;
     p.prototype.width = 15;
     p.prototype.height = 15;
     p.prototype.bulletContainer = null;
     p.prototype.position = 0;
-    p.prototype.availableBullets = 10;
+    p.prototype.availableBullets = 30;
     p.prototype.live = 255;
     p.prototype.badCloner = null;
     p.prototype.walls = [];
@@ -30,6 +29,7 @@ var player = (function () {
     p.prototype.showLevel = false;
     p.prototype.showLevelTimer = null;
     p.prototype.cycleShadowAccumulator = 0;
+    p.prototype.showScanline = false;
     
     p.prototype.init = function () {
         var self = this;
@@ -41,7 +41,7 @@ var player = (function () {
         
         self.x = 310;
         self.y = 210;
-        self.availableBullets = 10;
+        self.availableBullets = gameParameters.maxBullets;
         self.live = 255;
                 
         self.bulletFiringTimer = new jsGFwk.Timer({
@@ -61,7 +61,7 @@ var player = (function () {
         
         self.reloadTimer = new jsGFwk.Timer({
 			action: function () {
-                if (self.availableBullets < 10) {
+                if (self.availableBullets < gameParameters.maxBullets) {
                     self.availableBullets += 1;
                 }
 			},
@@ -105,7 +105,10 @@ var player = (function () {
                 self.tracerContainer.cloneObject({ 
                     x: self.x + (Math.floor(Math.random() * 10) - 5),
                     y: self.y + (Math.floor(Math.random() * 30) - 15),
-                    size: (Math.random() * 15) + 2 });
+                    size: (Math.random() * 15) + 2,
+                    color: "gray",
+                    creator: "player"
+                });
 			},
             tickTime: 0.1
 		});
@@ -135,12 +138,13 @@ var player = (function () {
         self.badCloner.clearAll();
         self.wallsCloner.clearAll();
         self.tracerContainer.clearAll();
+        bulletEnemyContainer.clearAll();
 
         gameParameters.screensCount += 1;
         
         self.showLevel = true;
         
-        jsGFwk.getGameObjects().wallsController.enterOnScene();
+        wallsControl.enterOnScene();
         self.wallPassTimer.tickTime = gameParameters.screensCount;
         self.wallAlreadyTicked = false;
         
@@ -165,6 +169,8 @@ var player = (function () {
     };
     
     p.prototype.update = function (delta) {
+        this.showScanline = !this.showScanline;
+        
         var self = this,
             padButtonPressed = false,
             padButton2Pressed = false,
@@ -382,6 +388,9 @@ var player = (function () {
             ctx.font = "100pt pixelated";
             ctx.fillText("Level " + gameParameters.screensCount, 180, 250);
         }
+        
+        this.showScanline && ctx.drawImage(jsGFwk.ResourceManager.graphics.scanLines.image, 0, 0);
+        crt();
     };
     
     return p;

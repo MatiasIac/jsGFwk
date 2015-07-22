@@ -39,13 +39,15 @@ var enemyController = (function () {
 		return {
             x: x,
             y: y,
-			speed: 50
+			speed: 50,
+            color: 'rgb(' + parseInt((Math.random() * 255)) + ',' + parseInt((Math.random() * 255)) + ',' + parseInt((Math.random() * 255)) + ')'
         };
 	};
 	
 	enemyController.prototype.init = function () {
 		var self = this;
 		
+        this.totalShipsSent = 0;
 		this.enemyTimer = new jsGFwk.Timer({
 			action: function () {
 				self.order += 1;
@@ -53,7 +55,9 @@ var enemyController = (function () {
                     self.order = 1;
                 }
                 
-				self.enemies.cloneObject(self.getObjectBasedOnCoords());
+                if (self.enemies.length() < 8) {
+				    self.enemies.cloneObject(self.getObjectBasedOnCoords());
+                }
 			},
             tickTime: self.enemyTimerTime
 		});
