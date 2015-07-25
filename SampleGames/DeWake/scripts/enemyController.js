@@ -40,9 +40,14 @@ var enemyController = (function () {
             x: x,
             y: y,
 			speed: 50,
-            color: 'rgb(' + parseInt((Math.random() * 255)) + ',' + parseInt((Math.random() * 255)) + ',' + parseInt((Math.random() * 255)) + ')'
+            color: 'rgb(' + parseInt((Math.random() * 255)) + ',' + parseInt((Math.random() * 255)) + ',' + parseInt((Math.random() * 255)) + ')',
+            enemyType: this.getEnemyType()
         };
 	};
+    
+    enemyController.prototype.getEnemyType = function () {
+        return 2;
+    };
 	
 	enemyController.prototype.init = function () {
 		var self = this;

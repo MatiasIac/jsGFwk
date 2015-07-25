@@ -21,6 +21,9 @@ var EnemyBullet = (function () {
 		this.x = parameters.x;
 		this.y = parameters.y;
         this.color = parameters.color;
+        this.bulletSpeed = parameters.bulletSpeed || this.bulletSpeed;
+        this.width = parameters.bulletSize || this.width;
+        this.height = parameters.bulletSize || this.height;
         
         var targetX = jsGFwk.getGameObjects().alan.x - this.x;
         var targetY = jsGFwk.getGameObjects().alan.y - this.y;
@@ -51,7 +54,7 @@ var EnemyBullet = (function () {
         }
         
         if (this.isRectColliding(jsGFwk.getGameObjects().alan)) {
-            jsGFwk.getGameObjects().alan.live -= 30;
+            jsGFwk.getGameObjects().alan.live -= 30 + (Math.max(0, this.width - 5));
             jsGFwk.getGameObjects().cameraHandler.shake();
             
             for (var i = 0; i <= 4; i++) {

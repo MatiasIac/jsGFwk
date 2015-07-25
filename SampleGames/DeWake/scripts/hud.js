@@ -10,17 +10,19 @@ var Hud = (function () {
     hud.prototype.showText = true;
     hud.prototype.cosBarAccumulator = 0;
     hud.prototype.cosBars = 0;
-    hud.prototype.clickId = 0;
-    hud.prototype.mouse = { x: 1, y: 1, width: 1, height: 1 };
-    hud.prototype.button = { x: 1, y: 1, width: 194, height: 83};
     hud.prototype.gamePadConnected = false;
     hud.prototype.showScanline = false;
+    hud.prototype.menuCurrentSelection = 0;
+    hud.prototype.axisY = 0;
+    hud.prototype.sPressed = false;
+    hud.prototype.wPressed = false;
+    hud.prototype.spacePressed = false;
+    hud.prototype.secondButtonPressed = false;
+    hud.prototype.menuTimer = null;
     
     hud.prototype.init = function () {
         var self = this;
-        
-        jsGFwk.Collisions.onObjectCreated(self.button);
-        
+                
         jsGFwk.settings.clearColor = "#FFCC00";
         jsGFwk.Camera.cameras.mainCamera.originPosition.x = 0;
         jsGFwk.Camera.cameras.mainCamera.originPosition.y = 0;
@@ -42,61 +44,86 @@ var Hud = (function () {
         
         jsGFwk.Storage.setData({name: 'tecnoVirus_stored_game', data: gameParameters})
         
-        self.clickId = jsGFwk.IO.mouse.registerClick(function (coord) {
-            self.mouse.x = coord.x;
-            self.mouse.y = coord.y;
-                        
-            self.button.x = 446;
-            self.button.y = 70;
-            if (self.button.isRectColliding(self.mouse)) {
+        self.gamePadConnected = false;
+        
+        self.menuTimer = new jsGFwk.Timer({
+			action: function () {
+                if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined) {
+                    self.axisY = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[1].toFixed(2);
+                    self.secondButtonPressed = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[1].pressed;
+                }
+                
+                self.wPressed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W];
+                self.sPressed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S];
+                self.spacePressed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR];
+			},
+            tickTime: 0.2
+		});
+    };
+    
+    hud.prototype.buy = function () {
+        switch (this.menuCurrentSelection) {
+            case 0:
                 if (gameParameters.fireRate.toFixed(2) > 0.05 && 
                     gameParameters.point - 50 >= 0) {
                     gameParameters.fireRate -= 0.01;
                     gameParameters.point -= 50;
-                }                
-            }
-            
-            self.button.y = 175;
-            if (self.button.isRectColliding(self.mouse)) {
+                } 
+                break;
+            case 1:
                 if (gameParameters.liveRecover.toFixed(2) > 0.05 && 
                     gameParameters.point - 50 >= 0) {
                     gameParameters.liveRecover -= 0.01;
                     gameParameters.point -= 50;
-                }  
-            }
-            
-            self.button.y = 284;
-            if (self.button.isRectColliding(self.mouse)) {
+                }
+                break;
+            case 2:
                 if (gameParameters.reloadRate.toFixed(2) > 0.1 && 
                     gameParameters.point - 150 >= 0) {
                     gameParameters.reloadRate -= 0.1;
                     gameParameters.point -= 150;
-                }  
-            }
-            
-            self.button.y = 389;
-            if (self.button.isRectColliding(self.mouse)) {
+                }
+                break;
+            case 3:
                 if (gameParameters.speed.toFixed(2) < 5 && 
                     gameParameters.point - 200 >= 0) {
                     gameParameters.speed += 0.25;
                     gameParameters.point -= 200;
                 }
-            }
-        });
-        self.gamePadConnected = false;
+                break;
+        }
     };
     
     hud.prototype.update = function (delta) {
         this.showScanline = !this.showScanline;
         
         this.showTextTime.tick(delta);
+        this.menuTimer.tick(delta);
         
         this.gamePadConnected = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined;
                 
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER] ||
             (this.gamePadConnected && jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[0].pressed)) {
-            jsGFwk.IO.mouse.unregisterClick(this.clickId);
             jsGFwk.Scenes.scenes.game.enable();
+        }
+        
+        //W
+        if (this.wPressed || this.axisY < 0) {
+            this.menuCurrentSelection = Math.max(0, this.menuCurrentSelection - 1);
+            this.wPressed = false;
+            this.axisY = 0;
+        }
+
+        //S
+        if (this.sPressed || this.axisY > 0) {
+            this.menuCurrentSelection = Math.min(3, this.menuCurrentSelection + 1);
+            this.sPressed = false;
+            this.axisY = 0;
+        }
+        
+        if (this.spacePressed || this.secondButtonPressed) {
+            this.spacePressed = false;
+            this.buy();
         }
         
         this.cosBarAccumulator += 0.01;
@@ -109,10 +136,10 @@ var Hud = (function () {
         ctx.fillStyle = "black";
         ctx.fillRect(426, 0, 214, 480);
         
-        ctx.drawImage(jsGFwk.Sprites.holder.image, 446, 70);
-        ctx.drawImage(jsGFwk.Sprites.holder.image, 446, 175);
-        ctx.drawImage(jsGFwk.Sprites.holder.image, 446, 284);
-        ctx.drawImage(jsGFwk.Sprites.holder.image, 446, 389);
+        ctx.drawImage(this.menuCurrentSelection === 0 ? jsGFwk.Sprites.holderShadow.image : jsGFwk.Sprites.holder.image, 446, 70);
+        ctx.drawImage(this.menuCurrentSelection === 1 ? jsGFwk.Sprites.holderShadow.image : jsGFwk.Sprites.holder.image, 446, 175);
+        ctx.drawImage(this.menuCurrentSelection === 2 ? jsGFwk.Sprites.holderShadow.image : jsGFwk.Sprites.holder.image, 446, 284);
+        ctx.drawImage(this.menuCurrentSelection === 3 ? jsGFwk.Sprites.holderShadow.image : jsGFwk.Sprites.holder.image, 446, 389);
         
         ctx.font = '30pt pixelated';
         ctx.fillText(gameParameters.fireRate.toFixed(2) <= 0.05 ? "max" : gameParameters.fireRate.toFixed(2), 445, 110);

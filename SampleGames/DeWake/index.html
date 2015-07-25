@@ -33,8 +33,15 @@
     <script language="Javascript" src="scripts/tracer.js"></script>
     <script language="Javascript" src="scripts/points.js"></script>
     
-	<body style="border:0px; margin:0px; padding:0px; background-color: black;">
-		<canvas width="640" height="480" id="canvas"></canvas>
+	<body style="border:0px; margin:0px; padding:0px; background-color: white;">
+        <div style="position: absolute; width: 650px;
+            height: 490px; top: 89px; left: 117px;
+            background-color: black; padding-left: 10px; padding-top: 4px;">
+            <canvas width="640" height="480" id="canvas"></canvas>
+        </div>
+        <div style="position: absolute; top: 0;
+            width: 100%; height: 100%; overflow: hidden;">
+            <img src="images/front.png"></div>
 	</body>
 </html>
 <script>
@@ -149,6 +156,11 @@
             left: 421, top: 24, width: 194, height: 83
         });
         
+        jsGFwk.Sprites.createSprite({
+            id: "holderShadow", graphic: jsGFwk.ResourceManager.graphics.main.image,
+            left: 421, top: 119, width: 199, height: 89
+        });
+        
         jsGFwk.Scenes.scenes.hud.enable();
     };
     
@@ -177,8 +189,8 @@
         hh = h / 2;
         w75 = w * 0.75;
         
-        glcanvas.style.width = '100%';
-        glcanvas.style.height = '100%';
+        /*glcanvas.style.width = '100%';
+        glcanvas.style.height = '100%';*/
         
         source.parentNode.insertBefore(glcanvas, source);
         source.style.display = 'none';
