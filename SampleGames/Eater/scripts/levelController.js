@@ -21,6 +21,7 @@ var LevelController = {
         this.isDying = true;
         Player.isBlocked = true;
         this.update = this.updateDying;
+        gameConst.lives--;
     },
     updateDying: function updateDying (delta) {
         this.deadTimer.tick(delta);
@@ -34,9 +35,12 @@ var LevelController = {
     
     updateLevel: function updateLevel (delta) {
         if (footsContainer.length() === 0) {
-            gameConst.currentLevel++;
-            gameConst.currentLevel = gameConst.currentLevel % levels.length;
-            this.resetLevel();
+            gameConst.lives++;
+            jsGFwk.Scenes.scenes.cinematic.enable();
+        }
+        
+        if (gameConst.lives === 0) {
+            jsGFwk.Scenes.scenes.hud.enable();
         }
         
         Timing.currentTime = Math.round((Timing.currentTime + delta) * 100) / 100;

@@ -9,9 +9,12 @@ var Hud = {
         this.isTextShaking = true;
         this.textShakeX = 0;
         this.textShakeY = 0;
+        gameConst.lives = 3;
     
         jsGFwk.Sprites.eater.reset();
         jsGFwk.Sprites.yeti.reset();
+        
+        gameConst.timer.context.clearRect(0, 0, 640, 150);
         
         this.walkingTimer = new jsGFwk.Timer({
 			action: function () {
@@ -43,6 +46,10 @@ var Hud = {
 		});
     },
     update: function update(delta) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER]) {
+            jsGFwk.Scenes.scenes.cinematic.enable();
+        }
+        
         this.walkingTimer.tick(delta);
         this.scanLineVisible = !this.scanLineVisible;
         
@@ -70,6 +77,10 @@ var Hud = {
         ctx.fillText('The Hunt', 320 + this.textShakeX, 180 + this.textShakeY);
         ctx.fillText('for', 320 + this.textShakeX, 220 + this.textShakeY);
         ctx.fillText('YongoYongo', 320 + this.textShakeX, 260 + this.textShakeY);
+        
+        ctx.font = '14pt zxBold';
+        ctx.fillText('Press ENTER or TAP to start', 320, 440);
+        
         ctx.restore();
         
         this.scanLineVisible && ctx.drawImage(jsGFwk.ResourceManager.graphics.scanLines.image, 0, 0);

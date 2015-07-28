@@ -4,12 +4,48 @@ var Hazards = {
         this.y = param.y;
         this.width = 16;
         this.height = 12;
-    },
-    onUpdate: function onUpdate(delta) {
-        if (Player.isRectColliding(this)) {
-            LevelController.killHero();
+        
+        this.onUpdate = this.normalUpdate;
+        
+        if (param.move !== undefined) {
+            this.speed = 0.1;
+            this.moveAcc = 0;
+            this.originalYPosition = param.y;
+            this.originalXPosition = param.x;
+            this.range = 10;
+            
+            switch(param.move) {
+                case 'upDown':
+                    this.onUpdate = this.upDownUpdate;
+                    break;
+                case 'leftRight':
+                    break;
+                case 'both':
+                default:
+                    break;
+            }
         }
     },
+    
+    upDownUpdate: function upDownUpdate(delta) {
+        this.moveAcc += this.speed;
+        this.y = (Math.sin(this.moveAcc) * this.range) + this.originalYPosition;
+        
+        if (Player.isRectColliding(this)) {
+            LevelController.killHero();
+            this.destroy();
+        }
+    },
+    
+    normalUpdate: function normalUpdate(delta) {
+        if (Player.isRectColliding(this)) {
+            LevelController.killHero();
+            this.destroy();
+        }
+    },
+    
+    onUpdate: function onUpdate() { },
+
     onDraw: function onDraw(ctx) {
         ctx.shadowColor = 'red';
         ctx.shadowBlur = 20;

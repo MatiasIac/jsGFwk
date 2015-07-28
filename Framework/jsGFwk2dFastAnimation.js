@@ -26,8 +26,8 @@ jsGFwk.FastAnimation = {
 			for (var name in jsGFwk._gameObjects) {
 				if (jsGFwk._gameObjects[name] !== null) {
 					var o = jsGFwk._gameObjects[name];
-					if (o.update) { o.update(delta); }
-					if (o.draw && o.visible) {
+					if (o !== undefined && o.update) { o.update(delta); }
+					if (o !== undefined && (o.draw && o.visible)) {
 						jsGFwk.FastAnimation._2Dbuffer.save();
 						o.draw(jsGFwk.FastAnimation._2Dbuffer);
 						jsGFwk.FastAnimation._2Dbuffer.restore();
