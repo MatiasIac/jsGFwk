@@ -10,7 +10,10 @@ var Hud = {
         this.textShakeX = 0;
         this.textShakeY = 0;
         gameConst.lives = 3;
+        gameConst.currentLevel = -1;
     
+        jsGFwk.ResourceManager.sounds.music.audio.play();
+        
         jsGFwk.Sprites.eater.reset();
         jsGFwk.Sprites.yeti.reset();
         

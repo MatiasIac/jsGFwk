@@ -1,44 +1,109 @@
 var levels = [
-    { foots: [ { x: 100, y: 240},
-        { x: 200, y: 240}, { x: 300, y: 240}, { x: 400, y: 240},
-        { x: 500, y: 240}, { x: 600, y: 240}],
-     hazards: [ /*{ x: 430, y: 200}*/ ],
+    {foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 400, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}],
+     hazards: [ ],
      playerInit: { x: 40, y: 230 },
-     parTime: 5,
-     trapParser: function trapParser(parser) {
-         return parser;//parser.swirl(300, 220, 100, 2.3);
-     }
+     parTime: 60,
+     trapParser: function trapParser(parser) { return parser; }
     },
-    { foots: [ { x: 100, y: 240},
-        { x: 200, y: 240}, { x: 300, y: 240},
-        { x: 500, y: 240}, { x: 600, y: 240}],
-     hazards: [ { x: 400, y: 240, move: 'none' } ],
+    
+    {foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 400, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}],
+     hazards: [ ],
      playerInit: { x: 40, y: 230 },
-     parTime: 6,
-     trapParser: function trapParser(parser) {
-         return parser;//parser.swirl(300, 220, 100, 2.3);
-     }
+     parTime: 4,
+     trapParser: function trapParser(parser) { return parser; }
     },
-    { foots: [ { x: 100, y: 240},
-        { x: 200, y: 240}, { x: 300, y: 240},
-        { x: 500, y: 240}, { x: 600, y: 240}],
-     hazards: [ { x: 400, y: 240}, { x: 400, y: 200} ],
-     playerInit: { x: 40, y: 230 },
-     parTime: 5,
-     trapParser: function trapParser(parser) {
-         return parser;//parser.swirl(300, 220, 100, 2.3);
-     }
-    },
-    { foots: [ { x: 100, y: 240},
-        { x: 200, y: 240}, { x: 300, y: 240},
-        { x: 500, y: 240}, { x: 600, y: 240}],
-     hazards: [ { x: 400, y: 240}, { x: 400, y: 200}, { x: 400, y: 280} ],
+    
+    {foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 400, y: 240}, { x: 500, y: 240}, { x: 600, y: 240},
+              { x: 100, y: 140}, { x: 200, y: 140}, { x: 300, y: 140}, { x: 400, y: 140}, { x: 500, y: 140}, { x: 600, y: 140}],
+     hazards: [ ],
      playerInit: { x: 40, y: 230 },
      parTime: 10,
-     trapParser: function trapParser(parser) {
-         return parser;//parser.swirl(300, 220, 100, 2.3);
-     }
+     trapParser: function trapParser(parser) { return parser; }
     },
+        
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}],
+     hazards: [ { x: 400, y: 240 } ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 10,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}],
+     hazards: [ { x: 400, y: 240}, { x: 400, y: 200} ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 8,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}],
+     hazards: [ { x: 400, y: 240}, { x: 400, y: 200}, { x: 400, y: 280} ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 8,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}, { x: 400, y: 240 }],
+     hazards: [ { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }} ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 8,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}, { x: 400, y: 240 }],
+     hazards: [ 
+         { x: 100, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 100, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 600, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 600, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }} ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 8,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}, { x: 400, y: 240 }],
+     hazards: [ 
+         { x: 100, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 100, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 600, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 600, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }} ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 10,
+     enableFriction: true,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}, { x: 400, y: 240 }],
+     hazards: [ 
+         { x: 100, y: 200, move: { style: 'both', speed: 0.1, range: 100 } },
+         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } },
+         { x: 600, y: 200, move: { style: 'both', speed: 0.1, range: 100 } } ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 10,
+     enableFriction: true,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 200}, { x: 300, y: 260}, { x: 500, y: 180}, { x: 600, y: 280}, { x: 400, y: 240 }],
+     hazards: [ 
+         { x: 100, y: 200, move: { style: 'both', speed: 0.1, range: 100 } },
+         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } },
+         { x: 600, y: 200, move: { style: 'both', speed: 0.1, range: 100 } } ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 10,
+     enableFriction: true,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}, { x: 400, y: 240 }],
+     hazards: [ 
+         { x: 100, y: 200, move: { style: 'both', speed: 0.1, range: 100 } }, { x: 100, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 600, y: 200, move: { style: 'both', speed: 0.1, range: 100 } }, { x: 600, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }} ],
+     playerInit: { x: 40, y: 230 },
+     parTime: 10,
+     enableFriction: true,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    
     { foots: [ { x: 100, y: 240},
         { x: 200, y: 240}, { x: 300, y: 240},
         { x: 500, y: 240}, { x: 600, y: 240}],

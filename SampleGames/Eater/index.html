@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Eater</title>
+		<title>The Hunt for YongoYongo</title>
 	</head>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
@@ -61,7 +61,7 @@
         spriteHeight: 28,
         maxPlayerXReach: function() { return this.width - this.spriteWidth },
         maxPlayerYReach: function() { return this.height - this.spriteHeight },
-        currentLevel: 0,
+        currentLevel: -1,
         fx: {
             glCanvas: null,
             glTexture: null
@@ -98,10 +98,10 @@
     jsGFwk.Fonts.createFont({ name: 'gooddog', source: 'fonts/GoodDog.otf' });
     jsGFwk.Fonts.createFont({ name: 'fff', source: 'fonts/FFF_Tusj.ttf' });
     
-    var laserSound = {};
-		laserSound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/laser.mp3" };
-        laserSound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/laser.ogg" };
-	jsGFwk.ResourceManager.addSound({ name: "eat", sources: laserSound});
+    var music = {};
+		music[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/main.mp3" };
+        music[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/main.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "music", sources: music});
     
     //Load game images
     jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/eater.png" });
@@ -123,7 +123,7 @@
     var eatJuke = {};
     
     jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
-        eatJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.eat });
+        //eatJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.eat });
 
         jsGFwk.Sprites.createSpriteCollection("eater",
             jsGFwk.ResourceManager.graphics.main.image, 
@@ -150,15 +150,19 @@
             id: "traps", graphic: jsGFwk.ResourceManager.graphics.main.image,
             left: 174, top: 276, width: 16, height: 12
         });
-        
-        jsGFwk.Scenes.scenes.hud.enable();
-        
+                
         //WebGL module
         var source = jsGFwk.FastAnimation._canvas;
         gameConst.fx.glCanvas = fx.canvas();
         gameConst.fx.glTexture = gameConst.fx.glCanvas.texture(source);
         source.parentNode.insertBefore(gameConst.fx.glCanvas, source);
         source.style.display = 'none';
+        
+        jsGFwk.ResourceManager.sounds.music.audio.loop = true;
+        jsGFwk.ResourceManager.sounds.music.audio.volume = 0.4;
+        jsGFwk.ResourceManager.sounds.music.audio.play();
+        
+        jsGFwk.Scenes.scenes.hud.enable();
     };
     
     jsGFwk.start();

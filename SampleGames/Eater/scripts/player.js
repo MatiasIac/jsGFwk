@@ -7,8 +7,19 @@ var Player = {
         this.width = 19;
         this.height = 28;
         this.isVisible = true;
-        this.speed = 5;
+        this.speedX = 5;
+        this.speedY = 5;
+        this.topSpeed = 50;
         this.isBlocked = false;
+        this.friction = 0.98;
+        
+        if (levels[gameConst.currentLevel].enableFriction) {
+            this.speedX = 0;
+            this.speedY = 0;
+            this.handleKeyboard = this.handleKeyboardWithFriction;
+        } else {
+            this.handleKeyboard = this.handleKeyboardWithoutFriction;
+        }
         
         jsGFwk.Sprites.eater.reset();
         
@@ -19,29 +30,68 @@ var Player = {
             tickTime: 0.2
 		});
     },
-    handleKeyboard: function handleKeyboard() {
+    
+    handleKeyboardWithFriction: function handleKeyboardWithFriction() {
         var movement = { x: 0, y: 0 };
         movement.x = this.x;
         movement.y = this.y;
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
-            movement.x += this.speed;
+            if (this.speedX < this.topSpeed) {
+                this.speedX++;
+            }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
-            movement.x -= this.speed;
+            if (this.speedX > -this.topSpeed) {
+                this.speedX--;
+            }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
-            movement.y += this.speed;
+            if (this.speedY < this.topSpeed) {
+                this.speedY++;
+            }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
-            movement.y -= this.speed;
+            if (this.speedY > -this.topSpeed) {
+                this.speedY--;
+            }
+        }
+        
+        this.speedX *= this.friction;
+        this.speedY *= this.friction;
+        movement.x += this.speedX;
+        movement.y += this.speedY;
+        
+        return movement;
+    },
+    
+    handleKeyboardWithoutFriction: function handleKeyboardWithoutFriction() {
+        var movement = { x: 0, y: 0 };
+        movement.x = this.x;
+        movement.y = this.y;
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
+            movement.x += this.speedX;
+        }
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+            movement.x -= this.speedX;
+        }
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
+            movement.y += this.speedY;
+        }
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+            movement.y -= this.speedY;
         }
         
         return movement;
     },
+    handleKeyboard: function handleKeyboard() {},
     handlePad: function handlePad(movement) {
         return movement;
     },
@@ -58,7 +108,7 @@ var Player = {
         if (!this.isBlocked) {
             this.walkingTimer.tick(delta);
             var moveto = this.handleKeyboard();
-            moveto = this.handlePad(moveto);
+            moveto = this.handlePad(moveto);            
             this.checkMovement(moveto);
         }
     },

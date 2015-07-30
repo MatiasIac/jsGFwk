@@ -14,10 +14,13 @@ var LevelController = {
         
         this.update = this.updateLevel;
         this.resetLevel();
+        
+        jsGFwk.ResourceManager.sounds.music.audio.play();
     },
     
     /*Kill the hero*/
     killHero: function killHero () {
+        hazardsContainer.clearAll();
         this.isDying = true;
         Player.isBlocked = true;
         this.update = this.updateDying;
@@ -37,16 +40,19 @@ var LevelController = {
         if (footsContainer.length() === 0) {
             gameConst.lives++;
             jsGFwk.Scenes.scenes.cinematic.enable();
+            return;
         }
         
         if (gameConst.lives === 0) {
             jsGFwk.Scenes.scenes.hud.enable();
+            return;
         }
         
         Timing.currentTime = Math.round((Timing.currentTime + delta) * 100) / 100;
         
         if (levels[gameConst.currentLevel].parTime <= Timing.currentTime) {
             this.killHero();
+            return;
         }
     },
     

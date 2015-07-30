@@ -4,6 +4,8 @@ var Cinematic = {
     init: function init() {
         var self = this;
         
+        jsGFwk.ResourceManager.sounds.music.audio.pause();
+        
         gameConst.timer.context.clearRect(0, 0, 640, 150);
         
         this.playerX = -200;

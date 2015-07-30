@@ -8,22 +8,45 @@ var Hazards = {
         this.onUpdate = this.normalUpdate;
         
         if (param.move !== undefined) {
-            this.speed = 0.1;
+            this.speed = param.move.speed;
             this.moveAcc = 0;
             this.originalYPosition = param.y;
             this.originalXPosition = param.x;
-            this.range = 10;
+            this.range = param.move.range;
             
-            switch(param.move) {
+            switch(param.move.style) {
                 case 'upDown':
                     this.onUpdate = this.upDownUpdate;
                     break;
                 case 'leftRight':
+                    this.onUpdate = this.leftRightUpdate
                     break;
                 case 'both':
                 default:
+                    this.onUpdate = this.bothUpdate
                     break;
             }
+        }
+    },
+    
+    bothUpdate: function upDownUpdate(delta) {
+        this.moveAcc += this.speed;
+        this.x = (Math.sin(this.moveAcc) * this.range) + this.originalXPosition;
+        this.y = (Math.cos(this.moveAcc) * this.range) + this.originalYPosition;
+        
+        if (Player.isRectColliding(this)) {
+            LevelController.killHero();
+            this.destroy();
+        }
+    },
+    
+    leftRightUpdate: function upDownUpdate(delta) {
+        this.moveAcc += this.speed;
+        this.x = (Math.sin(this.moveAcc) * this.range) + this.originalXPosition;
+        
+        if (Player.isRectColliding(this)) {
+            LevelController.killHero();
+            this.destroy();
         }
     },
     
