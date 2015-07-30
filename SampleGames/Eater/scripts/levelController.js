@@ -67,12 +67,16 @@ var LevelController = {
         Player.visible = true;
         Player.x = currenLevel.playerInit.x;
         Player.y = currenLevel.playerInit.y;
+        Player.speedX = 0;
+        Player.speedY = 0;
         
         Timing.currentTime = 0;
         Timing.timerColor = 255;
         
         footsContainer.clearAll();
         hazardsContainer.clearAll();
+        
+        jsGFwk.ResourceManager.sounds.pickTrack.audio.playbackRate = 1;
         
         this.drawLevel();
     },

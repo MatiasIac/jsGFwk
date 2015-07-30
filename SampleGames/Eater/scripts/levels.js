@@ -6,7 +6,7 @@ var levels = [
      trapParser: function trapParser(parser) { return parser; }
     },
     
-    {foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 400, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}],
+    {foots: [ { x: 100, y: 200}, { x: 200, y: 240}, { x: 300, y: 200}, { x: 400, y: 200}, { x: 500, y: 240}, { x: 600, y: 200}],
      hazards: [ ],
      playerInit: { x: 40, y: 230 },
      parTime: 4,

@@ -5,6 +5,8 @@ var Cinematic = {
         var self = this;
         
         jsGFwk.ResourceManager.sounds.music.audio.pause();
+        jsGFwk.ResourceManager.sounds.cinematicMusic.audio.currentTime = 0;
+        jsGFwk.ResourceManager.sounds.cinematicMusic.audio.play();
         
         gameConst.timer.context.clearRect(0, 0, 640, 150);
         
@@ -28,6 +30,7 @@ var Cinematic = {
         if (this.playerX >= 640) {
             gameConst.currentLevel++;
             gameConst.currentLevel = gameConst.currentLevel % levels.length;
+            jsGFwk.ResourceManager.sounds.cinematicMusic.audio.pause();
             jsGFwk.Scenes.scenes.game.enable();
         }
         

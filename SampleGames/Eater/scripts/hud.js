@@ -9,8 +9,10 @@ var Hud = {
         this.isTextShaking = true;
         this.textShakeX = 0;
         this.textShakeY = 0;
+        this.gamePadConnected = false;
+        
         gameConst.lives = 3;
-        gameConst.currentLevel = -1;
+        gameConst.currentLevel = 7;
     
         jsGFwk.ResourceManager.sounds.music.audio.play();
         
@@ -49,7 +51,10 @@ var Hud = {
 		});
     },
     update: function update(delta) {
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER]) {
+        this.gamePadConnected = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined;
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER] ||
+           (this.gamePadConnected && jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[0].pressed)) {
             jsGFwk.Scenes.scenes.cinematic.enable();
         }
         
@@ -85,6 +90,8 @@ var Hud = {
         ctx.fillText('Press ENTER or TAP to start', 320, 440);
         
         ctx.restore();
+        
+        this.gamePadConnected && ctx.drawImage(jsGFwk.Sprites.joystick.image, 310, 380);
         
         this.scanLineVisible && ctx.drawImage(jsGFwk.ResourceManager.graphics.scanLines.image, 0, 0);
     },

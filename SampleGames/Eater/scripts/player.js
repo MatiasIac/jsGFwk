@@ -7,9 +7,10 @@ var Player = {
         this.width = 19;
         this.height = 28;
         this.isVisible = true;
+        this.speed = 5;
         this.speedX = 5;
         this.speedY = 5;
-        this.topSpeed = 50;
+        this.topSpeed = 30;
         this.isBlocked = false;
         this.friction = 0.98;
         
@@ -17,8 +18,10 @@ var Player = {
             this.speedX = 0;
             this.speedY = 0;
             this.handleKeyboard = this.handleKeyboardWithFriction;
+            this.handlePad = this.handlePadWithFriction;
         } else {
             this.handleKeyboard = this.handleKeyboardWithoutFriction;
+            this.handlePad = this.handlePadWithoutFriction;
         }
         
         jsGFwk.Sprites.eater.reset();
@@ -67,34 +70,86 @@ var Player = {
         
         return movement;
     },
-    
     handleKeyboardWithoutFriction: function handleKeyboardWithoutFriction() {
         var movement = { x: 0, y: 0 };
         movement.x = this.x;
         movement.y = this.y;
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
-            movement.x += this.speedX;
+            movement.x += this.speed;
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
-            movement.x -= this.speedX;
+            movement.x -= this.speed;
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
-            movement.y += this.speedY;
+            movement.y += this.speed;
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
-            movement.y -= this.speedY;
+            movement.y -= this.speed;
         }
         
         return movement;
     },
-    handleKeyboard: function handleKeyboard() {},
-    handlePad: function handlePad(movement) {
+
+    handlePadWithFriction: function handlePadWithFriction(movement) {
+        if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined) {
+            var axisX = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[0].toFixed(2);
+            var axisY = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[1].toFixed(2);
+            
+            if (axisX > 0) {
+                if (this.speedX < this.topSpeed) {
+                    this.speedX++;
+                }
+            } else if (axisX < 0) {
+                if (this.speedX > -this.topSpeed) {
+                    this.speedX--;
+                }
+            }
+            
+            if (axisY > 0) {
+                if (this.speedY < this.topSpeed) {
+                    this.speedY++;
+                }
+            } else if (axisY < 0) {
+                if (this.speedY > -this.topSpeed) {
+                    this.speedY--;
+                }
+            }
+        }
+        
+        this.speedX *= this.friction;
+        this.speedY *= this.friction;
+        movement.x += this.speedX;
+        movement.y += this.speedY;
+        
         return movement;
     },
+    handlePadWithoutFriction: function handlePadWithoutFriction(movement) {
+        if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined) {
+            var axisX = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[0].toFixed(2);
+            var axisY = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[1].toFixed(2);
+            
+            if (axisX > 0) {
+                movement.x += this.speed;
+            } else if (axisX < 0) {
+                movement.x -= this.speed;
+            }
+            
+            if (axisY > 0) {
+                movement.y += this.speed;
+            } else if (axisY < 0) {
+                movement.y -= this.speed;
+            }
+        }
+        
+        return movement;
+    },
+    
+    handleKeyboard: function handleKeyboard() {},
+    handlePad: function handlePad(movement) {},
     checkMovement: function checkMovement(moveto) {
         if (moveto.x > 0 && moveto.x < gameConst.maxPlayerXReach()) {
             this.x = moveto.x;
@@ -104,6 +159,7 @@ var Player = {
             this.y = moveto.y;
         }
     },
+    
     update: function update(delta) {
         if (!this.isBlocked) {
             this.walkingTimer.tick(delta);

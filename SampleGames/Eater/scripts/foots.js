@@ -7,6 +7,10 @@ var Foots = {
     },
     onUpdate: function onUpdate(delta) {
         if (Player.isRectColliding(this)) {
+            jsGFwk.ResourceManager.sounds.pickTrack.audio.pause();
+            jsGFwk.ResourceManager.sounds.pickTrack.audio.currentTime = 0;
+            jsGFwk.ResourceManager.sounds.pickTrack.audio.playbackRate += 0.2;
+            jsGFwk.ResourceManager.sounds.pickTrack.audio.play();
             this.destroy();
         }
     },

@@ -103,6 +103,16 @@
         music[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/main.ogg" };
 	jsGFwk.ResourceManager.addSound({ name: "music", sources: music});
     
+    var music = {};
+		music[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/cinematicMusic.mp3" };
+        music[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/cinematicMusic.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "cinematicMusic", sources: music});
+    
+    var music = {};
+		music[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/pick.mp3" };
+        music[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/pick.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "pickTrack", sources: music});
+    
     //Load game images
     jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/eater.png" });
     jsGFwk.ResourceManager.addGraphic({ name: "scanLines", source: "images/scanlines.png" });
@@ -150,6 +160,11 @@
             id: "traps", graphic: jsGFwk.ResourceManager.graphics.main.image,
             left: 174, top: 276, width: 16, height: 12
         });
+        
+        jsGFwk.Sprites.createSprite({
+            id: "joystick", graphic: jsGFwk.ResourceManager.graphics.main.image,
+            left: 390, top: 259, width: 32, height: 40
+        });
                 
         //WebGL module
         var source = jsGFwk.FastAnimation._canvas;
@@ -161,6 +176,12 @@
         jsGFwk.ResourceManager.sounds.music.audio.loop = true;
         jsGFwk.ResourceManager.sounds.music.audio.volume = 0.4;
         jsGFwk.ResourceManager.sounds.music.audio.play();
+        
+        jsGFwk.ResourceManager.sounds.cinematicMusic.audio.loop = true;
+        jsGFwk.ResourceManager.sounds.cinematicMusic.audio.volume = 0.4;
+        
+        jsGFwk.ResourceManager.sounds.pickTrack.audio.loop = false;
+        jsGFwk.ResourceManager.sounds.pickTrack.audio.volume = 0.6;
         
         jsGFwk.Scenes.scenes.hud.enable();
     };
