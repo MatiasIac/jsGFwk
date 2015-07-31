@@ -12,7 +12,7 @@ var Hud = {
         this.gamePadConnected = false;
         
         gameConst.lives = 3;
-        gameConst.currentLevel = 7;
+        gameConst.currentLevel = -1;
     
         jsGFwk.ResourceManager.sounds.music.audio.play();
         
