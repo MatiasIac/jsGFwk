@@ -69,6 +69,9 @@ var LevelController = {
         Player.y = currenLevel.playerInit.y;
         Player.speedX = 0;
         Player.speedY = 0;
+        mousePointer.x = currenLevel.playerInit.x;
+        mousePointer.y = currenLevel.playerInit.y;
+        mousePointer.angle = 0;
         
         Timing.currentTime = 0;
         Timing.timerColor = 255;

@@ -2,17 +2,22 @@ var Player = {
     id: 'player',
     visible: true,
     init: function init() {
+        var self = this;
+        
         this.x = 10;
         this.y = 10;
         this.width = 19;
         this.height = 28;
         this.isVisible = true;
         this.speed = 5;
+        this.mouseSpeed = 5;
         this.speedX = 5;
         this.speedY = 5;
         this.topSpeed = 30;
         this.isBlocked = false;
         this.friction = 0.98;
+        this.moveToX = 0;
+        this.moveToY = 0;
         
         if (levels[gameConst.currentLevel].enableFriction) {
             this.speedX = 0;
@@ -42,24 +47,28 @@ var Player = {
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
             if (this.speedX < this.topSpeed) {
                 this.speedX++;
+                usingKeyboard = true;
             }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
             if (this.speedX > -this.topSpeed) {
                 this.speedX--;
+                usingKeyboard = true;
             }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
             if (this.speedY < this.topSpeed) {
                 this.speedY++;
+                usingKeyboard = true;
             }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
             if (this.speedY > -this.topSpeed) {
                 this.speedY--;
+                usingKeyboard = true;
             }
         }
         
@@ -77,18 +86,22 @@ var Player = {
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
             movement.x += this.speed;
+            usingKeyboard = true;
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
             movement.x -= this.speed;
+            usingKeyboard = true;
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
             movement.y += this.speed;
+            usingKeyboard = true;
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
             movement.y -= this.speed;
+            usingKeyboard = true;
         }
         
         return movement;
@@ -102,20 +115,24 @@ var Player = {
             if (axisX > 0) {
                 if (this.speedX < this.topSpeed) {
                     this.speedX++;
+                    usingKeyboard = true;
                 }
             } else if (axisX < 0) {
                 if (this.speedX > -this.topSpeed) {
                     this.speedX--;
+                    usingKeyboard = true;
                 }
             }
             
             if (axisY > 0) {
                 if (this.speedY < this.topSpeed) {
                     this.speedY++;
+                    usingKeyboard = true;
                 }
             } else if (axisY < 0) {
                 if (this.speedY > -this.topSpeed) {
                     this.speedY--;
+                    usingKeyboard = true;
                 }
             }
         }
@@ -134,15 +151,34 @@ var Player = {
             
             if (axisX > 0) {
                 movement.x += this.speed;
+                usingKeyboard = true;
             } else if (axisX < 0) {
                 movement.x -= this.speed;
+                usingKeyboard = true;
             }
             
             if (axisY > 0) {
                 movement.y += this.speed;
+                usingKeyboard = true;
             } else if (axisY < 0) {
                 movement.y -= this.speed;
+                usingKeyboard = true;
             }
+        }
+        
+        return movement;
+    },
+    
+    handleTap: function handleTap(movement) {
+        if (usingKeyboard) { return movement; }
+        
+        var tx = this.x - mousePointer.x,
+            ty = this.y - mousePointer.y,
+            dist = Math.sqrt(tx*tx+ty*ty);
+        
+        if(dist > 5) {        
+            movement.x += this.mouseSpeed * Math.cos(mousePointer.angle);
+            movement.y += this.mouseSpeed * Math.sin(mousePointer.angle);
         }
         
         return movement;
@@ -164,7 +200,8 @@ var Player = {
         if (!this.isBlocked) {
             this.walkingTimer.tick(delta);
             var moveto = this.handleKeyboard();
-            moveto = this.handlePad(moveto);            
+            moveto = this.handlePad(moveto);
+            moveto = this.handleTap(moveto);
             this.checkMovement(moveto);
         }
     },

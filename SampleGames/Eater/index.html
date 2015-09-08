@@ -70,7 +70,9 @@
             context: null,
             canvas: null
         }
-    };
+    },
+        mousePointer = { x: 0, y: 0 },
+        usingKeyboard = true;
     
     gameConst.timer.canvas = document.getElementById('timerCanvas');
     gameConst.timer.context = gameConst.timer.canvas.getContext('2d');
@@ -172,6 +174,42 @@
         gameConst.fx.glTexture = gameConst.fx.glCanvas.texture(source);
         source.parentNode.insertBefore(gameConst.fx.glCanvas, source);
         source.style.display = 'none';
+        
+        gameConst.fx.glCanvas.addEventListener('click', function (e) {
+            var pointer = null;
+            
+            if (e.offsetX)
+			    pointer = { x: e.offsetX, y: e.offsetY };
+			else if (e.layerX)
+			    pointer = { x: e.layerX, y: e.layerY };
+			else
+			    pointer = { x: e.pageX - gameConst.fx.glCanvas.offsetLeft, y: e.pageY - gameConst.fx.glCanvas.offsetTop };
+            
+            mousePointer = pointer;
+            
+            var targetX = mousePointer.x - Player.x;
+            var targetY = mousePointer.y - Player.y;
+            mousePointer.angle = (Math.atan2(targetY, targetX) * 180 / Math.PI) * 0.0174532925199432957;
+            usingKeyboard = false;
+        }, false);
+        
+        gameConst.timer.canvas.addEventListener('click', function (e) {
+            var pointer = null;
+            
+            if (e.offsetX)
+			    pointer = { x: e.offsetX, y: e.offsetY };
+			else if (e.layerX)
+			    pointer = { x: e.layerX, y: e.layerY };
+			else
+			    pointer = { x: e.pageX - gameConst.fx.glCanvas.offsetLeft, y: e.pageY - gameConst.fx.glCanvas.offsetTop };
+            
+            mousePointer = pointer;
+            
+            var targetX = mousePointer.x - Player.x;
+            var targetY = mousePointer.y - Player.y;
+            mousePointer.angle = (Math.atan2(targetY, targetX) * 180 / Math.PI) * 0.0174532925199432957;
+            usingKeyboard = false;
+        }, false);
         
         jsGFwk.ResourceManager.sounds.music.audio.loop = true;
         jsGFwk.ResourceManager.sounds.music.audio.volume = 0.4;

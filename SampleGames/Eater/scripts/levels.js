@@ -9,7 +9,7 @@ var levels = [
     {foots: [ { x: 100, y: 200}, { x: 200, y: 240}, { x: 300, y: 200}, { x: 400, y: 200}, { x: 500, y: 240}, { x: 600, y: 200}],
      hazards: [ ],
      playerInit: { x: 40, y: 230 },
-     parTime: 4,
+     parTime: 10,
      trapParser: function trapParser(parser) { return parser; }
     },
     

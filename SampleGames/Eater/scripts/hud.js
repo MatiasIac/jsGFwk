@@ -11,6 +11,8 @@ var Hud = {
         this.textShakeY = 0;
         this.gamePadConnected = false;
         
+        usingKeyboard = true;
+        
         gameConst.lives = 3;
         gameConst.currentLevel = -1;
     
@@ -54,7 +56,8 @@ var Hud = {
         this.gamePadConnected = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined;
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ENTER] ||
-           (this.gamePadConnected && jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[0].pressed)) {
+           (this.gamePadConnected && jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].buttons[0].pressed) ||
+           (!usingKeyboard)) {
             jsGFwk.Scenes.scenes.cinematic.enable();
         }
         
@@ -68,6 +71,7 @@ var Hud = {
         }
         
         this.startShackingTimer.tick(delta);
+        usingKeyboard = true;
     },
     draw: function draw(ctx) {
         ctx.drawImage(jsGFwk.Sprites.eater.sprite.image, this.playerX, 300);
