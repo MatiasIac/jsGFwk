@@ -135,13 +135,18 @@
     var eatJuke = {};
     
     jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
-        //eatJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.eat });
-
         jsGFwk.Sprites.createSpriteCollection("eater",
             jsGFwk.ResourceManager.graphics.main.image, 
             [{left: 92, top: 262, width: 19, height: 28}, 
              {left: 122, top: 262, width: 19, height: 28}]);
         jsGFwk.Sprites.eater.loop(true);
+        
+        jsGFwk.Sprites.createSpriteCollection("crocodile",
+            jsGFwk.ResourceManager.graphics.main.image, 
+            [{left: 74, top: 134, width: 33, height: 64}, 
+             {left: 113, top: 134, width: 33, height: 64},
+             {left: 153, top: 134, width: 33, height: 64}]);
+        jsGFwk.Sprites.crocodile.loop(true);
         
         jsGFwk.Sprites.createSprite({ id: "live",
             graphic: jsGFwk.ResourceManager.graphics.main.image,
@@ -220,6 +225,9 @@
         
         jsGFwk.ResourceManager.sounds.pickTrack.audio.loop = false;
         jsGFwk.ResourceManager.sounds.pickTrack.audio.volume = 0.6;
+        
+        
+        jsGFwk.ResourceManager.sounds.mute();
         
         jsGFwk.Scenes.scenes.hud.enable();
     };

@@ -16,7 +16,9 @@ jsGFwk.ResourceManager = {
 		
 		_detachEvents: function () {
 			for (var soundSource in jsGFwk.ResourceManager.sounds) {
-				if (jsGFwk.ResourceManager.sounds.hasOwnProperty(soundSource) && soundSource !== 'format') {
+				if (jsGFwk.ResourceManager.sounds.hasOwnProperty(soundSource) && 
+					(soundSource !== 'format' && soundSource !== 'isMuted' && soundSource !== 'mute' && soundSource !== 'unMute' && soundSource !== 'doMute')) {
+					jsGFwk.ResourceManager.sounds[soundSource]._volume = 0;
 					jsGFwk.ResourceManager.sounds[soundSource].audio.removeEventListener('canplaythrough', jsGFwk.ResourceManager._loadDispatcher);
 				}
 			}
@@ -28,6 +30,24 @@ jsGFwk.ResourceManager = {
 				wav: 'audio/wav; codecs="1"',
 				mp3: 'audio/mpeg;',
 				acc: 'audio/mp4; codecs="mp4a.40.2"'
+			},
+			isMuted: false,
+			mute: function() {
+				this.isMuted = true;
+				this.doMute();
+			},
+			unMute: function () {
+				this.isMuted = false;
+				this.doMute();
+			},
+			doMute: function () {
+				for (var soundSource in jsGFwk.ResourceManager.sounds) {
+					if (jsGFwk.ResourceManager.sounds.hasOwnProperty(soundSource) && 
+						(soundSource !== 'format' && soundSource !== 'isMuted' && soundSource !== 'mute' && soundSource !== 'unMute' && soundSource !== 'doMute')) {
+						jsGFwk.ResourceManager.sounds[soundSource]._volume = this.isMuted ? jsGFwk.ResourceManager.sounds[soundSource].audio.volume : jsGFwk.ResourceManager.sounds[soundSource]._volume;
+						jsGFwk.ResourceManager.sounds[soundSource].audio.volume = this.isMuted ? 0 : jsGFwk.ResourceManager.sounds[soundSource]._volume = this.isMuted ? jsGFwk.ResourceManager.sounds[soundSource].audio.volume : jsGFwk.ResourceManager.sounds[soundSource]._volume;;
+					}
+				}
 			}
 		},
 		graphics: {},
@@ -78,7 +98,8 @@ jsGFwk.ResourceManager = {
 				}
 				
 				for (var soundSource in jsGFwk.ResourceManager.sounds) {
-					if (jsGFwk.ResourceManager.sounds.hasOwnProperty(soundSource) && soundSource !== 'format') {
+					if (jsGFwk.ResourceManager.sounds.hasOwnProperty(soundSource) && 
+						(soundSource !== 'format' && soundSource !== 'isMuted' && soundSource !== 'mute' && soundSource !== 'unMute' && soundSource !== 'doMute')) {
 						jsGFwk.ResourceManager.sounds[soundSource].audio.src = jsGFwk.ResourceManager.sounds[soundSource].source;
 					}
 				}

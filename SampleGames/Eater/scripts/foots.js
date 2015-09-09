@@ -15,10 +15,10 @@ var Foots = {
         }
     },
     onDraw: function onDraw(ctx) {
-        ctx.shadowColor = 'white';
+        /*ctx.shadowColor = 'white';
         ctx.shadowBlur = 20;
         ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
+        ctx.shadowOffsetY = 0;*/
         ctx.drawImage(jsGFwk.Sprites.foots.image, this.x, this.y);
     }
 };
