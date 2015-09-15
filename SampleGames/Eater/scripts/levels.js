@@ -5,6 +5,7 @@ var levels = [
               ],
      playerInit: { x: 40, y: 230 },
      parTime: 60,
+     drawEnvironment: function (ctx) { },
      trapParser: function trapParser(parser) { return parser; }
     },
     

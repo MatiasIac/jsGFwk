@@ -20,6 +20,7 @@
 	
     <script language="Javascript" src="scripts/glfx.js"></script>
     
+    <script language="Javascript" src="scripts/background.js"></script>
     <script language="Javascript" src="scripts/player.js"></script>
     <script language="Javascript" src="scripts/foots.js"></script>
     <script language="Javascript" src="scripts/hazards.js"></script>
@@ -123,7 +124,7 @@
     var hazardsContainer = jsGFwk.Container.createContainer("hazardsCloner", Hazards, true);
     
     jsGFwk.Scenes.create({name: "game", 
-        gameObjects: [Player, LevelController, footsContainer,
+        gameObjects: [Background, Player, LevelController, footsContainer,
                       hazardsContainer, Foreground, Timing] });
     
     jsGFwk.Scenes.create({name: "hud", 
@@ -147,6 +148,13 @@
              {left: 113, top: 134, width: 33, height: 64},
              {left: 153, top: 134, width: 33, height: 64}]);
         jsGFwk.Sprites.crocodile.loop(true);
+        
+        jsGFwk.Sprites.createSpriteCollection("gorilla",
+            jsGFwk.ResourceManager.graphics.main.image, 
+            [{left: 219, top: 141, width: 43, height: 38}, 
+             {left: 268, top: 141, width: 43, height: 38},
+             {left: 317, top: 141, width: 43, height: 38}]);
+        jsGFwk.Sprites.gorilla.loop(true);
         
         jsGFwk.Sprites.createSprite({ id: "live",
             graphic: jsGFwk.ResourceManager.graphics.main.image,
@@ -225,7 +233,6 @@
         
         jsGFwk.ResourceManager.sounds.pickTrack.audio.loop = false;
         jsGFwk.ResourceManager.sounds.pickTrack.audio.volume = 0.6;
-        
         
         jsGFwk.ResourceManager.sounds.mute();
         
