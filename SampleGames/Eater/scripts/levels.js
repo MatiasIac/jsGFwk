@@ -1,11 +1,11 @@
 var levels = [
     {foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 400, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}],
      hazards: [ { x: 300, y: 480, crocodile: { speed: 5 } },
-                { x: 400, y: 200, crocodile: { speed: 3 } }
+                { x: 400, y: 200, crocodile: { speed: 3 } },
+                { x: 0, y: 0, rain: true }
               ],
      playerInit: { x: 40, y: 230 },
      parTime: 60,
-     drawEnvironment: function (ctx) { },
      trapParser: function trapParser(parser) { return parser; }
     },
     

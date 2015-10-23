@@ -46,6 +46,38 @@ var Hazards = {
             
             this.onUpdate = this.crocodileUpdate;
             this.onDraw = this.crocodileDraw;
+        } else if (param.rain) {
+            this.rainAliveTimer = new jsGFwk.Timer({
+                action: function () {
+                    self.rainIsShown = false;
+                }, tickTime: 0.3
+            });
+            
+            this.rainShowTimer = new jsGFwk.Timer({
+                action: function () {
+                    if (parseInt(Math.random() * 10) === 5) {
+                        self.rainIsShown = true;
+                    }
+                }, tickTime: 0.2
+            });
+            
+            this.onUpdate = this.rainUpdate;
+            this.onDraw = this.rainDraw;
+        }
+    },
+    
+    rainUpdate: function (delta) {
+        if (this.rainIsShown) {
+            this.rainAliveTimer.tick(delta);
+        } else {
+            this.rainShowTimer.tick(delta);
+        }
+    },
+    
+    rainDraw: function (ctx) {
+        if (this.rainIsShown) {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 640, 480);
         }
     },
     
