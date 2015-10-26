@@ -23,6 +23,7 @@
     <script language="Javascript" src="scripts/background.js"></script>
     <script language="Javascript" src="scripts/player.js"></script>
     <script language="Javascript" src="scripts/foots.js"></script>
+    <script language="Javascript" src="scripts/drops.js"></script>
     <script language="Javascript" src="scripts/hazards.js"></script>
     <script language="Javascript" src="scripts/foreground.js"></script>
     <script language="Javascript" src="scripts/levelController.js"></script>
@@ -122,10 +123,11 @@
     
     var footsContainer = jsGFwk.Container.createContainer("footsCloner", Foots, true);
     var hazardsContainer = jsGFwk.Container.createContainer("hazardsCloner", Hazards, true);
+    var dropsContainer = jsGFwk.Container.createContainer("dropsCloner", Drops, true);
     
     jsGFwk.Scenes.create({name: "game", 
         gameObjects: [Background, Player, LevelController, footsContainer,
-                      hazardsContainer, Foreground, Timing] });
+                      hazardsContainer, dropsContainer, Foreground, Timing] });
     
     jsGFwk.Scenes.create({name: "hud", 
         gameObjects: [Hud] });
@@ -155,6 +157,12 @@
              {left: 268, top: 141, width: 43, height: 38},
              {left: 317, top: 141, width: 43, height: 38}]);
         jsGFwk.Sprites.gorilla.loop(true);
+        
+        jsGFwk.Sprites.createSpriteCollection("drop",
+            jsGFwk.ResourceManager.graphics.main.image, 
+            [{left: 44, top: 358, width: 21, height: 9}, 
+             {left: 68, top: 358, width: 21, height: 9}]);
+        jsGFwk.Sprites.drop.loop(false);
         
         jsGFwk.Sprites.createSprite({ id: "live",
             graphic: jsGFwk.ResourceManager.graphics.main.image,

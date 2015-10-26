@@ -20,6 +20,7 @@ var LevelController = {
     
     /*Kill the hero*/
     killHero: function killHero () {
+        dropsContainer.clearAll();
         hazardsContainer.clearAll();
         this.isDying = true;
         Player.isBlocked = true;
@@ -78,6 +79,7 @@ var LevelController = {
         
         footsContainer.clearAll();
         hazardsContainer.clearAll();
+        dropsContainer.clearAll();
         
         jsGFwk.ResourceManager.sounds.pickTrack.audio.playbackRate = 1;
         

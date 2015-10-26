@@ -61,12 +61,22 @@ var Hazards = {
                 }, tickTime: 0.2
             });
             
+            this.rainDropTimer = new jsGFwk.Timer({
+                action: function () {
+                    dropsContainer.cloneObject({
+                        x: parseInt(Math.random() * 500) + 20,
+                        y: parseInt(Math.random() * 430) + 20
+                    });
+                }, tickTime: 0.2
+            });
+            
             this.onUpdate = this.rainUpdate;
             this.onDraw = this.rainDraw;
         }
     },
     
     rainUpdate: function (delta) {
+        this.rainDropTimer.tick(delta);
         if (this.rainIsShown) {
             this.rainAliveTimer.tick(delta);
         } else {
