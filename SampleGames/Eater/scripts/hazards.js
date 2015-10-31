@@ -72,8 +72,24 @@ var Hazards = {
             
             this.onUpdate = this.rainUpdate;
             this.onDraw = this.rainDraw;
+        } else if (param.mud) {
+            this.width = 19;
+            this.height = 19;
+            this.onUpdate = this.mudUpdate;
+            this.onDraw = this.mudDraw;
         }
     },
+    
+    /** Mud **/
+    mudUpdate: function (delta) {
+        this.isColliding = Player.isRectColliding(this);
+    },
+    
+    mudDraw: function (ctx) {
+        ctx.drawImage(jsGFwk.Sprites.mud.image, this.x, this.y, 19, 19);
+    },
+    
+    /** Rain **/
     
     rainUpdate: function (delta) {
         this.rainDropTimer.tick(delta);

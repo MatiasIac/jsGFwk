@@ -196,6 +196,18 @@ var Player = {
         }
     },
     
+    slow: function () {
+        this.speed = 1;
+        this.mouseSpeed = 1;
+        this.friction = 0.5;
+    },
+    
+    normal: function () {
+        this.speed = 5;
+        this.mouseSpeed = 5;
+        this.friction = 0.98;
+    },
+    
     update: function update(delta) {
         if (!this.isBlocked) {
             this.walkingTimer.tick(delta);

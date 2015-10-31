@@ -55,6 +55,15 @@ var LevelController = {
             this.killHero();
             return;
         }
+        
+        var mudCollide = false;
+        hazardsContainer.eachCloned(function (element, e) { 
+            if (element.isColliding === true) {
+                mudCollide = true;
+                e.cancel = true;
+            }
+        });
+        (mudCollide) ? Player.slow() : Player.normal();
     },
     
     update: null,
