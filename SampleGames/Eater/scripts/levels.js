@@ -63,7 +63,8 @@ var levels = [
      hazards: [ 
          { x: 100, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 100, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
          { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
-         { x: 600, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 600, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }} ],
+         { x: 600, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 600, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 600, y: 450, yongo: { type: 'fake', speed: 10 }}],
      playerInit: { x: 40, y: 230 },
      parTime: 10,
      enableFriction: true,
@@ -106,7 +107,8 @@ var levels = [
     { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}, { x: 400, y: 240 }],
      hazards: [ 
          { x: 200, y: 480, crocodile: { speed: 5 } },
-         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }}],
+         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 600, y: 450, yongo: { type: 'fake', speed: 10 }}],
      playerInit: { x: 40, y: 230 },
      parTime: 10,
      enableFriction: true,
@@ -297,7 +299,8 @@ var levels = [
                { x: 495, y: 295, mud: true},
                { x: 365, y: 380, monkey: { speed: 25, movementSeed: 1.5 } },
                { x: 365, y: 10, monkey: { speed: 50, movementSeed: 1.2 } },
-               { x: 600, y: 10, monkey: { speed: 15, movementSeed: 2 } }],
+               { x: 600, y: 10, monkey: { speed: 15, movementSeed: 2 } },
+               { x: 600, y: 450, yongo: { type: 'fake', speed: 10 }}],
      playerInit: { x: 40, y: 230 },
      parTime: 25,
      enableFriction: false,
@@ -312,7 +315,8 @@ var levels = [
                { x: 320, y: 125, move: { style: 'both', speed: 0.1, range: 100 } },
                { x: 495, y: 295, move: { style: 'both', speed: 0.1, range: 100 } },
                { x: 365, y: 380, monkey: { speed: 25, movementSeed: 1.2 } },
-               { x: 600, y: 10, monkey: { speed: 15, movementSeed: 1.5 } }],
+               { x: 600, y: 10, monkey: { speed: 15, movementSeed: 1.5 } },
+               { x: 600, y: 450, yongo: { type: 'fake', speed: 10 }}],
      playerInit: { x: 40, y: 230 },
      parTime: 25,
      enableFriction: false,
@@ -333,126 +337,107 @@ var levels = [
      trapParser: function trapParser(parser) { return parser; }
     },
     
-    /*{ x: 300, y: 480, crocodile: { speed: 5 } },
-    { x: 400, y: 200, crocodile: { speed: 3 } },
-    { x: 0, y: 0, rain: true }*/
-    
+    { foots: [{x: 275, y: 350}, {x: 325, y: 130}, {x: 500, y: 300}],
+     hazards: [{ x: 270, y: 345, mud: true},
+               { x: 320, y: 125, mud: true},
+               { x: 495, y: 295, mud: true},
+               { x: 270, y: 345, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 320, y: 125, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 495, y: 295, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 320, y: 240, move: { style: 'both', speed: 0.05, range: 150 } },
+               { x: 600, y: 450, yongo: { type: 'fake', speed: 10 }},
+               { x: 0, y: 0, rain: true }],
+     playerInit: { x: 40, y: 230 },
+     parTime: 25,
+     enableFriction: false,
+     trapParser: function trapParser(parser) { return parser.brightnessContrast(-0.8, -0.33); }
+    },
     
     { foots: [ { x: 100, y: 240},
         { x: 200, y: 240}, { x: 300, y: 240},
         { x: 500, y: 240}, { x: 600, y: 240}],
-     hazards: [ { x: 400, y: 240}, { x: 400, y: 200}, { x: 400, y: 280} ],
+     hazards: [{ x: 400, y: 240},
+               { x: 400, y: 200},
+               { x: 400, y: 280} ],
      playerInit: { x: 40, y: 230 },
-     parTime: 10,
+     enableFriction: false,
+     ambient: 'toxic',
+     parTime: 20,
      trapParser: function trapParser(parser) {
-         return parser.swirl(300, 220, 100, 2.3);
+         return parser.swirl(Player.x, Player.y, 100, Player.sinResult).hueSaturation(0.63, 0.63);
      }
     },
-    //Sat
-    { foots: [{ x: 320, y: 60 },
-              { x: 320, y: 140 },
-              { x: 320, y: 220 },
-              { x: 360, y: 220 },
-              { x: 440, y: 140 },
-              { x: 520, y: 100 }],
-     hazards: [{ x: 320, y: 100 },
-              { x: 320, y: 180 },
-              { x: 320, y: 260 },              
-              { x: 400, y: 180 },
-              { x: 480, y: 100 }],
-     playerInit: { x: 320, y: 30 },
-     parTime: 50,
-     tiltingAcc: 0,
-     trapParser: function trapParser(parser) {         
-         return parser.brightnessContrast(-0.8, -0.33);
+    
+    { foots: [ { x: 100, y: 240},
+        { x: 200, y: 240}, { x: 300, y: 240},
+        { x: 500, y: 240}, { x: 600, y: 240},
+        { x: 400, y: 240}],
+     hazards: [{ x: 300, y: 240, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 400, y: 200, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 200, y: 280, move: { style: 'both', speed: 0.1, range: 100 } } ],
+     playerInit: { x: 40, y: 230 },
+     enableFriction: false,
+     ambient: 'toxic',
+     parTime: 20,
+     trapParser: function trapParser(parser) {
+         return parser.swirl(Player.x, Player.y, 100, Player.sinResult).hueSaturation(0.63, 0.63);
      }
     },
-    //Invert
-    { foots: [{ x: 320, y: 60 },
-              { x: 320, y: 140 },
-              { x: 320, y: 220 },
-              { x: 360, y: 220 },
-              { x: 440, y: 140 },
-              { x: 520, y: 100 }],
-     hazards: [{ x: 320, y: 100 },
-              { x: 320, y: 180 },
-              { x: 320, y: 260 },              
-              { x: 400, y: 180 },
-              { x: 480, y: 100 }],
-     playerInit: { x: 320, y: 30 },
-     parTime: 50,
-     tiltingAcc: 0,
-     trapParser: function trapParser(parser) {         
-         return parser.hueSaturation(-1, -1);
+    
+    { foots: [ { x: 100, y: 140},
+        { x: 200, y: 260}, { x: 300, y: 180},
+        { x: 500, y: 340}, { x: 600, y: 290},
+        { x: 400, y: 440}],
+     hazards: [{ x: 400, y: 200, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 500, y: 480, crocodile: { speed: 5 } },
+               { x: 300, y: 480, crocodile: { speed: 2 } },
+               { x: 200, y: 480, crocodile: { speed: 6 } }],
+     playerInit: { x: 40, y: 230 },
+     enableFriction: false,
+     ambient: 'toxic',
+     parTime: 15,
+     trapParser: function trapParser(parser) {
+         return parser.bulgePinch(Player.x, Player.y, 80, Player.sinResultSimple).hueSaturation(0.63, 0.63);
      }
     },
+        
     //Zoom
-    { foots: [{ x: 320, y: 60 },
-              { x: 320, y: 140 },
-              { x: 320, y: 220 },
-              { x: 360, y: 220 },
-              { x: 440, y: 140 },
-              { x: 520, y: 100 }],
-     hazards: [{ x: 320, y: 100 },
-              { x: 320, y: 180 },
-              { x: 320, y: 260 },              
-              { x: 400, y: 180 },
-              { x: 480, y: 100 }],
-     playerInit: { x: 320, y: 30 },
+    { foots: [ { x: 100, y: 240}, { x: 200, y: 240}, { x: 300, y: 240}, { x: 500, y: 240}, { x: 600, y: 240}, { x: 400, y: 240 }],
+     hazards: [ 
+         { x: 100, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 100, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 400, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 400, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }},
+         { x: 600, y: 200, move: { style: 'upDown', speed: 0.1, range: 100 } }, { x: 600, y: 250, move: { style: 'upDown', speed: -0.1, range: 100 }} ],
+     playerInit: { x: 40, y: 230 },
      parTime: 50,
-     tiltingAcc: 0,
+     ambient: 'toxic',
      trapParser: function trapParser(parser) {
-         this.tiltingAcc += 0.05;
-         this.tiltFinal = Math.cos(this.tiltingAcc);
-         this.shake = (Math.sin(this.tiltingAcc) * 30) + 225;
-         
-         return parser.zoomBlur(320, this.shake, this.tiltFinal);
+         return parser.zoomBlur(Player.x, Player.y, Player.sinResultSimple);//.hueSaturation(0.63, 0.63);
      }
     },
-    //Jumping
+    
     { foots: [{ x: 320, y: 60 },
               { x: 320, y: 140 },
               { x: 320, y: 220 },
-              { x: 360, y: 220 },
-              { x: 440, y: 140 },
-              { x: 520, y: 100 }],
-     hazards: [{ x: 320, y: 100 },
-              { x: 320, y: 180 },
-              { x: 320, y: 260 },              
-              { x: 400, y: 180 },
-              { x: 480, y: 100 }],
-     playerInit: { x: 320, y: 30 },
-     parTime: 50,
-     tiltingAcc: 0,
+              { x: 320, y: 290 },
+              { x: 320, y: 380 },
+              { x: 320, y: 450 }],
+     hazards: [{ x: 320, y: 100, move: { style: 'both', speed: 0.06, range: 100 } },
+              { x: 220, y: 380, move: { style: 'both', speed: 0.05, range: 100 } },
+              { x: 320, y: 260, move: { style: 'both', speed: 0.04, range: 100 } },              
+              { x: 400, y: 180, move: { style: 'both', speed: 0.02, range: 100 } },
+              { x: 480, y: 100, move: { style: 'both', speed: 0.07, range: 100 } },
+              { x: 600, y: 450, yongo: { type: 'fake', speed: 10 }},
+              { x: 600, y: 10, monkey: { speed: 50, movementSeed: 3 } },
+              { x: 0, y: 0, rain: true }],
+     playerInit: { x: 40, y: 230 },
+     parTime: 20,
      trapParser: function trapParser(parser) {
-         this.tiltingAcc += 0.05;
-         this.tiltFinal = Math.cos(this.tiltingAcc);
-         
-         return parser.bulgePinch(320, 240, 250, this.tiltFinal);
+         return parser.noise(0.71);
      }
     },
-    //Pespective Tilt
-    { foots: [{ x: 320, y: 60 },
-              { x: 320, y: 140 },
-              { x: 320, y: 220 },
-              { x: 360, y: 220 },
-              { x: 440, y: 140 },
-              { x: 520, y: 100 }],
-     hazards: [{ x: 320, y: 100 },
-              { x: 320, y: 180 },
-              { x: 320, y: 260 },              
-              { x: 400, y: 180 },
-              { x: 480, y: 100 }],
-     playerInit: { x: 320, y: 30 },
-     parTime: 50,
-     tiltingAcc: 0,
-     trapParser: function trapParser(parser) {
-         this.tiltingAcc += 0.1;
-         this.tiltFinal = (Math.cos(this.tiltingAcc) * 10) + 160;
-         this.otherTilt = (Math.cos(this.tiltingAcc) * 10) + 235;
-         
-         return parser.perspective([175,156,496,55,161,279,504,330],
-                                   [this.tiltFinal,180,358,107,172,this.otherTilt,377,300]);
-     }
-    }
+    
+    /*{ x: 300, y: 480, crocodile: { speed: 5 } },
+    { x: 400, y: 200, crocodile: { speed: 3 } },
+    { x: 0, y: 0, rain: true }*/
+    
 ];

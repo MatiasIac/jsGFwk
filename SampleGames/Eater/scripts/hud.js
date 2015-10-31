@@ -14,7 +14,7 @@ var Hud = {
         usingKeyboard = true;
         
         gameConst.lives = 3;
-        gameConst.currentLevel = 25;
+        gameConst.currentLevel = -1;
     
         jsGFwk.ResourceManager.sounds.music.audio.play();
         

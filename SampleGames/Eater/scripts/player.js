@@ -18,6 +18,9 @@ var Player = {
         this.friction = 0.98;
         this.moveToX = 0;
         this.moveToY = 0;
+        this.sinAcc = 0;
+        this.sinResult = 0;
+        this.sinResultSimple = 0;
         
         if (levels[gameConst.currentLevel].enableFriction) {
             this.speedX = 0;
@@ -216,6 +219,10 @@ var Player = {
             moveto = this.handleTap(moveto);
             this.checkMovement(moveto);
         }
+        
+        this.sinAcc += 0.07;
+        this.sinResult = (Math.sin(this.sinAcc) * 5);
+        this.sinResultSimple = (Math.sin(this.sinAcc));
     },
     draw: function draw(ctx) {
         this.isVisible && ctx.drawImage(jsGFwk.Sprites.eater.sprite.image, this.x, this.y);
