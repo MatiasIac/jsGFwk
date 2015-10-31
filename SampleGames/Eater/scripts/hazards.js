@@ -77,9 +77,87 @@ var Hazards = {
             this.height = 19;
             this.onUpdate = this.mudUpdate;
             this.onDraw = this.mudDraw;
+        } else if (param.monkey !== undefined) {
+            var self = this;
+            this.width = 43;
+            this.height = 38;
+            this.speed = param.monkey.speed;
+            this.targetX = Player.x;
+            this.targetY = Player.y;
+            
+            this.monkeySprite = jsGFwk.Sprites.gorilla.clone();
+            this.monkeySprite.reset();
+            
+            this.monkeyWalkingTimer = new jsGFwk.Timer({
+                action: function () {
+                    self.monkeySprite.next();
+                },
+                tickTime: 0.2
+            });
+            
+            this.monkeyTargetingTimer = new jsGFwk.Timer({
+                action: function () {
+                    self.targetX = Player.x;
+                    self.targetY = Player.y;
+                },
+                tickTime: param.monkey.movementSeed
+            });
+            
+            this.onUpdate = this.monkeyUpdate;
+            this.onDraw = this.monkeyDraw;
+        } else if (param.yongo !== undefined) {
+            this.yongoWalkingTimer = new jsGFwk.Timer({
+                action: function () {
+                    jsGFwk.Sprites.yeti.next();
+                },
+                tickTime: 0.2
+            });
+            
+            this.width = 30;
+            this.height = 30;
+            this.speed = param.yongo.speed;
+            
+            switch (param.yongo.type) {
+                case 'fake':
+                    this.onUpdate = this.yongoFakeUpdate;
+                    this.onDraw = this.yongoDraw;
+                    break;
+                default:
+                    break;
+            }
         }
     },
     
+    /** Yongo **/
+    yongoFakeUpdate: function (delta) {
+        this.yongoWalkingTimer.tick(delta);
+        this.y -= this.speed;
+        
+        if (this.y <= -30) { this.destroy(); }
+    },
+    
+    yongoDraw: function (ctx) {
+        ctx.drawImage(jsGFwk.Sprites.yeti.sprite.image, this.x, this.y);
+    },
+    
+    /** Gorilla **/
+    monkeyUpdate: function (delta) {
+        this.monkeyWalkingTimer.tick(delta);
+        this.monkeyTargetingTimer.tick(delta);
+        
+        this.x += (this.targetX - this.x) / this.speed;
+		this.y += (this.targetY - this.y) / this.speed;
+        
+        if (Player.isRectColliding(this)) {
+            LevelController.killHero();
+            this.destroy();
+        }
+    },
+    
+    monkeyDraw: function (ctx) {
+        ctx.drawImage(this.monkeySprite.sprite.image, this.x, this.y);
+    },
+        
     /** Mud **/
     mudUpdate: function (delta) {
         this.isColliding = Player.isRectColliding(this);

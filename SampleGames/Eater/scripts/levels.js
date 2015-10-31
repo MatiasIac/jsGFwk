@@ -263,6 +263,76 @@ var levels = [
      trapParser: function trapParser(parser) { return parser; }
     },
     
+    { foots: [ {x: 275, y: 350}, {x: 325, y: 130}, {x: 500, y: 300}],
+     hazards: [{ x: 365, y: 380, monkey: { speed: 25, movementSeed: 1.5 } }],
+     playerInit: { x: 40, y: 230 },
+     parTime: 15,
+     enableFriction: false,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [ {x: 275, y: 350}, {x: 325, y: 130}, {x: 500, y: 300}],
+     hazards: [{ x: 365, y: 380, monkey: { speed: 25, movementSeed: 1.5 } },
+               { x: 365, y: 10, monkey: { speed: 50, movementSeed: 1.2 } }],
+     playerInit: { x: 40, y: 230 },
+     parTime: 15,
+     enableFriction: true,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [{x: 275, y: 350}, {x: 325, y: 130}, {x: 500, y: 300}],
+     hazards: [{ x: 365, y: 380, monkey: { speed: 25, movementSeed: 1.5 } },
+               { x: 365, y: 10, monkey: { speed: 50, movementSeed: 1.2 } },
+               { x: 600, y: 10, monkey: { speed: 15, movementSeed: 2 } },
+               { x: 0, y: 0, rain: true }],
+     playerInit: { x: 40, y: 230 },
+     parTime: 25,
+     enableFriction: false,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [{x: 275, y: 350}, {x: 325, y: 130}, {x: 500, y: 300}],
+     hazards: [{ x: 270, y: 345, mud: true},
+               { x: 320, y: 125, mud: true},
+               { x: 495, y: 295, mud: true},
+               { x: 365, y: 380, monkey: { speed: 25, movementSeed: 1.5 } },
+               { x: 365, y: 10, monkey: { speed: 50, movementSeed: 1.2 } },
+               { x: 600, y: 10, monkey: { speed: 15, movementSeed: 2 } }],
+     playerInit: { x: 40, y: 230 },
+     parTime: 25,
+     enableFriction: false,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [{x: 275, y: 350}, {x: 325, y: 130}, {x: 500, y: 300}],
+     hazards: [{ x: 270, y: 345, mud: true},
+               { x: 320, y: 125, mud: true},
+               { x: 495, y: 295, mud: true},
+               { x: 270, y: 345, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 320, y: 125, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 495, y: 295, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 365, y: 380, monkey: { speed: 25, movementSeed: 1.2 } },
+               { x: 600, y: 10, monkey: { speed: 15, movementSeed: 1.5 } }],
+     playerInit: { x: 40, y: 230 },
+     parTime: 25,
+     enableFriction: false,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
+    { foots: [{x: 275, y: 350}, {x: 325, y: 130}, {x: 500, y: 300}],
+     hazards: [{ x: 270, y: 345, mud: true},
+               { x: 320, y: 125, mud: true},
+               { x: 495, y: 295, mud: true},
+               { x: 270, y: 345, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 320, y: 125, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 495, y: 295, move: { style: 'both', speed: 0.1, range: 100 } },
+               { x: 600, y: 450, yongo: { type: 'fake', speed: 10 }}],
+     playerInit: { x: 40, y: 230 },
+     parTime: 25,
+     enableFriction: false,
+     trapParser: function trapParser(parser) { return parser; }
+    },
+    
     /*{ x: 300, y: 480, crocodile: { speed: 5 } },
     { x: 400, y: 200, crocodile: { speed: 3 } },
     { x: 0, y: 0, rain: true }*/
