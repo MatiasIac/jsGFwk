@@ -123,6 +123,10 @@ var Hazards = {
                     this.onDraw = this.yongoDraw;
                     break;
                 default:
+                    this.sinAcc = 0;
+                    this.sinPivot = this.y;
+                    this.onUpdate = this.yongoRealUpdate;
+                    this.onDraw = this.yongoDraw;
                     break;
             }
         }
@@ -134,6 +138,17 @@ var Hazards = {
         this.y -= this.speed;
         
         if (this.y <= -30) { this.destroy(); }
+    },
+    
+    yongoRealUpdate: function (delta) {
+        this.sinAcc += delta;
+        this.y = (Math.sin(this.sinAcc) * 50) + this.sinPivot;
+        this.yongoWalkingTimer.tick(delta);
+        
+        if (Player.isRectColliding(this)) {
+            jsGFwk.Scenes.scenes.ending.enable();
+            this.destroy();
+        }
     },
     
     yongoDraw: function (ctx) {

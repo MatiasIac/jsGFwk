@@ -31,6 +31,7 @@
     <script language="Javascript" src="scripts/levels.js"></script>
     <script language="Javascript" src="scripts/hud.js"></script>
     <script language="Javascript" src="scripts/cinematic.js"></script>
+    <script language="Javascript" src="scripts/endScene.js"></script>
     
 	<body style="border:0px; margin:0px; padding:0px; background: rgba(0,128,170,1);
                  background: -moz-linear-gradient(top, rgba(0,128,170,1) 0%, rgba(51,204,255,1) 100%);
@@ -71,7 +72,8 @@
         timer: {
             context: null,
             canvas: null
-        }
+        },
+        maxLevelReach: 0
     },
         mousePointer = { x: 0, y: 0 },
         usingKeyboard = true;
@@ -135,9 +137,15 @@
     jsGFwk.Scenes.create({name: "cinematic", 
         gameObjects: [Cinematic] });
     
+    jsGFwk.Scenes.create({name: "ending", 
+        gameObjects: [EndScene] });
+    
     var eatJuke = {};
     
     jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+        var storedValues = jsGFwk.Storage.getFromJson('yongoyongo_stored_game');
+        gameConst.maxLevelReach = storedValues !== null ? storedValues.maxLevel : 0;
+        
         jsGFwk.Sprites.createSpriteCollection("eater",
             jsGFwk.ResourceManager.graphics.main.image, 
             [{left: 92, top: 262, width: 19, height: 28}, 

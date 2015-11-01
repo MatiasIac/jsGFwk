@@ -91,6 +91,8 @@ var Hud = {
         ctx.fillText('YongoYongo', 320 + this.textShakeX, 260 + this.textShakeY);
         
         ctx.font = '14pt zxBold';
+        
+        ctx.fillText('Max level completed ' + gameConst.maxLevelReach + ' of ' + (levels.length - 1), 320, 400);
         ctx.fillText('Press ENTER or TAP or connect a GAMEPAD or CLICK to start', 320, 440);
         
         ctx.restore();

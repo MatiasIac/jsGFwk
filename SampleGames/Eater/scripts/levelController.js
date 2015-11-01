@@ -45,6 +45,11 @@ var LevelController = {
         }
         
         if (gameConst.lives === 0) {
+            if (gameConst.maxLevelReach < gameConst.currentLevel) {
+                gameConst.maxLevelReach = gameConst.currentLevel;
+                jsGFwk.Storage.setData({name: 'yongoyongo_stored_game', data: { maxLevel: gameConst.currentLevel }});
+            }
+            
             jsGFwk.Scenes.scenes.hud.enable();
             return;
         }
