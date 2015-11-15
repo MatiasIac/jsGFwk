@@ -1,7 +1,7 @@
 var dracul = {
 	id: "dracul", visible: true,
 	isRight: true, movementSpeed: 1.5,
-	x: 560, y: 30, width: 15, height: 30,
+	x: 560, y: 30, width: 15, height: 28,
 	animCounter: 0, animDelay: 0.2,
 	diffLight: 0, diffLightSinc: 0,
 	oilOffsetX: 20, oilOffsetY: 150,
@@ -47,12 +47,12 @@ var dracul = {
 	},
 	
 	drawLigth: function (context) {
-        var gradient = context.createRadialGradient(this.x + 10, this.y + 10, 1,
+        /*var gradient = context.createRadialGradient(this.x + 10, this.y + 10, 1,
             this.x + 15, this.y + 15, GLOBAL.maxRadiusLight + this.diffLight);
         gradient.addColorStop(0, "transparent");
         gradient.addColorStop(1, "black");
         context.fillStyle = gradient;
-        context.fillRect(0, 0, 640, 480);
+        context.fillRect(0, 0, 640, 480);*/
 	},
 	
 	/*DEAD STATE*/	

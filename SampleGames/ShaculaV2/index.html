@@ -20,7 +20,9 @@
 	<script language="Javascript" src="scripts/dayCounter.js"></script>
     <script language="Javascript" src="scripts/level.js"></script>
     <script language="Javascript" src="scripts/spike.js"></script>
+    <script language="Javascript" src="scripts/blood.js"></script>
     <script language="Javascript" src="scripts/cloud.js"></script>
+    <script language="Javascript" src="scripts/coffin.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -77,9 +79,9 @@
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
 						top: 77, left: 1352, width: 630, height: 480});
 					
-					jsGFwk.Sprites.createSprite({id: "goal", 
-						graphic: jsGFwk.ResourceManager.graphics.all.image,
-						top: 15, left: 396, width: 24, height: 36});
+					jsGFwk.Sprites.createSpriteCollection("goal", jsGFwk.ResourceManager.graphics.all.image,
+						[{top: 15, left: 395, width: 25, height: 36},
+                         {top: 15, left: 429, width: 31, height: 36}]);
 
 					jsGFwk.Sprites.createSpriteCollection("oilWave", 
 						jsGFwk.ResourceManager.graphics.all.image, 
@@ -208,15 +210,18 @@
 					
                     GLOBAL.spikeContainer = jsGFwk.Container.createContainer('spikes', Spike, true);
                     GLOBAL.cloudContainer = jsGFwk.Container.createContainer('clouds', Cloud, true);
+                    GLOBAL.bloodContainer = jsGFwk.Container.createContainer('bloods', Blood, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
 					jsGFwk.Scenes.create({name: "game", 
 						gameObjects: [background, gameController,
-							GLOBAL.spikeContainer,
+							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
+                            Coffin,
                             dracul, dayCounter] });
 								
-					jsGFwk.Scenes.scenes.main.enable();
+					//jsGFwk.Scenes.scenes.main.enable();
+                    jsGFwk.Scenes.scenes.game.enable();
 					
 					jsGFwk._gameObjects.progress.destroy();
 				};
