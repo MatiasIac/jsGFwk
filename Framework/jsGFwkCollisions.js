@@ -57,6 +57,21 @@ jsGFwk.Collisions = {
         return (dist < this.radius + otherObject.radius);
 	},
 	
+	collidingModes: {
+		'RECTANGLE': 0,
+		'RAD_DISTANCE': 1
+	},
+	
+	areCollidingBy: function (object1, object2, mode) {
+		switch (mode) {
+			case this.collidingModes.RECTANGLE:
+				return this._rectColliding.call(object1, object2);
+				break;
+			default:
+				break;
+		}
+	},
+	
 	onStart: function () {
 		
 	},

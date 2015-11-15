@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Shacula</title>
+		<title>Di</title>
 	</head>
 	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
@@ -19,7 +19,8 @@
 	<script language="Javascript" src="scripts/dracul.js"></script>
 	<script language="Javascript" src="scripts/dayCounter.js"></script>
     <script language="Javascript" src="scripts/level.js"></script>
-    <script language="Javascript" src="scripts/walls.js"></script>
+    <script language="Javascript" src="scripts/spike.js"></script>
+    <script language="Javascript" src="scripts/cloud.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -44,10 +45,21 @@
 		jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/main.png" });
 		jsGFwk.ResourceManager.addGraphic({ name: "all", source: "images/all.png" });
 		jsGFwk.ResourceManager.addGraphic({ name: "dayNight", source: "images/sol.png" });
+        
+        for (var i = 0; i < Levels.length; i++) {
+            jsGFwk.ResourceManager.addGraphic({ name: "level" + i, source: "images/level" + i + ".png" });
+        }
 		
 		var GLOBAL = {
             currentLevel: 0,
-            platFormerConainer: {}
+            maxOil: 500, 
+            lightOil: 100,
+            minRadiusLight: 50,
+            maxRadiusLight: 50,
+            resetMaxMinLight: 50,
+            consumeLight: 0.005,
+            lightConsum: 3,
+            lightIncrement: 1
         };
 				
 		jsGFwk.createObject({
@@ -60,6 +72,10 @@
 					jsGFwk.Sprites.createSprite({id: "background1", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
 						top: 77, left: 702, width: 610, height: 480});
+                    
+                    jsGFwk.Sprites.createSprite({id: "background2", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 77, left: 1352, width: 630, height: 480});
 					
 					jsGFwk.Sprites.createSprite({id: "goal", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
@@ -90,7 +106,7 @@
 
 					jsGFwk.Sprites.createSpriteCollection("startButton", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 498, top: 137, width: 75, height: 48},
-						 {left: 577, top: 137, width: 75, height: 48}]);
+						 {left: 576, top: 137, width: 75, height: 48}]);
 					jsGFwk.Sprites.startButton.loop(false);
 					
 					jsGFwk.Sprites.createSpriteCollection("powerUp", jsGFwk.ResourceManager.graphics.all.image, 
@@ -129,7 +145,7 @@
 						[{left: 77, top: 15, width: 13, height: 36, inverted: true}, {left: 94, top: 15, width: 13, height: 36, inverted: true}]);
 					jsGFwk.Sprites.walkLeft.loop(true);
 
-					jsGFwk.Sprites.createSpriteCollection("hangedRight", jsGFwk.ResourceManager.graphics.all.image, 
+					/*jsGFwk.Sprites.createSpriteCollection("hangedRight", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 551, top: 15, width: 17, height: 36},
 						 {left: 583, top: 15, width: 17, height: 36}]);
 					jsGFwk.Sprites.hangedRight.loop(true);
@@ -137,7 +153,7 @@
 					jsGFwk.Sprites.createSpriteCollection("hangedLeft", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 551, top: 15, width: 17, height: 36, inverted: true},
 						 {left: 583, top: 15, width: 17, height: 36, inverted: true}]);
-					jsGFwk.Sprites.hangedLeft.loop(true);
+					jsGFwk.Sprites.hangedLeft.loop(true);*/
 					
 					jsGFwk.Sprites.createSpriteCollection("actionRight", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 125, top: 15, width: 19, height: 36}]);
@@ -157,14 +173,21 @@
 					
 					jsGFwk.Sprites.createSpriteCollection("die", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 161, top: 15, width: 28, height: 36},
-						 {left: 199, top: 15, width: 34, height: 36},
-						 {left: 246, top: 15, width: 24, height: 36}]);
+						 {left: 197, top: 15, width: 34, height: 36},
+						 {left: 242, top: 15, width: 24, height: 36}]);
 					jsGFwk.Sprites.die.loop(true);
 					
 					jsGFwk.Sprites.createSpriteCollection("spike", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 173, top: 95, width: 27, height: 7},
 						 {left: 206, top: 95, width: 27, height: 7}]);
 					jsGFwk.Sprites.spike.loop(true);
+                    
+                    jsGFwk.Sprites.createSpriteCollection("effectCloud", jsGFwk.ResourceManager.graphics.all.image,
+						[{top: 601, left: 377, width: 89, height: 86},
+                         {top: 601, left: 489, width: 89, height: 86},
+                         {top: 601, left: 597, width: 89, height: 86},
+                         {top: 601, left: 704, width: 89, height: 86}
+                        ]);
                     
 					jsGFwk.Sprites.createSprite({id: "wall1", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
@@ -183,13 +206,15 @@
 						 {left: 502, top: 21, width: 21, height: 30}]);
 					jsGFwk.Sprites.lever.loop(false);
 					
-                    GLOBAL.platFormerConainer = jsGFwk.Container.createContainer('plarfomer', Walls, true);
+                    GLOBAL.spikeContainer = jsGFwk.Container.createContainer('spikes', Spike, true);
+                    GLOBAL.cloudContainer = jsGFwk.Container.createContainer('clouds', Cloud, true);
                     
-					jsGFwk.Scenes.create({name: "main", gameObjects: [hud] });
+					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
 					jsGFwk.Scenes.create({name: "game", 
 						gameObjects: [background, gameController,
-							GLOBAL.platFormerConainer, dracul, dayCounter] });
+							GLOBAL.spikeContainer,
+                            dracul, dayCounter] });
 								
 					jsGFwk.Scenes.scenes.main.enable();
 					

@@ -5,6 +5,7 @@ var background = {
 	init: function () {},
 	update: function (delta) {},
 	draw: function (context) {
-        context.drawImage(jsGFwk.Sprites.background1.image, this.x, this.y);
+        context.drawImage(jsGFwk.Sprites.background2.image, this.x, this.y);
+        context.drawImage(jsGFwk.ResourceManager.graphics['level' + GLOBAL.currentLevel].image, this.x, this.y);
 	}
 };

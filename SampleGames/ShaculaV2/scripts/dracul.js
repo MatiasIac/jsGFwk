@@ -1,24 +1,21 @@
 var dracul = {
 	id: "dracul", visible: true,
-	isRight: true, movementSpeed: 1,
+	isRight: true, movementSpeed: 1.5,
 	x: 560, y: 30, width: 15, height: 30,
-	gravity: 0.1, initialVel: 0, fallVel: 0,
 	animCounter: 0, animDelay: 0.2,
-	maxOil: 500, lightOil: 100, minRadiusLight: 50, maxRadiusLight: 50,
-	resetMaxMinLight: 50, consumeLight: 0.005,
-	lightConsum: 1, lightIncrement: 0.5,
 	diffLight: 0, diffLightSinc: 0,
 	oilOffsetX: 20, oilOffsetY: 150,
 	isDead: false, dieCounter: 0,
-	sonarRadius: 1, isSonarActive: false,
 	graphicPointer: {},
 	
 	init: function () {
+        this.x = Levels[GLOBAL.currentLevel].startingPoint.x;
+        this.y = Levels[GLOBAL.currentLevel].startingPoint.y;
 		this.isDead = false;
 		this.dieCounter = 0;
-		this.lightOil = this.maxOil;
-		this.maxRadiusLight = this.resetMaxMinLight;
-		this.minRadiusLight = this.resetMaxMinLight;
+		GLOBAL.lightOil = GLOBAL.maxOil;
+		GLOBAL.maxRadiusLight = GLOBAL.resetMaxMinLight;
+		GLOBAL.minRadiusLight = GLOBAL.resetMaxMinLight;
 		jsGFwk.Sprites.die.reset();
 		jsGFwk.Sprites.jumpRight.reset();
 		jsGFwk.Sprites.jumpLeft.reset();
@@ -29,8 +26,8 @@ var dracul = {
 		jsGFwk.Sprites.idleRight.reset();
 		jsGFwk.Sprites.idleLeft.reset();
 		jsGFwk.Sprites.oilWave.reset();
-		jsGFwk.Sprites.hangedRight.reset();
-		jsGFwk.Sprites.hangedLeft.reset();
+		/*jsGFwk.Sprites.hangedRight.reset();
+		jsGFwk.Sprites.hangedLeft.reset();*/
 		this.graphicPointer = jsGFwk.Sprites.idleRight;
 		
 		this.updatePointer = this.updateNormal;
@@ -50,20 +47,18 @@ var dracul = {
 	},
 	
 	drawLigth: function (context) {
-		if (!this.isSonarActive) {
-			var gradient = context.createRadialGradient(this.x + 10, this.y + 10, 1,
-				this.x + 15, this.y + 15, this.maxRadiusLight + this.diffLight);
-			gradient.addColorStop(0, "transparent");
-			gradient.addColorStop(1, "black");
-			context.fillStyle = gradient;
-			context.fillRect(0, 0, 640, 480);
-		}
+        var gradient = context.createRadialGradient(this.x + 10, this.y + 10, 1,
+            this.x + 15, this.y + 15, GLOBAL.maxRadiusLight + this.diffLight);
+        gradient.addColorStop(0, "transparent");
+        gradient.addColorStop(1, "black");
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, 640, 480);
 	},
 	
 	/*DEAD STATE*/	
 	updateDead: function (delta) {
 		this.animCounter += delta;
-		if (this.animCounter >= this.animDelay) {
+		if (this.animCounter >= (this.animDelay + 0.1)) {
 			this.animCounter = 0;
 			jsGFwk.Sprites.die.next();
 			this.dieCounter++;
@@ -84,20 +79,21 @@ var dracul = {
         this.animCounter += delta;
         var isFalling = false;
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] && this.lightOil > 0) {
-			this.lightOil -= this.lightConsum;
-			this.maxRadiusLight += this.lightIncrement;
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] && GLOBAL.lightOil > 0) {
+			GLOBAL.lightOil -= GLOBAL.lightConsum;
+			GLOBAL.maxRadiusLight += GLOBAL.lightIncrement;
 		} else {
-			if (this.maxRadiusLight > this.minRadiusLight) {
-				this.maxRadiusLight -= this.lightConsum;
-			} else if (this.maxRadiusLight > this.resetMaxMinLight) {
-				this.maxRadiusLight -= this.consumeLight;
+			if (GLOBAL.maxRadiusLight > GLOBAL.minRadiusLight) {
+				GLOBAL.maxRadiusLight -= GLOBAL.lightConsum;
+			} else if (GLOBAL.maxRadiusLight > GLOBAL.resetMaxMinLight) {
+				GLOBAL.maxRadiusLight -= GLOBAL.consumeLight;
 			}
 			
-            this.lightOil += this.lightOil < this.maxOil ? this.lightIncrement : 0
+            GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement : 0
 		}
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] && GLOBAL.lightOil > 0) {
+            GLOBAL.lightOil -= GLOBAL.lightConsum;
             this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
             
             if (!this.checkWallCollision({ x: this.x, y: this.y - this.movementSpeed })) {
@@ -160,18 +156,19 @@ var dracul = {
 	/*END NORMAL*/
 	
     checkWallCollision: function (whereToMove) {
-        var self = this,
-            collide = false;
+        var collide = false;
         
-        whereToMove.width = self.width;
-        whereToMove.height = self.height;
+        whereToMove.width = this.width;
+        whereToMove.height = this.height;
         
-        GLOBAL.platFormerConainer.eachCloned(function (item, event) {
-            if (item.isRectColliding(whereToMove)) {
+        for (var i = 0; i < Levels[GLOBAL.currentLevel].platforms.length; i++) {
+            if (jsGFwk.Collisions.areCollidingBy(whereToMove,
+                     Levels[GLOBAL.currentLevel].platforms[i],
+                     jsGFwk.Collisions.collidingModes.RECTANGLE)) {
                 collide = true;
-                event.cancel = true;
+                break;
             }
-        });
+        }
                 
         return collide;
     },
@@ -180,7 +177,7 @@ var dracul = {
 	drawPointer: function () {},
 	
 	drawOil: function (context) {
-        var totalOil = (((this.lightOil * 100) / this.maxOil) * 258) / 100;
+        var totalOil = (((GLOBAL.lightOil * 100) / GLOBAL.maxOil) * 258) / 100;
         totalOil = totalOil < 1 ? 1 : totalOil;
 
         context.drawImage(jsGFwk.Sprites.oil.image,
