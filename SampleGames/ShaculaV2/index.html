@@ -24,6 +24,7 @@
     <script language="Javascript" src="scripts/cloud.js"></script>
     <script language="Javascript" src="scripts/coffin.js"></script>
     <script language="Javascript" src="scripts/bat.js"></script>
+    <script language="Javascript" src="scripts/exit.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -219,6 +220,7 @@
                     GLOBAL.cloudContainer = jsGFwk.Container.createContainer('clouds', Cloud, true);
                     GLOBAL.bloodContainer = jsGFwk.Container.createContainer('bloods', Blood, true);
                     GLOBAL.batContainer = jsGFwk.Container.createContainer('bats', Bat, true);
+                    GLOBAL.exitContainer = jsGFwk.Container.createContainer('exits', Exit, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
@@ -227,7 +229,7 @@
 							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
                             GLOBAL.batContainer,
                             Coffin,
-                            dracul, dayCounter] });
+                            dracul, dayCounter, GLOBAL.exitContainer] });
 								
 					//jsGFwk.Scenes.scenes.main.enable();
                     jsGFwk.Scenes.scenes.game.enable();

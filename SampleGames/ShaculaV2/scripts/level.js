@@ -4,8 +4,8 @@ var Levels = [
         platforms: [
             { width: 30, height: 480, x: 0, y: 0 },
             { width: 570, height: 30, x: 30, y: 0 },
-            { width: 30, height: 480, x: 600, y: 0 },
-            { width: 570, height: 30, x: 30, y: 450 },
+            { width: 30, height: 419, x: 600, y: 0 },
+            { width: 600, height: 30, x: 30, y: 450 },
             
             { width: 150, height: 30, x: 30, y: 95 },
             { width: 107, height: 30, x: 230, y: 95 },
@@ -37,5 +37,20 @@ var Levels = [
             { x: 440, y: 220 }
         ],
         coffin: { x: 100, y: 414 },
+        exit: [ { x: 625, y: 420, goTo: 1, showsAt: { x: 20, y: 420 } } ]
+    },
+    {
+        startingPoint: { x: 35, y: 35},
+        platforms: [
+            { width: 30, height: 419, x: 0, y: 0 },
+            { width: 570, height: 30, x: 30, y: 0 },
+            { width: 30, height: 480, x: 600, y: 0 },
+            { width: 600, height: 30, x: 0, y: 450 }          
+        ],
+        spikes: [ ],
+        bats: [ ],
+        blood: [ ],
+        coffin: { x: 100, y: 414 },
+        exit: [ { x: 0, y: 420, goTo: 0, showsAt: { x: 610, y: 420 } } ]
     }
 ];

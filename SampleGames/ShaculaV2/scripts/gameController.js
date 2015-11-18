@@ -25,6 +25,23 @@ var gameController = {
         for (var i = 0; i < levelToCreate.bats.length; i++) {
             GLOBAL.batContainer.cloneObject(levelToCreate.bats[i]);
         }
+        
+        //Exits
+        for (var i = 0; i < levelToCreate.exit.length; i++) {
+            GLOBAL.exitContainer.cloneObject(levelToCreate.exit[i]);
+        }
+    },
+    exitFromLevel: function (data) {
+        GLOBAL.spikeContainer.clearAll();
+        GLOBAL.bloodContainer.clearAll();
+        GLOBAL.batContainer.clearAll();
+        GLOBAL.exitContainer.clearAll();
+        
+        dracul.x = data.dracCoords.x;
+        dracul.y = data.dracCoords.y;
+        
+        GLOBAL.currentLevel = data.level;
+        this.createLevel();
     }
     
 };
