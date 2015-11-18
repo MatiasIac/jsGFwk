@@ -23,6 +23,7 @@
     <script language="Javascript" src="scripts/blood.js"></script>
     <script language="Javascript" src="scripts/cloud.js"></script>
     <script language="Javascript" src="scripts/coffin.js"></script>
+    <script language="Javascript" src="scripts/bat.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -184,6 +185,12 @@
 						 {left: 206, top: 95, width: 27, height: 7}]);
 					jsGFwk.Sprites.spike.loop(true);
                     
+					jsGFwk.Sprites.createSpriteCollection("bat", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 285, top: 89, width: 29, height: 17},
+						 {left: 320, top: 89, width: 31, height: 17},
+                         {left: 355, top: 89, width: 29, height: 17}]);
+					jsGFwk.Sprites.bat.loop(true);
+                    
                     jsGFwk.Sprites.createSpriteCollection("effectCloud", jsGFwk.ResourceManager.graphics.all.image,
 						[{top: 601, left: 377, width: 89, height: 86},
                          {top: 601, left: 489, width: 89, height: 86},
@@ -211,12 +218,14 @@
                     GLOBAL.spikeContainer = jsGFwk.Container.createContainer('spikes', Spike, true);
                     GLOBAL.cloudContainer = jsGFwk.Container.createContainer('clouds', Cloud, true);
                     GLOBAL.bloodContainer = jsGFwk.Container.createContainer('bloods', Blood, true);
+                    GLOBAL.batContainer = jsGFwk.Container.createContainer('bats', Bat, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
 					jsGFwk.Scenes.create({name: "game", 
 						gameObjects: [background, gameController,
 							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
+                            GLOBAL.batContainer,
                             Coffin,
                             dracul, dayCounter] });
 								

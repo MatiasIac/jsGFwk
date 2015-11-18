@@ -47,12 +47,12 @@ var dracul = {
 	},
 	
 	drawLigth: function (context) {
-        /*var gradient = context.createRadialGradient(this.x + 10, this.y + 10, 1,
+        var gradient = context.createRadialGradient(this.x + 10, this.y + 10, 1,
             this.x + 15, this.y + 15, GLOBAL.maxRadiusLight + this.diffLight);
         gradient.addColorStop(0, "transparent");
         gradient.addColorStop(1, "black");
         context.fillStyle = gradient;
-        context.fillRect(0, 0, 640, 480);*/
+        context.fillRect(0, 0, 640, 480);
 	},
 	
 	/*DEAD STATE*/	

@@ -18,10 +18,12 @@ var gameController = {
         
         //Blood
         for (var i = 0; i < levelToCreate.blood.length; i++) {
-            GLOBAL.bloodContainer.cloneObject({
-                x: levelToCreate.blood[i].x,
-                y: levelToCreate.blood[i].y
-            });
+            GLOBAL.bloodContainer.cloneObject(levelToCreate.blood[i]);
+        }
+        
+        //Bats
+        for (var i = 0; i < levelToCreate.bats.length; i++) {
+            GLOBAL.batContainer.cloneObject(levelToCreate.bats[i]);
         }
     }
     

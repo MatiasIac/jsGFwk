@@ -8,19 +8,34 @@ var Levels = [
             { width: 570, height: 30, x: 30, y: 450 },
             
             { width: 150, height: 30, x: 30, y: 95 },
-            { width: 150, height: 30, x: 230, y: 95 },
+            { width: 107, height: 30, x: 230, y: 95 },
             { width: 240, height: 30, x: 310, y: 65 },
-            { width: 290, height: 30, x: 310, y: 125 }
-            
+            { width: 231, height: 30, x: 369, y: 125 },
+            { width: 30, height: 165, x: 307, y: 125 },
+            { width: 30, height: 30, x: 369, y: 187 },
+            { width: 30, height: 30, x: 430, y: 187 },
+            { width: 30, height: 30, x: 489, y: 187 },
+            { width: 53, height: 30, x: 547, y: 187 },
+            { width: 30, height: 30, x: 369, y: 260 },
+            { width: 30, height: 30, x: 430, y: 260 },
+            { width: 30, height: 30, x: 489, y: 260 },
+            { width: 53, height: 30, x: 547, y: 260 }            
         ],
         spikes: [
             { x: 390, y: 118, delay: 1.5 },
             { x: 447, y: 118, delay: 1.7 },
             { x: 510, y: 118, delay: 1.2 }
         ],
-        blood: [
-            { x: 425, y: 90 }
+        bats: [
+            {x: 190, y: 130, max: 100, upDown: true, speed: 0.02 },
+            {x: 450, y: 160, max: 100, upDown: false, speed: 0.01 },
+            {x: 450, y: 230, max: 100, upDown: false, speed: 0.03 }
         ],
-        coffin: { x: 300, y: 400 },
+        blood: [
+            { x: 425, y: 90 },
+            { x: 580, y: 150 },
+            { x: 440, y: 220 }
+        ],
+        coffin: { x: 100, y: 414 },
     }
 ];
