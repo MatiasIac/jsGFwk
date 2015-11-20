@@ -3,7 +3,6 @@ var dracul = {
 	isRight: true, movementSpeed: 1.5,
 	x: 560, y: 30, width: 15, height: 28,
 	animCounter: 0, animDelay: 0.2,
-	diffLight: 0, diffLightSinc: 0,
 	oilOffsetX: 20, oilOffsetY: 150,
 	isDead: false, dieCounter: 0,
 	graphicPointer: {},
@@ -40,22 +39,8 @@ var dracul = {
 			this.drawPointer = this.drawDead;
 		}
 	},
-	
-	shakeLight: function (delta) {
-		this.diffLight = (Math.sin(this.diffLightSinc) * 1);
-		this.diffLightSinc += 0.3;
-	},
-	
-	drawLigth: function (context) {
-        /*var gradient = context.createRadialGradient(this.x + 10, this.y + 10, 1,
-            this.x + 15, this.y + 15, GLOBAL.maxRadiusLight + this.diffLight);
-        gradient.addColorStop(0, "transparent");
-        gradient.addColorStop(1, "black");
-        context.fillStyle = gradient;
-        context.fillRect(0, 0, 640, 480);*/
-	},
-	
-	/*DEAD STATE*/	
+
+    /*DEAD STATE*/	
 	updateDead: function (delta) {
 		this.animCounter += delta;
 		if (this.animCounter >= (this.animDelay + 0.1)) {
@@ -195,11 +180,11 @@ var dracul = {
 	
 	update: function (delta) {
 		this.updatePointer(delta);
-		this.shakeLight(delta);
+		//this.shakeLight(delta);
 	},
 	draw: function (context) {
 		this.drawPointer(context);
-		this.drawLigth(context);
-		this.drawOil(context);
+		//this.drawLigth(context);
+		//this.drawOil(context);
 	}
 };

@@ -25,6 +25,7 @@
     <script language="Javascript" src="scripts/coffin.js"></script>
     <script language="Javascript" src="scripts/bat.js"></script>
     <script language="Javascript" src="scripts/exit.js"></script>
+    <script language="Javascript" src="scripts/light.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -228,8 +229,8 @@
 						gameObjects: [background, gameController,
 							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
                             GLOBAL.batContainer,
-                            Coffin,
-                            dracul, dayCounter, GLOBAL.exitContainer] });
+                            Coffin, dracul, Light,
+                            dayCounter, GLOBAL.exitContainer] });
 								
 					//jsGFwk.Scenes.scenes.main.enable();
                     jsGFwk.Scenes.scenes.game.enable();

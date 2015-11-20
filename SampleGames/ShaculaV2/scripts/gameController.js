@@ -30,6 +30,10 @@ var gameController = {
         for (var i = 0; i < levelToCreate.exit.length; i++) {
             GLOBAL.exitContainer.cloneObject(levelToCreate.exit[i]);
         }
+        
+        if (levelToCreate.coffin === undefined) {
+            Coffin.visible = false;
+        }
     },
     exitFromLevel: function (data) {
         GLOBAL.spikeContainer.clearAll();

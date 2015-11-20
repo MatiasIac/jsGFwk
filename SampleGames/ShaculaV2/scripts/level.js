@@ -50,7 +50,6 @@ var Levels = [
         spikes: [ ],
         bats: [ ],
         blood: [ ],
-        coffin: { x: 100, y: 414 },
         exit: [ { x: 0, y: 420, goTo: 0, showsAt: { x: 610, y: 420 } } ]
     }
 ];
