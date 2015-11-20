@@ -32,11 +32,11 @@ var Levels = [
             {x: 450, y: 230, max: 100, upDown: false, speed: 0.03 }
         ],
         blood: [
-            { x: 425, y: 90 },
-            { x: 580, y: 150 },
-            { x: 440, y: 220 }
+            { x: 425, y: 90, isActive: true },
+            { x: 580, y: 150, isActive: true },
+            { x: 440, y: 220, isActive: true }
         ],
-        coffin: { x: 100, y: 414 },
+        coffin: { x: 35, y: 60 },
         exit: [ { x: 625, y: 420, goTo: 1, showsAt: { x: 20, y: 420 } } ]
     },
     {

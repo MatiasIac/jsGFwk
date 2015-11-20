@@ -1,7 +1,8 @@
 var Blood = {
     onInit: function (parameters) {
-        this.x = parameters.x;
-        this.y = parameters.y;
+        this.x = parameters.blood.x;
+        this.y = parameters.blood.y;
+        this.index = parameters.index;
         this.height = 30;
         this.width = 12;
         this.powerUpAccumulator = 0;
@@ -13,10 +14,10 @@ var Blood = {
             GLOBAL.minRadiusLight += 20;
             GLOBAL.maxRadiusLight += 20;
             
-            if (GLOBAL.bloodContainer.length() === 1) {
+            /*if (GLOBAL.bloodContainer.length() === 1) {
                 Coffin.isOpen = 1;
-            }
-            
+            }*/
+            Levels[GLOBAL.currentLevel].blood[this.index].isActive = false;
             this.destroy();
         }
         

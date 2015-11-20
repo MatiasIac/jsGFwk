@@ -180,11 +180,8 @@ var dracul = {
 	
 	update: function (delta) {
 		this.updatePointer(delta);
-		//this.shakeLight(delta);
 	},
 	draw: function (context) {
 		this.drawPointer(context);
-		//this.drawLigth(context);
-		//this.drawOil(context);
 	}
 };

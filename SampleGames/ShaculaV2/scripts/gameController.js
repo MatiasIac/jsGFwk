@@ -18,7 +18,9 @@ var gameController = {
         
         //Blood
         for (var i = 0; i < levelToCreate.blood.length; i++) {
-            GLOBAL.bloodContainer.cloneObject(levelToCreate.blood[i]);
+            if (levelToCreate.blood[i].isActive) {
+                GLOBAL.bloodContainer.cloneObject({ blood: levelToCreate.blood[i], index: i });
+            }
         }
         
         //Bats
