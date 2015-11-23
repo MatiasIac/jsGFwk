@@ -36,6 +36,11 @@ var Levels = [
             { x: 580, y: 150, isActive: true },
             { x: 440, y: 220, isActive: true }
         ],
+        fallingWalls: [
+            { x: 230, y: 125, fallSpeed: 1.5 },
+            { x: 369, y: 290, fallSpeed: 1.5 },
+            { x: 489, y: 290, fallSpeed: 1.5 }
+        ],
         coffin: { x: 35, y: 60 },
         exit: [ { x: 625, y: 420, goTo: 1, showsAt: { x: 20, y: 420 } } ]
     },

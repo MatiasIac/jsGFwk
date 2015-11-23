@@ -26,6 +26,7 @@
     <script language="Javascript" src="scripts/bat.js"></script>
     <script language="Javascript" src="scripts/exit.js"></script>
     <script language="Javascript" src="scripts/light.js"></script>
+    <script language="Javascript" src="scripts/fallingWall.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -222,13 +223,14 @@
                     GLOBAL.bloodContainer = jsGFwk.Container.createContainer('bloods', Blood, true);
                     GLOBAL.batContainer = jsGFwk.Container.createContainer('bats', Bat, true);
                     GLOBAL.exitContainer = jsGFwk.Container.createContainer('exits', Exit, true);
+                    GLOBAL.fallingWallContainer = jsGFwk.Container.createContainer('fallingWalls', FallingWall, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
 					jsGFwk.Scenes.create({name: "game", 
 						gameObjects: [background, gameController,
 							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
-                            GLOBAL.batContainer,
+                            GLOBAL.batContainer, GLOBAL.fallingWallContainer,
                             Coffin, dracul, Light,
                             dayCounter, GLOBAL.exitContainer] });
 								
