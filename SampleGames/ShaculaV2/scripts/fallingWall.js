@@ -7,6 +7,8 @@ var FallingWall = {
         this.speedIncrease = 1.03;
         this.height = 30;
         this.moveToRect = { width: 30, height: 30, x: parameters.x, y: parameters.y };
+        this.collideArea = { width: 30, height: 22, x: parameters.x, y: parameters.y + 8 };
+        this.extCollideArea = { width: 30, height: 2, x: parameters.x, y: parameters.y };
         this.fakeCollider = { 
             width: 30, 
             height: (this.x + this.height) + (480 - (this.x + this.height)),
@@ -26,18 +28,20 @@ var FallingWall = {
             
             if (!this.checkWallCollision()) {
                 this.y += this.speed;
+                this.collideArea.y = this.y + 8;
+                this.extCollideArea.y = this.y;
                 this.speed *= this.speedIncrease;
             } else {
                 this.updatePointer = this.updateKill;
             }
         }
         
-        if (dracul.isRectColliding(this)) {
+        if (dracul.isRectColliding(this.collideArea)) {
             dracul.kill();
         }
     },
     updateKill: function (delta) {
-        if (dracul.isRectColliding(this)) {
+        if (dracul.isRectColliding(this.collideArea)) {
             dracul.kill();
         }
     },

@@ -154,6 +154,17 @@ var dracul = {
                 break;
             }
         }
+        
+        if (!collide) {
+            GLOBAL.fallingWallContainer.eachCloned(function (item, event) {
+                if (jsGFwk.Collisions.areCollidingBy(whereToMove,
+                         item.extCollideArea,
+                         jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                    collide = true;
+                    event.cancel = true;
+                }
+            });
+        }
                 
         return collide;
     },

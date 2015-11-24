@@ -55,6 +55,7 @@ var Levels = [
         spikes: [ ],
         bats: [ ],
         blood: [ ],
+        fallingWalls: [],
         exit: [ { x: 0, y: 420, goTo: 0, showsAt: { x: 610, y: 420 } } ]
     }
 ];
