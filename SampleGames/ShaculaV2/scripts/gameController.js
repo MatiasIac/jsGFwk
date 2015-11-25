@@ -7,13 +7,14 @@ var gameController = {
     createLevel: function () {
         var levelToCreate = Levels[GLOBAL.currentLevel];
         
+        //Levers
+        for (var i = 0; i < levelToCreate.levers.length; i++) {
+            GLOBAL.leverContainer.cloneObject(levelToCreate.levers[i]);
+        }
+        
         //Spikes
         for (var i = 0; i < levelToCreate.spikes.length; i++) {
-            GLOBAL.spikeContainer.cloneObject({
-                x: levelToCreate.spikes[i].x,
-                y: levelToCreate.spikes[i].y,
-                delay: levelToCreate.spikes[i].delay 
-            });
+            GLOBAL.spikeContainer.cloneObject(levelToCreate.spikes[i]);
         }
         
         //Blood
@@ -48,6 +49,7 @@ var gameController = {
         GLOBAL.batContainer.clearAll();
         GLOBAL.exitContainer.clearAll();
         GLOBAL.fallingWallContainer.clearAll();
+        GLOBAL.leverContainer.clearAll();
         
         dracul.x = data.dracCoords.x;
         dracul.y = data.dracCoords.y;

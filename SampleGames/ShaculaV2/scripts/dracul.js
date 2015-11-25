@@ -1,6 +1,6 @@
 var dracul = {
 	id: "dracul", visible: true,
-	isRight: true, movementSpeed: 1.5,
+	isRight: true, movementSpeed: 1.5, fallSpeed: 2, flySpeed: 1.5,
 	x: 560, y: 30, width: 15, height: 28,
 	animCounter: 0, animDelay: 0.2,
 	oilOffsetX: 20, oilOffsetY: 150,
@@ -64,6 +64,8 @@ var dracul = {
         this.animCounter += delta;
         var isFalling = false;
         
+        this.movementSpeed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SHIFT] ? 3 : 1.5;
+        
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] && GLOBAL.lightOil > 0) {
 			GLOBAL.lightOil -= GLOBAL.lightConsum;
 			GLOBAL.maxRadiusLight += GLOBAL.lightIncrement;
@@ -81,13 +83,13 @@ var dracul = {
             GLOBAL.lightOil -= GLOBAL.lightConsum;
             this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
             
-            if (!this.checkWallCollision({ x: this.x, y: this.y - this.movementSpeed })) {
-                this.y -= this.movementSpeed;
+            if (!this.checkWallCollision({ x: this.x, y: this.y - this.flySpeed })) {
+                this.y -= this.flySpeed;
             }
 		} else {
-            if (!this.checkWallCollision({ x: this.x, y: this.y + this.movementSpeed })) {
+            if (!this.checkWallCollision({ x: this.x, y: this.y + this.fallSpeed })) {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
-                this.y += this.movementSpeed;
+                this.y += this.fallSpeed;
                 isFalling = true;
             } else {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.idleRight : jsGFwk.Sprites.idleLeft;
@@ -117,16 +119,18 @@ var dracul = {
             }
         }
 		
-        //Action
-		/*if (jsGFwk.IO.keyboard._activeKey[67]) {
-			if (this.isRight) {
-				this.currentGraphic = jsGFwk.Sprites.actionRight.sprite.image;
-				this.graphicPointer = jsGFwk.Sprites.actionRight;
-			} else {
-				this.currentGraphic = jsGFwk.Sprites.actionLeft.sprite.image;
-				this.graphicPointer = jsGFwk.Sprites.actionLeft;
-			}
-		}*/
+		if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.M] && !isFalling && 
+            !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] &&
+            !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+            this.graphicPointer = this.isRight ? jsGFwk.Sprites.actionRight : jsGFwk.Sprites.actionLeft;
+            
+            GLOBAL.leverContainer.eachCloned(function (item, event) {
+                if (dracul.isRectColliding(item)) {
+                    item.switch();
+                    event.cancel = true;
+                }
+            });
+		}
         
         if (this.animCounter >= this.animDelay) {
 			this.animCounter = 0;
@@ -160,6 +164,17 @@ var dracul = {
                 if (jsGFwk.Collisions.areCollidingBy(whereToMove,
                          item.extCollideArea,
                          jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                    collide = true;
+                    event.cancel = true;
+                }
+            });
+        }
+        
+        if (!collide) {
+            GLOBAL.leverContainer.eachCloned(function (item, event) {
+                if (jsGFwk.Collisions.areCollidingBy(whereToMove,
+                         item.wall,
+                         jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
                     collide = true;
                     event.cancel = true;
                 }

@@ -41,6 +41,10 @@ var Levels = [
             { x: 369, y: 290, fallSpeed: 1.5 },
             { x: 489, y: 290, fallSpeed: 1.5 }
         ],
+        levers: [
+            { x: 80, y: 83, state: 0, wall: { x: 50, y: 350, width: 30, height: 30 } },
+            { x: 130, y: 83, state: 0, wall: { x: 250, y: 350, width: 30, height: 30 } }
+        ],
         coffin: { x: 35, y: 60 },
         exit: [ { x: 625, y: 420, goTo: 1, showsAt: { x: 20, y: 420 } } ]
     },

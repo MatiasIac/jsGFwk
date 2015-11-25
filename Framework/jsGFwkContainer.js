@@ -62,6 +62,18 @@ jsGFwk.Container = (function() {
 			
 			return cloned;
 		};
+		
+		this.getClonedAt = function(index) {
+			var i = 0;
+			for (var p in _allObjects) {
+				if (_allObjects.hasOwnProperty(p)) {
+					i++;
+					if (i === index) {
+						return _allObjects[p];
+					}
+				}
+			}
+		};
 	}
 	
 	/** @subtitle: createContainer

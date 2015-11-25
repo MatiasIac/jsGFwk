@@ -27,6 +27,7 @@
     <script language="Javascript" src="scripts/exit.js"></script>
     <script language="Javascript" src="scripts/light.js"></script>
     <script language="Javascript" src="scripts/fallingWall.js"></script>
+    <script language="Javascript" src="scripts/lever.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -213,9 +214,16 @@
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
 						top: 102, left: 107, width: 30, height: 30});
 					
+                    jsGFwk.Sprites.createSpriteCollection("obstacle", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 93, top: 157, width: 30, height: 30},
+						 {left: 132, top: 157, width: 30, height: 30},
+                         {left: 172, top: 157, width: 30, height: 30},
+                         {left: 215, top: 157, width: 30, height: 30}]);
+					jsGFwk.Sprites.obstacle.loop(false);
+                    
 					jsGFwk.Sprites.createSpriteCollection("lever", jsGFwk.ResourceManager.graphics.all.image, 
-						[{left: 461, top: 21, width: 23, height: 30},
-						 {left: 502, top: 21, width: 21, height: 30}]);
+						[{left: 467, top: 70, width: 17, height: 12},
+						 {left: 488, top: 70, width: 17, height: 12}]);
 					jsGFwk.Sprites.lever.loop(false);
 					
                     GLOBAL.spikeContainer = jsGFwk.Container.createContainer('spikes', Spike, true);
@@ -224,18 +232,20 @@
                     GLOBAL.batContainer = jsGFwk.Container.createContainer('bats', Bat, true);
                     GLOBAL.exitContainer = jsGFwk.Container.createContainer('exits', Exit, true);
                     GLOBAL.fallingWallContainer = jsGFwk.Container.createContainer('fallingWalls', FallingWall, true);
+                    GLOBAL.leverContainer = jsGFwk.Container.createContainer('levers', Lever, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
 					jsGFwk.Scenes.create({name: "game", 
 						gameObjects: [background, gameController,
+                            GLOBAL.leverContainer,
 							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
                             GLOBAL.batContainer, GLOBAL.fallingWallContainer,
                             Coffin, dracul, Light,
                             dayCounter, GLOBAL.exitContainer] });
 								
-					jsGFwk.Scenes.scenes.main.enable();
-                    //jsGFwk.Scenes.scenes.game.enable();
+					//jsGFwk.Scenes.scenes.main.enable();
+                    jsGFwk.Scenes.scenes.game.enable();
 					
 					jsGFwk._gameObjects.progress.destroy();
 				};
