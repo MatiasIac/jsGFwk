@@ -32,6 +32,9 @@ jsGFwk.IO = {
 			"S": 83,
 			"W": 87,
 			"M": 77,
+            "ONE": 49,
+            "TWO": 50,
+            "THREE": 51,
 			"SPACEBAR": 32,
 			"ENTER": 13
 		},

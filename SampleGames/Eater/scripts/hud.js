@@ -61,6 +61,21 @@ var Hud = {
             jsGFwk.Scenes.scenes.cinematic.enable();
         }
         
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.ONE]) {
+            gameConst.currentLevel = 9;
+            jsGFwk.Scenes.scenes.cinematic.enable();
+        }
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.TWO]) {
+            gameConst.currentLevel = 19;
+            jsGFwk.Scenes.scenes.cinematic.enable();
+        }
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.THREE]) {
+            gameConst.currentLevel = 27;
+            jsGFwk.Scenes.scenes.cinematic.enable();
+        }
+        
         this.walkingTimer.tick(delta);
         this.scanLineVisible = !this.scanLineVisible;
         
