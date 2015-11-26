@@ -14,12 +14,12 @@ jsGFwk.Container = (function() {
 		this.zOrder = 0;
 		this.update = function (delta) { 
 			for (var o in _allObjects) {
-				if (_allObjects[o].onUpdate != undefined) { _allObjects[o].onUpdate(delta); }
+				if (_allObjects[o].onUpdate !== undefined) { _allObjects[o].onUpdate(delta); }
 			}
 		};
 		this.draw = function (context) { 
 			for (var o in _allObjects) {
-				if (_allObjects[o].onDraw != undefined) { _allObjects[o].onDraw(context); }
+				if (_allObjects[o].onDraw !== undefined) { _allObjects[o].onDraw(context); }
 			}
 		};
 		
@@ -61,6 +61,18 @@ jsGFwk.Container = (function() {
 			_allObjects[_objectCounter] = cloned;
 			
 			return cloned;
+		};
+		
+		this.getClonedAt = function(index) {
+			var i = 0;
+			for (var p in _allObjects) {
+				if (_allObjects.hasOwnProperty(p)) {
+					i++;
+					if (i === index) {
+						return _allObjects[p];
+					}
+				}
+			}
 		};
 	}
 	
