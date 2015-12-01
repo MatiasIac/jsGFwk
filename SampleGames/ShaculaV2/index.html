@@ -28,6 +28,7 @@
     <script language="Javascript" src="scripts/light.js"></script>
     <script language="Javascript" src="scripts/fallingWall.js"></script>
     <script language="Javascript" src="scripts/lever.js"></script>
+    <script language="Javascript" src="scripts/movableWall.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -221,6 +222,12 @@
                          {left: 215, top: 157, width: 30, height: 30}]);
 					jsGFwk.Sprites.obstacle.loop(false);
                     
+                   jsGFwk.Sprites.createSpriteCollection("heads", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 355, top: 156, width: 30, height: 30},
+						 {left: 403, top: 156, width: 30, height: 30},
+                         {left: 447, top: 156, width: 30, height: 30}]);
+					jsGFwk.Sprites.heads.loop(false);
+                    
 					jsGFwk.Sprites.createSpriteCollection("lever", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 467, top: 70, width: 17, height: 12},
 						 {left: 488, top: 70, width: 17, height: 12}]);
@@ -233,6 +240,7 @@
                     GLOBAL.exitContainer = jsGFwk.Container.createContainer('exits', Exit, true);
                     GLOBAL.fallingWallContainer = jsGFwk.Container.createContainer('fallingWalls', FallingWall, true);
                     GLOBAL.leverContainer = jsGFwk.Container.createContainer('levers', Lever, true);
+                    GLOBAL.movableWallContainer = jsGFwk.Container.createContainer('movableWalls', MovableWall, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
@@ -241,6 +249,7 @@
                             GLOBAL.leverContainer,
 							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
                             GLOBAL.batContainer, GLOBAL.fallingWallContainer,
+                            GLOBAL.movableWallContainer,
                             Coffin, dracul, Light,
                             dayCounter, GLOBAL.exitContainer] });
 								

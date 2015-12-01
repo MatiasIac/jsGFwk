@@ -170,16 +170,27 @@ var dracul = {
             });
         }
         
-        if (!collide) {
-            GLOBAL.leverContainer.eachCloned(function (item, event) {
-                if (jsGFwk.Collisions.areCollidingBy(whereToMove,
-                         item.wall,
-                         jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
+        //if (!collide) {
+        GLOBAL.leverContainer.eachCloned(function (item, event) {
+            if (jsGFwk.Collisions.areCollidingBy(whereToMove,
+                     item.wall,
+                     jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
+                collide = true;
+                event.cancel = true;
+            }
+        });
+        //}
+        
+        GLOBAL.movableWallContainer.eachCloned(function (item, event) {
+            if (jsGFwk.Collisions.areCollidingBy(whereToMove, item, jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                if (whereToMove.y !== dracul.y) {
                     collide = true;
-                    event.cancel = true;
+                } else {
+                    collide = !item.canDisplace(whereToMove.x - dracul.x);
                 }
-            });
-        }
+                event.cancel = true;
+            }
+        });
                 
         return collide;
     },

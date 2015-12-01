@@ -39,6 +39,11 @@ var gameController = {
             GLOBAL.fallingWallContainer.cloneObject(levelToCreate.fallingWalls[i]);
         }
         
+        //Moving Walls
+        for (var i = 0; i < levelToCreate.movableWalls.length; i++) {
+            GLOBAL.movableWallContainer.cloneObject(levelToCreate.movableWalls[i]);
+        }
+        
         if (levelToCreate.coffin === undefined) {
             Coffin.visible = false;
         }
@@ -50,6 +55,7 @@ var gameController = {
         GLOBAL.exitContainer.clearAll();
         GLOBAL.fallingWallContainer.clearAll();
         GLOBAL.leverContainer.clearAll();
+        GLOBAL.movableWallContainer.clearAll();
         
         dracul.x = data.dracCoords.x;
         dracul.y = data.dracCoords.y;

@@ -43,7 +43,11 @@ var Levels = [
         ],
         levers: [
             { x: 80, y: 83, state: 0, wall: { x: 50, y: 350, width: 30, height: 30 } },
-            { x: 130, y: 83, state: 0, wall: { x: 250, y: 350, width: 30, height: 30 } }
+            { x: 130, y: 83, state: 0, wall: { x: 200, y: 350, width: 30, height: 30 } }
+        ],
+        movableWalls: [
+            { x: 140, y: 40, id: 0 },
+            { x: 190, y: 40, id: 1 }
         ],
         coffin: { x: 35, y: 60 },
         exit: [ { x: 625, y: 420, goTo: 1, showsAt: { x: 20, y: 420 } } ]
