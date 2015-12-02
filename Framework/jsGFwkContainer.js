@@ -46,6 +46,8 @@ jsGFwk.Container = (function() {
 		
 		this.clearAll = function () {
 			for (var o in _allObjects) { _allObjects[o].destroy(); }
+			_allObjects = {};
+			_objectCounter = 0;
 		};
 		
 		this.cloneObject = function (initParameters) {
