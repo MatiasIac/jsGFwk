@@ -29,6 +29,7 @@
     <script language="Javascript" src="scripts/fallingWall.js"></script>
     <script language="Javascript" src="scripts/lever.js"></script>
     <script language="Javascript" src="scripts/movableWall.js"></script>
+    <script language="Javascript" src="scripts/saw.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -76,15 +77,7 @@
 			barWidth: 0,
 			init: function() {
 				jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
-					
-					/*jsGFwk.Sprites.createSprite({id: "background1", 
-						graphic: jsGFwk.ResourceManager.graphics.all.image,
-						top: 77, left: 702, width: 610, height: 480});
-                    
-                    jsGFwk.Sprites.createSprite({id: "background2", 
-						graphic: jsGFwk.ResourceManager.graphics.all.image,
-						top: 77, left: 1352, width: 630, height: 480});*/
-					
+										
 					jsGFwk.Sprites.createSpriteCollection("goal", jsGFwk.ResourceManager.graphics.all.image,
 						[{top: 15, left: 395, width: 25, height: 36},
                          {top: 15, left: 429, width: 31, height: 36}]);
@@ -196,6 +189,13 @@
                          {left: 355, top: 89, width: 29, height: 17}]);
 					jsGFwk.Sprites.bat.loop(true);
                     
+                    jsGFwk.Sprites.createSpriteCollection("saw", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 795, top: 120, width: 30, height: 30},
+						 {left: 828, top: 120, width: 30, height: 30},
+                         {left: 863, top: 120, width: 30, height: 30},
+                         {left: 899, top: 120, width: 30, height: 30}]);
+					jsGFwk.Sprites.saw.loop(true);
+                    
                     jsGFwk.Sprites.createSpriteCollection("effectCloud", jsGFwk.ResourceManager.graphics.all.image,
 						[{top: 601, left: 377, width: 89, height: 86},
                          {top: 601, left: 489, width: 89, height: 86},
@@ -241,6 +241,7 @@
                     GLOBAL.fallingWallContainer = jsGFwk.Container.createContainer('fallingWalls', FallingWall, true);
                     GLOBAL.leverContainer = jsGFwk.Container.createContainer('levers', Lever, true);
                     GLOBAL.movableWallContainer = jsGFwk.Container.createContainer('movableWalls', MovableWall, true);
+                    GLOBAL.sawContainer = jsGFwk.Container.createContainer('sawWalls', Saw, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 							
@@ -248,6 +249,7 @@
 						gameObjects: [background, gameController,
                             GLOBAL.leverContainer,
 							GLOBAL.spikeContainer, GLOBAL.bloodContainer,
+                            GLOBAL.sawContainer,
                             GLOBAL.batContainer, GLOBAL.fallingWallContainer,
                             GLOBAL.movableWallContainer,
                             Coffin, dracul, Light,

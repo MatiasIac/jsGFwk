@@ -42,12 +42,16 @@ var Levels = [
             { x: 489, y: 290, fallSpeed: 1.5 }
         ],
         levers: [
-            { x: 80, y: 83, state: 0, wall: { x: 50, y: 350, width: 30, height: 30 } },
+            { x: 80, y: 83, state: 0, wall: { x: 150, y: 350, width: 30, height: 30 } },
             { x: 130, y: 83, state: 0, wall: { x: 200, y: 350, width: 30, height: 30 } }
         ],
         movableWalls: [
             { x: 140, y: 40, id: 0 },
             { x: 220, y: 240, id: 1 }
+        ],
+        saws: [
+            { x: 155, y: 300, type: 'circular', speed: 0.02, range: 115 },
+            { x: 160, y: 252, type: 'linear', speed: 0.1, range: 50 },
         ],
         coffin: { x: 35, y: 60 },
         exit: [ { x: 625, y: 420, goTo: 1, showsAt: { x: 20, y: 420 } } ]

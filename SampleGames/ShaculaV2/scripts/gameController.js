@@ -8,25 +8,33 @@ var gameController = {
         var levelToCreate = Levels[GLOBAL.currentLevel];
         
         //Levers
-        for (var i = 0; i < levelToCreate.levers.length; i++) {
-            GLOBAL.leverContainer.cloneObject(levelToCreate.levers[i]);
+        if (levelToCreate.levers) {
+            for (var i = 0; i < levelToCreate.levers.length; i++) {
+                GLOBAL.leverContainer.cloneObject(levelToCreate.levers[i]);
+            }
         }
         
         //Spikes
-        for (var i = 0; i < levelToCreate.spikes.length; i++) {
-            GLOBAL.spikeContainer.cloneObject(levelToCreate.spikes[i]);
+        if (levelToCreate.spikes) {
+            for (var i = 0; i < levelToCreate.spikes.length; i++) {
+                GLOBAL.spikeContainer.cloneObject(levelToCreate.spikes[i]);
+            }
         }
         
         //Blood
-        for (var i = 0; i < levelToCreate.blood.length; i++) {
-            if (levelToCreate.blood[i].isActive) {
-                GLOBAL.bloodContainer.cloneObject({ blood: levelToCreate.blood[i], index: i });
+        if (levelToCreate.blood) {
+            for (var i = 0; i < levelToCreate.blood.length; i++) {
+                if (levelToCreate.blood[i].isActive) {
+                    GLOBAL.bloodContainer.cloneObject({ blood: levelToCreate.blood[i], index: i });
+                }
             }
         }
         
         //Bats
-        for (var i = 0; i < levelToCreate.bats.length; i++) {
-            GLOBAL.batContainer.cloneObject(levelToCreate.bats[i]);
+        if (levelToCreate.bats) {
+            for (var i = 0; i < levelToCreate.bats.length; i++) {
+                GLOBAL.batContainer.cloneObject(levelToCreate.bats[i]);
+            }
         }
         
         //Exits
@@ -35,13 +43,23 @@ var gameController = {
         }
         
         //Falling Walls
-        for (var i = 0; i < levelToCreate.fallingWalls.length; i++) {
-            GLOBAL.fallingWallContainer.cloneObject(levelToCreate.fallingWalls[i]);
+        if (levelToCreate.fallingWalls) {
+            for (var i = 0; i < levelToCreate.fallingWalls.length; i++) {
+                GLOBAL.fallingWallContainer.cloneObject(levelToCreate.fallingWalls[i]);
+            }
         }
         
         //Moving Walls
-        for (var i = 0; i < levelToCreate.movableWalls.length; i++) {
-            GLOBAL.movableWallContainer.cloneObject(levelToCreate.movableWalls[i]);
+        if (levelToCreate.movableWalls) {
+            for (var i = 0; i < levelToCreate.movableWalls.length; i++) {
+                GLOBAL.movableWallContainer.cloneObject(levelToCreate.movableWalls[i]);
+            }
+        }
+        
+        if (levelToCreate.saws) {
+            for (var i = 0; i < levelToCreate.saws.length; i++) {
+                GLOBAL.sawContainer.cloneObject(levelToCreate.saws[i]);
+            }
         }
         
         if (levelToCreate.coffin === undefined) {
@@ -56,6 +74,7 @@ var gameController = {
         GLOBAL.fallingWallContainer.clearAll();
         GLOBAL.leverContainer.clearAll();
         GLOBAL.movableWallContainer.clearAll();
+        GLOBAL.sawContainer.clearAll();
         
         dracul.x = data.dracCoords.x;
         dracul.y = data.dracCoords.y;
