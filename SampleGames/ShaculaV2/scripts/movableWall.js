@@ -5,10 +5,11 @@ var MovableWall = {
         this.width = 30;
         this.height = 30;
         this.speed = 1.2;
-        this.speedMultiplier = 1.005;
+        this.speedMultiplier = 1.03;
         this.id = parameters.id;
         this.moveToRect = { width: 30, height: 30, x: parameters.x, y: parameters.y };
         this.head = parseInt(Math.random() * 3);
+        this.lastYCollide = 0;
     },
     checkWallCollision: function () {
         var collide = false;
@@ -19,33 +20,50 @@ var MovableWall = {
                      Levels[GLOBAL.currentLevel].platforms[i],
                      jsGFwk.Collisions.collidingModes.RECTANGLE)) {
                 collide = true;
+                this.lastYCollide = Levels[GLOBAL.currentLevel].platforms[i].y;
                 break;
             }
         }
         
-        GLOBAL.leverContainer.eachCloned(function (item, event) {
-            if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, item.wall,
+        if (!collide) {
+            GLOBAL.leverContainer.eachCloned(function (item, event) {
+                if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, item.wall,
                      jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
-                collide = true;
-                event.cancel = true;
-            }
-        });
+                    self.lastYCollide = item.wall.y;
+                    collide = true;
+                    event.cancel = true;
+                }
+            });
+        }
         
-        GLOBAL.fallingWallContainer.eachCloned(function (item, event) {
-            if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, item.collideArea,
-                     jsGFwk.Collisions.collidingModes.RECTANGLE)) {
-                collide = true;
-                event.cancel = true;
-            }
-        });
+        if (!collide) {
+            GLOBAL.fallingWallContainer.eachCloned(function (item, event) {
+                if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, item.collideArea,
+                         jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                    self.lastYCollide = item.collideArea.y;
+                    collide = true;
+                    event.cancel = true;
+                }
+            });
+        }
         
-        GLOBAL.movableWallContainer.eachCloned(function (item, event) {
-            if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, item,
-                     jsGFwk.Collisions.collidingModes.RECTANGLE) && item.id !== self.id) {
+        if (!collide) {
+            GLOBAL.movableWallContainer.eachCloned(function (item, event) {
+                if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, item,
+                         jsGFwk.Collisions.collidingModes.RECTANGLE) && item.id !== self.id) {
+                    self.lastYCollide = item.y;
+                    collide = true;
+                    event.cancel = true;
+                }
+            });
+        }
+        
+        if (!collide) {
+            if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, dracul, jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                self.lastYCollide = dracul.y;
                 collide = true;
-                event.cancel = true;
             }
-        });
+        }
                 
         return collide;
     },
@@ -65,9 +83,16 @@ var MovableWall = {
         this.moveToRect.y = this.y + this.speed;
             
         if (!this.checkWallCollision()) {
+            this.lastYCollide = 0;
             this.y += this.speed;
             this.speed *= this.speedMultiplier;
+        } else {
+            this.speed = 1.2;
+            this.y = this.lastYCollide - (this.height + 1);
         }
+        
+        Levels[GLOBAL.currentLevel].movableWalls[this._containerElementPosition - 1].x = this.x;
+        Levels[GLOBAL.currentLevel].movableWalls[this._containerElementPosition - 1].y = this.y;
     },
     onDraw: function (ctx) {
         ctx.drawImage(jsGFwk.Sprites.heads.spriteBag[this.head].image, this.x, this.y);

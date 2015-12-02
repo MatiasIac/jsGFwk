@@ -80,7 +80,7 @@ var dracul = {
 		}
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] && GLOBAL.lightOil > 0) {
-            GLOBAL.lightOil -= GLOBAL.lightConsum;
+            GLOBAL.lightOil -= (GLOBAL.lightConsum + 1);
             this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
             
             if (!this.checkWallCollision({ x: this.x, y: this.y - this.flySpeed })) {

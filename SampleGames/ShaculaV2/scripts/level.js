@@ -47,7 +47,7 @@ var Levels = [
         ],
         movableWalls: [
             { x: 140, y: 40, id: 0 },
-            { x: 190, y: 40, id: 1 }
+            { x: 220, y: 240, id: 1 }
         ],
         coffin: { x: 35, y: 60 },
         exit: [ { x: 625, y: 420, goTo: 1, showsAt: { x: 20, y: 420 } } ]
@@ -64,6 +64,8 @@ var Levels = [
         bats: [ ],
         blood: [ ],
         fallingWalls: [],
+        levers: [],
+        movableWalls: [],
         exit: [ { x: 0, y: 420, goTo: 0, showsAt: { x: 610, y: 420 } } ]
     }
 ];
