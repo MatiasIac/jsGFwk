@@ -13,8 +13,8 @@ var dracul = {
 		this.isDead = false;
 		this.dieCounter = 0;
 		GLOBAL.lightOil = GLOBAL.maxOil;
-		GLOBAL.maxRadiusLight = GLOBAL.resetMaxMinLight;
-		GLOBAL.minRadiusLight = GLOBAL.resetMaxMinLight;
+		/*GLOBAL.maxRadiusLight = GLOBAL.resetMaxMinLight;
+		GLOBAL.minRadiusLight = GLOBAL.resetMaxMinLight;*/
 		jsGFwk.Sprites.die.reset();
 		jsGFwk.Sprites.jumpRight.reset();
 		jsGFwk.Sprites.jumpLeft.reset();
@@ -65,6 +65,10 @@ var dracul = {
         var isFalling = false;
         
         this.movementSpeed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SHIFT] ? 3 : 1.5;
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && GLOBAL.lightOil > 0 && !Light.isDropping) {
+            Light.drop(this.isRight ? 10 : -10);
+        }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] && GLOBAL.lightOil > 0) {
 			GLOBAL.lightOil -= GLOBAL.lightConsum;
