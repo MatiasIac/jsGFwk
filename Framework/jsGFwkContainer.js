@@ -62,6 +62,10 @@ jsGFwk.Container = (function() {
 			if (cloned.onInit != undefined) { cloned.onInit(initParameters); }
 			_allObjects[_objectCounter] = cloned;
 			
+			if (jsGFwk.Debugger) {
+				jsGFwk.Debugger.onObjectCreated(cloned);
+			}
+			
 			return cloned;
 		};
 		

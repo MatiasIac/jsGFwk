@@ -42,9 +42,18 @@ jsGFwk.Debugger = {
 	},
 	
 	onObjectCreated: function (newObject) {
-		var oldDraw = newObject.draw;
+		var oldDraw, pointerName = 'draw';
+		
+		if (newObject.draw) {
+			oldDraw = newObject.draw;
+		} else {
+			pointerName = 'onDraw';
+			oldDraw = newObject.onDraw;
+		}
+		
 		newObject._draw = oldDraw;
-		newObject.draw = function (context) {
+		
+		newObject[pointerName] = function (context) {
 			this._draw(context);
 			
 			if (jsGFwk.Debugger.on) {
