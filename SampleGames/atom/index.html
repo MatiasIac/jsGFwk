@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<title>Atom</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+    <script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
+	
+	<script language="Javascript" src="scripts/background.js"></script>
+    <script language="Javascript" src="scripts/player.js"></script>
+    <script language="Javascript" src="scripts/bullet.js"></script>
+	
+	<body>
+		<canvas id="canvas" width="640" height="480"></canvas>
+	</body>
+	<script>
+		jsGFwk.settings.canvas = "canvas";
+		jsGFwk.settings.clearColor = "#7E997B";
+		jsGFwk.settings.frameRate = 1000 / 60;
+        jsGFwk.settings.width = 640;
+        jsGFwk.settings.height = 480;
+		
+		jsGFwk.include("FastAnimation");
+		jsGFwk.include("Container");
+		jsGFwk.include("IO");
+		jsGFwk.include("Collisions");
+		jsGFwk.include("ResourceManager");
+		jsGFwk.include("Sprites");
+		jsGFwk.include("Scenes");
+		jsGFwk.include("Fonts");
+        jsGFwk.include("Timer");
+		
+		jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'fonts/zxBold.ttf' });
+		    
+		var GLOBAL = {
+            currentLevel: 0, points: 0
+        };
+
+        GLOBAL.playerBulletContainer = jsGFwk.Container.createContainer('playerBullets', bullet, true);
+        
+        jsGFwk.Scenes.create({name: "game", 
+                              gameObjects: [background, 
+                                            player, GLOBAL.playerBulletContainer] });
+        
+		/*jsGFwk.createObject({
+			id: "progress",
+			visible: true,
+			barWidth: 0,
+			init: function() {
+                var self = this;
+				jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+					//jsGFwk.Scenes.create({name: "hud", gameObjects: [hud] });
+					jsGFwk.Scenes.create({name: "game", gameObjects: [mainGame] });
+					//jsGFwk.Scenes.scenes.main.enable();
+                    jsGFwk.Scenes.scenes.game.enable();
+					self.destroy();
+				};
+			},
+			update: function(delta) {
+				var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+				this.barWidth = (a * 300) / 100;
+			},
+			draw: function (context) {
+                context.fillStyle = "gray";
+                context.fillRect(0, 0, jsGFwk.settings.width, jsGFwk.settings.height);
+
+                context.fillStyle = "white";
+                context.font = "80pt times";
+                context.fillText("Loading", 250, 220);
+			}
+		});*/
+		
+		jsGFwk.start();
+        
+        jsGFwk.Scenes.scenes.game.enable();
+	</script>
+</html>

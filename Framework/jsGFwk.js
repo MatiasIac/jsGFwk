@@ -19,7 +19,12 @@ var jsGFwk = (function(){
 			width: 640,
 			height: 480,
 			frameRate: 1000/33,
-			clearColor: "rgb(0,0,0)"
+			clearColor: "rgb(0,0,0)",
+			applyChanges: function () {
+				var c = document.getElementById(this.canvas);
+				c.width = this.width;
+				c.height = this.height;
+			}
 		},
 		
 		/** @subtitle: createObject 
