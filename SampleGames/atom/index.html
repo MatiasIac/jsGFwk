@@ -13,9 +13,11 @@
 	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
     <script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
 	
+    <script language="Javascript" src="scripts/globalShots.js"></script>
 	<script language="Javascript" src="scripts/background.js"></script>
     <script language="Javascript" src="scripts/player.js"></script>
     <script language="Javascript" src="scripts/bullet.js"></script>
+    <script language="Javascript" src="scripts/foreground.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
@@ -38,6 +40,7 @@
         jsGFwk.include("Timer");
 		
 		jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'fonts/zxBold.ttf' });
+        jsGFwk.Fonts.createFont({ name: 'roboto', source: 'fonts/RobotoMono-Thin.ttf' });
 		    
 		var GLOBAL = {
             currentLevel: 0, points: 0
@@ -46,8 +49,10 @@
         GLOBAL.playerBulletContainer = jsGFwk.Container.createContainer('playerBullets', bullet, true);
         
         jsGFwk.Scenes.create({name: "game", 
-                              gameObjects: [background, 
-                                            player, GLOBAL.playerBulletContainer] });
+                              gameObjects: [background, GLOBAL.playerBulletContainer,
+                                            player, foreground] });
+        
+        shots.init();
         
 		/*jsGFwk.createObject({
 			id: "progress",

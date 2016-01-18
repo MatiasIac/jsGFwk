@@ -2,9 +2,9 @@ var bullet = {
     onInit: function (parameters) {
         this.x = parameters.player.x;
         this.y = parameters.player.y;
-        this.speed = 10;
-        this.angle = Math.atan2(parameters.mouse.y - parameters.player.y,
-                                       parameters.mouse.x - parameters.player.x);
+        this.speed = parameters.bullet.speed;
+        this.size = parameters.bullet.size;
+        this.angle = parameters.angle;
     },
     onUpdate: function (delta) {
         this.x += this.speed * Math.cos(this.angle);
@@ -17,7 +17,7 @@ var bullet = {
     },
     onDraw: function (context) {
         context.beginPath();
-        context.arc(this.x, this.y, 10, 0, 2 * Math.PI, false);
+        context.arc(this.x, this.y, this.size, 0, 2 * Math.PI, false);
         context.fillStyle = 'red';
         context.fill();
         context.closePath();

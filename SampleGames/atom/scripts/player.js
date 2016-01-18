@@ -1,28 +1,46 @@
 var player = {
-    id: 'mainGame', visible: true, mouseClickId: -1,
-    playerSpeed: 10,
+    id: 'player', visible: true, mouseClickId: -1,
+    playerSpeed: 0.5,
     playerX: 100, playerY: 100, playerSize: 5,
     currentMouseX: 0, currentMouseY: 0,
+    friction: 0.98, topSpeed: 5, speedX: 0, speedY: 0,
     
-    keyboardHandler: function () {
+    keyboardHandler: function (delta) {
         var tempX = this.playerX,
             tempY = this.playerY;
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
-            tempY -= this.playerSpeed;
+            if (this.speedY > -this.topSpeed) {
+                this.speedY -= this.playerSpeed;
+            }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S]) {
-            tempY += this.playerSpeed;
+            if (this.speedY < this.topSpeed) {
+                this.speedY += this.playerSpeed;
+            }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
-            tempX -= this.playerSpeed;
+            if (this.speedX > -this.topSpeed) {
+                this.speedX -= this.playerSpeed;
+            }
         }
         
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
-            tempX += this.playerSpeed;
+            if (this.speedX < this.topSpeed) {
+                this.speedX += this.playerSpeed;
+            }
         }
+        
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.C]) {
+            this.changeWeaponTimer.tick(delta);
+        }
+        
+        this.speedX *= this.friction;
+        this.speedY *= this.friction;
+        tempX += this.speedX;
+        tempY += this.speedY;
         
         if (tempX > 0 && tempX < jsGFwk.settings.width - this.playerSize) {
             this.playerX = tempX;
@@ -40,18 +58,16 @@ var player = {
             self.currentMouseY = coord.y;
 		});
         
-        this.bulletTimer = new jsGFwk.Timer({
+        this.changeWeaponTimer = new jsGFwk.Timer({
             action: function () {
-                GLOBAL.playerBulletContainer.cloneObject({
-                    player: {x: self.playerX, y: self.playerY},
-                    mouse: {x: self.currentMouseX, y: self.currentMouseY}
-                });
-            }, tickTime: 1
+                shots.switchShot();
+                foreground.showMessage(shots.getShotName());
+            }, tickTime: 0.5
         });
     },
     update: function (delta) {
-        this.keyboardHandler();
-        this.bulletTimer.tick(delta);
+        this.keyboardHandler(delta);
+        shots.tick(delta);
     },
     draw: function (context) {    
         context.beginPath();
