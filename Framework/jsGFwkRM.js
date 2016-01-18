@@ -29,7 +29,7 @@ jsGFwk.ResourceManager = {
 				ogg: 'audio/ogg; codecs="vorbis"',
 				wav: 'audio/wav; codecs="1"',
 				mp3: 'audio/mpeg;',
-				acc: 'audio/mp4; codecs="mp4a.40.2"'
+				aac: 'audio/mp4; codecs="mp4a.40.2"'
 			},
 			isMuted: false,
 			mute: function() {
