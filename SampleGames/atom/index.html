@@ -19,6 +19,8 @@
     <script language="Javascript" src="scripts/bullet.js"></script>
     <script language="Javascript" src="scripts/foreground.js"></script>
     <script language="Javascript" src="scripts/enemy.js"></script>
+    <script language="Javascript" src="scripts/shield.js"></script>
+    <script language="Javascript" src="scripts/particles.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
@@ -49,10 +51,14 @@
 
         GLOBAL.playerBulletContainer = jsGFwk.Container.createContainer('playerBullets', bullet, true);
         GLOBAL.enemyContainer = jsGFwk.Container.createContainer('enemies', enemy, true);
+        GLOBAL.shieldContainer = jsGFwk.Container.createContainer('shield', shield, true);
+        GLOBAL.particlesContainer = jsGFwk.Container.createContainer('particles', particles, true);
         
         jsGFwk.Scenes.create({name: "game", 
                               gameObjects: [background, GLOBAL.playerBulletContainer,
-                                            player, GLOBAL.enemyContainer, foreground] });
+                                            GLOBAL.shieldContainer,
+                                            player, GLOBAL.enemyContainer,
+                                            GLOBAL.particlesContainer, foreground] });
         
         shots.init();
         

@@ -69,7 +69,7 @@ var player = {
         this.keyboardHandler(delta);
         shots.tick(delta);
     },
-    draw: function (context) {    
+    draw: function (context) {
         context.beginPath();
         context.arc(this.playerX, this.playerY, this.playerSize, 0, 2 * Math.PI, false);
         context.fillStyle = 'gray';

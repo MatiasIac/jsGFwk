@@ -46,7 +46,7 @@ var shots = {
             size: 15, speed: 0.5, shotInterval: 3
         },
         {
-            name: 'Dual Medium',
+            name: 'Dual Shot',
             f: function (params) {
                 var angle = Math.atan2(params.currentMouseY - params.playerY, params.currentMouseX - params.playerX);
                 

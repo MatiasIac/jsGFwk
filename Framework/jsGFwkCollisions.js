@@ -67,6 +67,9 @@ jsGFwk.Collisions = {
 			case this.collidingModes.RECTANGLE:
 				return this._rectColliding.call(object1, object2);
 				break;
+			case this.collidingModes.RAD_DISTANCE:
+				return this._disColliding.call(object1, object2);
+				break;
 			default:
 				break;
 		}

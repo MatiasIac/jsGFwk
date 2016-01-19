@@ -4,7 +4,7 @@ var background = {
     init: function () { },
     update: function (delta) { },
     draw: function (context) {
-        context.fillStyle = 'white';
+        context.fillStyle = '#F4E4C2';
         context.fillRect(0, 0, jsGFwk.settings.width, jsGFwk.settings.height);
     }
 };
