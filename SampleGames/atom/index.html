@@ -12,6 +12,8 @@
 	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
     <script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
+    
+    <script language="Javascript" src="../../Framework/jsGFwkDebugger.js"></script>
 	
     <script language="Javascript" src="scripts/globalShots.js"></script>
 	<script language="Javascript" src="scripts/background.js"></script>
@@ -32,6 +34,10 @@
         jsGFwk.settings.width = 640;
         jsGFwk.settings.height = 480;
 		
+        jsGFwk.include("Debugger");
+        
+        jsGFwk.Debugger.on = false;
+        
 		jsGFwk.include("FastAnimation");
 		jsGFwk.include("Container");
 		jsGFwk.include("IO");

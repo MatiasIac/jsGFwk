@@ -5,7 +5,9 @@ var bullet = {
         this.speed = parameters.bullet.speed;
         this.radius = parameters.bullet.size;
         this.angle = parameters.angle;
-        this.center = { x: this.radius / 2, y: this.radius / 2 };
+        this.center = { x: 0, y: 0 };
+        this.gama = 1;
+        this.gamaAcc = 0;
     },
     onUpdate: function (delta) {
         var self = this;
@@ -17,10 +19,18 @@ var bullet = {
             this.destroy();
         }
         
+        this.gamaAcc += delta;
+        if (this.gamaAcc > 0.1) {
+            this.gamaAcc = 0;
+            this.gama -= 0.02;
+            this.gama = Math.max(0, this.gama);
+            if (this.gama == 0) { this.destroy(); }
+        }
+        
         GLOBAL.enemyContainer.eachCloned(function (item, event) {
             if (jsGFwk.Collisions.areCollidingBy(self, item, jsGFwk.Collisions.collidingModes.RAD_DISTANCE)) {
                 event.cancel = true;
-                item.impact();
+                item.impact(self.radius);
                 self.destroy();
             }
         });
@@ -28,7 +38,7 @@ var bullet = {
     onDraw: function (context) {
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-        context.fillStyle = 'red';
+        context.fillStyle = 'rgba(255,0,0,' + this.gama + ')';
         context.fill();
         context.closePath();
     }

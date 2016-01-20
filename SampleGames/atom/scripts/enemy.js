@@ -4,9 +4,15 @@ var enemy = {
         this.speed = parameters.speed;
         this.x = parameters.x;
         this.y = parameters.y;
-        this.life = this.size * 20;
+        this.life = this.size * 5;
         this.radius = this.size / 2;
-        this.center = {x: this.radius / 2, y: this.radius / 2 };
+        this.center = {x: this.radius, y: this.radius };
+        this.tracer = [{x: this.x + (this.size / 2), y: this.y + (this.size / 2)},
+                      {x: this.x + (this.size / 2), y: this.y + (this.size / 2)},
+                      {x: this.x + (this.size / 2), y: this.y + (this.size / 2)},
+                      {x: this.x + (this.size / 2), y: this.y + (this.size / 2)},
+                      {x: this.x + (this.size / 2), y: this.y + (this.size / 2)}];
+        this.tracerCounter = 0;
         
         switch (parameters.type) {
             case 'angleFollower':
@@ -27,9 +33,17 @@ var enemy = {
         }
     },
     
-    impact: function () {
+    impact: function (damage) {
         for(var i = 0; i < 5; i++) {
             GLOBAL.particlesContainer.cloneObject({x: this.x, y: this.y});
+        }
+        
+        this.life -= damage;
+        if (this.life <= 0) {
+            for(var i = 0; i < 15; i++) {
+                GLOBAL.particlesContainer.cloneObject({x: this.x, y: this.y});
+            }
+            this.destroy();
         }
     },
     
@@ -57,10 +71,29 @@ var enemy = {
     
     onUpdate: function (delta) {
         this.update(delta);
+        
+        this.tracerCounter += delta;
+        if (this.tracerCounter > 0.1) {
+            this.tracerCounter = 0;
+            this.tracer.splice(-1, 1);
+            this.tracer.unshift({x: this.x + (this.size / 2), y: this.y + (this.size / 2)});
+        }
     },
     onDraw: function (context) {
-        context.fillStyle = 'white';
-        context.strokeStyle = 'black';
+    
+        context.beginPath();
+        for (var i = 0; i < this.tracer.length; i++) {
+            context.strokeStyle = 'rgba(112,52,103,' + (1 / (i+1)) + ')';
+            context.lineWidth = this.size - (i * 2);
+            context.lineTo(this.tracer[i].x, this.tracer[i].y);
+            context.stroke();
+        }
+        context.closePath();
+
+        context.fillStyle = '#703467';//'#BB1CA2';
+        context.strokeStyle = '#703467';
+        context.lineWidth = 1;
+        context.fillRect(this.x, this.y, this.size, this.size);
         context.strokeRect(this.x, this.y, this.size, this.size);
     }
 };
