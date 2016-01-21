@@ -23,6 +23,9 @@
     <script language="Javascript" src="scripts/enemy.js"></script>
     <script language="Javascript" src="scripts/shield.js"></script>
     <script language="Javascript" src="scripts/particles.js"></script>
+    <script language="Javascript" src="scripts/levelController.js"></script>
+    <script language="Javascript" src="scripts/enemyTypes.js"></script>
+    <script language="Javascript" src="scripts/enemyBullet.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
@@ -35,7 +38,6 @@
         jsGFwk.settings.height = 480;
 		
         jsGFwk.include("Debugger");
-        
         jsGFwk.Debugger.on = false;
         
 		jsGFwk.include("FastAnimation");
@@ -59,11 +61,13 @@
         GLOBAL.enemyContainer = jsGFwk.Container.createContainer('enemies', enemy, true);
         GLOBAL.shieldContainer = jsGFwk.Container.createContainer('shield', shield, true);
         GLOBAL.particlesContainer = jsGFwk.Container.createContainer('particles', particles, true);
+        GLOBAL.enemyBulletContainer = jsGFwk.Container.createContainer('enemyBullet', enemyBullet, true);
         
         jsGFwk.Scenes.create({name: "game", 
-                              gameObjects: [background, GLOBAL.playerBulletContainer,
+                              gameObjects: [levelController, background, GLOBAL.playerBulletContainer,
                                             GLOBAL.shieldContainer,
-                                            player, GLOBAL.enemyContainer,
+                                            player, GLOBAL.enemyBulletContainer,
+                                            GLOBAL.enemyContainer,
                                             GLOBAL.particlesContainer, foreground] });
         
         shots.init();

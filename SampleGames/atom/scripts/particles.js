@@ -8,6 +8,7 @@ var particles = {
                                 (Math.random() * 640) - parameters.x);
         this.gama = 1;
         this.gamaAcc = 0;
+        this.particleColor = parameters.color || 100;
     },
     onUpdate: function (delta) {
         this.x += this.speed * Math.cos(this.angle);
@@ -28,7 +29,7 @@ var particles = {
     onDraw: function (context) {
         context.beginPath();
         context.arc(this.x, this.y, 1, 0, 2 * Math.PI, false);
-        context.fillStyle = 'rgba(0, 100, 0,' + this.gama + ')';
+        context.fillStyle = 'rgba(0, ' + this.particleColor + ', 0,' + this.gama + ')';
         context.fill();
         context.closePath();
     }

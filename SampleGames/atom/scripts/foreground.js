@@ -13,6 +13,7 @@ var foreground = {
         });
     },
     showMessage: function (message) {
+        this.messageTimer.reset();
         this.message = message;
         this.enabledMessage = true;
     },
@@ -26,5 +27,14 @@ var foreground = {
         context.textAlign = 'center';
         context.font = '34pt roboto';
         context.fillText(this.message, jsGFwk.settings.width / 2, jsGFwk.settings.height / 2);
+        
+        context.font = '14pt roboto';
+        context.textAlign = 'right';
+        context.fillText(GLOBAL.points, jsGFwk.settings.width - 10, jsGFwk.settings.height - 10);
+        
+        context.font = '10pt roboto';
+        context.textAlign = 'left';
+        context.fillText(shots.getShotName() + ' - Damage ' + shots.shots[shots.shotIndex].damage  + ' - Rate ' + shots.shots[shots.shotIndex].shotInterval,
+                         10, jsGFwk.settings.height - 10);
     }
 };

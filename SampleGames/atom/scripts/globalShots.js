@@ -39,11 +39,11 @@ var shots = {
             f: function (params) {
                 GLOBAL.playerBulletContainer.cloneObject({
                     player: { x: params.playerX, y: params.playerY },
-                    bullet: { size: this.size, speed: this.speed },
+                    bullet: { size: this.size, speed: this.speed, damage: this.damage },
                     angle: Math.atan2(params.currentMouseY - params.playerY, params.currentMouseX - params.playerX)
                 });
             },
-            size: 15, speed: 0.5, shotInterval: 3
+            size: 15, speed: 0.5, shotInterval: 3, damage: 100
         },
         {
             name: 'Dual Shot',
@@ -52,17 +52,17 @@ var shots = {
                 
                 GLOBAL.playerBulletContainer.cloneObject({
                     player: { x: params.playerX, y: params.playerY },
-                    bullet: { size: this.size, speed: this.speed },
+                    bullet: { size: this.size, speed: this.speed, damage: this.damage },
                     angle: angle
                 });
                 
                 GLOBAL.playerBulletContainer.cloneObject({
                     player: { x: params.playerX, y: params.playerY },
-                    bullet: { size: this.size, speed: this.speed },
+                    bullet: { size: this.size, speed: this.speed, damage: this.damage },
                     angle: angle - 0.1
                 });
             },
-            size: 5, speed: 3, shotInterval: 1
+            size: 5, speed: 3, shotInterval: 1, damage: 30
         },
         {
         name: 'Shotgun',
@@ -71,23 +71,23 @@ var shots = {
                 
                 GLOBAL.playerBulletContainer.cloneObject({
                     player: { x: params.playerX, y: params.playerY },
-                    bullet: { size: this.size, speed: this.speed },
+                    bullet: { size: this.size, speed: this.speed, damage: this.damage },
                     angle: angle
                 });
                 
                 GLOBAL.playerBulletContainer.cloneObject({
                     player: { x: params.playerX, y: params.playerY },
-                    bullet: { size: this.size, speed: this.speed },
+                    bullet: { size: this.size, speed: this.speed, damage: this.damage },
                     angle: angle - 0.1
                 });
                 
                 GLOBAL.playerBulletContainer.cloneObject({
                     player: { x: params.playerX, y: params.playerY },
-                    bullet: { size: this.size, speed: this.speed },
+                    bullet: { size: this.size, speed: this.speed, damage: this.damage },
                     angle: angle + 0.1
                 });
             },
-            size: 5, speed: 6, shotInterval: 1.5
+            size: 5, speed: 6, shotInterval: 1.5, damage: 20
         },
         {
             name: 'Machine Gun',
@@ -96,11 +96,11 @@ var shots = {
                 
                 GLOBAL.playerBulletContainer.cloneObject({
                     player: { x: params.playerX, y: params.playerY },
-                    bullet: { size: this.size, speed: this.speed },
+                    bullet: { size: this.size, speed: this.speed, damage: this.damage },
                     angle: angle
                 });
             },
-            size: 2, speed: 5, shotInterval: 0.1
+            size: 2, speed: 5, shotInterval: 0.1, damage: 5
         }
     ]   
 };

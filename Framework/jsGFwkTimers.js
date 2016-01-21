@@ -9,6 +9,11 @@ jsGFwk.Timer = (function() {
 		}
 	};
 	
+	timers.prototype.reset = function () {
+		var self = this;
+		self._counter = 0;
+	};
+	
 	timers.prototype.setAction = function (action) {
 		var self = this;
 		self._action = action;
