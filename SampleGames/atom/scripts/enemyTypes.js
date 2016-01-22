@@ -3,7 +3,7 @@ var enemyTypes = [
         name: 'angleFollower',
         maxSpeed: 3,
         maxSpeed2: 10,
-        minSpeed: 2,
+        minSpeed: 1,
         minSpeed2: 1
     },
     {

@@ -14,8 +14,14 @@ var enemy = {
                       {x: this.x + (this.size / 2), y: this.y + (this.size / 2)},
                       {x: this.x + (this.size / 2), y: this.y + (this.size / 2)}];
         this.tracerCounter = 0;
-        this.bulletSize = (Math.random() * Math.min(GLOBAL.currentLevel, 5)) + Math.min(this.size, 5);
+        this.bulletSize = 2;//(Math.random() * Math.min(GLOBAL.currentLevel, 5)) + Math.min(this.size, 5);
         this.bulletSpeed = 1 + Math.min((0.1 * GLOBAL.currentLevel), 5);
+        
+        this.color = {
+            r: parseInt(Math.random() * 155) + 100,
+            g: parseInt(Math.random() * 155) + 100,
+            b: parseInt(Math.random() * 155) + 100
+        };
         
         this.bulletTimer = new jsGFwk.Timer({
             action: function () {
@@ -64,29 +70,25 @@ var enemy = {
             this.destroy();
         }
     },
-    
     waveFollower: function (delta) {
         this.accumulator1 += this.speed;
         this.accumulator2 += this.speed2;
         this.range = (parseInt(this.range) === this.maxRadius ? this.maxRadius : this.range - this.radianMovement);
         this.x = (Math.sin(this.accumulator1) * this.range) + player.playerX;
         this.y = (Math.cos(this.accumulator2) * this.range) + player.playerY;
-    },
-    
+    },   
     radialFollower: function (delta) {
         this.accumulator += this.speed;
         this.range = (parseInt(this.range) === this.maxRadius ? this.maxRadius : this.range - this.radianMovement);
         this.x = (Math.sin(this.accumulator) * this.range) + player.playerX;
         this.y = (Math.cos(this.accumulator) * this.range) + player.playerY;
-    },
-    
+    },   
     angleFollower: function (delta) {
         var angle = Math.atan2(player.playerY - this.y,
                                player.playerX - this.x);
         this.x += this.speed * Math.cos(angle);
         this.y += this.speed * Math.sin(angle);  
-    },
-    
+    }, 
     onUpdate: function (delta) {
         this.update(delta);
         
@@ -104,16 +106,16 @@ var enemy = {
         
         context.beginPath();
         for (var i = 0; i < this.tracer.length; i++) {
-            context.strokeStyle = 'rgba(112,52,103,' + (1 / (i+1)) + ')';
+            context.strokeStyle = 'rgba('+this.color.r+','+this.color.g+','+this.color.b+',' + (1 / (i+1)) + ')';
             context.lineWidth = this.size - (i * 2);
             context.lineTo(this.tracer[i].x, this.tracer[i].y);
             context.stroke();
         }
         context.closePath();
 
-        context.fillStyle = '#703467';//'#BB1CA2';
-        context.strokeStyle = '#703467';
-        context.lineWidth = 1;
+        context.fillStyle = 'rgb('+this.color.r+','+this.color.g+','+this.color.b+')';//'#703467';//'#BB1CA2';
+        //context.strokeStyle = '#703467';
+        //context.lineWidth = 1;
         context.fillRect(this.x, this.y, this.size, this.size);
         //context.strokeRect(this.x, this.y, this.size, this.size);
     }
