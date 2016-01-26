@@ -1,9 +1,11 @@
 var player = {
     id: 'player', visible: true, mouseClickId: -1,
     playerSpeed: 0.5,
-    playerX: 100, playerY: 100, playerSize: 5,
+    playerX: 100, playerY: 100, //playerSize: 5,
     currentMouseX: 0, currentMouseY: 0,
     friction: 0.98, topSpeed: 5, speedX: 0, speedY: 0,
+    shieldCounter: 0, gainShieldAt: 5,
+    x: 0, y: 0, radius: 5, center: {x: 1, y: 1},
     
     keyboardHandler: function (delta) {
         var tempX = this.playerX,
@@ -42,12 +44,52 @@ var player = {
         tempX += this.speedX;
         tempY += this.speedY;
         
-        if (tempX > 0 && tempX < jsGFwk.settings.width - this.playerSize) {
+        if (tempX > 0 && tempX < jsGFwk.settings.width - this.radius) {
             this.playerX = tempX;
         }
         
-        if (tempY > 0 && tempY < jsGFwk.settings.height - this.playerSize) {
+        if (tempY > 0 && tempY < jsGFwk.settings.height - this.radius) {
             this.playerY = tempY;
+        }
+    },
+    
+    powerUp: function () {
+        switch(parseInt(Math.random() * 4)) {
+            case 0:
+                shots.shots[shots.shotIndex].damage += 0.1;
+                break;
+            case 1:
+                shots.shots[shots.shotIndex].shotInterval = Math.max(shots.shots[shots.shotIndex].shotInterval - 0.1, 0.1);
+                break;
+            case 3:
+                shots.shots[shots.shotIndex].size += 0.1;
+                break;
+            default:
+                shots.shots[shots.shotIndex].speed += 0.1;
+                break;
+        }
+        this.shieldGained();        
+        shots.reApply();
+    },
+    
+    shieldGained: function () {
+        this.shieldCounter++;
+        if (this.shieldCounter === this.gainShieldAt) {
+            this.radius++;
+            this.shieldCounter = 0;
+            GLOBAL.shieldContainer.cloneObject();
+        }
+    },
+    
+    hit: function () {
+        if (GLOBAL.shieldContainer.length() > 0) {
+            GLOBAL.shieldContainer.getClonedAt(1).destroyShield();
+        } else {
+            if ((this.radius - 1) === 2) {
+                //end game
+            } else {
+                this.radius--;
+            }            
         }
     },
     
@@ -67,11 +109,13 @@ var player = {
     },
     update: function (delta) {
         this.keyboardHandler(delta);
+        this.x = this.playerX;
+        this.y = this.playerY;
         shots.tick(delta);
     },
     draw: function (context) {
         context.beginPath();
-        context.arc(this.playerX, this.playerY, this.playerSize, 0, 2 * Math.PI, false);
+        context.arc(this.playerX, this.playerY, this.radius, 0, 2 * Math.PI, false);
         context.fillStyle = 'gray';
         context.fill();
         context.closePath();

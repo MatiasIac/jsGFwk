@@ -17,13 +17,11 @@ var enemyBullet = {
             this.destroy();
         }
         
-        /*GLOBAL.enemyContainer.eachCloned(function (item, event) {
-            if (jsGFwk.Collisions.areCollidingBy(self, item, jsGFwk.Collisions.collidingModes.RAD_DISTANCE)) {
-                event.cancel = true;
-                item.impact(self.damage);
-                self.destroy();
-            }
-        });*/
+        if (jsGFwk.Collisions.areCollidingBy(this, player, 
+                 jsGFwk.Collisions.collidingModes.RAD_DISTANCE)) {
+            player.hit();
+            this.destroy();
+        }
     },
     onDraw: function (context) {
         context.beginPath();

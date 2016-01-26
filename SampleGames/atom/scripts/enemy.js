@@ -30,7 +30,7 @@ var enemy = {
                     bullet: { size: self.bulletSize, speed: self.bulletSpeed },
                     angle: Math.atan2(player.playerY - self.y, player.playerX - self.x)
                 });
-            }, tickTime: 2
+            }, tickTime: (Math.random() * 2) + 0.5
         });
         
         switch (parameters.type) {
@@ -67,6 +67,7 @@ var enemy = {
                 GLOBAL.particlesContainer.cloneObject({x: this.x, y: this.y});
             }
             GLOBAL.points += 5;
+            GLOBAL.powerUpContainer.cloneObject({x: this.x, y: this.y});
             this.destroy();
         }
     },
@@ -92,6 +93,11 @@ var enemy = {
     onUpdate: function (delta) {
         this.update(delta);
         
+        if (this.x < 0) { this.x = 0; }
+        if (this.x > jsGFwk.settings.width - this.size) { this.x = jsGFwk.settings.width - this.size; }
+        if (this.y < 0) { this.y = 0; }
+        if (this.y > jsGFwk.settings.height - this.size) { this.y = jsGFwk.settings.height - this.size; }
+        
         this.tracerCounter += delta;
         if (this.tracerCounter > 0.1) {
             this.tracerCounter = 0;
@@ -114,9 +120,6 @@ var enemy = {
         context.closePath();
 
         context.fillStyle = 'rgb('+this.color.r+','+this.color.g+','+this.color.b+')';//'#703467';//'#BB1CA2';
-        //context.strokeStyle = '#703467';
-        //context.lineWidth = 1;
         context.fillRect(this.x, this.y, this.size, this.size);
-        //context.strokeRect(this.x, this.y, this.size, this.size);
     }
 };

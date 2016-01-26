@@ -26,6 +26,7 @@
     <script language="Javascript" src="scripts/levelController.js"></script>
     <script language="Javascript" src="scripts/enemyTypes.js"></script>
     <script language="Javascript" src="scripts/enemyBullet.js"></script>
+    <script language="Javascript" src="scripts/powerup.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="640" height="480"></canvas>
@@ -62,12 +63,14 @@
         GLOBAL.shieldContainer = jsGFwk.Container.createContainer('shield', shield, true);
         GLOBAL.particlesContainer = jsGFwk.Container.createContainer('particles', particles, true);
         GLOBAL.enemyBulletContainer = jsGFwk.Container.createContainer('enemyBullet', enemyBullet, true);
+        GLOBAL.powerUpContainer = jsGFwk.Container.createContainer('powerUps', powerup, true);
         
         jsGFwk.Scenes.create({name: "game", 
                               gameObjects: [levelController, background, GLOBAL.playerBulletContainer,
                                             GLOBAL.shieldContainer,
                                             player, GLOBAL.enemyBulletContainer,
                                             GLOBAL.enemyContainer,
+                                            GLOBAL.powerUpContainer,
                                             GLOBAL.particlesContainer, foreground] });
         
         shots.init();

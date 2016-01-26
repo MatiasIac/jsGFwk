@@ -34,7 +34,7 @@ var foreground = {
         
         context.font = '10pt roboto';
         context.textAlign = 'left';
-        context.fillText(shots.getShotName() + ' - Damage ' + shots.shots[shots.shotIndex].damage  + ' - Rate ' + shots.shots[shots.shotIndex].shotInterval,
+        context.fillText(shots.getShotName() + ' - Damage ' + parseInt(shots.shots[shots.shotIndex].damage) + ' - Rate ' + parseInt(shots.shots[shots.shotIndex].shotInterval) + ' - Bullet Speed ' + parseInt(shots.shots[shots.shotIndex].speed),
                          10, jsGFwk.settings.height - 10);
     }
 };

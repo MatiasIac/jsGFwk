@@ -19,7 +19,7 @@ var levelController = {
     },
     triggerWave: function () {
         GLOBAL.currentLevel++;
-        foreground.showMessage('Level ' + GLOBAL.currentLevel);
+        foreground.showMessage('Wave ' + GLOBAL.currentLevel);
         this.appearPosition = { x: (Math.random() * jsGFwk.settings.width), y: (Math.random() * jsGFwk.settings.height) };
         this.particleTimer.reset();
         this.nextWaveTimer.reset();
@@ -40,7 +40,7 @@ var levelController = {
         });
     },
     updateStep3: function (delta) {
-        for (var i = 0; i < GLOBAL.currentLevel; i++) {
+        for (var i = 0; i < Math.min(20, GLOBAL.currentLevel); i++) {
             var enemy = parseInt(Math.random() * enemyTypes.length),
                 currentEnemy = enemyTypes[enemy];
             

@@ -19,6 +19,9 @@ var shots = {
         this.shotIndex = this.shotIndex % this.shots.length;
         this.bulletTimer.tickTime = this.shots[this.shotIndex].shotInterval;
     },
+    reApply: function () {
+        this.bulletTimer.tickTime = this.shots[this.shotIndex].shotInterval;
+    },
     shot: function () {
         this.shots[this.shotIndex].f(this.buildParams());
     },
