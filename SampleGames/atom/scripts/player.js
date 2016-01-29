@@ -53,6 +53,61 @@ var player = {
         }
     },
     
+    gamePadHandler: function (delta) {
+        var self = this,
+            axisX = 0, axisY = 0,
+            axisX2 = 0, axisY2 = 0,
+            tempX = this.playerX,
+            tempY = this.playerY;
+        
+        if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0] !== undefined) {
+            axisX = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[0].toFixed(2);
+            axisY = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD0].axes[1].toFixed(2);
+
+            //Left stick
+            if (axisY < 0) {
+                if (this.speedY > -this.topSpeed) {
+                    this.speedY -= this.playerSpeed;
+                }
+            }
+
+            if (axisY > 0) {
+                if (this.speedY < this.topSpeed) {
+                    this.speedY += this.playerSpeed;
+                }
+            }
+
+            if (axisX < 0) {
+                if (this.speedX > -this.topSpeed) {
+                    this.speedX -= this.playerSpeed;
+                }
+            }
+
+            if (axisX > 0) {
+                if (this.speedX < this.topSpeed) {
+                    this.speedX += this.playerSpeed;
+                }
+            }
+            //*****
+
+            this.speedX *= this.friction;
+            this.speedY *= this.friction;
+            tempX += this.speedX;
+            tempY += this.speedY;
+
+            if (tempX > 0 && tempX < jsGFwk.settings.width - this.radius) {
+                this.playerX = tempX;
+            }
+
+            if (tempY > 0 && tempY < jsGFwk.settings.height - this.radius) {
+                this.playerY = tempY;
+            }
+            
+            //self.currentMouseX = coord.x;
+            //self.currentMouseY = coord.y;
+        }
+    },
+    
     powerUp: function () {
         switch(parseInt(Math.random() * 4)) {
             case 0:
@@ -109,9 +164,11 @@ var player = {
     },
     update: function (delta) {
         this.keyboardHandler(delta);
+        this.gamePadHandler(delta);
         this.x = this.playerX;
         this.y = this.playerY;
         shots.tick(delta);
+        
     },
     draw: function (context) {
         context.beginPath();
