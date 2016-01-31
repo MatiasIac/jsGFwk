@@ -56,9 +56,11 @@ jsGFwk.IO = {
 	},
 	
 	mouse: {
-		_mouseClickCallers: [],
+		_mouseClickCounter: 0,
+		_mouseClickCallers: {},
 		_mouseMoveCallers: [],
-		_mouseDownCallers: [],
+        _mouseDownCounter: 0,
+		_mouseDownCallers: {},
 	    _mouseWhellCallers: [],
 		
 		_lastDownCoords: {},
@@ -80,12 +82,25 @@ jsGFwk.IO = {
 		_mouseDown: function(e) {
 			jsGFwk.IO.mouse._isMousePressed = true;
 			jsGFwk.IO.mouse._lastDownCoords = jsGFwk.IO.mouse._getCoordinates(e);
-			for (var i = 0; i < jsGFwk.IO.mouse._mouseDownCallers.length; jsGFwk.IO.mouse._mouseDownCallers[i++](jsGFwk.IO.mouse._lastDownCoords));
-		},
+            for (var p in jsGFwk.IO.mouse._mouseDownCallers) {
+				if (jsGFwk.IO.mouse._mouseDownCallers.hasOwnProperty(p)) {
+					jsGFwk.IO.mouse._mouseDownCallers[p](jsGFwk.IO.mouse._lastDownCoords);
+				}
+			}
+        },
 		
 		_mouseUp: function() {
 			jsGFwk.IO.mouse._isMousePressed = false;
-			for (var i = 0; i < jsGFwk.IO.mouse._mouseClickCallers.length; jsGFwk.IO.mouse._mouseClickCallers[i++](jsGFwk.IO.mouse._lastDownCoords));
+			for (var p in jsGFwk.IO.mouse._mouseClickCallers) {
+				if (jsGFwk.IO.mouse._mouseClickCallers.hasOwnProperty(p)) {
+					jsGFwk.IO.mouse._mouseClickCallers[p](jsGFwk.IO.mouse._lastDownCoords);
+				}
+			}
+			/*for (var i = 0; i < jsGFwk.IO.mouse._mouseClickCallers.length; i++) {
+                if (jsGFwk.IO.mouse._mouseClickCallers[i](jsGFwk.IO.mouse._lastDownCoords)) {
+                    break;
+                }
+            }*/
 		},
 		
 		_mouseMove: function(e) {
@@ -99,12 +114,13 @@ jsGFwk.IO = {
 		},
 		
 		registerClick: function(f) {
-			this._mouseClickCallers.push(f);
-			return (this._mouseClickCallers.length - 1);
+			this._mouseClickCallers[this._mouseClickCounter] = f;
+			this._mouseClickCounter++;
+			return (this._mouseClickCounter - 1);
 		},
 		
 		unregisterClick: function(callerId) {
-			this._mouseClickCallers.splice(callerId, 1);
+			delete this._mouseClickCallers[callerId];
 		},
 		
 		registerMove: function(f) {
@@ -117,12 +133,13 @@ jsGFwk.IO = {
 		},
 
 	    registerDown: function(f) {
-	        this._mouseDownCallers.push(f);
-	        return (this._mouseDownCallers.length - 1);
+            this._mouseDownCallers[this._mouseDownCounter] = f;
+			this._mouseDownCounter++;
+			return (this._mouseDownCounter - 1);
 	    },
 		
         unregisterDown: function(callerId) {
-            this._mouseDownCallers.splice(callerId, 1);
+            delete this._mouseDownCallers[callerId];
         },
 
         registerWheel: function (f) {
@@ -134,6 +151,33 @@ jsGFwk.IO = {
             this._mouseWhellCallers.splice(callerId, 1);
         }
 	},
+    
+    touch: {
+        _touchCounter: 0,
+        _touchCallers: {},
+        _getCoordinates: function (e) {
+            return { 
+                x: e.changedTouches[0].clientX, 
+                y: e.changedTouches[0].clientY
+            };
+        },
+        _touchEnd: function (e) {
+            var currentTouch = jsGFwk.IO.touch._getCoordinates(e);
+            for (var p in jsGFwk.IO.touch._touchCallers) {
+				if (jsGFwk.IO.touch._touchCallers.hasOwnProperty(p)) {
+					jsGFwk.IO.touch._touchCallers[p](currentTouch);
+				}
+			}
+        },
+        registerTouch: function (f) {
+            this._touchCallers[this._touchCounter] = f;
+			this._touchCounter++;
+			return (this._touchCounter - 1);
+        },
+        unregisterTouch: function (callerId) {
+            delete this._touchCallers[callerId];
+        }
+    },
 	
 	onStart: function() {
 		//Register all listeners
@@ -145,6 +189,8 @@ jsGFwk.IO = {
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("mousemove", this.mouse._mouseMove, false);
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("mousewheel", this.mouse._mouseWheel, false);
 		document.getElementById(jsGFwk.settings.canvas).addEventListener("DOMMouseScroll", this.mouse._mouseWheel, false);
+        
+        document.getElementById(jsGFwk.settings.canvas).addEventListener("touchend", this.touch._touchEnd, false);
 	},
 	onLoadReady: function () {
 		jsGFwk.include(this._plugInName);
