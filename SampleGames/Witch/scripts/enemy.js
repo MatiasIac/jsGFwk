@@ -1,7 +1,7 @@
 var enemy = {
     onInit: function (params) {
         var self = this;
-        this.x = jsGFwk.settings.width;
+        this.x = params.x;
         this.y = jsGFwk.settings.height - 10;
         this.speed = (Math.random() * 1) + 1;
         
@@ -12,11 +12,11 @@ var enemy = {
                     x: self.x,
                     y: self.y
                 });
-            }, tickTime: 1
+            }, tickTime: 1.2
         });
     },
     onUpdate: function (delta) {
-        if (witch.x < this.x) {
+        if (witch.x < this.x && this.x > (gate.x + gate.width)) {
             this.x -= this.speed;
         } else if (witch.x > this.x) {
             this.x += this.speed;

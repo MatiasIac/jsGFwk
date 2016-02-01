@@ -12,6 +12,17 @@ var witch = {
             x: 10, y: jsGFwk.settings.height - 8,
             width: 12, height: 8
         };
+        
+        this.foodConsumptionTimer = new jsGFwk.Timer({
+            action: function () {
+                GLOBAL.witch.feed--;
+                if (GLOBAL.witch <= 0) {
+                    //DEAD
+                    jsGFwk.Scenes.scenes.end.enable();
+                }
+            },
+            tickTime: 0.3
+        });
     },
     hit: function () {
         if (this.payload > 0) {
@@ -68,11 +79,17 @@ var witch = {
     },
     update: function (delta) {
         this.keyboardHandler(delta);
+        
         if (jsGFwk.Collisions.areCollidingBy(this, this.calderoFake, 
             jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+            
+            GLOBAL.witch.feed = Math.min(100, GLOBAL.witch.feed + (this.payload * 5));
+            
             GLOBAL.babys += this.payload;
             this.payload = 0;
         }
+        
+        this.foodConsumptionTimer.tick(delta);
     },
     draw: function (context) {
         context.drawImage(jsGFwk.Sprites.player.image, this.x, this.y);

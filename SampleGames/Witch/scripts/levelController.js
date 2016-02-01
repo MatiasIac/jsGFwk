@@ -2,6 +2,7 @@ var levelController = {
     id: 'levelController',
     visible: false,
     init: function () {
+        enemyContainer.clearAll();
         this.createLevel();
     },
     update: function (delta) {
@@ -18,14 +19,19 @@ var levelController = {
         }
     },
     createLevel: function () {
-        enemyContainer.clearAll();
         bulletContainer.clearAll();
         houseContainer.clearAll();
         
-        for (var i = 0; i < GLOBAL.level + 1; i++) {
-            enemyContainer.cloneObject();
+        var houses = Math.min(GLOBAL.level + 1, 20);
+        
+        for (var i = 0; i < 2; i++) {
+            enemyContainer.cloneObject({x: jsGFwk.settings.width});
+        }
+        
+        for (var i = 0; i < houses; i++) {
             houseContainer.cloneObject({ x: Math.random() * (jsGFwk.settings.width - 200) + 200})
         }
+        
         GLOBAL.level++;
     }
 };
