@@ -2,6 +2,7 @@ var levelController = {
     id: 'levelController',
     visible: false,
     init: function () {
+        GLOBAL.witch.feed = 100;
         enemyContainer.clearAll();
         this.createLevel();
     },

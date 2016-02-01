@@ -16,7 +16,7 @@ var witch = {
         this.foodConsumptionTimer = new jsGFwk.Timer({
             action: function () {
                 GLOBAL.witch.feed--;
-                if (GLOBAL.witch <= 0) {
+                if (GLOBAL.witch.feed <= 0) {
                     //DEAD
                     jsGFwk.Scenes.scenes.end.enable();
                 }
