@@ -28,6 +28,7 @@
     <script language="Javascript" src="scripts/particles.js"></script>
     <script language="Javascript" src="scripts/end.js"></script>
     <script language="Javascript" src="scripts/gate.js"></script>
+    <script language="Javascript" src="scripts/firewall.js"></script>
     
 	<body>
         <canvas width="640" height="150" id="canvas"></canvas>
@@ -71,12 +72,13 @@
     var bulletContainer = jsGFwk.Container.createContainer("bulletCloner", bullet, true);
     var houseContainer = jsGFwk.Container.createContainer("houseCloner", house, true);
     var particlesContainer = jsGFwk.Container.createContainer("particleCloner", particles, true);
+    var firewallContainer = jsGFwk.Container.createContainer("firewallCloner", firewall, true);
     
     GLOBAL = {
         level: 0, babys: 0,
         witch: {
             feed: 100,
-            energy: 0
+            energy: 100
         }
      };
 
@@ -84,11 +86,14 @@
         gameObjects: [hud] });
     
     jsGFwk.Scenes.create({name: "game", 
-        gameObjects: [levelController, background, houseContainer, gate, witch, enemyContainer, bulletContainer, particlesContainer] });
+        gameObjects: [levelController, background, houseContainer, gate, witch,
+                      enemyContainer, firewallContainer, bulletContainer, particlesContainer] });
 
     jsGFwk.Scenes.create({name: "end", 
         gameObjects: [end] });
-        
+    
+    //jsGFwk.IO.keyboard.eventPropagation(false);
+    
     jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         jsGFwk.Sprites.createSprite({
             id: 'background', graphic: jsGFwk.ResourceManager.graphics.main.image,
@@ -127,7 +132,15 @@
             id: 'gate', graphic: jsGFwk.ResourceManager.graphics.main.image,
             left: 125, top: 129, width: 18, height: 21
         });
-                
+        
+        jsGFwk.Sprites.createSpriteCollection("firewall",
+            jsGFwk.ResourceManager.graphics.main.image, 
+            [{left: 164, top: 138, width: 7, height: 12}, 
+             {left: 174, top: 138, width: 7, height: 12}]);
+        jsGFwk.Sprites.firewall.loop(true);
+
+        jsGFwk.ResourceManager.sounds.mute();
+        
         jsGFwk.Scenes.scenes.hud.enable();
     };
     

@@ -5,7 +5,7 @@ jsGFwk.IO = {
 		_keyboardCallers: [],
 		_activeKey: [],
 		_stopPropagation: function () {},
-		_eventPropagation: function (propagate) {
+		eventPropagation: function (propagate) {
 			if (propagate) {
 				this._stopPropagation = function () {};
 			} else {
@@ -16,7 +16,7 @@ jsGFwk.IO = {
 			delete jsGFwk.IO.keyboard._activeKey[e.which];
 		},
 		_keyPressed: function(e) {
-			jsGFwk.IO.keyboard._stopPropagation();
+			jsGFwk.IO.keyboard._stopPropagation(e);
 			for (i = 0; i < jsGFwk.IO.keyboard._keyboardCallers.length; jsGFwk.IO.keyboard._keyboardCallers[i++](e.which));
 			jsGFwk.IO.keyboard._activeKey[e.which] = true;
 		},
@@ -32,13 +32,15 @@ jsGFwk.IO = {
 			"S": 83,
 			"W": 87,
 			"M": 77,
+			"N": 78,
 			"C": 67,
             "ONE": 49,
             "TWO": 50,
             "THREE": 51,
 			"SHIFT": 16,
 			"SPACEBAR": 32,
-			"ENTER": 13
+			"ENTER": 13,
+			"CONTROL": 17
 		},
 		
 		getActiveKeys: function() {

@@ -28,5 +28,8 @@ var hud = {
         context.textAlign = 'center';
         context.font = '28pt zxBold';
         context.fillText('Ultra Witch Simulator HD 2000', jsGFwk.settings.width / 2, 50);
+        
+        context.font = '20pt zxBold';
+        context.fillText('Move: ASDW - Switch Power: N - Use Power: M', jsGFwk.settings.width / 2, 120);
     }
 };

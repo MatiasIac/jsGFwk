@@ -3,6 +3,8 @@ var enemy = {
         var self = this;
         this.x = params.x;
         this.y = jsGFwk.settings.height - 10;
+        this.width = 6;
+        this.height = 10;
         this.speed = (Math.random() * 1) + 1;
         
         this.bulletTimer = new jsGFwk.Timer({

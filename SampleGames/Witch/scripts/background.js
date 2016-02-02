@@ -1,10 +1,12 @@
 var background = {
     id: 'background', visible: true,
     foodBarMaxSize: 50, foodBarSize: 0,
+    energyBarMaxSize: 50, energyBarSize: 0,
     init: function () {
     },
     update: function (delta) {
         this.foodBarSize = (this.foodBarMaxSize * GLOBAL.witch.feed) / 100;
+        this.energyBarSize = (this.energyBarMaxSize * GLOBAL.witch.energy) / 100;
     },
     draw: function (context) {
         context.drawImage(jsGFwk.Sprites.background.image, 0, 0);
@@ -12,10 +14,15 @@ var background = {
         
         context.font = '12pt zxBold';
         context.fillStyle = 'white';
-        //context.fillText('Level ' + GLOBAL.level, 5, 10);
+
         context.fillText('Food', 5, 10);
+        context.fillText('Energy', 60, 10);
+        context.fillText(witch.weapon[witch.currentWeapon].name, 5, 25);
         
         context.fillStyle = 'red';
         context.fillRect(5, 12, this.foodBarSize, 5);
+        
+        context.fillStyle = 'green';
+        context.fillRect(60, 12, this.energyBarSize, 5);
     }
 };
