@@ -4,7 +4,7 @@ var bullet = {
         this.y = params.y;
         this.width = 2;
         this.height = 2;
-        this.speed = 1;
+        this.speed = (Math.random() * 1) + 0.5;
         this.angle = params.angle;
         this.radius = 2;
     },
@@ -21,6 +21,11 @@ var bullet = {
         if (jsGFwk.Collisions.areCollidingBy(this, witch, 
              jsGFwk.Collisions.collidingModes.RECTANGLE)) {
             witch.hit();
+            this.destroy();
+        }
+        
+        if (jsGFwk.Collisions.areCollidingBy(this, gate, 
+             jsGFwk.Collisions.collidingModes.RECTANGLE)) {
             this.destroy();
         }
     },
