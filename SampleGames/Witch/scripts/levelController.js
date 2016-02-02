@@ -24,7 +24,7 @@ var levelController = {
         
         for (var i = 0; i < GLOBAL.level + 1; i++) {
             enemyContainer.cloneObject();
-            houseContainer.cloneObject({ x: Math.random() * (jsGFwk.settings.width - 200) + 200})
+            houseContainer.cloneObject({ x: Math.random() * (jsGFwk.settings.width - 200) + 150})
         }
         GLOBAL.level++;
     }

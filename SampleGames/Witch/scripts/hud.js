@@ -24,6 +24,7 @@ var hud = {
         
     },
     draw: function (context) {
+        context.fillStyle = 'white';
         context.textAlign = 'center';
         context.font = '28pt zxBold';
         context.fillText('Ultra Witch Simulator HD 2000', jsGFwk.settings.width / 2, 50);

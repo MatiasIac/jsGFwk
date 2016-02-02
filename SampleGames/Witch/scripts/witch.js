@@ -69,7 +69,8 @@ var witch = {
     update: function (delta) {
         this.keyboardHandler(delta);
         if (jsGFwk.Collisions.areCollidingBy(this, this.calderoFake, 
-            jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+            jsGFwk.Collisions.collidingModes.RECTANGLE) && this.payload > 0) {
+            jsGFwk.ResourceManager.sounds.risabruja.audio.play();
             GLOBAL.babys += this.payload;
             this.payload = 0;
         }

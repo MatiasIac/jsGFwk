@@ -56,6 +56,16 @@
     
     jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/main.png" });
     
+    var bruja = {};
+		bruja[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/cackle2.mp3" };
+        bruja[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/cackle2.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "risabruja", sources: bruja});
+    
+    var cry = {};
+		cry[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/cry.mp3" };
+        cry[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/cry.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "llanto", sources: cry});
+    
     var enemyContainer = jsGFwk.Container.createContainer("enemyCloner", enemy, true);
     var bulletContainer = jsGFwk.Container.createContainer("bulletCloner", bullet, true);
     var houseContainer = jsGFwk.Container.createContainer("houseCloner", house, true);
@@ -102,7 +112,10 @@
             id: 'baby', graphic: jsGFwk.ResourceManager.graphics.main.image,
             left: 93, top: 144, width: 5, height: 5
         });
-                
+
+        jsGFwk.ResourceManager.sounds.risabruja.audio.volume = 1;
+        jsGFwk.ResourceManager.sounds.llanto.audio.volume = 1;
+        
         jsGFwk.Scenes.scenes.hud.enable();
     };
     

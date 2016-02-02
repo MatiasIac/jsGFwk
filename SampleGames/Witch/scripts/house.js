@@ -11,6 +11,7 @@ var house = {
             jsGFwk.Collisions.collidingModes.RECTANGLE) && this.hasBaby) {
             this.hasBaby = false;
             witch.payload++;
+            jsGFwk.ResourceManager.sounds.llanto.audio.play();
         }
     },
     onDraw: function (context) {
