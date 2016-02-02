@@ -110,7 +110,7 @@ var witch = {
                 jsGFwk.ResourceManager.sounds.risabruja.audio.play();
 
                 GLOBAL.witch.feed = Math.min(100, GLOBAL.witch.feed + (this.payload * 10));
-                GLOBAL.witch.energy = Math.min(100, GLOBAL.witch.energy + (this.payload * 5));
+                GLOBAL.witch.energy = Math.min(100, GLOBAL.witch.energy + (this.payload * 15));
 
                 GLOBAL.babys += this.payload;
                 this.payload = 0;
