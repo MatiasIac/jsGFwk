@@ -30,8 +30,9 @@
     <script language="Javascript" src="scripts/gate.js"></script>
     <script language="Javascript" src="scripts/firewall.js"></script>
     
-	<body>
-        <canvas width="640" height="150" id="canvas"></canvas>
+	<body style="padding:0; margin:0">
+        <canvas width="640" height="150" id="canvas"
+                style="width:1000px; height:300px;"></canvas>
 	</body>
 </html>
 <script>
@@ -131,6 +132,11 @@
         jsGFwk.Sprites.createSprite({
             id: 'gate', graphic: jsGFwk.ResourceManager.graphics.main.image,
             left: 125, top: 129, width: 18, height: 21
+        });
+        
+        jsGFwk.Sprites.createSprite({
+            id: 'shield', graphic: jsGFwk.ResourceManager.graphics.main.image,
+            left: 103, top: 130, width: 18, height: 18
         });
         
         jsGFwk.Sprites.createSpriteCollection("firewall",

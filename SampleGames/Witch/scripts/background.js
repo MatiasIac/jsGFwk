@@ -17,7 +17,18 @@ var background = {
 
         context.fillText('Food', 5, 10);
         context.fillText('Energy', 60, 10);
-        context.fillText(witch.weapon[witch.currentWeapon].name, 5, 25);
+        
+        for (var i = 0; i < witch.weapon.length; i++) {
+            if (witch.weapon[i].enabled) { 
+                context.fillStyle = 'white';
+            } else {
+                context.fillStyle = 'gray';
+            }
+            context.fillText(witch.weapon[i].name, 5, (i * 8) + 25);
+        }
+        
+        context.strokeStyle = 'white';
+        context.strokeRect(1, (witch.currentWeapon * 8) + 19, 80, 8);
         
         context.fillStyle = 'red';
         context.fillRect(5, 12, this.foodBarSize, 5);
