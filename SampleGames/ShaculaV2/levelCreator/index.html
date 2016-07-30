@@ -1,0 +1,60 @@
+<html>
+    <head></head>
+    <body>
+        <div id="canvas" style="background-color: gray; width: 630; height: 480; float: left; margin-right: 10px; cursor: crosshair;">
+
+        </div>
+        <div>
+            <label>Background:</label>
+            <br>
+            <input type="text" value="" id="bgImage" onblur="updateBackground()">
+            <br>
+            <br>
+            <label>Level:</label>
+            <br>
+            <textarea id="result" style="width: 462px; height: 405px;"></textarea>
+        </div>
+    </body>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var result = document.getElementById('result');
+        var platforms = [];
+        var clickState = false;
+        var x = 0, y = 0;
+
+        function updateBackground() {
+            var bg = document.getElementById('bgImage').value;
+            canvas.style.backgroundImage = "url('" + bg + "')"; 
+        }
+
+        function divClick(event) {
+            if (!clickState) {
+                x = event.offsetX;
+                y = event.offsetY;
+                clickState = true;
+            } else {
+                clickState = false;
+                platforms.push({
+                    x: x, y: y,
+                    width: event.offsetX - x,
+                    height: event.offsetY - y
+                });
+
+                var div = document.createElement('div');
+                div.style.position = 'relative';
+                div.style.width = event.offsetX - x + 'px';
+                div.style.height = event.offsetY - y + 'px';
+                div.style.top = y + 'px';
+                div.style.left = x + 'px';
+                div.style.border = '1px solid red';
+
+                canvas.appendChild(div);
+
+                result.innerHTML = JSON.stringify(platforms);
+            }
+        }
+
+        canvas.addEventListener('click', divClick, false);
+
+    </script>
+</html>

@@ -17,7 +17,6 @@
 	<script language="Javascript" src="scripts/gameController.js"></script>
 	<script language="Javascript" src="scripts/background.js"></script>
 	<script language="Javascript" src="scripts/dracul.js"></script>
-	<script language="Javascript" src="scripts/dayCounter.js"></script>
     <script language="Javascript" src="scripts/level.js"></script>
     <script language="Javascript" src="scripts/spike.js"></script>
     <script language="Javascript" src="scripts/blood.js"></script>
@@ -53,7 +52,6 @@
 		
 		jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/main.png" });
 		jsGFwk.ResourceManager.addGraphic({ name: "all", source: "images/all.png" });
-		jsGFwk.ResourceManager.addGraphic({ name: "dayNight", source: "images/sol.png" });
         
         for (var i = 0; i < Levels.length; i++) {
             jsGFwk.ResourceManager.addGraphic({ name: "level" + i, source: "images/level" + i + ".png" });
@@ -261,10 +259,10 @@
                             GLOBAL.batContainer, GLOBAL.fallingWallContainer,
                             GLOBAL.movableWallContainer,
                             Coffin, dracul, Light,
-                            dayCounter, GLOBAL.exitContainer] });
+                            GLOBAL.exitContainer] });
 								
-					//jsGFwk.Scenes.scenes.main.enable();
-                    jsGFwk.Scenes.scenes.game.enable();
+					jsGFwk.Scenes.scenes.main.enable();
+                    //jsGFwk.Scenes.scenes.game.enable();
 					
 					jsGFwk._gameObjects.progress.destroy();
 				};
