@@ -1,14 +1,15 @@
 <html>
     <head></head>
-    <body>
+    <body style="margin:0; padding:0">
         <div id="canvas" style="background-color: gray;
             width: 630; height: 480; float: left; margin-right: 10px; cursor: crosshair;
             background-color: #a2ca77; border: 1px solid">
             <div id="coords" style="position: relative; color:red; font-family: arial; font-size:8pt;">
                 X: <span id="coordx"></span> - Y: <span id="coordy"></span>
             </div>
-            <div id="frame" style="position: relative; display:none; border: 1px solid red; width: 0px; height:0px; top: -10px;"></div>
+            <div id="frame" style="position: absolute; display:none; border: 1px solid red; width: 0px; height:0px; top: -10px;"></div>
         </div>
+
         <div>
             <label>Texture:</label>
             <br>
@@ -18,18 +19,22 @@
                 <option value="3">Dark Brick</option>
                 <option value="4">Bright Brick</option>
                 <option value="5">Moss Brick</option>
+                <option value="6">Wood</option>
             </select>
             <br>
             <label>Paint as:</label>
             <br>
-            <input type="radio" value="1" name="paint" onclick="changePaintOption(1)" checked> Wall
+            <input type="radio" value="1" name="paint" id='paintWall' onclick="changePaintOption(1)" checked> 
+            <label for="paintWall">Wall</label>
             <br>
-            <input type="radio" value="2" name="paint" onclick="changePaintOption(2)"> Background
+            <input type="radio" value="2" name="paint" id='paintBack' onclick="changePaintOption(2)"> 
+            <label for="paintBack">Background</label>
             <br>
-            <select size="5" id="objects">
+            <select size="5" id="objects" onchange="showLocation(this)">
             </select>
             <br>
             <input type="button" value="Refresh" onclick="refresh()">
+            <input type="button" value="Delete" onclick="deleteSelected()" disabled>
             <br>
             <br>
             <label>JSON Level:</label>
@@ -57,18 +62,21 @@
         var xcoord = document.getElementById('coordx');
         var ycoord = document.getElementById('coordy');
         var frame = document.getElementById('frame');
+        var objectList = document.getElementById('objects');
 
         var texture_1 = new Image();
         var texture_2 = new Image();
         var texture_3 = new Image();
         var texture_4 = new Image();
         var texture_5 = new Image();
+        var texture_6 = new Image();
 
         texture_1.src = "images/star.png";
         texture_2.src = "images/red.png";
         texture_3.src = "images/dark.png";
         texture_4.src = "images/bright.png";
         texture_5.src = "images/moss.png";
+        texture_6.src = "images/wood.png";
 
         function refresh() {
             ctx.clearRect(0, 0, 630, 480);
@@ -105,6 +113,8 @@
             } else {
                 clickState = false;
 
+                var option = document.createElement("option");
+
                 if (paintOption === 1) {
                     platforms.push({
                         x: x, y: y,
@@ -112,6 +122,10 @@
                         height: event.offsetY - y,
                         texture: window['texture_' + currentTexture]
                     });
+                    
+                    option.value = "1," + ('' + platforms.length - 1);
+                    option.text = "wall";
+                
                 } else {
                     backgrounds.push({
                         x: x, y: y,
@@ -119,7 +133,15 @@
                         height: event.offsetY - y,
                         texture: window['texture_' + currentTexture]
                     });
+
+                    option.value = "2," + ('' + backgrounds.length - 1);
+                    option.text = "background";
                 }
+
+
+                objectList.add(option);
+
+                frame.style.display = 'none';
 
                 refresh();
             }
@@ -145,6 +167,33 @@
             }
 
             result.innerHTML = JSON.stringify(level);
+        }
+
+        function showLocation(dd) {
+            var element = dd.value.split(',')[0] == '1' ? 
+                platforms[parseInt(dd.value.split(',')[1])] : backgrounds[parseInt(dd.value.split(',')[1])];
+
+            frame.style.display = '';
+            frame.style.top = element.y + 'px';
+            frame.style.left = element.x + 'px';
+            frame.style.width = element.width + 'px';
+            frame.style.height = element.height + 'px';
+        }
+
+        function deleteSelected() {
+            var data = objectList.value.split(',');
+
+            if (data[0] == '1') {
+                platforms.splice(parseInt(data[1]), 1);
+            } else {
+                backgrounds.splice(parseInt(data[1]), 1);
+            }
+
+            objectList.remove(objectList.selectedIndex)
+
+            frame.style.display = 'none';
+
+            refresh();
         }
 
         function saveimage() {
