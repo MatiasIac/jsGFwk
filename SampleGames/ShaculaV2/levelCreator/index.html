@@ -1,0 +1,208 @@
+<html>
+    <head></head>
+    <body style="margin:0; padding:0">
+        <div id="canvas" style="background-color: gray;
+            width: 630; height: 480; float: left; margin-right: 10px; cursor: crosshair;
+            background-color: #a2ca77; border: 1px solid">
+            <div id="coords" style="position: relative; color:red; font-family: arial; font-size:8pt;">
+                X: <span id="coordx"></span> - Y: <span id="coordy"></span>
+            </div>
+            <div id="frame" style="position: absolute; display:none; border: 1px solid red; width: 0px; height:0px; top: -10px;"></div>
+        </div>
+
+        <div>
+            <label>Texture:</label>
+            <br>
+            <select onchange="changeTexture(this)">
+                <option value="1">Stars</option>
+                <option value="2">Red Brick</option>
+                <option value="3">Dark Brick</option>
+                <option value="4">Bright Brick</option>
+                <option value="5">Moss Brick</option>
+                <option value="6">Wood</option>
+            </select>
+            <br>
+            <label>Paint as:</label>
+            <br>
+            <input type="radio" value="1" name="paint" id='paintWall' onclick="changePaintOption(1)" checked> 
+            <label for="paintWall">Wall</label>
+            <br>
+            <input type="radio" value="2" name="paint" id='paintBack' onclick="changePaintOption(2)"> 
+            <label for="paintBack">Background</label>
+            <br>
+            <select size="5" id="objects" onchange="showLocation(this)">
+            </select>
+            <br>
+            <input type="button" value="Refresh" onclick="refresh()">
+            <input type="button" value="Delete" onclick="deleteSelected()" disabled>
+            <br>
+            <br>
+            <label>JSON Level:</label>
+            <br>
+            <textarea id="result" style="width: 300px; height: 150px;"></textarea>
+            <br>
+            <input type="button" value="Get JSON Level" onclick="getjson()">
+            <input type="button" value="Save Image" onclick="saveimage()">
+        </div>
+        <canvas width="630" height="480" id="lienzo" style="display: none;"></canvas>
+    </body>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var result = document.getElementById('result');
+        var c = document.getElementById('lienzo');
+        var ctx = c.getContext('2d');
+        var backgrounds = [];
+        var platforms = [];
+        var clickState = false;
+        var x = 0, y = 0;
+        var currentTexture = '1';
+        var paintOption = 1;
+
+        var divCoord = document.getElementById('coords');
+        var xcoord = document.getElementById('coordx');
+        var ycoord = document.getElementById('coordy');
+        var frame = document.getElementById('frame');
+        var objectList = document.getElementById('objects');
+
+        var texture_1 = new Image();
+        var texture_2 = new Image();
+        var texture_3 = new Image();
+        var texture_4 = new Image();
+        var texture_5 = new Image();
+        var texture_6 = new Image();
+
+        texture_1.src = "images/star.png";
+        texture_2.src = "images/red.png";
+        texture_3.src = "images/dark.png";
+        texture_4.src = "images/bright.png";
+        texture_5.src = "images/moss.png";
+        texture_6.src = "images/wood.png";
+
+        function refresh() {
+            ctx.clearRect(0, 0, 630, 480);
+
+            for (var i = 0; i < backgrounds.length; i++) {
+                var pattern = ctx.createPattern(backgrounds[i].texture, 'repeat');
+                ctx.fillStyle = pattern;
+                ctx.fillRect(backgrounds[i].x, backgrounds[i].y, backgrounds[i].width, backgrounds[i].height);
+            }
+
+            for (var i = 0; i < platforms.length; i++) {
+                var pattern = ctx.createPattern(platforms[i].texture, 'repeat');
+                ctx.fillStyle = pattern;
+                ctx.fillRect(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height);
+            }
+
+            var bg = lienzo.toDataURL();
+            canvas.style.backgroundImage = "url('" + bg + "')";
+        }
+
+        function changeTexture(dd) {
+            currentTexture = dd.value;
+        }
+
+        function changePaintOption(option) {
+            paintOption = option;
+        }
+
+        function divClick(event) {
+            if (!clickState) {
+                x = event.offsetX;
+                y = event.offsetY;
+                clickState = true;
+            } else {
+                clickState = false;
+
+                var option = document.createElement("option");
+
+                if (paintOption === 1) {
+                    platforms.push({
+                        x: x, y: y,
+                        width: event.offsetX - x,
+                        height: event.offsetY - y,
+                        texture: window['texture_' + currentTexture]
+                    });
+                    
+                    option.value = "1," + ('' + platforms.length - 1);
+                    option.text = "wall";
+                
+                } else {
+                    backgrounds.push({
+                        x: x, y: y,
+                        width: event.offsetX - x,
+                        height: event.offsetY - y,
+                        texture: window['texture_' + currentTexture]
+                    });
+
+                    option.value = "2," + ('' + backgrounds.length - 1);
+                    option.text = "background";
+                }
+
+
+                objectList.add(option);
+
+                frame.style.display = 'none';
+
+                refresh();
+            }
+        }
+
+        function divMouseMove(event) {
+            divCoord.style.top = (event.offsetY + 2) + 'px';
+            divCoord.style.left = (event.offsetX + 2) + 'px';
+            xcoord.innerHTML = event.offsetX;
+            ycoord.innerHTML = event.offsetY;
+        }
+
+        function getjson() {
+            var level = [];
+
+            for (var i = 0; i < platforms.length; i++) {
+                level.push({
+                    x: platforms[i].x,
+                    y: platforms[i].y,
+                    width: platforms[i].width,
+                    height: platforms[i].height
+                });
+            }
+
+            result.innerHTML = JSON.stringify(level);
+        }
+
+        function showLocation(dd) {
+            var element = dd.value.split(',')[0] == '1' ? 
+                platforms[parseInt(dd.value.split(',')[1])] : backgrounds[parseInt(dd.value.split(',')[1])];
+
+            frame.style.display = '';
+            frame.style.top = element.y + 'px';
+            frame.style.left = element.x + 'px';
+            frame.style.width = element.width + 'px';
+            frame.style.height = element.height + 'px';
+        }
+
+        function deleteSelected() {
+            var data = objectList.value.split(',');
+
+            if (data[0] == '1') {
+                platforms.splice(parseInt(data[1]), 1);
+            } else {
+                backgrounds.splice(parseInt(data[1]), 1);
+            }
+
+            objectList.remove(objectList.selectedIndex)
+
+            frame.style.display = 'none';
+
+            refresh();
+        }
+
+        function saveimage() {
+            var dataURL = lienzo.toDataURL('image/png');
+            window.open(dataURL);
+        }
+
+        canvas.addEventListener('click', divClick, false);
+        canvas.addEventListener('mousemove', divMouseMove, false);
+
+    </script>
+</html>
