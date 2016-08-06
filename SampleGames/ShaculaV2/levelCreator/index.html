@@ -24,17 +24,28 @@
             <br>
             <label>Paint as:</label>
             <br>
-            <input type="radio" value="1" name="paint" id='paintWall' onclick="changePaintOption(1)" checked> 
-            <label for="paintWall">Wall</label>
-            <br>
-            <input type="radio" value="2" name="paint" id='paintBack' onclick="changePaintOption(2)"> 
-            <label for="paintBack">Background</label>
-            <br>
-            <select size="5" id="objects" onchange="showLocation(this)">
-            </select>
+            <div style="display:block;">
+                <div style="float:left; margin-right:10px;">
+                    <input type="radio" value="1" name="paint" id='paintWall' onclick="changePaintOption(1)" checked> 
+                    <label for="paintWall">Wall</label>
+                    <br>
+                    <select size="5" id="wallObjects" onchange="showLocation(this)">
+                    </select>
+                    <br>
+                    <input type="button" value="Delete" onclick="deleteSelected('wall')">
+                </div>
+                <div>
+                    <input type="radio" value="2" name="paint" id='paintBack' onclick="changePaintOption(2)"> 
+                    <label for="paintBack">Background</label>
+                    <br>
+                    <select size="5" id="backgroundObjects" onchange="showLocation(this)">
+                    </select>
+                    <br>
+                    <input type="button" value="Delete" onclick="deleteSelected('background')">
+                </div>
+            </div>
             <br>
             <input type="button" value="Refresh" onclick="refresh()">
-            <input type="button" value="Delete" onclick="deleteSelected()" disabled>
             <br>
             <br>
             <label>JSON Level:</label>
@@ -50,20 +61,18 @@
         var canvas = document.getElementById('canvas');
         var result = document.getElementById('result');
         var c = document.getElementById('lienzo');
-        var ctx = c.getContext('2d');
-        var backgrounds = [];
-        var platforms = [];
-        var clickState = false;
-        var x = 0, y = 0;
-        var currentTexture = '1';
-        var paintOption = 1;
-
         var divCoord = document.getElementById('coords');
         var xcoord = document.getElementById('coordx');
         var ycoord = document.getElementById('coordy');
         var frame = document.getElementById('frame');
-        var objectList = document.getElementById('objects');
+        var wallList = document.getElementById('wallObjects');
+        var backgroundList = document.getElementById('backgroundObjects');
+        var ctx = c.getContext('2d');
 
+        var clickState = false;
+        var x = 0, y = 0;
+        var currentTexture = '1';
+        var paintOption = 1;
         var texture_1 = new Image();
         var texture_2 = new Image();
         var texture_3 = new Image();
@@ -81,16 +90,18 @@
         function refresh() {
             ctx.clearRect(0, 0, 630, 480);
 
-            for (var i = 0; i < backgrounds.length; i++) {
-                var pattern = ctx.createPattern(backgrounds[i].texture, 'repeat');
+            for (var i = 0; i < backgroundList.length; i++) {
+                var option = JSON.parse(backgroundList.options[i].value);
+                var pattern = ctx.createPattern(window[option.texture], 'repeat');
                 ctx.fillStyle = pattern;
-                ctx.fillRect(backgrounds[i].x, backgrounds[i].y, backgrounds[i].width, backgrounds[i].height);
+                ctx.fillRect(option.x,option.y, option.width, option.height);
             }
 
-            for (var i = 0; i < platforms.length; i++) {
-                var pattern = ctx.createPattern(platforms[i].texture, 'repeat');
+            for (var i = 0; i < wallList.length; i++) {
+                var option = JSON.parse(wallList.options[i].value);
+                var pattern = ctx.createPattern(window[option.texture], 'repeat');
                 ctx.fillStyle = pattern;
-                ctx.fillRect(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height);
+                ctx.fillRect(option.x,option.y, option.width, option.height);
             }
 
             var bg = lienzo.toDataURL();
@@ -114,32 +125,20 @@
                 clickState = false;
 
                 var option = document.createElement("option");
+                option.value = JSON.stringify({
+                        x: x, y: y,
+                        width: event.offsetX - x,
+                        height: event.offsetY - y,
+                        texture: 'texture_' + currentTexture
+                    });
 
                 if (paintOption === 1) {
-                    platforms.push({
-                        x: x, y: y,
-                        width: event.offsetX - x,
-                        height: event.offsetY - y,
-                        texture: window['texture_' + currentTexture]
-                    });
-                    
-                    option.value = "1," + ('' + platforms.length - 1);
                     option.text = "wall";
-                
+                    wallList.add(option);       
                 } else {
-                    backgrounds.push({
-                        x: x, y: y,
-                        width: event.offsetX - x,
-                        height: event.offsetY - y,
-                        texture: window['texture_' + currentTexture]
-                    });
-
-                    option.value = "2," + ('' + backgrounds.length - 1);
                     option.text = "background";
+                    backgroundList.add(option);
                 }
-
-
-                objectList.add(option);
 
                 frame.style.display = 'none';
 
@@ -157,12 +156,13 @@
         function getjson() {
             var level = [];
 
-            for (var i = 0; i < platforms.length; i++) {
+            for (var i = 0; i < wallList.length; i++) {
+                var option = JSON.parse(wallList.options[i].value);
                 level.push({
-                    x: platforms[i].x,
-                    y: platforms[i].y,
-                    width: platforms[i].width,
-                    height: platforms[i].height
+                    x: option.x,
+                    y: option.y,
+                    width: option.width,
+                    height: option.height
                 });
             }
 
@@ -170,9 +170,7 @@
         }
 
         function showLocation(dd) {
-            var element = dd.value.split(',')[0] == '1' ? 
-                platforms[parseInt(dd.value.split(',')[1])] : backgrounds[parseInt(dd.value.split(',')[1])];
-
+            var element = JSON.parse(dd.value);
             frame.style.display = '';
             frame.style.top = element.y + 'px';
             frame.style.left = element.x + 'px';
@@ -180,19 +178,12 @@
             frame.style.height = element.height + 'px';
         }
 
-        function deleteSelected() {
-            var data = objectList.value.split(',');
+        function deleteSelected(list) {
+            var o = window[list + 'List'];
 
-            if (data[0] == '1') {
-                platforms.splice(parseInt(data[1]), 1);
-            } else {
-                backgrounds.splice(parseInt(data[1]), 1);
-            }
-
-            objectList.remove(objectList.selectedIndex)
+            o.remove(o.selectedIndex);
 
             frame.style.display = 'none';
-
             refresh();
         }
 
