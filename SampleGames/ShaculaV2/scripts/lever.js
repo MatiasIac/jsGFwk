@@ -1,5 +1,6 @@
 var Lever = {
     onInit: function (parameters) {
+        this.parameters = parameters;
         this.x = parameters.x;
         this.y = parameters.y;
         this.width = 17;
@@ -8,10 +9,15 @@ var Lever = {
         this.currentObstacleIndex = 0;
         this.wall = parameters.wall;
         this.acc = 0;
+
+        if (parameters.state === 1) {
+            this.currentObstacleIndex = 3;
+        }
     },
     switch: function () {
         if (this.currentPosition > 0) { return; }
         this.currentPosition++;
+        this.parameters.state = this.currentPosition;
         this.onUpdate = this.updateHide;
     },
     updateHide: function (delta) {

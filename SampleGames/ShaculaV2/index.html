@@ -143,16 +143,6 @@
 					jsGFwk.Sprites.createSpriteCollection("walkLeft", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 77, top: 15, width: 13, height: 36, inverted: true}, {left: 94, top: 15, width: 13, height: 36, inverted: true}]);
 					jsGFwk.Sprites.walkLeft.loop(true);
-
-					/*jsGFwk.Sprites.createSpriteCollection("hangedRight", jsGFwk.ResourceManager.graphics.all.image, 
-						[{left: 551, top: 15, width: 17, height: 36},
-						 {left: 583, top: 15, width: 17, height: 36}]);
-					jsGFwk.Sprites.hangedRight.loop(true);
-					
-					jsGFwk.Sprites.createSpriteCollection("hangedLeft", jsGFwk.ResourceManager.graphics.all.image, 
-						[{left: 551, top: 15, width: 17, height: 36, inverted: true},
-						 {left: 583, top: 15, width: 17, height: 36, inverted: true}]);
-					jsGFwk.Sprites.hangedLeft.loop(true);*/
 					
 					jsGFwk.Sprites.createSpriteCollection("actionRight", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 125, top: 15, width: 19, height: 36}]);
@@ -261,8 +251,8 @@
                             Coffin, dracul, Light,
                             GLOBAL.exitContainer] });
 								
-					jsGFwk.Scenes.scenes.main.enable();
-                    //jsGFwk.Scenes.scenes.game.enable();
+					//jsGFwk.Scenes.scenes.main.enable();
+                    jsGFwk.Scenes.scenes.game.enable();
 					
 					jsGFwk._gameObjects.progress.destroy();
 				};

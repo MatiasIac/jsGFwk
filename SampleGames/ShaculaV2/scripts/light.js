@@ -81,6 +81,13 @@ var Light = {
             
             this.y += this.fallSpeed;
             this.fallSpeed *= 1.01;
+
+            if (this.y > 480) {
+                this.isDropping = false;
+                this.updatePosition = this.updateNormal;
+                this.drawPointer = function () {};
+                GLOBAL.maxRadiusLight = GLOBAL.minRadiusLight;
+            }
         } else {
             GLOBAL.maxRadiusLight -= 1;
             GLOBAL.maxRadiusLight = Math.max(GLOBAL.maxRadiusLight, 10);
@@ -102,15 +109,33 @@ var Light = {
         ctx.drawImage(jsGFwk.Sprites.torch.sprite.image, this.x, this.y);
     },
     drawPointer: function() {},
+
+    drawOil: function (context) {
+        var totalOil = (((GLOBAL.lightOil * 100) / GLOBAL.maxOil) * 258) / 100;
+        totalOil = totalOil < 1 ? 1 : totalOil;
+
+        context.drawImage(jsGFwk.Sprites.oil.image,
+            0, 0, 25, totalOil,
+            576 + dracul.oilOffsetX, 
+            (26 + dracul.oilOffsetY) + (258 - totalOil),
+            25, totalOil);
+        context.drawImage(jsGFwk.Sprites.oilWave.sprite.image, 
+            576 + dracul.oilOffsetX, 
+            (24 + dracul.oilOffsetY) + (258 - totalOil));
+        context.drawImage(jsGFwk.Sprites.oilPipe.image, 576 + dracul.oilOffsetX, 25 + dracul.oilOffsetY);
+        context.drawImage(jsGFwk.Sprites.topPipe.image, 570 + dracul.oilOffsetX, 0 + dracul.oilOffsetY);
+        context.drawImage(jsGFwk.Sprites.lowerPipe.image, 570 + dracul.oilOffsetX, 283 + dracul.oilOffsetY);
+    },
+
     draw: function (ctx) {
         this.drawPointer(ctx);
         
-        var gradient = ctx.createRadialGradient(this.x, this.y, 1, this.x + 5, this.y + 5, GLOBAL.maxRadiusLight + this.diffLight);
+        /*var gradient = ctx.createRadialGradient(this.x, this.y, 1, this.x + 5, this.y + 5, GLOBAL.maxRadiusLight + this.diffLight);
         gradient.addColorStop(0, "transparent");
         gradient.addColorStop(1, "black");
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 640, 480);
+        ctx.fillRect(0, 0, 640, 480);*/
         
-        dracul.drawOil(ctx);
+        this.drawOil(ctx);
     }
 };

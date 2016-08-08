@@ -201,24 +201,7 @@ var dracul = {
 	
 	updatePointer: function () {},
 	drawPointer: function () {},
-	
-	drawOil: function (context) {
-        var totalOil = (((GLOBAL.lightOil * 100) / GLOBAL.maxOil) * 258) / 100;
-        totalOil = totalOil < 1 ? 1 : totalOil;
-
-        context.drawImage(jsGFwk.Sprites.oil.image,
-            0, 0, 25, totalOil,
-            576 + this.oilOffsetX, 
-            (26 + this.oilOffsetY) + (258 - totalOil),
-            25, totalOil);
-        context.drawImage(jsGFwk.Sprites.oilWave.sprite.image, 
-            576 + this.oilOffsetX, 
-            (24 + this.oilOffsetY) + (258 - totalOil));
-        context.drawImage(jsGFwk.Sprites.oilPipe.image, 576 + this.oilOffsetX, 25 + this.oilOffsetY);
-        context.drawImage(jsGFwk.Sprites.topPipe.image, 570 + this.oilOffsetX, 0 + this.oilOffsetY);
-        context.drawImage(jsGFwk.Sprites.lowerPipe.image, 570 + this.oilOffsetX, 283 + this.oilOffsetY);
-	},
-	
+		
 	update: function (delta) {
 		this.updatePointer(delta);
 	},

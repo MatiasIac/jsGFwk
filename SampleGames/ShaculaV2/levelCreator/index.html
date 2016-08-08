@@ -20,6 +20,7 @@
                 <option value="4">Bright Brick</option>
                 <option value="5">Moss Brick</option>
                 <option value="6">Wood</option>
+                <option value="7">Invisible</option>
             </select>
             <br>
             <label>Paint as:</label>
@@ -47,6 +48,9 @@
             <br>
             <input type="button" value="Refresh" onclick="refresh()">
             <br>
+            <input type="checkbox" value="1" onclick="showGrid(this)" id="showgrid"> 
+            <label for="showgrid">Show Grid</label>
+            <br>
             <br>
             <label>JSON Level:</label>
             <br>
@@ -73,6 +77,7 @@
         var x = 0, y = 0;
         var currentTexture = '1';
         var paintOption = 1;
+        var gridEnabled = false;
         var texture_1 = new Image();
         var texture_2 = new Image();
         var texture_3 = new Image();
@@ -92,6 +97,11 @@
 
             for (var i = 0; i < backgroundList.length; i++) {
                 var option = JSON.parse(backgroundList.options[i].value);
+
+                if (option.texture == 'none') {
+                    continue;
+                }
+
                 var pattern = ctx.createPattern(window[option.texture], 'repeat');
                 ctx.fillStyle = pattern;
                 ctx.fillRect(option.x,option.y, option.width, option.height);
@@ -99,13 +109,42 @@
 
             for (var i = 0; i < wallList.length; i++) {
                 var option = JSON.parse(wallList.options[i].value);
+                
+                if (option.texture == 'none') {
+                    continue;
+                }
+
                 var pattern = ctx.createPattern(window[option.texture], 'repeat');
                 ctx.fillStyle = pattern;
                 ctx.fillRect(option.x,option.y, option.width, option.height);
             }
 
+            if (gridEnabled) {
+                ctx.fillStyle = "gray";
+                ctx.setLineDash([2, 5]);
+
+                for (var i = 0; i < 630; i += 30) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i, 480);
+                    ctx.stroke();
+                }
+
+                for (var i = 0; i < 480; i += 30) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, i);
+                    ctx.lineTo(630, i);
+                    ctx.stroke();
+                }
+            }
+
             var bg = lienzo.toDataURL();
             canvas.style.backgroundImage = "url('" + bg + "')";
+        }
+
+        function showGrid(check) {
+            gridEnabled = check.checked;
+            refresh();
         }
 
         function changeTexture(dd) {
@@ -124,12 +163,17 @@
             } else {
                 clickState = false;
 
+                var texture = 'texture_' + currentTexture;
+                if (currentTexture == '7') {
+                    texture = 'none';
+                }
+
                 var option = document.createElement("option");
                 option.value = JSON.stringify({
                         x: x, y: y,
                         width: event.offsetX - x,
                         height: event.offsetY - y,
-                        texture: 'texture_' + currentTexture
+                        texture: texture
                     });
 
                 if (paintOption === 1) {
@@ -188,8 +232,12 @@
         }
 
         function saveimage() {
+            var tempgrid = gridEnabled;
+            gridEnabled = false;
+            refresh();
             var dataURL = lienzo.toDataURL('image/png');
             window.open(dataURL);
+            gridEnabled = tempgrid;
         }
 
         canvas.addEventListener('click', divClick, false);
