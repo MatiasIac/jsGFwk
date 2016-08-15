@@ -76,9 +76,9 @@ var dracul = {
 		} else {
 			if (GLOBAL.maxRadiusLight > GLOBAL.minRadiusLight) {
 				GLOBAL.maxRadiusLight -= GLOBAL.lightConsum;
-			} else if (GLOBAL.maxRadiusLight > GLOBAL.resetMaxMinLight) {
+			}/* else if (GLOBAL.maxRadiusLight > GLOBAL.resetMaxMinLight) {
 				GLOBAL.maxRadiusLight -= GLOBAL.consumeLight;
-			}
+			}*/
 			
             GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement : 0
 		}
@@ -176,11 +176,14 @@ var dracul = {
         
         //if (!collide) {
         GLOBAL.leverContainer.eachCloned(function (item, event) {
-            if (jsGFwk.Collisions.areCollidingBy(whereToMove,
-                     item.wall,
-                     jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
-                collide = true;
-                event.cancel = true;
+            for (var i = 0; i < item.wallsToRender.length; i++) {
+                if (jsGFwk.Collisions.areCollidingBy(whereToMove,
+                        item.wallsToRender[i],
+                        jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
+                    collide = true;
+                    event.cancel = true;
+                    break;
+                }
             }
         });
         //}

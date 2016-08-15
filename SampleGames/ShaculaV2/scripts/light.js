@@ -16,7 +16,7 @@ var Light = {
     },
     shakeLight: function (delta) {
 		this.diffLight = (Math.sin(this.diffLightSinc) * 1);
-		this.diffLightSinc += 0.3;
+		this.diffLightSinc += 0.5;
 	},
     drop: function (offSet) {
         jsGFwk.Sprites.torch.reset();
@@ -49,10 +49,14 @@ var Light = {
         
         if (!collide) {
             GLOBAL.leverContainer.eachCloned(function (item, event) {
-                if (jsGFwk.Collisions.areCollidingBy(self.movement, item.wall,
-                         jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
-                    collide = true;
-                    event.cancel = true;
+                for (var i = 0; i < item.wallsToRender.length; i++) {
+                    if (jsGFwk.Collisions.areCollidingBy(self.movement,
+                            item.wallsToRender[i],
+                            jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
+                        collide = true;
+                        event.cancel = true;
+                        break;
+                    }
                 }
             });
         }

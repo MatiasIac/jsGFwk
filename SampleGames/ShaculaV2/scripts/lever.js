@@ -7,7 +7,15 @@ var Lever = {
         this.height = 12;
         this.currentPosition = parameters.state;
         this.currentObstacleIndex = 0;
-        this.wall = parameters.wall;
+
+        this.wallsToRender = [];
+
+        if (parameters.wall) {
+            this.wallsToRender.push(parameters.wall);
+        } else {
+            this.wallsToRender = parameters.walls;
+        }
+        
         this.acc = 0;
 
         if (parameters.state === 1) {
@@ -35,6 +43,10 @@ var Lever = {
     },
     onDraw: function (ctx) {
         ctx.drawImage(jsGFwk.Sprites.lever.spriteBag[this.currentPosition].image, this.x, this.y);
-        ctx.drawImage(jsGFwk.Sprites.obstacle.spriteBag[this.currentObstacleIndex].image, this.wall.x, this.wall.y);
+
+        for (var i = 0; i < this.wallsToRender.length; i++) {
+            var wall = this.wallsToRender[i];
+            ctx.drawImage(jsGFwk.Sprites.obstacle.spriteBag[this.currentObstacleIndex].image, wall.x, wall.y);
+        }
     }
 };
