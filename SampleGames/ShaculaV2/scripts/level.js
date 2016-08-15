@@ -363,7 +363,52 @@ var Levels = [
         levers: [],
         movableWalls: [],
         exit: [ 
-            { x: 30, y: 0, width: 30, height: 2, goTo: 7, showsAt: { x: 41, y: 444 } } 
+            { x: 30, y: 0, width: 30, height: 2, goTo: 7, showsAt: { x: 41, y: 444 } },
+            { x: 390, y: 478, width: 30, height: 2, goTo: 12, showsAt: { x: 400, y: 15 } } 
+        ]
+    },
+    {
+        startingPoint: { x: 60, y: 40},
+        platforms: [
+            {"x":420,"y":0,"width":210,"height":30},
+            {"x":0,"y":0,"width":390,"height":30},
+            {"x":375,"y":120,"width":75,"height":5},
+            {"x":0,"y":30,"width":30,"height":450},
+            {"x":30,"y":360,"width":600,"height":120}
+        ],
+        spikes: [],
+        bats: [],
+        blood: [],
+        fallingWalls: [],
+        levers: [],
+        movableWalls: [],
+        exit: [ 
+            { x: 390, y: 0, width: 30, height: 2, goTo: 11, showsAt: { x: 400, y: 446 } },
+            { x: 628, y: 31, width: 2, height: 322, goTo: 13, showsAt: { x: 13, y: 203 } }
+        ]
+    },
+    {
+        startingPoint: { x: 60, y: 40},
+        platforms: [
+            {"x":0,"y":0,"width":630,"height":30},
+            {"x":120,"y":30,"width":510,"height":30},
+            {"x":210,"y":60,"width":420,"height":30},
+            {"x":0,"y":360,"width":630,"height":120},
+            {"x":570,"y":90,"width":60,"height":150},
+            {"x":600,"y":240,"width":30,"height":120},
+            {"x":420,"y":295,"width":180,"height":5},
+            {"x":120,"y":60,"width":30,"height":120},
+            {"x":300,"y":90,"width":30,"height":150},
+            {"x":180,"y":230,"width":60,"height":5}
+        ],
+        spikes: [],
+        bats: [],
+        blood: [],
+        fallingWalls: [],
+        levers: [],
+        movableWalls: [],
+        exit: [ 
+            { x: 0, y: 30, width: 2, height: 323, goTo: 12, showsAt: { x: 604, y: 170 } } 
         ]
     }
 ];
