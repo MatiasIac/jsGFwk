@@ -6,17 +6,23 @@ var hud = {
 	startSpriteToShow: 0,
 	fakeMouse: { x: 0, y: 0 },
 	startCoord: { x: 280, y: 200, width: 75, height: 48},
+
+	startAndUnregister: function () {
+		jsGFwk.IO.mouse.unregisterClick(this.mouseId);
+		jsGFwk.IO.mouse.unregisterMove(this.mouseMoveId);
+		GLOBAL.cloudContainer.clearAll();
+		jsGFwk.Scenes.scenes.game.enable();
+	},
+
 	init: function () {
+		var self = this;
 		jsGFwk.Collisions.onObjectCreated(this.fakeMouse);
 		this.mouseId = jsGFwk.IO.mouse.registerClick(function (coord) {
 			jsGFwk._gameObjects.hud.fakeMouse.x = coord.x;
 			jsGFwk._gameObjects.hud.fakeMouse.y = coord.y;
 			
 			if (jsGFwk._gameObjects.hud.fakeMouse.isRectColliding(jsGFwk._gameObjects.hud.startCoord)) {
-				jsGFwk.IO.mouse.unregisterClick(jsGFwk._gameObjects.hud.mouseId);
-				jsGFwk.IO.mouse.unregisterMove(jsGFwk._gameObjects.hud.mouseMoveId);
-                GLOBAL.cloudContainer.clearAll();
-				jsGFwk.Scenes.scenes.game.enable();
+				self.startAndUnregister.call(self);
 			}
 		});
 		
@@ -29,10 +35,23 @@ var hud = {
 				jsGFwk._gameObjects.hud.startSpriteToShow = 0;
 			}
 		});
-        
-        //GLOBAL.wallPattern = jsGFwk.FastAnimation._2Dbuffer.createPattern(jsGFwk.Sprites.wall1.image, "repeat");
 	},
-	update: function (delta) { 
+	update: function (delta) {
+		for (var i = 0; i < jsGFwk.Gamepad.pads.length; i++) {
+			//Pad is connected
+			if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE['PAD' + i]] !== undefined) {
+				if (jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE['PAD' + i]].buttons.length > 0) {
+					GLOBAL.selectedPad = i;
+				}
+			} 
+		}
+
+		//check if is connected
+		if (jsGFwk.Gamepad.pads[GLOBAL.selectedPad] !== undefined &&
+			jsGFwk.Gamepad.pads[GLOBAL.selectedPad].buttons[0].pressed) {
+			this.startAndUnregister();
+		}
+
         var p = (Math.random() * 50) + 50;
 
         GLOBAL.cloudContainer.cloneObject({ 

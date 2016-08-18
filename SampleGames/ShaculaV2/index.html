@@ -12,6 +12,7 @@
 	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
 	<script language="Javascript" src="../../Framework/jsGFwkEffects.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkGamepad.js"></script>
 	
 	<script language="Javascript" src="scripts/hud.js"></script>
 	<script language="Javascript" src="scripts/gameController.js"></script>
@@ -29,6 +30,7 @@
     <script language="Javascript" src="scripts/lever.js"></script>
     <script language="Javascript" src="scripts/movableWall.js"></script>
     <script language="Javascript" src="scripts/saw.js"></script>
+	<script language="Javascript" src="scripts/portal.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -47,6 +49,7 @@
 		jsGFwk.include("Scenes");
 		jsGFwk.include("Fonts");
 		jsGFwk.include("Effects");
+		jsGFwk.include("Gamepad");
 		
 		jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'fonts/zxBold.ttf' });
 		
@@ -58,7 +61,7 @@
         }
 		
 		var GLOBAL = {
-            currentLevel: 12,
+            currentLevel: 6,
             maxOil: 500, 
             lightOil: 100,
             minRadiusLight: 50,
@@ -66,7 +69,8 @@
             resetMaxMinLight: 50,
             consumeLight: 0.005,
             lightConsum: 3,
-            lightIncrement: 1
+            lightIncrement: 1,
+			selectedPad: null
         };
 				
 		jsGFwk.createObject({
@@ -248,7 +252,7 @@
                             GLOBAL.sawContainer,
                             GLOBAL.batContainer, GLOBAL.fallingWallContainer,
                             GLOBAL.movableWallContainer,
-                            Coffin, dracul, Light,
+                            Coffin, Portal, dracul, Light,
                             GLOBAL.exitContainer] });
 								
 					//jsGFwk.Scenes.scenes.main.enable();

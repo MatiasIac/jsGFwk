@@ -65,6 +65,8 @@ var gameController = {
         if (levelToCreate.coffin === undefined) {
             Coffin.visible = false;
         }
+
+        Portal.visible = levelToCreate.portal !== undefined;
     },
     exitFromLevel: function (data) {
         GLOBAL.spikeContainer.clearAll();

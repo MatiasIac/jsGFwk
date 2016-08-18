@@ -66,12 +66,36 @@ var Levels = [
             {"x":600,"y":390,"width":30,"height":60},
             {"x":240,"y":240,"width":150,"height":30}
         ],
-        spikes: [ ],
-        bats: [ ],
-        blood: [ ],
-        fallingWalls: [],
+        spikes: [
+            { x: 120, y: 443, delay: 1.5 },
+            { x: 150, y: 443, delay: 1.6 },
+            { x: 180, y: 443, delay: 1.7 },
+            { x: 210, y: 443, delay: 1.8 },
+            { x: 240, y: 443, delay: 1.9 },
+            { x: 270, y: 443, delay: 2 },
+            { x: 300, y: 443, delay: 2.1 }
+        ],
+        bats: [
+            {x: 400, y: 400, max: 100, upDown: false, speed: 0.02 },
+            {x: 350, y: 100, max: 150, upDown: false, speed: 0.02 }
+        ],
+        blood: [
+            { x: 425, y: 85, isActive: true },
+            { x: 45, y: 410, isActive: true },
+        ],
+        fallingWalls: [
+            { x: 270, y: 270, fallSpeed: 1.5 },
+            { x: 300, y: 150, fallSpeed: 1.5 },
+            { x: 330, y: 150, fallSpeed: 1.5 },
+            { x: 430, y: 150, fallSpeed: 1.5 }
+        ],
         levers: [],
         movableWalls: [],
+        saws: [
+            { x: 30, y: 90, type: 'linear', speed: 0, range: 0 },
+            { x: 60, y: 180, type: 'linear', speed: 0, range: 0 },
+            { x: 30, y: 270, type: 'linear', speed: 0, range: 0 }
+        ],
         exit: [ 
             { x: 31, y: 0, width: 30, height: 3, goTo: 0, showsAt: { x: 41, y: 443 } },
             { x: 450, y: 0, width: 59, height: 3, goTo: 0, showsAt: { x: 475, y: 443 } },
@@ -209,8 +233,10 @@ var Levels = [
             { x: 480, y: 348, state: 0, wall: { "x":510,"y":330,"width":30,"height":30 } }
         ],
         movableWalls: [],
+        portal: { x: 120, y: 328 },
         exit: [ 
-            { x: 628, y: 420, width: 2, height: 30, goTo: 5, showsAt: { x: 14, y: 420 } }
+            { x: 628, y: 420, width: 2, height: 30, goTo: 5, showsAt: { x: 14, y: 420 } },
+            { x: 120, y: 330, width: 19, height: 28, goTo: 11, showsAt: { x: 450, y: 360 } }
         ]
     },
     {
@@ -362,9 +388,11 @@ var Levels = [
         fallingWalls: [],
         levers: [],
         movableWalls: [],
+        portal: { x: 420, y: 358 },
         exit: [ 
             { x: 30, y: 0, width: 30, height: 2, goTo: 7, showsAt: { x: 41, y: 444 } },
-            { x: 390, y: 478, width: 30, height: 2, goTo: 12, showsAt: { x: 400, y: 15 } } 
+            { x: 390, y: 478, width: 30, height: 2, goTo: 12, showsAt: { x: 400, y: 15 } },
+            { x: 420, y: 360, width: 18, height: 30, goTo: 6, showsAt: { x: 150, y: 330 } } 
         ]
     },
     {
