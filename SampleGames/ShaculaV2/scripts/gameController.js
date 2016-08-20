@@ -67,6 +67,7 @@ var gameController = {
         }
 
         Portal.visible = levelToCreate.portal !== undefined;
+        SkeletonDoor.visible = levelToCreate.skeletonDoor !== undefined;
     },
     exitFromLevel: function (data) {
         GLOBAL.spikeContainer.clearAll();
@@ -82,6 +83,9 @@ var gameController = {
         dracul.y = data.dracCoords.y;
         
         GLOBAL.currentLevel = data.level;
+
+        Levels[GLOBAL.currentLevel].startingPoint = { x: data.dracCoords.x, y: data.dracCoords.y};
+
         this.createLevel();
     }
     

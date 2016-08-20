@@ -134,11 +134,11 @@ var Light = {
     draw: function (ctx) {
         this.drawPointer(ctx);
         
-        var gradient = ctx.createRadialGradient(this.x, this.y, 1, this.x + 5, this.y + 5, GLOBAL.maxRadiusLight + this.diffLight);
+        /*var gradient = ctx.createRadialGradient(this.x, this.y, 1, this.x + 5, this.y + 5, GLOBAL.maxRadiusLight + this.diffLight);
         gradient.addColorStop(0, "transparent");
         gradient.addColorStop(1, "black");
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 640, 480);
+        ctx.fillRect(0, 0, 640, 480);*/
         
         this.drawOil(ctx);
     }

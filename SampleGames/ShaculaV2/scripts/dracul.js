@@ -173,6 +173,21 @@ var dracul = {
                 }
             });
         }
+
+        if (!collide) {
+            if (Levels[GLOBAL.currentLevel].skeletonDoor !== undefined && !SkeletonDoor.isOpen) {
+                if (jsGFwk.Collisions.areCollidingBy(whereToMove, 
+                        Levels[GLOBAL.currentLevel].skeletonDoor,
+                        jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                            if (GLOBAL.item === 2) {
+                                SkeletonDoor.isOpen = true;
+                                collide = false;
+                            } else {
+                                collide = true;
+                            }
+                    }
+            }
+        }
         
         //if (!collide) {
         GLOBAL.leverContainer.eachCloned(function (item, event) {
@@ -198,7 +213,7 @@ var dracul = {
                 event.cancel = true;
             }
         });
-                
+
         return collide;
     },
 	

@@ -89,7 +89,13 @@ var Levels = [
             { x: 330, y: 150, fallSpeed: 1.5 },
             { x: 430, y: 150, fallSpeed: 1.5 }
         ],
-        levers: [],
+        levers: [
+            { x: 578, y: 438, state: 0, wall: { x: 90, y: 330, width: 30, height: 30 },
+                otherActions: function () {
+                    Levels[4].levers[0].state = 1;
+                } 
+            }
+        ],
         movableWalls: [],
         saws: [
             { x: 30, y: 90, type: 'linear', speed: 0, range: 0 },
@@ -172,7 +178,9 @@ var Levels = [
         bats: [ ],
         blood: [ ],
         fallingWalls: [],
-        levers: [],
+        levers: [
+            { x: -10, y: -10, state: 0, wall: { x: 30, y: 400, width: 30, height: 30 } }
+        ],
         coffin: { x: 500, y: 175 },
         movableWalls: [],
         exit: [ 
@@ -290,6 +298,7 @@ var Levels = [
         fallingWalls: [],
         levers: [],
         movableWalls: [],
+        skeletonDoor: { x: 210, y: 420, width: 30, height: 30 },
         exit: [ 
             { x: 628, y: 60, width: 2, height: 270, goTo: 7, showsAt: { x: 10, y: 260 } } 
         ]

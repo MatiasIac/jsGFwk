@@ -31,6 +31,8 @@
     <script language="Javascript" src="scripts/movableWall.js"></script>
     <script language="Javascript" src="scripts/saw.js"></script>
 	<script language="Javascript" src="scripts/portal.js"></script>
+	<script language="Javascript" src="scripts/skeletonDoor.js"></script>
+	<script language="Javascript" src="scripts/itemContainer.js"></script>
 	
 	<body>
 		<canvas id="canvas" width="630" height="480"></canvas>
@@ -61,7 +63,7 @@
         }
 		
 		var GLOBAL = {
-            currentLevel: 6,
+            currentLevel: 1,
             maxOil: 500, 
             lightOil: 100,
             minRadiusLight: 50,
@@ -70,7 +72,8 @@
             consumeLight: 0.005,
             lightConsum: 3,
             lightIncrement: 1,
-			selectedPad: null
+			selectedPad: null,
+			item: 0,
         };
 				
 		jsGFwk.createObject({
@@ -102,6 +105,18 @@
 					jsGFwk.Sprites.createSprite({id: "oilPipe", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
 						top: 503, left: 63, width: 25, height: 258});
+
+					jsGFwk.Sprites.createSprite({id: "skeletonDoor", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 18, left: 984, width: 30, height: 30});
+
+					jsGFwk.Sprites.createSprite({id: "openDoor", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 18, left: 1043, width: 7, height: 30});
+
+					jsGFwk.Sprites.createSprite({id: "itemContainer", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 81, left: 1080, width: 36, height: 26});
 						
 					jsGFwk.Sprites.createSprite({id: "oil", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
@@ -213,6 +228,14 @@
                          {left: 172, top: 157, width: 30, height: 30},
                          {left: 215, top: 157, width: 30, height: 30}]);
 					jsGFwk.Sprites.obstacle.loop(false);
+
+                    jsGFwk.Sprites.createSpriteCollection("items", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 1003, top: 57, width: 18, height: 17},
+						 {left: 1088, top: 57, width: 18, height: 17},
+                         {left: 1025, top: 57, width: 18, height: 17},
+                         {left: 1066, top: 57, width: 18, height: 17},
+						 {left: 1045, top: 57, width: 18, height: 17}]);
+					jsGFwk.Sprites.items.loop(false);
                     
                    jsGFwk.Sprites.createSpriteCollection("heads", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 355, top: 156, width: 30, height: 30},
@@ -252,7 +275,8 @@
                             GLOBAL.sawContainer,
                             GLOBAL.batContainer, GLOBAL.fallingWallContainer,
                             GLOBAL.movableWallContainer,
-                            Coffin, Portal, dracul, Light,
+                            Coffin, Portal, SkeletonDoor, dracul, Light,
+							ItemContainer,
                             GLOBAL.exitContainer] });
 								
 					//jsGFwk.Scenes.scenes.main.enable();

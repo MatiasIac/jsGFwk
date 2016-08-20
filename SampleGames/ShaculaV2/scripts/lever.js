@@ -7,6 +7,7 @@ var Lever = {
         this.height = 12;
         this.currentPosition = parameters.state;
         this.currentObstacleIndex = 0;
+        this.otherActions = parameters.otherActions || function () {};
 
         this.wallsToRender = [];
 
@@ -27,6 +28,7 @@ var Lever = {
         this.currentPosition++;
         this.parameters.state = this.currentPosition;
         this.onUpdate = this.updateHide;
+        this.otherActions();
     },
     updateHide: function (delta) {
         this.acc += delta;
