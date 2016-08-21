@@ -68,11 +68,15 @@ var FallingWall = {
         
         if (!collide) {
             GLOBAL.leverContainer.eachCloned(function (item, event) {
-                if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, item.wall,
-                     jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
-                    self.lastYCollide = item.wall.y;
-                    collide = true;
-                    event.cancel = true;
+                for (var i = 0; i < item.wallsToRender.length; i++) {
+                    if (jsGFwk.Collisions.areCollidingBy(self.moveToRect, 
+                            item.wallsToRender[i],
+                            jsGFwk.Collisions.collidingModes.RECTANGLE) && item.currentPosition === 0) {
+                        self.lastYCollide = item.wallsToRender[i].y;
+                        collide = true;
+                        event.cancel = true;
+                        break;
+                    }
                 }
             });
         }

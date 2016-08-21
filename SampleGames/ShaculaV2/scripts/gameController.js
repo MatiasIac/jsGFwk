@@ -68,6 +68,7 @@ var gameController = {
 
         Portal.visible = levelToCreate.portal !== undefined;
         SkeletonDoor.visible = levelToCreate.skeletonDoor !== undefined;
+        InGameItem.visible = levelToCreate.item !== undefined;
     },
     exitFromLevel: function (data) {
         GLOBAL.spikeContainer.clearAll();

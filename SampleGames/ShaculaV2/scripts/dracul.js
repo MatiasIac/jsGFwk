@@ -134,6 +134,14 @@ var dracul = {
                     event.cancel = true;
                 }
             });
+
+            if (Levels[GLOBAL.currentLevel].item !== undefined && Levels[GLOBAL.currentLevel].item.item !== 0) {
+                if (dracul.isRectColliding(Levels[GLOBAL.currentLevel].item)) {
+                    var currentItem = GLOBAL.item;
+                    GLOBAL.item = Levels[GLOBAL.currentLevel].item.item;
+                    Levels[GLOBAL.currentLevel].item.item = currentItem;
+                }
+            }
 		}
         
         if (this.animCounter >= this.animDelay) {

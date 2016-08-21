@@ -25,11 +25,7 @@ var Levels = [
             {x: 80, y: 270, max: 100, upDown: true, speed: 0.02 },
             {x: 170, y: 230, max: 100, upDown: true, speed: 0.01 }
         ],
-        blood: [
-            /*{ x: 425, y: 90, isActive: true },
-            { x: 580, y: 150, isActive: true },
-            { x: 440, y: 220, isActive: true }*/
-        ],
+        blood: [],
         fallingWalls: [
             { x: 270, y: 270, fallSpeed: 1.5 },
             { x: 330, y: 270, fallSpeed: 1.5 },
@@ -38,10 +34,8 @@ var Levels = [
         levers: [
             { x: 578, y: 318, state: 0, wall: { x: 30, y: 450, width: 30, height: 30 } }
         ],
-        movableWalls: [
-            /*{ x: 140, y: 40, id: 0 },
-            { x: 220, y: 240, id: 1 }*/
-        ],
+        movableWalls: [],
+        item: { item: 2, x: 40, y: 115, width: 18, height: 18 },
         saws: [
             //{ x: 155, y: 300, type: 'circular', speed: 0.02, range: 115 },
             //{ x: 160, y: 252, type: 'linear', speed: 0.1, range: 50 },
@@ -81,7 +75,7 @@ var Levels = [
         ],
         blood: [
             { x: 425, y: 85, isActive: true },
-            { x: 45, y: 410, isActive: true },
+            { x: 45, y: 410, isActive: true }
         ],
         fallingWalls: [
             { x: 270, y: 270, fallSpeed: 1.5 },
@@ -124,10 +118,17 @@ var Levels = [
         ],
         spikes: [ ],
         bats: [ ],
-        blood: [ ],
+        blood: [
+            { x: 35, y: 27, isActive: true }
+        ],
         fallingWalls: [],
         levers: [],
         movableWalls: [],
+        saws: [
+            { x: 155, y: 250, type: 'circular', speed: 0.02, range: 100 },
+            { x: 420, y: 150, type: 'circular', speed: 0.03, range: 100 },
+            { x: 470, y: 300, type: 'circular', speed: 0.025, range: 70 }
+        ],
         exit: [ 
             { x: 0, y: 180, width: 3, height: 60, goTo: 1, showsAt: { x: 603, y: 208 } },
             { x: 627, y: 360, width: 3, height: 60, goTo: 3, showsAt: { x: 32, y: 389 } },
@@ -159,7 +160,7 @@ var Levels = [
         ]
     },
     {
-        startingPoint: { x: 150, y: 100},
+        startingPoint: { x: 150, y: 350},
         platforms: [
             {"x":600,"y":90,"width":30,"height":390},
             {"x":60,"y":450,"width":540,"height":30},
@@ -177,9 +178,11 @@ var Levels = [
         spikes: [ ],
         bats: [ ],
         blood: [ ],
-        fallingWalls: [],
+        fallingWalls: [
+            { x: 200, y: 300, fallSpeed: 1.5 }
+        ],
         levers: [
-            { x: -10, y: -10, state: 0, wall: { x: 30, y: 400, width: 30, height: 30 } }
+            { x: -20, y: -20, state: 0, wall: { x: 30, y: 400, width: 30, height: 30 } }
         ],
         coffin: { x: 500, y: 175 },
         movableWalls: [],
@@ -228,9 +231,21 @@ var Levels = [
             {"x":570,"y":270,"width":30,"height":30},
             {"x":540,"y":150,"width":30,"height":30}
         ],
-        spikes: [ ],
-        bats: [ ],
-        blood: [ ],
+        spikes: [
+            { x: 120, y: 443, delay: 1.5 },
+            { x: 180, y: 443, delay: 1.7 },
+            { x: 240, y: 443, delay: 1.2 },
+            { x: 300, y: 443, delay: 1.1 },
+            { x: 360, y: 443, delay: 1.3 },
+            { x: 420, y: 443, delay: 1.3 },
+            { x: 480, y: 443, delay: 1.3 }
+        ],
+        bats: [
+            {x: 250, y: 70, max: 100, upDown: false, speed: 0.02 }
+        ],
+        blood: [
+            { x: 40, y: 30, isActive: true }
+        ],
         fallingWalls: [
             { x: 210, y: 120, fallSpeed: 1.5 },
             { x: 270, y: 120, fallSpeed: 1.5 },
@@ -240,8 +255,12 @@ var Levels = [
         levers: [
             { x: 480, y: 348, state: 0, wall: { "x":510,"y":330,"width":30,"height":30 } }
         ],
+        saws: [
+            { x: 30, y: 420, type: 'linear', speed: 0, range: 1 }
+        ],
         movableWalls: [],
         portal: { x: 120, y: 328 },
+        item: { item: 3, x: 488, y: 188, width: 18, height: 18 },
         exit: [ 
             { x: 628, y: 420, width: 2, height: 30, goTo: 5, showsAt: { x: 14, y: 420 } },
             { x: 120, y: 330, width: 19, height: 28, goTo: 11, showsAt: { x: 450, y: 360 } }
@@ -263,10 +282,19 @@ var Levels = [
         ],
         spikes: [],
         bats: [],
-        blood: [],
+        blood: [
+            { x: 410, y: 110, isActive: true }
+        ],
         fallingWalls: [],
-        levers: [],
-        movableWalls: [],
+        levers: [
+            { x: -10, y: -10, state: 0, wall: { x: 90, y: 420, width: 30, height: 30 } }
+        ],
+        movableWalls: [
+            { x: 200, y: 40, id: 0 },
+            { x: 400, y: 30, id: 0 },
+            { x: 400, y: 60, id: 1 },
+            { x: 200, y: 80, id: 2 }
+        ],
         exit: [ 
             { x: 390, y: 0, width: 30, height: 2, goTo: 5, showsAt: { x: 403, y: 450 } },
             { x: 0, y: 60, width: 2, height: 300, goTo: 8, showsAt: { x: 610, y: 190 } },
@@ -293,9 +321,17 @@ var Levels = [
             {"x":90,"y":120,"width":30,"height":30}
         ],
         spikes: [],
-        bats: [],
-        blood: [],
-        fallingWalls: [],
+        bats: [
+            {x: 250, y: 170, max: 100, upDown: false, speed: 0.04 },
+            {x: 280, y: 360, max: 60, upDown: true, speed: 0.03 }
+        ],
+        blood: [
+            { x: 97, y: 88, isActive: true }
+        ],
+        fallingWalls: [
+            { x: 90, y: 150, fallSpeed: 1.5 },
+            { x: 31, y: 31, fallSpeed: 1.5 }
+        ],
         levers: [],
         movableWalls: [],
         skeletonDoor: { x: 210, y: 420, width: 30, height: 30 },
@@ -323,12 +359,43 @@ var Levels = [
             {"x":210,"y":150,"width":68,"height":5},
             {"x":60,"y":75,"width":40,"height":5}
         ],
-        spikes: [],
-        bats: [],
-        blood: [],
-        fallingWalls: [],
-        levers: [],
-        movableWalls: [],
+        spikes: [
+            { x: 240, y: 323, delay: 1.5 },
+            { x: 270, y: 323, delay: 1.5 },
+            { x: 300, y: 323, delay: 1.5 },
+            { x: 390, y: 323, delay: 1.5 },
+            { x: 420, y: 323, delay: 1.5 },
+            { x: 450, y: 323, delay: 1.5 }
+        ],
+        bats: [
+            {x: 100, y: 270, max: 100, upDown: false, speed: 0.02 },
+            {x: 400, y: 170, max: 100, upDown: false, speed: 0.02 }
+        ],
+        blood: [
+            { x: 450, y: 50, isActive: true },
+            { x: 74, y: 40, isActive: true }
+        ],
+        fallingWalls: [
+            { x: 260, y: 30, fallSpeed: 1.5 },
+            { x: 290, y: 30, fallSpeed: 1.5 },
+            { x: 320, y: 30, fallSpeed: 1.5 },
+            { x: 350, y: 30, fallSpeed: 1.5 }
+        ],
+        levers: [
+            { x: 575, y: 198, state: 0, walls: [
+                    { x: 450, y: 90, width: 30, height: 30 },
+                    { x: 420, y: 90, width: 30, height: 30 },
+                    { x: 390, y: 90, width: 30, height: 30 }
+                ],
+                otherActions: function () {
+                    Levels[7].levers[0].state = 1;
+                } 
+            }
+        ],
+        movableWalls: [
+            { x: 390, y: 60, id: 0 },
+            { x: 430, y: 60, id: 1 }
+        ],
         exit: [ 
             { x: 0, y: 60, width: 2, height: 390, goTo: 7, showsAt: { x: 611, y: 250 } },
             { x: 628, y: 240, width: 2, height: 210, goTo: 10, showsAt: { x: 15, y: 292 } }
@@ -364,6 +431,7 @@ var Levels = [
             }
         ],
         movableWalls: [],
+        item: { item: 1, x: 530, y: 160, width: 18, height: 18 },
         exit: [ 
             { x: 0, y: 240, width: 2, height: 120, goTo: 9, showsAt: { x: 606, y: 350 } } 
         ]
@@ -444,6 +512,7 @@ var Levels = [
         fallingWalls: [],
         levers: [],
         movableWalls: [],
+        item: { item: 4, x: 560, y: 270, width: 18, height: 18 },
         exit: [ 
             { x: 0, y: 30, width: 2, height: 323, goTo: 12, showsAt: { x: 604, y: 170 } } 
         ]
