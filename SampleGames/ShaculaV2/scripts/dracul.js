@@ -196,6 +196,21 @@ var dracul = {
                     }
             }
         }
+
+        if (!collide) {
+            if (Levels[GLOBAL.currentLevel].stakeDoor !== undefined && !StakeDoor.isOpen) {
+                if (jsGFwk.Collisions.areCollidingBy(whereToMove, 
+                        Levels[GLOBAL.currentLevel].stakeDoor,
+                        jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                            if (GLOBAL.item === 1) {
+                                StakeDoor.isOpen = true;
+                                collide = false;
+                            } else {
+                                collide = true;
+                            }
+                    }
+            }
+        }
         
         //if (!collide) {
         GLOBAL.leverContainer.eachCloned(function (item, event) {

@@ -68,6 +68,8 @@ var gameController = {
 
         Portal.visible = levelToCreate.portal !== undefined;
         SkeletonDoor.visible = levelToCreate.skeletonDoor !== undefined;
+        BatteryContainer.visible = levelToCreate.batteryContainer !== undefined;
+        StakeDoor.visible = levelToCreate.stakeDoor !== undefined;
         InGameItem.visible = levelToCreate.item !== undefined;
     },
     exitFromLevel: function (data) {

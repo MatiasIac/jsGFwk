@@ -32,6 +32,8 @@
     <script language="Javascript" src="scripts/saw.js"></script>
 	<script language="Javascript" src="scripts/portal.js"></script>
 	<script language="Javascript" src="scripts/skeletonDoor.js"></script>
+	<script language="Javascript" src="scripts/stakeDoor.js"></script>
+	<script language="Javascript" src="scripts/batteryContainer.js"></script>
 	<script language="Javascript" src="scripts/itemContainer.js"></script>
 	<script language="Javascript" src="scripts/inGameItem.js"></script>
 	
@@ -64,7 +66,7 @@
         }
 		
 		var GLOBAL = {
-            currentLevel: 4,
+            currentLevel: 3,
             maxOil: 500, 
             lightOil: 100,
             minRadiusLight: 50,
@@ -110,6 +112,14 @@
 					jsGFwk.Sprites.createSprite({id: "skeletonDoor", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
 						top: 18, left: 984, width: 30, height: 30});
+
+					jsGFwk.Sprites.createSprite({id: "stakeDoor", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 18, left: 1101, width: 30, height: 30});
+
+					jsGFwk.Sprites.createSprite({id: "batteryContainer", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 140, left: 990, width: 95, height: 54});
 
 					jsGFwk.Sprites.createSprite({id: "openDoor", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
@@ -238,6 +248,12 @@
 						 {left: 1045, top: 57, width: 18, height: 17}]);
 					jsGFwk.Sprites.items.loop(false);
 
+                    jsGFwk.Sprites.createSpriteCollection("batteryAnim", jsGFwk.ResourceManager.graphics.all.image, 
+						[{left: 1117, top: 140, width: 95, height: 54},
+                         {left: 1223, top: 140, width: 95, height: 54},
+                         {left: 1333, top: 140, width: 95, height: 54}]);
+					jsGFwk.Sprites.batteryAnim.loop(true);
+
                     jsGFwk.Sprites.createSpriteCollection("inGameItems", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 1027, top: 89, width: 18, height: 18},
                          {left: 1001, top: 89, width: 18, height: 18},
@@ -284,6 +300,7 @@
                             GLOBAL.batContainer, GLOBAL.fallingWallContainer,
                             GLOBAL.movableWallContainer,
                             Coffin, Portal, SkeletonDoor,
+							StakeDoor, BatteryContainer,
 							InGameItem, dracul, Light,
 							ItemContainer,
                             GLOBAL.exitContainer] });
