@@ -13,8 +13,6 @@ var dracul = {
 		this.isDead = false;
 		this.dieCounter = 0;
 		GLOBAL.lightOil = GLOBAL.maxOil;
-		/*GLOBAL.maxRadiusLight = GLOBAL.resetMaxMinLight;
-		GLOBAL.minRadiusLight = GLOBAL.resetMaxMinLight;*/
 		jsGFwk.Sprites.die.reset();
 		jsGFwk.Sprites.jumpRight.reset();
 		jsGFwk.Sprites.jumpLeft.reset();
@@ -25,8 +23,6 @@ var dracul = {
 		jsGFwk.Sprites.idleRight.reset();
 		jsGFwk.Sprites.idleLeft.reset();
 		jsGFwk.Sprites.oilWave.reset();
-		/*jsGFwk.Sprites.hangedRight.reset();
-		jsGFwk.Sprites.hangedLeft.reset();*/
 		this.graphicPointer = jsGFwk.Sprites.idleRight;
 		
 		this.updatePointer = this.updateNormal;
@@ -35,8 +31,14 @@ var dracul = {
 	
 	kill: function () {
 		if (!this.isDead) {
+            this.isDead = true;
 			this.updatePointer = this.updateDead;
 			this.drawPointer = this.drawDead;
+
+            GLOBAL.lives--;
+            if (GLOBAL.lives < 0) {
+                jsGFwk.Scenes.scenes.main.enable();
+            }
 		}
 	},
 
@@ -59,18 +61,45 @@ var dracul = {
 	},
 	/*END DEAD*/
 	
+    capturePad: function () {
+        var result = {
+            x: 0,
+            buttonA: false,
+            buttonB: false,
+            buttonX: false,
+            buttonY: false,
+            trigger1: false
+        };
+
+        if (jsGFwk.Gamepad.pads[GLOBAL.selectedPad] !== undefined &&
+			jsGFwk.Gamepad.pads[GLOBAL.selectedPad].buttons.length > 0) {
+        
+            result.x = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].axes[0];
+            result.buttonA = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[0].pressed;
+            result.buttonX = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[2].pressed;
+            result.buttonB = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[6].pressed;
+            result.trigger1 = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[7].pressed;
+        }
+
+        return result;
+    },
+
 	/*NORMAL STATE*/
 	updateNormal: function (delta) {
         this.animCounter += delta;
         var isFalling = false;
         
-        this.movementSpeed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SHIFT] ? 3 : 1.5;
+        //console.log();
+        var pad = this.capturePad();
+
+        this.movementSpeed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SHIFT] || pad.trigger1 ? 3 : 1.5;
         
+        //drop light
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && GLOBAL.lightOil > 0 && !Light.isDropping) {
             Light.drop(this.isRight ? 10 : -10);
         }
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] && GLOBAL.lightOil > 0) {
+        if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] || pad.buttonB) && GLOBAL.lightOil > 0) {
 			GLOBAL.lightOil -= GLOBAL.lightConsum;
 			GLOBAL.maxRadiusLight += GLOBAL.lightIncrement;
 		} else {
@@ -83,7 +112,7 @@ var dracul = {
             GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement : 0
 		}
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] && GLOBAL.lightOil > 0) {
+        if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || pad.buttonA) && GLOBAL.lightOil > 0) {
             GLOBAL.lightOil -= (GLOBAL.lightConsum + 1);
             this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
             
@@ -101,31 +130,31 @@ var dracul = {
             }
         }
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] || pad.x <= -0.9) {
             this.isRight = false;
             
             if (!this.checkWallCollision({ x: this.x - this.movementSpeed, y: this.y })) {
                 this.x -= this.movementSpeed;
-                if (!jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] && !isFalling) {
+                if ((!jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] && !pad.buttonA)  && !isFalling) {
                     this.graphicPointer = jsGFwk.Sprites.walkLeft;
                 }
             }
         }
         
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D]) {
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] || pad.x >= 0.9) {
             this.isRight = true;
             
             if (!this.checkWallCollision({ x: this.x + this.movementSpeed, y: this.y })) {
                 this.x += this.movementSpeed;
-                if (!jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] && !isFalling) {
+                if ((!jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] && !pad.buttonA) && !isFalling) {
                     this.graphicPointer = jsGFwk.Sprites.walkRight;
                 }
             }
         }
 		
-		if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.M] && !isFalling && 
+		if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.M] || pad.buttonX) && !isFalling && 
             !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.D] &&
-            !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A]) {
+            !jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] && (pad.x !== -1 && pad.x !== 1)) {
             this.graphicPointer = this.isRight ? jsGFwk.Sprites.actionRight : jsGFwk.Sprites.actionLeft;
             
             GLOBAL.leverContainer.eachCloned(function (item, event) {
@@ -162,6 +191,16 @@ var dracul = {
         whereToMove.width = this.width;
         whereToMove.height = this.height;
         
+        //coffin
+        if (Levels[GLOBAL.currentLevel].coffin !== undefined) {
+            if (jsGFwk.Collisions.areCollidingBy(whereToMove,
+                     Levels[GLOBAL.currentLevel].coffin,
+                     jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                collide = true;
+                jsGFwk.Scenes.scenes.end.enable();
+            }
+        }
+
         for (var i = 0; i < Levels[GLOBAL.currentLevel].platforms.length; i++) {
             if (jsGFwk.Collisions.areCollidingBy(whereToMove,
                      Levels[GLOBAL.currentLevel].platforms[i],

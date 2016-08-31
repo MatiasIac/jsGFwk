@@ -62,10 +62,7 @@ var gameController = {
             }
         }
         
-        if (levelToCreate.coffin === undefined) {
-            Coffin.visible = false;
-        }
-
+        Coffin.visible = levelToCreate.coffin !== undefined;
         Portal.visible = levelToCreate.portal !== undefined;
         SkeletonDoor.visible = levelToCreate.skeletonDoor !== undefined;
         BatteryContainer.visible = levelToCreate.batteryContainer !== undefined;

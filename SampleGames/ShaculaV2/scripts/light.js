@@ -131,15 +131,27 @@ var Light = {
         context.drawImage(jsGFwk.Sprites.lowerPipe.image, 570 + dracul.oilOffsetX, 283 + dracul.oilOffsetY);
     },
 
+    drawLives: function (ctx) {
+        for (var i = 0; i < GLOBAL.lives; i++) {
+            ctx.drawImage(jsGFwk.Sprites.idleRight.spriteBag[0].image, (20 * i) + 15, 430);
+        }
+    },
+
     draw: function (ctx) {
         this.drawPointer(ctx);
         
-        /*var gradient = ctx.createRadialGradient(this.x, this.y, 1, this.x + 5, this.y + 5, GLOBAL.maxRadiusLight + this.diffLight);
+        if (Levels[GLOBAL.currentLevel].foreground) {
+            ctx.drawImage(jsGFwk.ResourceManager.graphics['level' + GLOBAL.currentLevel + "f"].image , 0, 0);
+        }
+
+        var gradient = ctx.createRadialGradient(this.x, this.y, 1, this.x + 5, this.y + 5, GLOBAL.maxRadiusLight + this.diffLight);
         gradient.addColorStop(0, "transparent");
         gradient.addColorStop(1, "black");
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 640, 480);*/
-        
+        ctx.fillRect(0, 0, 640, 480);
+
         this.drawOil(ctx);
+
+        this.drawLives(ctx);
     }
 };

@@ -36,9 +36,11 @@
 	<script language="Javascript" src="scripts/batteryContainer.js"></script>
 	<script language="Javascript" src="scripts/itemContainer.js"></script>
 	<script language="Javascript" src="scripts/inGameItem.js"></script>
+	<script language="Javascript" src="scripts/intro.js"></script>
+	<script language="Javascript" src="scripts/end.js"></script>
 	
-	<body>
-		<canvas id="canvas" width="630" height="480"></canvas>
+	<body style="border:0; margin:0; padding:0;">
+		<canvas id="canvas" width="630" height="480" style="width:100%; height:100%;"></canvas>
 	</body>
 	<script>
 		jsGFwk.settings.canvas = "canvas";
@@ -63,10 +65,13 @@
         
         for (var i = 0; i < Levels.length; i++) {
             jsGFwk.ResourceManager.addGraphic({ name: "level" + i, source: "images/level" + i + ".png" });
+			if (Levels[i].foreground) {
+				jsGFwk.ResourceManager.addGraphic({ name: "level" + i + "f", source: "images/level" + i + "f.png" });
+			}
         }
 		
 		var GLOBAL = {
-            currentLevel: 3,
+            currentLevel: 10,
             maxOil: 500, 
             lightOil: 100,
             minRadiusLight: 50,
@@ -77,6 +82,7 @@
             lightIncrement: 1,
 			selectedPad: null,
 			item: 0,
+			lives: 2
         };
 				
 		jsGFwk.createObject({
@@ -291,6 +297,10 @@
                     GLOBAL.sawContainer = jsGFwk.Container.createContainer('sawWalls', Saw, true);
                     
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
+
+					jsGFwk.Scenes.create({name: "intro", gameObjects: [Intro, GLOBAL.cloudContainer] });
+
+					jsGFwk.Scenes.create({name: "end", gameObjects: [End, GLOBAL.cloudContainer] });
 							
 					jsGFwk.Scenes.create({name: "game", 
 						gameObjects: [background, gameController,
@@ -305,8 +315,7 @@
 							ItemContainer,
                             GLOBAL.exitContainer] });
 								
-					//jsGFwk.Scenes.scenes.main.enable();
-                    jsGFwk.Scenes.scenes.game.enable();
+					jsGFwk.Scenes.scenes.main.enable();
 					
 					jsGFwk._gameObjects.progress.destroy();
 				};

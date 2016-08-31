@@ -10,6 +10,6 @@ var Coffin = {
     },
     draw: function (ctx) {
         ctx.drawImage(jsGFwk.Sprites.goal.spriteBag[this.isOpen].image,
-                     Levels[GLOBAL.currentLevel].coffin.x, Levels[GLOBAL.currentLevel].coffin.y);
+            Levels[GLOBAL.currentLevel].coffin.x, Levels[GLOBAL.currentLevel].coffin.y);
     }
 };
