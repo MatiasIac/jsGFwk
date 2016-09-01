@@ -7,7 +7,7 @@ var Lever = {
         this.height = 12;
         this.currentPosition = parameters.state;
         this.currentObstacleIndex = 0;
-        this.otherActions = parameters.otherActions || function () {};
+        this.otherActions = parameters.otherActions || -1;
 
         this.wallsToRender = [];
 
@@ -25,10 +25,13 @@ var Lever = {
     },
     switch: function () {
         if (this.currentPosition > 0) { return; }
+        jsGFwk.ResourceManager.sounds.lever.audio.play();
         this.currentPosition++;
         this.parameters.state = this.currentPosition;
         this.onUpdate = this.updateHide;
-        this.otherActions();
+        if (this.otherActions > -1) {
+            Levels[this.otherActions].levers[0].state = 1;
+        }
     },
     updateHide: function (delta) {
         this.acc += delta;

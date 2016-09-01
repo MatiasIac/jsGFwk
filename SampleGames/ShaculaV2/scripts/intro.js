@@ -23,7 +23,7 @@ var Intro = {
         GLOBAL.movableWallContainer.clearAll();
         GLOBAL.sawContainer.clearAll();
 
-        GLOBAL.currentLevel = 10;
+        GLOBAL.currentLevel = 6;
         GLOBAL.maxOil = 500;
         GLOBAL.lightOil = 100;
         GLOBAL.minRadiusLight = 50;

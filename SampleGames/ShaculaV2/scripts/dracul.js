@@ -5,6 +5,7 @@ var dracul = {
 	animCounter: 0, animDelay: 0.2,
 	oilOffsetX: 20, oilOffsetY: 150,
 	isDead: false, dieCounter: 0,
+    startFlying: true,
 	graphicPointer: {},
 	
 	init: function () {
@@ -31,6 +32,7 @@ var dracul = {
 	
 	kill: function () {
 		if (!this.isDead) {
+            jsGFwk.ResourceManager.sounds.hurt.audio.play();
             this.isDead = true;
 			this.updatePointer = this.updateDead;
 			this.drawPointer = this.drawDead;
@@ -113,6 +115,13 @@ var dracul = {
 		}
         
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || pad.buttonA) && GLOBAL.lightOil > 0) {
+            if (this.startFlying) {
+                jsGFwk.ResourceManager.sounds.swoosh.audio.play();
+            }
+            this.startFlying = false;
+
+            jsGFwk.ResourceManager.sounds.batwings.audio.play();
+
             GLOBAL.lightOil -= (GLOBAL.lightConsum + 1);
             this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
             
@@ -120,6 +129,10 @@ var dracul = {
                 this.y -= this.flySpeed;
             }
 		} else {
+            this.startFlying = true;
+            jsGFwk.ResourceManager.sounds.batwings.audio.pause();
+            jsGFwk.ResourceManager.sounds.batwings.audio.currentTime = 0
+
             if (!this.checkWallCollision({ x: this.x, y: this.y + this.fallSpeed })) {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
                 this.y += this.fallSpeed;

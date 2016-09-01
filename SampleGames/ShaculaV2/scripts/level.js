@@ -315,7 +315,7 @@ var Levels = [
         item: { item: 3, x: 488, y: 188, width: 18, height: 18 },
         exit: [ 
             { x: 628, y: 420, width: 2, height: 30, goTo: 5, showsAt: { x: 14, y: 420 } },
-            { x: 120, y: 330, width: 19, height: 28, goTo: 11, showsAt: { x: 450, y: 360 } }
+            { x: 120, y: 330, width: 19, height: 28, goTo: 11, type: 'portal', showsAt: { x: 450, y: 360 } }
         ]
     },
     {
@@ -671,11 +671,7 @@ var LevelsTemp = [
             { x: 430, y: 150, fallSpeed: 1.5 }
         ],
         levers: [
-            { x: 578, y: 438, state: 0, wall: { x: 90, y: 330, width: 30, height: 30 },
-                otherActions: function () {
-                    Levels[4].levers[0].state = 1;
-                }
-            }
+            { x: 578, y: 438, state: 0, wall: { x: 90, y: 330, width: 30, height: 30 }, otherActions: 4 }
         ],
         movableWalls: [],
         saws: [
@@ -902,7 +898,7 @@ var LevelsTemp = [
         item: { item: 3, x: 488, y: 188, width: 18, height: 18 },
         exit: [ 
             { x: 628, y: 420, width: 2, height: 30, goTo: 5, showsAt: { x: 14, y: 420 } },
-            { x: 120, y: 330, width: 19, height: 28, goTo: 11, showsAt: { x: 450, y: 360 } }
+            { x: 120, y: 330, width: 19, height: 28, type: 'portal', goTo: 11, showsAt: { x: 450, y: 360 } }
         ]
     },
     {
@@ -1026,11 +1022,7 @@ var LevelsTemp = [
                     { x: 450, y: 90, width: 30, height: 30 },
                     { x: 420, y: 90, width: 30, height: 30 },
                     { x: 390, y: 90, width: 30, height: 30 }
-                ],
-                otherActions: function () {
-                    Levels[7].levers[0].state = 1;
-                } 
-            }
+                ], otherActions: 7 }
         ],
         movableWalls: [
             { x: 390, y: 60, id: 0 },
@@ -1122,7 +1114,7 @@ var LevelsTemp = [
         exit: [
             { x: 30, y: 0, width: 30, height: 2, goTo: 7, showsAt: { x: 41, y: 444 } },
             { x: 390, y: 478, width: 30, height: 2, goTo: 12, showsAt: { x: 400, y: 15 } },
-            { x: 420, y: 360, width: 18, height: 30, goTo: 6, showsAt: { x: 150, y: 330 } } 
+            { x: 420, y: 360, width: 18, height: 30, type: 'portal', goTo: 6, showsAt: { x: 150, y: 330 } } 
         ]
     },
     {
