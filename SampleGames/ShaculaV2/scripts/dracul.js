@@ -102,6 +102,8 @@ var dracul = {
         }*/
 
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && !Radar.isActive) {
+            Radar.x = Light.x;
+            Radar.y = Light.y;
             Radar.isActive = true;
         }
         

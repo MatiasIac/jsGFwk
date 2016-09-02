@@ -5,6 +5,7 @@ var Radar = {
     radarCanvas: null,
     innerCircle: 0,
     externalCircle: 0,
+    x: 0, y: 0,
     isActive: false,
     init: function () {
         this.radarCanvas = document.getElementById('radarCanvas');
@@ -25,8 +26,8 @@ var Radar = {
             this.radarContext.clearRect(0, 0, 630, 480);
             this.radarContext.drawImage(jsGFwk.ResourceManager.graphics['level' + GLOBAL.currentLevel + 'radar'].image, 0, 0);
 
-            var gradient = this.radarContext.createRadialGradient(Light.x + 5, Light.y, this.innerCircle, 
-                Light.x + 5, Light.y + 5, this.externalCircle);
+            var gradient = this.radarContext.createRadialGradient(this.x + 5, this.y, this.innerCircle, 
+                this.x + 5, this.y + 5, this.externalCircle);
 
             gradient.addColorStop(0, "black");
             gradient.addColorStop(0.9, "transparent");
@@ -34,8 +35,8 @@ var Radar = {
             this.radarContext.fillStyle = gradient;
             this.radarContext.fillRect(0, 0, 640, 480);
 
-            this.radarContext.clearRect((Light.x + 5) - this.innerCircle, 
-                Light.y - this.innerCircle, 
+            this.radarContext.clearRect((this.x + 5) - this.innerCircle, 
+                this.y - this.innerCircle, 
                 this.innerCircle * 2, this.innerCircle * 2);
 
             ctx.drawImage(this.radarCanvas, 0, 0);
