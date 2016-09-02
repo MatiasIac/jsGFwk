@@ -537,8 +537,8 @@ var Levels = [
             { x: 390, y: 478, width: 30, height: 2, goTo: 12, showsAt: { x: 400, y: 15 } },
             { x: 420, y: 360, width: 18, height: 30, goTo: 6, showsAt: { x: 150, y: 330 } } 
         ]
-    },
-    {
+    }
+  /*  {
         startingPoint: { x: 60, y: 40},
         platforms: [
             {"x":420,"y":0,"width":210,"height":30},
@@ -582,7 +582,7 @@ var Levels = [
         exit: [ 
             { x: 0, y: 30, width: 2, height: 323, goTo: 12, showsAt: { x: 604, y: 170 } } 
         ]
-    }
+    } */
 ];
 
 var LevelsTemp = [
@@ -1116,8 +1116,8 @@ var LevelsTemp = [
             { x: 390, y: 478, width: 30, height: 2, goTo: 12, showsAt: { x: 400, y: 15 } },
             { x: 420, y: 360, width: 18, height: 30, type: 'portal', goTo: 6, showsAt: { x: 150, y: 330 } } 
         ]
-    },
-    {
+    }
+   /* {
         startingPoint: { x: 60, y: 40},
         platforms: [
             {"x":420,"y":0,"width":210,"height":30},
@@ -1161,5 +1161,5 @@ var LevelsTemp = [
         exit: [ 
             { x: 0, y: 30, width: 2, height: 323, goTo: 12, showsAt: { x: 604, y: 170 } } 
         ]
-    }
+    }*/
 ];

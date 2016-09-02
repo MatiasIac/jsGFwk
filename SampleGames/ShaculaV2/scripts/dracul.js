@@ -97,8 +97,12 @@ var dracul = {
         this.movementSpeed = jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SHIFT] || pad.trigger1 ? 3 : 1.5;
         
         //drop light
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && GLOBAL.lightOil > 0 && !Light.isDropping) {
+        /*if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && GLOBAL.lightOil > 0 && !Light.isDropping) {
             Light.drop(this.isRight ? 10 : -10);
+        }*/
+
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && !Radar.isActive) {
+            Radar.isActive = true;
         }
         
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] || pad.buttonB) && GLOBAL.lightOil > 0) {
@@ -111,7 +115,7 @@ var dracul = {
 				GLOBAL.maxRadiusLight -= GLOBAL.consumeLight;
 			}*/
 			
-            GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement : 0
+            GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement : 0;
 		}
         
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || pad.buttonA) && GLOBAL.lightOil > 0) {
@@ -140,6 +144,10 @@ var dracul = {
             } else {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.idleRight : jsGFwk.Sprites.idleLeft;
                 isFalling = false;
+
+                if (!(jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] || pad.buttonB)) {
+                    GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement + 2 : 0;
+                }
             }
         }
         

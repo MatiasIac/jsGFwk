@@ -150,6 +150,8 @@ var Light = {
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, 640, 480);
 
+        Radar.draw(ctx);
+
         this.drawOil(ctx);
 
         this.drawLives(ctx);
