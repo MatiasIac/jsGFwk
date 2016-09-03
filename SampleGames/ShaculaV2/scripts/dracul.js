@@ -121,7 +121,7 @@ var dracul = {
 		}
         
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || pad.buttonA) && GLOBAL.lightOil > 0) {
-            if (this.startFlying) {
+            if (this.startFlying && GLOBAL.lightOil>100) {
                 //jsGFwk.ResourceManager.sounds.swoosh.audio.play();
                 jsGFwk.ResourceManager.sounds.fly_loop_up.audio.play();
                 jsGFwk.ResourceManager.sounds.fly_loop_down.audio.pause();
@@ -143,12 +143,13 @@ var dracul = {
                 this.y += this.fallSpeed;
                 isFalling = true;
                 
-                if (this.startGoingDown) {
+                //if (!this.startGoingDown) {
+                    jsGFwk.ResourceManager.sounds.fly_loop_down.audio.play();
                     jsGFwk.ResourceManager.sounds.fly_loop_up.audio.pause();
                     jsGFwk.ResourceManager.sounds.fly_loop_up.audio.currentTime = 0;
-                    jsGFwk.ResourceManager.sounds.fly_loop_down.audio.play();
-                    this.startGoingDown = false;
-                }
+                    
+                    //this.startGoingDown = false;
+                //}
 
             } else {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.idleRight : jsGFwk.Sprites.idleLeft;
