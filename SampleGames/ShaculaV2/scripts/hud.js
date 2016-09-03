@@ -16,11 +16,6 @@ var hud = {
 
 		jsGFwk.ResourceManager.sounds.ingamemusic.audio.pause();
 		jsGFwk.ResourceManager.sounds.ingamemusic.audio.currentTime = 0;
-		jsGFwk.ResourceManager.sounds.hurt.audio.pause();
-
-		jsGFwk.ResourceManager.sounds.lever.audio.pause();
-		jsGFwk.ResourceManager.sounds.swoosh.audio.pause();
-		jsGFwk.ResourceManager.sounds.portal.audio.pause();
 
 		this.buttonAcc = 0;
 		
