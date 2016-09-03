@@ -88,15 +88,15 @@
 		jsGFwk.ResourceManager.addSound({ name: "batwings", sources: sound});
                 
                 sound = {};
-		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/fly_loop_up.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/wavs/fly_loop_up.wav" };
 		jsGFwk.ResourceManager.addSound({ name: "fly_loop_up", sources: sound});
                 
                 sound = {};
-		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/fly_loop_down.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/wavs/fly_loop_down.wav" };
 		jsGFwk.ResourceManager.addSound({ name: "fly_loop_down", sources: sound});
 
 		sound = {};
-		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/swoosh.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/wavs/swoosh.wav" };
 		jsGFwk.ResourceManager.addSound({ name: "swoosh", sources: sound});
 
 		sound = {};
@@ -342,6 +342,7 @@
                     GLOBAL.sawContainer = jsGFwk.Container.createContainer('sawWalls', Saw, true);
                     
                                         jsGFwk.ResourceManager.sounds.fly_loop_up.audio.loop = true;
+                                        jsGFwk.ResourceManager.sounds.fly_loop_down.audio.loop = true;
                                         
 					jsGFwk.ResourceManager.sounds.hurt.audio.loop = false;
 					jsGFwk.ResourceManager.sounds.hurt.audio.volume = 0.9;
@@ -353,7 +354,7 @@
 					jsGFwk.ResourceManager.sounds.batwings.audio.volume = 0.7;
 
 					jsGFwk.ResourceManager.sounds.swoosh.audio.loop = false;
-					jsGFwk.ResourceManager.sounds.swoosh.audio.volume = 0.3;
+					jsGFwk.ResourceManager.sounds.swoosh.audio.volume = 1;
 
 					jsGFwk.ResourceManager.sounds.portal.audio.loop = false;
 					jsGFwk.ResourceManager.sounds.portal.audio.volume = 0.5;
