@@ -39,6 +39,8 @@ var Radar = {
             }); 
         });
 
+        jsGFwk.ResourceManager.sounds.radar.audio.play();
+
         this.isActive = true;
     },
     init: function () {

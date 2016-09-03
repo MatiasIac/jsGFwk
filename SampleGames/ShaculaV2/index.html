@@ -94,6 +94,10 @@
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/portal.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "portal", sources: sound});
+
+		sound = {};
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/radar.ogg" };
+		jsGFwk.ResourceManager.addSound({ name: "radar", sources: sound});
 		
 		var GLOBAL = {
             currentLevel: 10,
@@ -343,6 +347,9 @@
 
 					jsGFwk.ResourceManager.sounds.portal.audio.loop = false;
 					jsGFwk.ResourceManager.sounds.portal.audio.volume = 0.5;
+
+					jsGFwk.ResourceManager.sounds.radar.audio.loop = false;
+					jsGFwk.ResourceManager.sounds.radar.audio.volume = 0.4;
 
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 

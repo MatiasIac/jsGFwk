@@ -14,6 +14,12 @@ var hud = {
 	init: function () {
 		var self = this;
 
+		jsGFwk.ResourceManager.sounds.hurt.audio.pause();
+		jsGFwk.ResourceManager.sounds.lever.audio.pause();
+		jsGFwk.ResourceManager.sounds.batwings.audio.pause();
+		jsGFwk.ResourceManager.sounds.swoosh.audio.pause();
+		jsGFwk.ResourceManager.sounds.portal.audio.pause();
+
 		this.buttonAcc = 0;
 		
 		jsGFwk.Collisions.onObjectCreated(this.fakeMouse);
