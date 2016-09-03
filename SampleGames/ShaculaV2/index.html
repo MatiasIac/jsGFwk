@@ -78,11 +78,19 @@
 		var sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/hurt.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "hurt", sources: sound});
+                
+                sound = {};
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/radar.ogg" };
+		jsGFwk.ResourceManager.addSound({ name: "radarping", sources: sound});
 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/lever.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "lever", sources: sound});
-
+                
+                sound = {};
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/torch_wave_1.ogg" };
+		jsGFwk.ResourceManager.addSound({ name: "torch_wave", sources: sound});
+                
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/bat_wings.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "batwings", sources: sound});
@@ -100,16 +108,8 @@
 		jsGFwk.ResourceManager.addSound({ name: "ingamemusic", sources: sound});
 
 		sound = {};
-		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/swoosh.ogg" };
-		jsGFwk.ResourceManager.addSound({ name: "swoosh", sources: sound});
-
-		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/portal.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "portal", sources: sound});
-
-		sound = {};
-		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/radar.ogg" };
-		jsGFwk.ResourceManager.addSound({ name: "radar", sources: sound});
 		
 		var GLOBAL = {
             currentLevel: 10,
@@ -349,11 +349,14 @@
 					jsGFwk.ResourceManager.sounds.ingamemusic.audio.loop = true;
 
 					jsGFwk.ResourceManager.sounds.fly_loop_up.audio.volume = 0.1;
-					jsGFwk.ResourceManager.sounds.fly_loop_up.audio.loop = true;
-
+                                        jsGFwk.ResourceManager.sounds.fly_loop_up.audio.loop = false;
+                                        
 					jsGFwk.ResourceManager.sounds.fly_loop_down.audio.volume = 0.1;
-					jsGFwk.ResourceManager.sounds.fly_loop_down.audio.loop = true;
-					
+					jsGFwk.ResourceManager.sounds.fly_loop_down.audio.loop = false;
+                                        
+                                        jsGFwk.ResourceManager.sounds.torch_wave.audio.volume = 0.5;
+                                        jsGFwk.ResourceManager.sounds.torch_wave.audio.loop = false;
+                                        
 					jsGFwk.ResourceManager.sounds.hurt.audio.loop = false;
 					jsGFwk.ResourceManager.sounds.hurt.audio.volume = 0.9;
 
@@ -363,14 +366,12 @@
 					jsGFwk.ResourceManager.sounds.batwings.audio.loop = true;
 					jsGFwk.ResourceManager.sounds.batwings.audio.volume = 0.7;
 
-					jsGFwk.ResourceManager.sounds.swoosh.audio.loop = false;
-					jsGFwk.ResourceManager.sounds.swoosh.audio.volume = 0.3;
 
 					jsGFwk.ResourceManager.sounds.portal.audio.loop = false;
 					jsGFwk.ResourceManager.sounds.portal.audio.volume = 0.5;
 
-					jsGFwk.ResourceManager.sounds.radar.audio.loop = false;
-					jsGFwk.ResourceManager.sounds.radar.audio.volume = 0.4;
+					jsGFwk.ResourceManager.sounds.radarping.audio.loop = false;
+					jsGFwk.ResourceManager.sounds.radarping.audio.volume = 0.4;
 
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 
