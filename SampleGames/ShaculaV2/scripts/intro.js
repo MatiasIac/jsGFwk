@@ -6,6 +6,7 @@ var Intro = {
     startGame: function () {
         jsGFwk.IO.mouse.unregisterClick(this.mouseId);
         jsGFwk.Scenes.scenes.game.enable();
+        jsGFwk.ResourceManager.sounds.ingamemusic.audio.play();
     },
 	init: function () {
         var self = this;

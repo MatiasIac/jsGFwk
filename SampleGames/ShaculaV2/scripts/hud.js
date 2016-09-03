@@ -14,6 +14,8 @@ var hud = {
 	init: function () {
 		var self = this;
 
+		jsGFwk.ResourceManager.sounds.ingamemusic.audio.pause();
+		jsGFwk.ResourceManager.sounds.ingamemusic.audio.currentTime = 0;
 		jsGFwk.ResourceManager.sounds.hurt.audio.pause();
 		jsGFwk.ResourceManager.sounds.lever.audio.pause();
 		jsGFwk.ResourceManager.sounds.batwings.audio.pause();

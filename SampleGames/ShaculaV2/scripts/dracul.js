@@ -5,7 +5,8 @@ var dracul = {
 	animCounter: 0, animDelay: 0.2,
 	oilOffsetX: 20, oilOffsetY: 150,
 	isDead: false, dieCounter: 0,
-    startFlying: true,
+
+    startFlying: true, startGoingDown: false,
 	graphicPointer: {},
 	
 	init: function () {
@@ -114,20 +115,19 @@ var dracul = {
 		} else {
 			if (GLOBAL.maxRadiusLight > GLOBAL.minRadiusLight) {
 				GLOBAL.maxRadiusLight -= GLOBAL.lightConsum;
-			}/* else if (GLOBAL.maxRadiusLight > GLOBAL.resetMaxMinLight) {
-				GLOBAL.maxRadiusLight -= GLOBAL.consumeLight;
-			}*/
+			}
 			
             GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement : 0;
 		}
         
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || pad.buttonA) && GLOBAL.lightOil > 0) {
             if (this.startFlying) {
-                jsGFwk.ResourceManager.sounds.swoosh.audio.play();
+                //jsGFwk.ResourceManager.sounds.swoosh.audio.play();
+                jsGFwk.ResourceManager.sounds.fly_loop_up.audio.play();
+                jsGFwk.ResourceManager.sounds.fly_loop_down.audio.pause();
+                jsGFwk.ResourceManager.sounds.fly_loop_down.audio.currentTime = 0;
             }
             this.startFlying = false;
-
-            jsGFwk.ResourceManager.sounds.fly_loop_up.audio.play();
 
             GLOBAL.lightOil -= (GLOBAL.lightConsum + 1);
             this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
@@ -137,20 +137,30 @@ var dracul = {
             }
 		} else {
             this.startFlying = true;
-            
 
             if (!this.checkWallCollision({ x: this.x, y: this.y + this.fallSpeed })) {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.jumpRight : jsGFwk.Sprites.jumpLeft;
                 this.y += this.fallSpeed;
                 isFalling = true;
-                jsGFwk.ResourceManager.sounds.fly_loop_down.audio.play();
-                jsGFwk.ResourceManager.sounds.fly_loop_up.audio.pause();
+                
+                if (this.startGoingDown) {
+                    jsGFwk.ResourceManager.sounds.fly_loop_up.audio.pause();
+                    jsGFwk.ResourceManager.sounds.fly_loop_up.audio.currentTime = 0;
+                    jsGFwk.ResourceManager.sounds.fly_loop_down.audio.play();
+                    this.startGoingDown = false;
+                }
+
             } else {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.idleRight : jsGFwk.Sprites.idleLeft;
                 isFalling = false;
-                //jsGFwk.ResourceManager.sounds.fly_loop_up.audio.pause();
+
+                this.startGoingDown = true;
+
                 jsGFwk.ResourceManager.sounds.fly_loop_down.audio.pause();
-                //jsGFwk.ResourceManager.sounds.fly_loop_up.audio.currentTime = 0
+                jsGFwk.ResourceManager.sounds.fly_loop_up.audio.pause();
+                jsGFwk.ResourceManager.sounds.fly_loop_down.audio.currentTime = 0;
+                jsGFwk.ResourceManager.sounds.fly_loop_up.audio.currentTime = 0;
+
                 if (!(jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] || pad.buttonB)) {
                     GLOBAL.lightOil += GLOBAL.lightOil < GLOBAL.maxOil ? GLOBAL.lightIncrement + 2 : 0;
                 }

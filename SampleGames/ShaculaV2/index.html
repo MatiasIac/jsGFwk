@@ -87,13 +87,17 @@
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/bat_wings.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "batwings", sources: sound});
                 
-                sound = {};
+		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/fly_loop_up.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "fly_loop_up", sources: sound});
                 
-                sound = {};
+		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/fly_loop_down.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "fly_loop_down", sources: sound});
+
+		sound = {};
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/di_ingame_music_loop.ogg" };
+		jsGFwk.ResourceManager.addSound({ name: "ingamemusic", sources: sound});
 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/swoosh.ogg" };
@@ -341,8 +345,15 @@
                     GLOBAL.movableWallContainer = jsGFwk.Container.createContainer('movableWalls', MovableWall, true);
                     GLOBAL.sawContainer = jsGFwk.Container.createContainer('sawWalls', Saw, true);
                     
-                                        jsGFwk.ResourceManager.sounds.fly_loop_up.audio.loop = true;
-                                        
+					jsGFwk.ResourceManager.sounds.ingamemusic.audio.volume = 0.4;
+					jsGFwk.ResourceManager.sounds.ingamemusic.audio.loop = true;
+
+					jsGFwk.ResourceManager.sounds.fly_loop_up.audio.volume = 0.2;
+					jsGFwk.ResourceManager.sounds.fly_loop_up.audio.loop = true;
+
+					jsGFwk.ResourceManager.sounds.fly_loop_down.audio.volume = 0.2;
+					jsGFwk.ResourceManager.sounds.fly_loop_down.audio.loop = true;
+					
 					jsGFwk.ResourceManager.sounds.hurt.audio.loop = false;
 					jsGFwk.ResourceManager.sounds.hurt.audio.volume = 0.9;
 
