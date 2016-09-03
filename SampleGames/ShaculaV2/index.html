@@ -78,6 +78,10 @@
 		var sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/hurt.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "hurt", sources: sound});
+                
+                sound = {};
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/radar.ogg" };
+		jsGFwk.ResourceManager.addSound({ name: "radarping", sources: sound});
 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/lever.ogg" };
@@ -106,10 +110,6 @@
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/portal.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "portal", sources: sound});
-
-		sound = {};
-		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/radar.ogg" };
-		jsGFwk.ResourceManager.addSound({ name: "radar", sources: sound});
 		
 		var GLOBAL = {
             currentLevel: 10,
@@ -366,14 +366,12 @@
 					jsGFwk.ResourceManager.sounds.batwings.audio.loop = true;
 					jsGFwk.ResourceManager.sounds.batwings.audio.volume = 0.7;
 
-					jsGFwk.ResourceManager.sounds.swoosh.audio.loop = false;
-					jsGFwk.ResourceManager.sounds.swoosh.audio.volume = 0.3;
 
 					jsGFwk.ResourceManager.sounds.portal.audio.loop = false;
 					jsGFwk.ResourceManager.sounds.portal.audio.volume = 0.5;
 
-					jsGFwk.ResourceManager.sounds.radar.audio.loop = false;
-					jsGFwk.ResourceManager.sounds.radar.audio.volume = 0.4;
+					jsGFwk.ResourceManager.sounds.radarping.audio.loop = false;
+					jsGFwk.ResourceManager.sounds.radarping.audio.volume = 0.4;
 
 					jsGFwk.Scenes.create({name: "main", gameObjects: [hud, GLOBAL.cloudContainer] });
 

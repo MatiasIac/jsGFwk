@@ -106,6 +106,7 @@ var dracul = {
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] || pad.buttonY) && !Radar.isActive) {
             Radar.x = Light.x;
             Radar.y = Light.y;
+            jsGFwk.ResourceManager.sounds.radarping.audio.play();
             Radar.trigger();
         }
         
