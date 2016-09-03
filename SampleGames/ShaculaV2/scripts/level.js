@@ -341,12 +341,7 @@ var Levels = [
         levers: [
             { x: -10, y: -10, state: 0, wall: { x: 90, y: 420, width: 30, height: 30 } }
         ],
-        movableWalls: [
-            { x: 200, y: 40, id: 0 },
-            { x: 400, y: 30, id: 0 },
-            { x: 400, y: 60, id: 1 },
-            { x: 200, y: 80, id: 2 }
-        ],
+        movableWalls: [],
         exit: [ 
             { x: 390, y: 0, width: 30, height: 2, goTo: 5, showsAt: { x: 403, y: 450 } },
             { x: 0, y: 60, width: 2, height: 300, goTo: 8, showsAt: { x: 610, y: 190 } },
@@ -445,10 +440,7 @@ var Levels = [
                 } 
             }
         ],
-        movableWalls: [
-            { x: 390, y: 60, id: 0 },
-            { x: 430, y: 60, id: 1 }
-        ],
+        movableWalls: [],
         exit: [ 
             { x: 0, y: 60, width: 2, height: 390, goTo: 7, showsAt: { x: 611, y: 250 } },
             { x: 628, y: 240, width: 2, height: 210, goTo: 10, showsAt: { x: 15, y: 292 } }
@@ -928,12 +920,7 @@ var LevelsTemp = [
         levers: [
             { x: -10, y: -10, state: 0, wall: { x: 90, y: 420, width: 30, height: 30 } }
         ],
-        movableWalls: [
-            { x: 200, y: 40, id: 0 },
-            { x: 400, y: 30, id: 0 },
-            { x: 400, y: 60, id: 1 },
-            { x: 200, y: 80, id: 2 }
-        ],
+        movableWalls: [],
         exit: [ 
             { x: 390, y: 0, width: 30, height: 2, goTo: 5, showsAt: { x: 403, y: 450 } },
             { x: 0, y: 60, width: 2, height: 300, goTo: 8, showsAt: { x: 610, y: 190 } },
@@ -1028,10 +1015,7 @@ var LevelsTemp = [
                     { x: 390, y: 90, width: 30, height: 30 }
                 ], otherActions: 7 }
         ],
-        movableWalls: [
-            { x: 390, y: 60, id: 0 },
-            { x: 430, y: 60, id: 1 }
-        ],
+        movableWalls: [],
         exit: [ 
             { x: 0, y: 60, width: 2, height: 390, goTo: 7, showsAt: { x: 611, y: 250 } },
             { x: 628, y: 240, width: 2, height: 210, goTo: 10, showsAt: { x: 15, y: 292 } }

@@ -9,12 +9,10 @@ var gameController = {
         if (GLOBAL.currentLevel == 10) {
             jsGFwk.ResourceManager.sounds.ambient_night.audio.play();
             jsGFwk.ResourceManager.sounds.ambient_cave.audio.pause();
-        }
-        else {
+        } else {
             jsGFwk.ResourceManager.sounds.ambient_night.audio.pause();
             jsGFwk.ResourceManager.sounds.ambient_cave.audio.play();
         }
-            
     
         var levelToCreate = Levels[GLOBAL.currentLevel];
         

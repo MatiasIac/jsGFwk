@@ -14,6 +14,10 @@ var hud = {
 	init: function () {
 		var self = this;
 
+		jsGFwk.ResourceManager.sounds.ambient_cave.audio.pause();
+		jsGFwk.ResourceManager.sounds.ambient_cave.audio.currentTime = 0;
+		jsGFwk.ResourceManager.sounds.ambient_night.audio.pause();
+		jsGFwk.ResourceManager.sounds.ambient_night.audio.currentTime = 0;
 		jsGFwk.ResourceManager.sounds.ingamemusic.audio.pause();
 		jsGFwk.ResourceManager.sounds.ingamemusic.audio.currentTime = 0;
 
