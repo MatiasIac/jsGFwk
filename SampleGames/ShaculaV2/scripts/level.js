@@ -732,7 +732,7 @@ var LevelsTemp = [
             {"x":540,"y":360,"width":30,"height":30}
         ],
         spikes: [
-            { x: 60, y: 413, delay: 1.5 },
+            //{ x: 60, y: 413, delay: 1.5 },
             { x: 90, y: 413, delay: 1.5 },
             { x: 120, y: 413, delay: 1.5 },
             { x: 150, y: 413, delay: 1.5 },
@@ -752,6 +752,10 @@ var LevelsTemp = [
         ],
         blood: [
             { x: 510, y: 380, isActive: true }
+        ],
+        saws: [
+            { x: 290, y: 230, type: 'circular', speed: 0.02, range: 115 },
+            { x: 300, y: 80, type: 'linear', speed: 0.03, range: 230 },
         ],
         fallingWalls: [],
         levers: [
