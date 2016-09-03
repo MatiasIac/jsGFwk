@@ -122,7 +122,7 @@ var dracul = {
         
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] || pad.buttonA) && GLOBAL.lightOil > 0) {
             if (this.startFlying && GLOBAL.lightOil>100) {
-                //jsGFwk.ResourceManager.sounds.swoosh.audio.play();
+                jsGFwk.ResourceManager.sounds.torch_wave.audio.play();
                 jsGFwk.ResourceManager.sounds.fly_loop_up.audio.play();
                 jsGFwk.ResourceManager.sounds.fly_loop_down.audio.pause();
                 jsGFwk.ResourceManager.sounds.fly_loop_down.audio.currentTime = 0;
@@ -144,6 +144,7 @@ var dracul = {
                 isFalling = true;
                 
                 //if (!this.startGoingDown) {
+                    
                     jsGFwk.ResourceManager.sounds.fly_loop_down.audio.play();
                     jsGFwk.ResourceManager.sounds.fly_loop_up.audio.pause();
                     jsGFwk.ResourceManager.sounds.fly_loop_up.audio.currentTime = 0;
@@ -153,6 +154,10 @@ var dracul = {
 
             } else {
                 this.graphicPointer = this.isRight ? jsGFwk.Sprites.idleRight : jsGFwk.Sprites.idleLeft;
+                if (jsGFwk.ResourceManager.sounds.fly_loop_down.audio.currentTime !== 0) {
+                  jsGFwk.ResourceManager.sounds.torch_wave.audio.play();
+                }
+                
                 isFalling = false;
 
                 this.startGoingDown = true;
