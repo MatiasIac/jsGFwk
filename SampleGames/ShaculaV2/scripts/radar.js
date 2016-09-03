@@ -39,7 +39,7 @@ var Radar = {
             }); 
         });
 
-        jsGFwk.ResourceManager.sounds.radar.audio.play();
+        //jsGFwk.ResourceManager.sounds.radar.audio.play();
 
         this.isActive = true;
     },

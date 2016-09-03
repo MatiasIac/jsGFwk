@@ -14,11 +14,13 @@ var hud = {
 	init: function () {
 		var self = this;
 
+<<<<<<< Updated upstream
 		jsGFwk.ResourceManager.sounds.ingamemusic.audio.pause();
 		jsGFwk.ResourceManager.sounds.ingamemusic.audio.currentTime = 0;
 		jsGFwk.ResourceManager.sounds.hurt.audio.pause();
+=======
+>>>>>>> Stashed changes
 		jsGFwk.ResourceManager.sounds.lever.audio.pause();
-		jsGFwk.ResourceManager.sounds.batwings.audio.pause();
 		jsGFwk.ResourceManager.sounds.swoosh.audio.pause();
 		jsGFwk.ResourceManager.sounds.portal.audio.pause();
 
