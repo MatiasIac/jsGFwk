@@ -78,6 +78,7 @@ var dracul = {
         
             result.x = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].axes[0];
             result.buttonA = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[0].pressed;
+            result.buttonY = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[1].pressed;
             result.buttonX = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[2].pressed;
             result.buttonB = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[6].pressed;
             result.trigger1 = jsGFwk.Gamepad.pads[jsGFwk.Gamepad.PADTYPE.PAD1].buttons[7].pressed;
@@ -101,10 +102,10 @@ var dracul = {
             Light.drop(this.isRight ? 10 : -10);
         }*/
 
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] && !Radar.isActive) {
+        if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.S] || pad.buttonY) && !Radar.isActive) {
             Radar.x = Light.x;
             Radar.y = Light.y;
-            Radar.isActive = true;
+            Radar.trigger();
         }
         
         if ((jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.SPACEBAR] || pad.buttonB) && GLOBAL.lightOil > 0) {

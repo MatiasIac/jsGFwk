@@ -10,6 +10,8 @@ var Intro = {
 	init: function () {
         var self = this;
 
+        this.timerAcc = 0;
+
         this.mouseId = jsGFwk.IO.mouse.registerClick(function (coord) {
             self.startGame.call(self);
 		});
@@ -44,23 +46,17 @@ var Intro = {
 	update: function (delta) {
         this.timerAcc += delta;
 
+        if (jsGFwk.Gamepad.pads[GLOBAL.selectedPad] !== undefined &&
+			jsGFwk.Gamepad.pads[GLOBAL.selectedPad].buttons[0].pressed &&
+			this.timerAcc > 1.5) {
+			this.startGame();
+		}
+
         if (this.timerAcc > 5) {
             this.startGame();
         }
     },
 	draw: function (context) {
-        context.fillStyle = "black";
-        context.fillRect(0, 0, 630, 480);
-
-		context.fillStyle = "red";
-        context.font = "20pt zxBold";
-        context.textAlign = 'center';
-        context.fillText("Was a satisfying night.", this.x, this.y);
-        context.fillText("A party night. A bloody night.", this.x, this.y + 20);
-        context.fillText("The night Di lost the castle key.", this.x, this.y + 40);
-
-        context.font = "30pt zxBold";
-        context.fillText("...the sun is close,", this.x, this.y + 80);
-        context.fillText("the coffin is life...", this.x, this.y + 100);
+        context.drawImage(jsGFwk.ResourceManager.graphics['intro'].image, 0, 0);
 	}
 };

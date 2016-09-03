@@ -65,6 +65,7 @@
 		
 		jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/main.png" });
 		jsGFwk.ResourceManager.addGraphic({ name: "all", source: "images/all.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "intro", source: "images/introbackground.png" });
         
         for (var i = 0; i < Levels.length; i++) {
             jsGFwk.ResourceManager.addGraphic({ name: "level" + i, source: "images/level" + i + ".png" });
@@ -262,6 +263,14 @@
 					jsGFwk.Sprites.createSprite({id: "wall3", 
 						graphic: jsGFwk.ResourceManager.graphics.all.image,
 						top: 102, left: 107, width: 30, height: 30});
+
+					jsGFwk.Sprites.createSprite({id: "threat", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 83, left: 681, width: 8, height: 14});
+
+					/*jsGFwk.Sprites.createSprite({id: "threat", 
+						graphic: jsGFwk.ResourceManager.graphics.all.image,
+						top: 73, left: 626, width: 37, height: 37});*/
 					
                     jsGFwk.Sprites.createSpriteCollection("obstacle", jsGFwk.ResourceManager.graphics.all.image, 
 						[{left: 93, top: 157, width: 30, height: 30},
