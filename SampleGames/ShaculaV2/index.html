@@ -106,6 +106,14 @@
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/di_ingame_music_loop.ogg" };
 		jsGFwk.ResourceManager.addSound({ name: "ingamemusic", sources: sound});
+                
+                sound = {};
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/cave_loop.ogg" };
+		jsGFwk.ResourceManager.addSound({ name: "ambient_cave", sources: sound});
+                
+                sound = {};
+		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/night_loop.ogg" };
+		jsGFwk.ResourceManager.addSound({ name: "ambient_night", sources: sound});
 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/portal.ogg" };
@@ -347,6 +355,11 @@
                     
 					jsGFwk.ResourceManager.sounds.ingamemusic.audio.volume = 0.2;
 					jsGFwk.ResourceManager.sounds.ingamemusic.audio.loop = true;
+                                        
+                                        jsGFwk.ResourceManager.sounds.ambient_cave.audio.volume = 0.1;
+					jsGFwk.ResourceManager.sounds.ambient_cave.audio.loop = true;
+                                        jsGFwk.ResourceManager.sounds.ambient_night.audio.volume = 0.1;
+					jsGFwk.ResourceManager.sounds.ambient_night.audio.loop = true;
 
 					jsGFwk.ResourceManager.sounds.fly_loop_up.audio.volume = 0.1;
                                         jsGFwk.ResourceManager.sounds.fly_loop_up.audio.loop = false;
