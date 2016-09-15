@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>jsGame v2</title>
+        <script src="src/jsGame.js"></script>
+    </head>
+    <body>
+    </body>
+    <script>
+        var myGame = jsGame.New();
+
+        myGame.sprite.New({
+            name: 'bla',
+            visible: true,
+            update: function (delta) {
+                this.x++;
+            }
+        });
+
+        myGame.start();
+    </script>
+</html>
