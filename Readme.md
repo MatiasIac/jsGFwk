@@ -90,3 +90,27 @@ var cube = jsGame.GameObject.extend({
 The "init" function is called each time the game object is added into the context.
 In this case, when a scene take action in the game.
 Use this function to set any value that you will use in this game object.
+
+### Canvas size and clear color
+
+Each time you create a new game, a new canvas is added into the body page.
+The default values for the canvas are: width = 640, height = 480, background color = black
+You can customize all these properties when you create your game.
+
+```javascript
+var myGame = new jsGame.Game(300, 300, 'red');
+```
+
+Also, a precreated canvas can be used instead the created by the framework.
+
+```html
+<body>
+    <canvas id='myCanvas' width="100" height="100"></canvas>
+</body>
+```
+
+And in your code
+
+```javascript
+var myGame = new jsGame.Game(undefined, undefined, 'blue', 'myCanvas');
+```

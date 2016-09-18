@@ -4,9 +4,10 @@
         <script src="build/jsGame.js"></script>
     </head>
     <body>
+        <canvas id='myCanvas' width="100" height="100"></canvas>
     </body>
     <script>
-        var myGame = new jsGame.Game();
+        var myGame = new jsGame.Game(undefined, undefined, 'blue', 'myCanvas');
 
         var cube = jsGame.GameObject.extend({
             name: 'cube',
@@ -23,7 +24,22 @@
             }
         });
 
-        myGame.scene.add('main', [cube]);
+        var cube2 = jsGame.GameObject.extend({
+            name: 'cube2',
+            visible: true,
+            init: function () {
+                this.data = { x: 10, y: 100 };
+            },
+            update: function (delta) {
+                this.data.x += 1.5;
+            },
+            draw: function (ctx) {
+                ctx.fillStyle = 'green';
+                ctx.fillRect(this.data.x, this.data.y, 20, 20);
+            }
+        });
+
+        myGame.scene.add('main', [cube, cube2]);
         myGame.scene.enable('main');
 
         myGame.start();
