@@ -12,7 +12,12 @@
             name: 'cube',
             visible: true,
             init: function () {
-                this.data = { x: 10, y: 10 };
+                this.data = { 
+                    x: 10, 
+                    y: 10,
+                    fps: 0,
+                    acc: 0 
+                };
             },
             update: function (delta) {
                 if (myGame.keyboard.isPressed(jsGame.Constants.Keys.A)) {
@@ -37,7 +42,7 @@
             }
         });
 
-        myGame.scene.add('main', [cube]);
+        myGame.scene.add('main', [cube, jsGame.Debugger.FPS()]);
         myGame.scene.enable('main');
 
         myGame.start();

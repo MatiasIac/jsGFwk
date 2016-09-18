@@ -58,6 +58,7 @@ var jsGame;
                                 window.setTimeout(_renderCallback, 1000 / 30);
                             };
                     })();
+                    this._lastTime = new Date().getTime();
                     window.requestAnimFrame(_renderCallback);
                 }
                 this._isInitialized = true;
@@ -216,6 +217,46 @@ var jsGame;
         return Keyboard;
     }());
     jsGame.Keyboard = Keyboard;
+})(jsGame || (jsGame = {}));
+var jsGame;
+(function (jsGame) {
+    var Debugger = (function () {
+        function Debugger() {
+        }
+        Debugger.FPS = function (x, y) {
+            if (x === void 0) { x = 10; }
+            if (y === void 0) { y = 10; }
+            return jsGame.GameObject.extend({
+                name: "debugger_fps",
+                visible: true,
+                init: function () {
+                    this.bag = {
+                        deltaAccumulator: 0,
+                        maxFps: 0,
+                        countFps: 0,
+                        x: x,
+                        y: y
+                    };
+                },
+                update: function (delta) {
+                    this.bag.deltaAccumulator += delta;
+                    this.bag.countFps++;
+                    if (this.bag.deltaAccumulator > 1) {
+                        this.bag.deltaAccumulator = 0;
+                        this.bag.maxFps = Math.max(this.bag.countFps, this.bag.maxFps);
+                        this.bag.countFps = 0;
+                    }
+                },
+                draw: function (ctx) {
+                    ctx.fillStyle = 'green';
+                    ctx.font = '10px Arial';
+                    ctx.fillText('FPS: ' + this.bag.maxFps, this.bag.x, this.bag.y);
+                }
+            });
+        };
+        return Debugger;
+    }());
+    jsGame.Debugger = Debugger;
 })(jsGame || (jsGame = {}));
 var jsGame;
 (function (jsGame) {

@@ -82,6 +82,7 @@ namespace jsGame {
                         };
                 })();
 
+                this._lastTime = new Date().getTime();
                 window.requestAnimFrame(_renderCallback);
             }
 

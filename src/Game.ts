@@ -2,6 +2,7 @@
 /// <reference path="GameObjectHandler.ts" />
 /// <reference path="Scene.ts" />
 /// <reference path="Keyboard.ts" />
+/// <reference path="Debugger.ts" />
 
 namespace jsGame {
     export class Game {
