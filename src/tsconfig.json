@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outFile": "../build/jsGame.js",
+        "sourceMap": false
+    },
+    "files": [
+        "Game.ts",
+        "Sprite.ts"
+    ]
+}
