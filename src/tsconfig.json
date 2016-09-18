@@ -14,6 +14,7 @@
         "GameObjectHandler.ts",
         "Scene.ts",
         "GameObject.ts",
-        "Keyboard.ts"
+        "Keyboard.ts",
+        "Debugger.ts"
     ]
 }
