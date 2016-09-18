@@ -4,10 +4,9 @@
         <script src="build/jsGame.js"></script>
     </head>
     <body>
-        <canvas id='myCanvas' width="100" height="100"></canvas>
     </body>
     <script>
-        var myGame = new jsGame.Game(undefined, undefined, 'blue', 'myCanvas');
+        var myGame = new jsGame.Game();
 
         var cube = jsGame.GameObject.extend({
             name: 'cube',
@@ -16,30 +15,29 @@
                 this.data = { x: 10, y: 10 };
             },
             update: function (delta) {
-                this.data.x += 1;
+                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.A)) {
+                    this.data.x--;
+                }
+
+                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.S)) {
+                    this.data.y++;
+                }
+
+                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.D)) {
+                    this.data.x++;
+                }
+
+                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.W)) {
+                    this.data.y--;
+                }
             },
             draw: function (ctx) {
                 ctx.fillStyle = 'red';
-                ctx.fillRect(this.data.x, 50, 20, 20);
-            }
-        });
-
-        var cube2 = jsGame.GameObject.extend({
-            name: 'cube2',
-            visible: true,
-            init: function () {
-                this.data = { x: 10, y: 100 };
-            },
-            update: function (delta) {
-                this.data.x += 1.5;
-            },
-            draw: function (ctx) {
-                ctx.fillStyle = 'green';
                 ctx.fillRect(this.data.x, this.data.y, 20, 20);
             }
         });
 
-        myGame.scene.add('main', [cube, cube2]);
+        myGame.scene.add('main', [cube]);
         myGame.scene.enable('main');
 
         myGame.start();

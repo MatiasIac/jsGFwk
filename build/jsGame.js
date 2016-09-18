@@ -177,6 +177,48 @@ var jsGame;
 })(jsGame || (jsGame = {}));
 var jsGame;
 (function (jsGame) {
+    var Constants;
+    (function (Constants) {
+        (function (Keys) {
+            Keys[Keys["A"] = 65] = "A";
+            Keys[Keys["S"] = 83] = "S";
+            Keys[Keys["D"] = 68] = "D";
+            Keys[Keys["W"] = 87] = "W";
+        })(Constants.Keys || (Constants.Keys = {}));
+        var Keys = Constants.Keys;
+    })(Constants = jsGame.Constants || (jsGame.Constants = {}));
+})(jsGame || (jsGame = {}));
+var jsGame;
+(function (jsGame) {
+    var Keyboard = (function () {
+        function Keyboard(fwk) {
+            this._pressedKeys = [];
+            this._keyPressed = function (e) {
+                this._pressedKeys[e.which] = true;
+            };
+            this._keyReleased = function (e) {
+                delete this._pressedKeys[e.which];
+            };
+            this.isPressed = function (key) {
+                return this._pressedKeys[key] !== undefined;
+            };
+            this._init = function () {
+                var self = this;
+                document.addEventListener("keydown", function (e) {
+                    self._keyPressed.call(self, e);
+                }, false);
+                document.addEventListener("keyup", function (e) {
+                    self._keyReleased.call(self, e);
+                }, false);
+            };
+            this._fwk = fwk;
+        }
+        return Keyboard;
+    }());
+    jsGame.Keyboard = Keyboard;
+})(jsGame || (jsGame = {}));
+var jsGame;
+(function (jsGame) {
     var Game = (function () {
         function Game(width, height, clearColor, canvas) {
             this._configuration = {
@@ -188,6 +230,7 @@ var jsGame;
             };
             this.start = function () {
                 this._engine._init();
+                this.keyboard._init();
             };
             this._configuration.width = width || 640;
             this._configuration.height = height || 480;
@@ -196,6 +239,7 @@ var jsGame;
             this._configuration.existingCanvas = canvas || '';
             this._gameObject = new jsGame.GameObjectHandler(this);
             this._engine = new jsGame.Engine(this);
+            this.keyboard = new jsGame.Keyboard(this);
             this.scene = new jsGame.Scene(this);
         }
         return Game;

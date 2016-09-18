@@ -13,6 +13,7 @@
         "Sprite.ts",
         "GameObjectHandler.ts",
         "Scene.ts",
-        "GameObject.ts"
+        "GameObject.ts",
+        "Keyboard.ts"
     ]
 }

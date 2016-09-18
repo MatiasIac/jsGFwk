@@ -1,6 +1,7 @@
 /// <reference path="Engine.ts" />
 /// <reference path="GameObjectHandler.ts" />
 /// <reference path="Scene.ts" />
+/// <reference path="Keyboard.ts" />
 
 namespace jsGame {
     export class Game {
@@ -14,7 +15,8 @@ namespace jsGame {
 
         _engine: Engine;
         _gameObject: GameObjectHandler;
-
+        
+        keyboard: Keyboard;
         scene: Scene;
         sprite: Object;
         camera: Object;
@@ -31,11 +33,13 @@ namespace jsGame {
 
             this._gameObject = new GameObjectHandler(this);
             this._engine = new Engine(this);
+            this.keyboard = new Keyboard(this);
             this.scene = new Scene(this);
         }
 
         start = function () {
             this._engine._init();
+            this.keyboard._init();
         };
     }
 }

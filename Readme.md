@@ -114,3 +114,37 @@ And in your code
 ```javascript
 var myGame = new jsGame.Game(undefined, undefined, 'blue', 'myCanvas');
 ```
+
+### Capturing the keyboard
+
+jsGame allows you to capture inputs from many different sources, including keyboard, mouse,
+gamepads and touchscreens.
+
+The keyboard is always alive and running in background. This means if the playes has a 
+keyboard, the framework will capture the keys even if we don't want it to use them.
+
+For a easier keyboard handling, the framework will expose an enumeration with all available
+keys, and a safe checker to know if a particular key is pressed or not.
+
+To capture and interact with the keyboard, add the keyboard conditions into the "update" function
+of your game object.
+
+```javascript
+update: function (delta) {
+    if (myGame.keyboard.isPressed(jsGame.Constants.Keys.A)) {
+        this.data.x--;
+    }
+
+    if (myGame.keyboard.isPressed(jsGame.Constants.Keys.S)) {
+        this.data.y++;
+    }
+
+    if (myGame.keyboard.isPressed(jsGame.Constants.Keys.D)) {
+        this.data.x++;
+    }
+
+    if (myGame.keyboard.isPressed(jsGame.Constants.Keys.W)) {
+        this.data.y--;
+    }
+}
+```
