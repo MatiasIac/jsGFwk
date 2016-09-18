@@ -10,6 +10,8 @@
     "files": [
         "Game.ts",
         "Engine.ts",
-        "Sprite.ts"
+        "Sprite.ts",
+        "GameObjectHandler.ts",
+        "Scene.ts"
     ]
 }

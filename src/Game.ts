@@ -1,5 +1,6 @@
 /// <reference path="Engine.ts" />
-/// <reference path="Sprite.ts" />
+/// <reference path="GameObjectHandler.ts" />
+/// <reference path="Scene.ts" />
 
 namespace jsGame {
     export class Game {
@@ -12,7 +13,9 @@ namespace jsGame {
         };
 
         _engine: Engine;
+        _gameObject: GameObjectHandler;
 
+        scene: Scene;
         sprite: Object;
         camera: Object;
         debugger: Object;
@@ -26,7 +29,9 @@ namespace jsGame {
             this._configuration.useExistingCanvas = typeof canvas !== 'undefined';
             this._configuration.existingCanvas = canvas || '';
 
+            this._gameObject = new GameObjectHandler(this);
             this._engine = new Engine(this);
+            this.scene = new Scene(this);
         }
 
         start = function () {

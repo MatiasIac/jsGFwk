@@ -50,9 +50,22 @@ namespace jsGame {
                     self._bufferContext.fillRect(0, 0, self._fwk._configuration.width, self._fwk._configuration.height);
                     self._bufferContext.restore();
 
-                    /*
-                        draw here all the objects
-                    */
+                    self._fwk._gameObject.processObjects();
+                    var currentObjects = self._fwk._gameObject.getActiveObjects();
+
+                    for (var i = 0; i < currentObjects.length; i++) {
+                        var o = currentObjects[i];
+
+                        if (o.update !== undefined) { 
+                            o.update.call(o, delta);
+                        }
+
+                        if (o !== undefined && (o.draw && o.visible)) {
+                            self._bufferContext.save();
+                            o.draw.call(o, self._bufferContext);
+                            self._bufferContext.restore();
+                        }
+                    }
 
                     self._2dContext.drawImage(self._bufferCanvas, 0, 0);
                     window.requestAnimFrame(_renderCallback);

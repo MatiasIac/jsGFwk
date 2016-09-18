@@ -32,6 +32,19 @@ var jsGame;
                         self._bufferContext.fillStyle = self._fwk._configuration.clearColor;
                         self._bufferContext.fillRect(0, 0, self._fwk._configuration.width, self._fwk._configuration.height);
                         self._bufferContext.restore();
+                        self._fwk._gameObject.processObjects();
+                        var currentObjects = self._fwk._gameObject.getActiveObjects();
+                        for (var i = 0; i < currentObjects.length; i++) {
+                            var o = currentObjects[i];
+                            if (o.update !== undefined) {
+                                o.update.call(o, delta);
+                            }
+                            if (o !== undefined && (o.draw && o.visible)) {
+                                self._bufferContext.save();
+                                o.draw.call(o, self._bufferContext);
+                                self._bufferContext.restore();
+                            }
+                        }
                         self._2dContext.drawImage(self._bufferCanvas, 0, 0);
                         window.requestAnimFrame(_renderCallback);
                     };
@@ -57,13 +70,73 @@ var jsGame;
 })(jsGame || (jsGame = {}));
 var jsGame;
 (function (jsGame) {
-    var Sprite = (function () {
-        function Sprite() {
+    var GameObjectHandler = (function () {
+        function GameObjectHandler(fwk) {
+            this._activeObjects = [];
+            this._objectsToAdd = [];
+            this._objectsToRemove = [];
+            this.add = function (gameObject) {
+                this._objectsToAdd.push(gameObject);
+            };
+            this.remove = function (gameObject) {
+                this._objectsToRemove.push(gameObject);
+            };
+            this.processObjects = function () {
+                for (var i = 0; i < this._objectsToRemove.length; i++) {
+                    for (var j = 0; j < this._activeObjects.length; j++) {
+                        if (this._objectsToRemove[i].name === this._activeObjects.name) {
+                            this._activeObjects.splice(j, 1);
+                            break;
+                        }
+                    }
+                }
+                this._objectsToRemove = [];
+                for (var i = 0; i < this._objectsToAdd.length; i++) {
+                    this._activeObjects.push(this._objectsToAdd[i]);
+                }
+                this._objectsToAdd = [];
+            };
+            this.getActiveObjects = function () {
+                return this._activeObjects;
+            };
+            this._fwk = fwk;
         }
-        return Sprite;
+        return GameObjectHandler;
     }());
-    jsGame.Sprite = Sprite;
-    ;
+    jsGame.GameObjectHandler = GameObjectHandler;
+})(jsGame || (jsGame = {}));
+var jsGame;
+(function (jsGame) {
+    var Scene = (function () {
+        function Scene(fwk) {
+            this._scenes = {};
+            this.add = function (sceneName, gameObjects) {
+                this._scenes[sceneName] = gameObjects;
+            };
+            this.enable = function (sceneName) {
+                this.disable(this._activeScene);
+                var selectedScene = this._scenes[sceneName];
+                if (typeof selectedScene === 'undefined') {
+                    return;
+                }
+                for (var i = 0; i < selectedScene.length; this._fwk._gameObject.add(selectedScene[i++]))
+                    ;
+                this._activeScene = sceneName;
+            };
+            this.disable = function (sceneName) {
+                var selectedScene = this._scenes[sceneName];
+                if (typeof selectedScene === 'undefined') {
+                    return;
+                }
+                for (var i = 0; i < selectedScene.length; this._fwk._gameObject.remove(selectedScene[i++]))
+                    ;
+                this._activeScene = undefined;
+            };
+            this._fwk = fwk;
+        }
+        return Scene;
+    }());
+    jsGame.Scene = Scene;
 })(jsGame || (jsGame = {}));
 var jsGame;
 (function (jsGame) {
@@ -84,9 +157,21 @@ var jsGame;
             this._configuration.clearColor = clearColor || 'black';
             this._configuration.useExistingCanvas = typeof canvas !== 'undefined';
             this._configuration.existingCanvas = canvas || '';
+            this._gameObject = new jsGame.GameObjectHandler(this);
             this._engine = new jsGame.Engine(this);
+            this.scene = new jsGame.Scene(this);
         }
         return Game;
     }());
     jsGame.Game = Game;
+})(jsGame || (jsGame = {}));
+var jsGame;
+(function (jsGame) {
+    var Sprite = (function () {
+        function Sprite() {
+        }
+        return Sprite;
+    }());
+    jsGame.Sprite = Sprite;
+    ;
 })(jsGame || (jsGame = {}));
