@@ -70,6 +70,40 @@ var jsGame;
 })(jsGame || (jsGame = {}));
 var jsGame;
 (function (jsGame) {
+    var Objects;
+    (function (Objects) {
+        var AnimatedGameObject = (function () {
+            function AnimatedGameObject(g) {
+                this.update = function (delta) { };
+                this.draw = function (ctx) { };
+                this.name = (g.name === undefined || typeof g.name !== 'string') ?
+                    (Math.round((Math.random() * 1000) + 1000)) : g.name;
+                this.visible = (g.visible === undefined || typeof g.visible !== 'boolean') ?
+                    false : g.visible;
+                this.update = g.update || undefined;
+                this.draw = g.draw || undefined;
+            }
+            return AnimatedGameObject;
+        }());
+        Objects.AnimatedGameObject = AnimatedGameObject;
+    })(Objects = jsGame.Objects || (jsGame.Objects = {}));
+})(jsGame || (jsGame = {}));
+var jsGame;
+(function (jsGame) {
+    var GameObject = (function () {
+        function GameObject() {
+            this.visible = true;
+            this.update = function (delta) { };
+        }
+        GameObject.extend = function (gameObject) {
+            return new jsGame.Objects.AnimatedGameObject(gameObject);
+        };
+        return GameObject;
+    }());
+    jsGame.GameObject = GameObject;
+})(jsGame || (jsGame = {}));
+var jsGame;
+(function (jsGame) {
     var GameObjectHandler = (function () {
         function GameObjectHandler(fwk) {
             this._activeObjects = [];

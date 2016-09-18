@@ -12,6 +12,7 @@
         "Engine.ts",
         "Sprite.ts",
         "GameObjectHandler.ts",
-        "Scene.ts"
+        "Scene.ts",
+        "GameObject.ts"
     ]
 }

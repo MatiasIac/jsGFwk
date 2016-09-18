@@ -8,13 +8,17 @@
     <script>
         var myGame = new jsGame.Game();
 
-        /*myGame.sprite.New({
-            name: 'bla',
+        var cube = jsGame.GameObject.extend({
+            name: 'cube',
             visible: true,
-            update: function (delta) {
-                this.x++;
+            draw: function (ctx) {
+                ctx.fillStyle = 'red';
+                ctx.fillRect(50, 50, 20, 20);
             }
-        });*/
+        });
+
+        myGame.scene.add('main', [cube]);
+        myGame.scene.enable('main');
 
         myGame.start();
     </script>

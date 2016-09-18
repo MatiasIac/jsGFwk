@@ -27,3 +27,39 @@ var myGame = new jsGame.Game();
 //game object goes here
 myGame.start();
 ```
+
+### Adding a game object into the game
+
+In jsGame framework all is about scenes. A scene will help you to handle transitions between
+different sections of the game (Loading screen, main menu, level 1, level n, end game, etc.).
+With this in mind, a scene will hold all those game objects that could be part of the scene.
+
+Also, any game object must extend the functionality of the game object base before been added
+into the game.
+
+```javascript
+var myGame = new jsGame.Game();
+
+//a game object is created
+//name is a required property and must be unique.
+//visible will let the framework know if the object must be renderer or not
+//draw must be used to draw the object on the screen using primitive html5 directives
+//update will contain all the logic for this game object 
+var cube = jsGame.GameObject.extend({
+    name: 'cube',
+    visible: true,
+    draw: function (ctx) {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(50, 50, 20, 20);
+    }
+});
+
+//the main scene is created and in it, the cube
+myGame.scene.add('main', [cube]);
+
+//the main scene is enabled
+myGame.scene.enable('main');
+
+//the game is started
+myGame.start();
+```

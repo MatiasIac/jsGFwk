@@ -1,22 +1,23 @@
 /// <reference path="Game.ts" />
+/// <reference path="GameObject.ts" />
 
 namespace jsGame {
     export class GameObjectHandler {
 
         _fwk: Game;
-        _activeObjects: Array<Object> = [];
-        _objectsToAdd: Array<Object> = [];
-        _objectsToRemove: Array<Object> = [];
+        _activeObjects: Array<IGameObject> = [];
+        _objectsToAdd: Array<IGameObject> = [];
+        _objectsToRemove: Array<IGameObject> = [];
 
         constructor(fwk: Game) {
             this._fwk = fwk;
         }
 
-        add = function (gameObject: Object) {
+        add = function (gameObject: IGameObject) {
             this._objectsToAdd.push(gameObject);
         };
 
-        remove = function (gameObject: Object) {
+        remove = function (gameObject: IGameObject) {
             this._objectsToRemove.push(gameObject);
         };
 
@@ -39,7 +40,7 @@ namespace jsGame {
             this._objectsToAdd = [];
         };
 
-        getActiveObjects = function () : Array<Object> {
+        getActiveObjects = function () : Array<IGameObject> {
             return this._activeObjects;
         };
 
