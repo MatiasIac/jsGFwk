@@ -63,3 +63,30 @@ myGame.scene.enable('main');
 //the game is started
 myGame.start();
 ```
+
+### Moving a game object
+
+Move a game object into the screen will depends of how you draw and update it between frames
+Having the same "cube" object, you can add a couple of functions and behaviors to move the cube
+through the sceen.
+
+```javascript
+var cube = jsGame.GameObject.extend({
+    name: 'cube',
+    visible: true,
+    init: function () {
+        this.data = { x: 10, y: 10 };
+    },
+    update: function (delta) {
+        this.data.x += 1;
+    },
+    draw: function (ctx) {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(this.data.x, 50, 20, 20);
+    }
+});
+```
+
+The "init" function is called each time the game object is added into the context.
+In this case, when a scene take action in the game.
+Use this function to set any value that you will use in this game object.

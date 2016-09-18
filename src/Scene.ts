@@ -23,7 +23,9 @@ namespace jsGame {
 
             for (var i = 0; 
                 i < selectedScene.length; 
-                this._fwk._gameObject.add(selectedScene[i++]));
+                this._fwk._gameObject.add(selectedScene[i++]),
+                    selectedScene[i-1].init()
+                );
 
             this._activeScene = sceneName;
         };

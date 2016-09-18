@@ -76,12 +76,14 @@ var jsGame;
             function AnimatedGameObject(g) {
                 this.update = function (delta) { };
                 this.draw = function (ctx) { };
+                this.init = function () { };
                 this.name = (g.name === undefined || typeof g.name !== 'string') ?
                     (Math.round((Math.random() * 1000) + 1000)) : g.name;
                 this.visible = (g.visible === undefined || typeof g.visible !== 'boolean') ?
                     false : g.visible;
                 this.update = g.update || undefined;
                 this.draw = g.draw || undefined;
+                this.init = g.init || this.init;
             }
             return AnimatedGameObject;
         }());
@@ -153,7 +155,8 @@ var jsGame;
                 if (typeof selectedScene === 'undefined') {
                     return;
                 }
-                for (var i = 0; i < selectedScene.length; this._fwk._gameObject.add(selectedScene[i++]))
+                for (var i = 0; i < selectedScene.length; this._fwk._gameObject.add(selectedScene[i++]),
+                    selectedScene[i - 1].init())
                     ;
                 this._activeScene = sceneName;
             };

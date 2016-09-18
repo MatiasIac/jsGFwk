@@ -11,9 +11,15 @@
         var cube = jsGame.GameObject.extend({
             name: 'cube',
             visible: true,
+            init: function () {
+                this.data = { x: 10, y: 10 };
+            },
+            update: function (delta) {
+                this.data.x += 1;
+            },
             draw: function (ctx) {
                 ctx.fillStyle = 'red';
-                ctx.fillRect(50, 50, 20, 20);
+                ctx.fillRect(this.data.x, 50, 20, 20);
             }
         });
 

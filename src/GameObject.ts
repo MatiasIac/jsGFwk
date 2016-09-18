@@ -3,6 +3,7 @@
 interface IGameObject {
     name: string,
     visible: boolean,
+    init() : void,
     update(delta: number) : void,
     draw(ctx: any) : void
 }
@@ -22,10 +23,12 @@ namespace jsGame.Objects {
             
             this.update = g.update || undefined;
             this.draw = g.draw || undefined;
+            this.init = g.init || this.init;
         }
 
         update = function (delta: number) { };
         draw = function (ctx: any) { };
+        init = function () { };
     }
 }
 
