@@ -74,7 +74,7 @@ var jsGame;
     var Objects;
     (function (Objects) {
         var AnimatedGameObject = (function () {
-            function AnimatedGameObject(g) {
+            function AnimatedGameObject(g, p) {
                 this.update = function (delta) { };
                 this.draw = function (ctx) { };
                 this.init = function () { };
@@ -85,6 +85,7 @@ var jsGame;
                 this.update = g.update || undefined;
                 this.draw = g.draw || undefined;
                 this.init = g.init || this.init;
+                this._parameters = p || undefined;
             }
             return AnimatedGameObject;
         }());
@@ -95,11 +96,9 @@ var jsGame;
 (function (jsGame) {
     var GameObject = (function () {
         function GameObject() {
-            this.visible = true;
-            this.update = function (delta) { };
         }
-        GameObject.extend = function (gameObject) {
-            return new jsGame.Objects.AnimatedGameObject(gameObject);
+        GameObject.extend = function (gameObject, parameters) {
+            return new jsGame.Objects.AnimatedGameObject(gameObject, parameters);
         };
         return GameObject;
     }());
@@ -157,7 +156,7 @@ var jsGame;
                     return;
                 }
                 for (var i = 0; i < selectedScene.length; this._fwk._gameObject.add(selectedScene[i++]),
-                    selectedScene[i - 1].init())
+                    selectedScene[i - 1].init(selectedScene[i - 1]._parameters))
                     ;
                 this._activeScene = sceneName;
             };
@@ -234,8 +233,8 @@ var jsGame;
                         deltaAccumulator: 0,
                         maxFps: 0,
                         countFps: 0,
-                        x: x,
-                        y: y
+                        x: 10,
+                        y: 10
                     };
                 },
                 update: function (delta) {
@@ -252,7 +251,7 @@ var jsGame;
                     ctx.font = '10px Arial';
                     ctx.fillText('FPS: ' + this.bag.maxFps, this.bag.x, this.bag.y);
                 }
-            });
+            }, { x: x, y: y });
         };
         return Debugger;
     }());

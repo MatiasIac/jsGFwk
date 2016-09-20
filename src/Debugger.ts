@@ -3,6 +3,8 @@
 namespace jsGame {
     export class Debugger {
 
+        constructor() { }
+
         static FPS = function (x: number = 10, y: number = 10) : IGameObject {
             return jsGame.GameObject.extend({
                 name: "debugger_fps",
@@ -12,8 +14,8 @@ namespace jsGame {
                         deltaAccumulator: 0,
                         maxFps: 0,
                         countFps: 0,
-                        x: x,
-                        y: y
+                        x: 10,
+                        y: 10
                     };
                 },
                 update: function (delta: number) {
@@ -31,7 +33,7 @@ namespace jsGame {
                     ctx.font = '10px Arial';
                     ctx.fillText('FPS: ' + this.bag.maxFps, this.bag.x, this.bag.y);
                 }
-            });
+            }, { x: x, y: y});
         };
     }
 }

@@ -1,6 +1,7 @@
 /// <reference path="GameObjectHandler.ts" />
 
 interface IGameObject {
+    _parameters: any,
     name: string,
     visible: boolean,
     init() : void,
@@ -13,8 +14,9 @@ namespace jsGame.Objects {
 
         name: string;
         visible: boolean;
+        _parameters: any;
 
-        constructor(g: any) {
+        constructor(g: any, p: any) {
             this.name = (g.name === undefined || typeof g.name !== 'string') ? 
                 <string><any>(Math.round((Math.random() * 1000) + 1000)) : g.name;
 
@@ -24,6 +26,7 @@ namespace jsGame.Objects {
             this.update = g.update || undefined;
             this.draw = g.draw || undefined;
             this.init = g.init || this.init;
+            this._parameters = p || undefined;
         }
 
         update = function (delta: number) { };
@@ -34,16 +37,11 @@ namespace jsGame.Objects {
 
 namespace jsGame {
     export class GameObject {
-
-        name: string;
-        visible: boolean = true;
         
         constructor() { }
 
-        update = function (delta: string) { };
-
-        static extend = function (gameObject: any) : IGameObject {
-            return new jsGame.Objects.AnimatedGameObject(gameObject);
+        static extend = function (gameObject: any, parameters: any) : IGameObject {
+            return new jsGame.Objects.AnimatedGameObject(gameObject, parameters);
         };
 
     }
