@@ -42,7 +42,7 @@
 	<script language="Javascript" src="scripts/radar.js"></script>
 	
 	<body style="border:0; margin:0; padding:0;">
-		<canvas id="canvas" width="630" height="480" style="width:100%; height:100%;"></canvas>
+		<canvas id="canvas" width="630" height="480"></canvas>
 		<canvas id="radarCanvas" width="630" height="480" style="display:none;"></canvas>
 	</body>
 	<script>
@@ -65,7 +65,7 @@
 		
 		jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/main.png" });
 		jsGFwk.ResourceManager.addGraphic({ name: "all", source: "images/all.png" });
-		jsGFwk.ResourceManager.addGraphic({ name: "intro", source: "images/introbackground.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "intro", source: "images/introbackgroundkeyboard.png" });
         
         for (var i = 0; i < Levels.length; i++) {
             jsGFwk.ResourceManager.addGraphic({ name: "level" + i, source: "images/level" + i + ".png" });
@@ -77,46 +77,57 @@
 
 		var sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/hurt.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/hurt.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "hurt", sources: sound});
                 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/radar.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/radar.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "radarping", sources: sound});
 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/lever.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/lever.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "lever", sources: sound});
                 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/torch_wave_1.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/torch_wave_1.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "torch_wave", sources: sound});
                 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/bat_wings.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/bat_wings.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "batwings", sources: sound});
                 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/fly_loop_up_long.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/fly_loop_up_long.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "fly_loop_up", sources: sound});
                 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/fly_loop_down_long.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/fly_loop_down_long.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "fly_loop_down", sources: sound});
 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/di_ingame_music_loop.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/di_ingame_music_loop.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "ingamemusic", sources: sound});
                 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/cave_loop.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/cave_loop.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "ambient_cave", sources: sound});
                 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/night_loop.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/night_loop.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "ambient_night", sources: sound});
 
 		sound = {};
 		sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/portal.ogg" };
+		sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/portal.mp3" };
 		jsGFwk.ResourceManager.addSound({ name: "portal", sources: sound});
 		
 		var GLOBAL = {
