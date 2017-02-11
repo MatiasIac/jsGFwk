@@ -1,0 +1,108 @@
+<html>
+    <body>
+        <canvas id="canvas" width="640" height="200"></canvas>
+
+        <script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+        <script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+        <script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+        <script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+        <script language="Javascript" src="../../Framework/jsGFwkGamepad.js"></script>
+        <script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	    <script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+        <script language="Javascript" src="../../Framework/jsGFwkWebStorage.js"></script>
+
+        <script language="Javascript" src="island.js"></script>
+        <script language="Javascript" src="swimer.js"></script>
+        <script language="Javascript" src="meter.js"></script>
+        <script language="Javascript" src="score.js"></script>
+
+        <script language="Javascript">
+        
+            jsGFwk.settings.canvas = "canvas";
+            jsGFwk.settings.clearColor = "#5C94FC";
+            jsGFwk.settings.frameRate = 1000 / 60;
+            
+            jsGFwk.include("FastAnimation");
+            //jsGFwk.include("IO");
+            jsGFwk.include("Collisions");
+            jsGFwk.include("Gamepad");
+            jsGFwk.include("ResourceManager");
+    		jsGFwk.include("Sprites");
+            jsGFwk.include("Fonts");
+
+            jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'zxBold.ttf' });
+
+            jsGFwk.ResourceManager.addGraphic({ name: "goal", source: "island.png" });
+            jsGFwk.ResourceManager.addGraphic({ name: "swimers", source: "swiming.png" });
+            jsGFwk.ResourceManager.addGraphic({ name: "shark", source: "aleta.png" });
+
+		    jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {	
+                jsGFwk.Sprites.createSprite({id: "island", 
+                    graphic: jsGFwk.ResourceManager.graphics.goal.image,
+                    top: 0, left: 0, width: 64, height: 48});
+
+                jsGFwk.Sprites.createSprite({id: "shark", 
+                    graphic: jsGFwk.ResourceManager.graphics.shark.image,
+                    top: 0, left: 0, width: 58, height: 33});
+                
+                jsGFwk.Sprites.createSpriteCollection("swimer", jsGFwk.ResourceManager.graphics.swimers.image, 
+                    [{left: 0, top: 84, width: 33, height: 23},
+                    {left: 33, top: 84, width: 33, height: 23},
+                    {left: 66, top: 84, width: 33, height: 23},
+                    {left: 99, top: 84, width: 33, height: 23}]);
+                jsGFwk.Sprites.swimer.loop(true);
+                
+                jsGFwk.createObject(Island);
+                jsGFwk.createObject(Swimer);
+                jsGFwk.createObject(Meter);
+                jsGFwk.createObject(Score);
+            };
+
+            jsGFwk.start();
+
+            var isInPlay = false;
+            var swim = false;
+            var currentScore = 0;
+            var hiScore = 0;
+            
+            var storedValues = jsGFwk.Storage.getFromJson('swimer_game');
+            hiScore = storedValues !== null ? storedValues.hiScore : 0;
+
+            function _setHiScore() {
+                if (currentScore > hiScore) {
+                    hiScore = currentScore;
+                    jsGFwk.Storage.setData({name: 'swimer_game', data: { hiScore: hiScore }});
+                }
+            }
+
+            function _resetGame() {
+                Meter.objective = parseInt(Math.random() * 95) + 5;
+                Meter.current = 0;
+                Meter.chargeSpeed = (Math.random() * 2) + 1;
+                Swimer.x = 80;
+                isInPlay = false;
+                swim = false;
+            }
+
+            function _keyDown(e) {
+                if (isInPlay) { return; }
+                
+                if (e.which === 32) {
+                    isInPlay = true;
+                }
+            }
+
+            function _keyUp(e) {
+                if (e.which === 32 && isInPlay) {
+                    swim = true;
+                    isInPlay = false;
+                }
+            }
+
+            document.addEventListener("keydown", _keyDown, false);
+		    document.addEventListener("keyup", _keyUp, false);
+
+            _resetGame();
+        </script>
+    </body>
+</html>
