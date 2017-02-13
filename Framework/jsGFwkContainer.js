@@ -1,3 +1,10 @@
+/*
+ * Adding the module as an import if module.exports is present.
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	var jsGFwk = {};
+}
+
 /** @title: jsGFwk.Container
  * @description: This plugin allows to contain and clone game objects, handling each as part of the same group.
  * @usage: jsGFwk.include(<b>"Container"</b>) */
@@ -110,3 +117,11 @@ jsGFwk.Container = (function() {
 		}
 	};
 })();
+
+/**
+ * We export it if we enable it only on node.
+ * 
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = require('./node-exporter')(jsGFwk);
+}

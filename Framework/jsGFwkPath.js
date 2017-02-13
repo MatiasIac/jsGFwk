@@ -1,3 +1,10 @@
+/*
+ * Adding the module as an import if module.exports is present.
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	var jsGFwk = {};
+}
+
 jsGFwk.Path = {
 	
 	_plugInName: "Path",
@@ -47,4 +54,12 @@ jsGFwk.Path = {
 		jsGFwk.include(this._plugInName);
 		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
+}
+
+/**
+ * We export it if we enable it only on node.
+ * 
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = require('./node-exporter')(jsGFwk);
 }

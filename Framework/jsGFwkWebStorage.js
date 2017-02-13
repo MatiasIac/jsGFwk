@@ -1,3 +1,10 @@
+/*
+ * Adding the module as an import if module.exports is present.
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	var jsGFwk = {};
+}
+
 jsGFwk.Storage = {
 	_plugInName: "Storage",
 	_loaded: false,
@@ -42,4 +49,12 @@ jsGFwk.Storage = {
 		jsGFwk.include(this._plugInName);
 		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
+}
+
+/**
+ * We export it if we enable it only on node.
+ * 
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = require('./node-exporter')(jsGFwk);
 }
