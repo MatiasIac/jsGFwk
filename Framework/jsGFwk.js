@@ -145,3 +145,10 @@ var jsGFwk = (function(){
 		}
 	};
 })();
+
+/**
+ * Adding the module as an export if module.exports is present.
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = function () { return require('shallow-copy')(jsGFwk); };
+}

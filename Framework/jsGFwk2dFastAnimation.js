@@ -1,3 +1,11 @@
+/*
+ * Adding the module as an import if module.exports is present.
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	var jsGFwk = {};
+}
+
+
 /** @title: jsGFwk.FastAnimation
  * @description: Recommended plugin implementation for 2D games.<br>This is faster than BasicAnimation plugin.
  * @usage: jsGFwk.include(<b>"FastAnimation"</b>) */
@@ -82,4 +90,12 @@ jsGFwk.FastAnimation = {
 		jsGFwk.include(this._plugInName);
 		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
+}
+
+/**
+ * We export it if we enable it only on node.
+ * 
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = require('./node-exporter')(jsGFwk);
 }

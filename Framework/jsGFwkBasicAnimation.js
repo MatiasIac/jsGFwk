@@ -1,3 +1,10 @@
+/*
+ * Adding the module as an import if module.exports is present.
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	var jsGFwk = {};
+}
+
 /** @title: jsGFwk.BasicAnimation
  * @description: Low performance plugin for 2D games.<br>For a better performance see <i>jsGFwk2dFastAnimation</i>.
  * @usage: jsGFwk.include(<b>"BasicAnimation"</b>) */
@@ -57,4 +64,12 @@ jsGFwk.BasicAnimation = {
 		jsGFwk.include(this._plugInName);
 		if (!this._loaded) { this._loaded = true; this.onStart(); }
 	}
+}
+
+/**
+ * We export it if we enable it only on node.
+ * 
+ */
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = require('./node-exporter')(jsGFwk);
 }
