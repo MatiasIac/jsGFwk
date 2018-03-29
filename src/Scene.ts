@@ -1,44 +1,64 @@
-/// <reference path="Game.ts" />
+/// <reference path="definitions.ts" />
 
-namespace jsGame {
-    export class Scene {
+namespace jsGFwk {
+    class Scene {
+        _name: string;
+        _objects: Array<IAnimatedObject | IDrawableObject>;
 
-        _fwk: Game;
-        _activeScene: string;
-        _scenes: Object = { };
-
-        constructor(fwk: Game) {
-            this._fwk = fwk;
+        constructor(name: string, gameObjects: Array<IAnimatedObject | IDrawableObject>) {
+            this._name = name;
+            this._objects = gameObjects;
         }
 
-        add = function (sceneName: string, gameObjects: Array<Object>) {
-            this._scenes[sceneName] = gameObjects;
-        };
+        public initializeObjects() : void {
+            this._objects.forEach(x => x.define());
+        }
 
-        enable = function (sceneName: string) {
-            this.disable(this._activeScene);
+        public get animatedObjects() : Array<IAnimatedObject | IDrawableObject> {
+            return this._objects;
+        }
+        
+        public get name() : string {
+            return this._name;
+        }
+    }
 
-            var selectedScene = this._scenes[sceneName];
-            if (typeof selectedScene === 'undefined') { return; }
+    export class SceneHandler implements IScene, IComponent {
+        _currentScene?: Scene;
+        _scenes: Array<Scene>;
 
-            for (var i = 0; 
-                i < selectedScene.length; 
-                this._fwk._gameObject.add(selectedScene[i++]),
-                    selectedScene[i-1].init(selectedScene[i-1]._parameters)
-                );
+        constructor() {
+            this._currentScene = undefined;
+            this._scenes = new Array<Scene>();
+        }
 
-            this._activeScene = sceneName;
-        };
+        add(name: string, gameObjects: Array<IAnimatedObject | IDrawableObject>) {
+            this._scenes.push(new Scene(name, gameObjects));
+        }
 
-        disable = function (sceneName: string) {
-            var selectedScene = this._scenes[sceneName];
-            if (typeof selectedScene === 'undefined') { return; }
+        enable(name: string) {
+            if (this._currentScene !== undefined) {
+                this._currentScene.animatedObjects.forEach(element => element.destroy());
+            }
 
-            for (var i = 0; 
-                i < selectedScene.length; 
-                this._fwk._gameObject.remove(selectedScene[i++]));
+            let scene = this._scenes.filter(element => element.name === name);
+            this._currentScene = scene[0];
+            this._currentScene.initializeObjects();
+        }
 
-            this._activeScene = undefined;
-        };
+        process(): void {
+            if (this._currentScene !== undefined) {
+                this._currentScene.animatedObjects.forEach(element => {
+                    element.update();
+                });
+
+                this._currentScene.animatedObjects.forEach(element => {
+                    if ("draw" in element) {
+                        element.draw();
+                    }
+                });
+            }
+        }
+
     }
 }

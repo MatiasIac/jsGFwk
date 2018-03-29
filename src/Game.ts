@@ -1,46 +1,33 @@
-/// <reference path="Engine.ts" />
-/// <reference path="GameObjectHandler.ts" />
-/// <reference path="Scene.ts" />
-/// <reference path="Keyboard.ts" />
-/// <reference path="Debugger.ts" />
+/// <reference path="configuration.ts" />
+/// <reference path="definitions.ts" />
+/// <reference path="engine.ts" />
+/// <reference path="scene.ts" />
 
-namespace jsGame {
+namespace jsGFwk {
+
     export class Game {
-        _configuration = { 
-            width: 640, 
-            height: 480, 
-            clearColor: 'black',
-            useExistingCanvas: false,
-            existingCanvas: ''
-        };
 
+        _configuration: Configuration;
+        _sceneHandler: SceneHandler;
         _engine: Engine;
-        _gameObject: GameObjectHandler;
-        
-        keyboard: Keyboard;
-        scene: Scene;
-        sprite: Object;
-        camera: Object;
-        debugger: Object;
-        storage: Object;
 
-        constructor(width: number, height: number,
-            clearColor: string, canvas: string) {
-            this._configuration.width = width || 640;
-            this._configuration.height = height || 480;
-            this._configuration.clearColor = clearColor || 'black';
-            this._configuration.useExistingCanvas = typeof canvas !== 'undefined';
-            this._configuration.existingCanvas = canvas || '';
-
-            this._gameObject = new GameObjectHandler(this);
-            this._engine = new Engine(this);
-            this.keyboard = new Keyboard(this);
-            this.scene = new Scene(this);
+        constructor(configuration: Configuration) {
+            this._configuration = configuration;
+            this._sceneHandler = new SceneHandler();
+            this._engine = new Engine(this._configuration, [this._sceneHandler]);
         }
 
-        start = function () {
-            this._engine._init();
-            this.keyboard._init();
-        };
+        start(): void {
+            
+        }
+
+        pause(): void {
+
+        }
+
+        public get scene() : IScene {
+            return this._sceneHandler;
+        }
+        
     }
 }

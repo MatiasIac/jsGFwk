@@ -6,43 +6,14 @@
     <body>
     </body>
     <script>
-        var myGame = new jsGame.Game();
-
-        var cube = jsGame.GameObject.extend({
-            name: 'cube',
-            visible: true,
-            init: function () {
-                this.data = { 
-                    x: 10, 
-                    y: 10 
-                };
+        var game = new jsGFwk.Game(new jsGFwk.Configuration(640, 480, "black"));
+        game.scene.add('main', [{
+            define: function() {
+                console.log('initialized');
             },
-            update: function (delta) {
-                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.A)) {
-                    this.data.x--;
-                }
-
-                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.S)) {
-                    this.data.y++;
-                }
-
-                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.D)) {
-                    this.data.x++;
-                }
-
-                if (myGame.keyboard.isPressed(jsGame.Constants.Keys.W)) {
-                    this.data.y--;
-                }
-            },
-            draw: function (ctx) {
-                ctx.fillStyle = 'red';
-                ctx.fillRect(this.data.x, this.data.y, 20, 20);
+            update: function() {
+                console.log('updating');
             }
-        });
-
-        myGame.scene.add('main', [cube, jsGame.Debugger.FPS()]);
-        myGame.scene.enable('main');
-
-        myGame.start();
+        }]);
     </script>
 </html>
