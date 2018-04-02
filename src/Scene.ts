@@ -1,4 +1,5 @@
 /// <reference path="definitions.ts" />
+/// <reference path="context.ts" />
 
 namespace jsGFwk {
     class Scene {
@@ -46,7 +47,7 @@ namespace jsGFwk {
             this._currentScene.initializeObjects();
         }
 
-        process(): void {
+        process(context: IContext): void {
             if (this._currentScene !== undefined) {
                 this._currentScene.animatedObjects.forEach(element => {
                     element.update();
@@ -54,7 +55,7 @@ namespace jsGFwk {
 
                 this._currentScene.animatedObjects.forEach(element => {
                     if ("draw" in element) {
-                        element.draw();
+                        element.draw(context);
                     }
                 });
             }

@@ -6,14 +6,25 @@
     <body>
     </body>
     <script>
-        var game = new jsGFwk.Game(new jsGFwk.Configuration(640, 480, "black"));
-        game.scene.add('main', [{
+        var game = new jsGFwk.Game(new jsGFwk.Configuration(640, 480, "white"));
+
+        var player = {
             define: function() {
-                console.log('initialized');
+                this.myColor = new jsGFwk.Color(255, 0, 0, 1);
+                this.position = new jsGFwk.Point(10, 10);
             },
             update: function() {
-                console.log('updating');
+                this.position.x++;
+            },
+            draw: function(context) {
+                context.rectangle(this.position, 20, 20, this.myColor);
+            },
+            destroy() {
+                
             }
-        }]);
+        };
+
+        game.scene.add('main', [player]);
+        game.scene.enable('main');
     </script>
 </html>

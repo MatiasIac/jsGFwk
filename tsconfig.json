@@ -57,7 +57,12 @@
   "files": [
     "./src/definitions.ts",
     "./src/configuration.ts",
+    "./src/color.ts",
+    "./src/point.ts",
+    "./src/sprite.ts",
+    "./src/context.ts",
     "./src/scene.ts",
+    "./src/resources.ts",
     "./src/engine.ts",
     "./src/game.ts"
   ]
