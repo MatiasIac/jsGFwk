@@ -56,5 +56,6 @@ namespace jsGFwk {
         clear(): void;
         line(start: IPoint, end: IPoint, color: IColor): void;
         rectangle(start: IPoint, width: number, height: number, color: IColor): void;
+        sprite(name: string, position: IPoint, ): void;
     }
 }
