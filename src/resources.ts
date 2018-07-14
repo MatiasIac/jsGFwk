@@ -12,4 +12,24 @@ namespace jsGFwk {
         }
 
     }
+
+    export class AudioResource implements IAudioResource {
+        
+        path: string;
+        name: string;
+        type: string;
+
+        constructor() {
+            this.path = "";
+            this.name = "";
+            this.type = "";
+        }
+        
+        add(name: string, path: string, format: AudioTypes): void {
+            throw new Error("Method not implemented.");
+        }
+
+        
+
+    }
 }

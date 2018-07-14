@@ -3,7 +3,7 @@
 
 namespace jsGFwk {
     export class Context implements IContext {
-
+        
         _configuration: Configuration;
 
         constructor(configuration: Configuration) {
@@ -22,6 +22,10 @@ namespace jsGFwk {
                         this._configuration.width, 
                         this._configuration.height);
                 this._configuration.bufferContext.restore();
+        }
+
+        sprite(name: string, position: IPoint): void {
+            throw new Error("Method not implemented.");
         }
 
         line(start: IPoint, end: IPoint, color: IColor): void {

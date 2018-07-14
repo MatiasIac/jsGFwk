@@ -6,7 +6,7 @@
     <body>
     </body>
     <script>
-        var game = new jsGFwk.Game(new jsGFwk.Configuration(640, 480, "white"));
+        var game = new jsGFwk.Game(new jsGFwk.Configuration(640, 480, "black"));
 
         var player = {
             define: function() {
@@ -26,5 +26,6 @@
 
         game.scene.add('main', [player]);
         game.scene.enable('main');
+        game.start();
     </script>
 </html>

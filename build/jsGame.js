@@ -164,6 +164,9 @@ var jsGFwk;
             this._configuration.bufferContext.fillRect(0, 0, this._configuration.width, this._configuration.height);
             this._configuration.bufferContext.restore();
         };
+        Context.prototype.sprite = function (name, position) {
+            throw new Error("Method not implemented.");
+        };
         Context.prototype.line = function (start, end, color) {
             throw new Error("Method not implemented.");
         };
@@ -250,6 +253,18 @@ var jsGFwk;
         return Resources;
     }());
     jsGFwk.Resources = Resources;
+    var AudioResource = /** @class */ (function () {
+        function AudioResource() {
+            this.path = "";
+            this.name = "";
+            this.type = "";
+        }
+        AudioResource.prototype.add = function (name, path, format) {
+            throw new Error("Method not implemented.");
+        };
+        return AudioResource;
+    }());
+    jsGFwk.AudioResource = AudioResource;
 })(jsGFwk || (jsGFwk = {}));
 /// <reference path="configuration.ts" />
 /// <reference path="definitions.ts" />

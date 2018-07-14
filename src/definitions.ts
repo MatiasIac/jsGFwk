@@ -1,4 +1,27 @@
 namespace jsGFwk {
+
+    export interface IAudioOGG {
+        kind: 'ogg',
+        mimeType: 'audio/ogg; codecs="vorbis"'
+    }
+
+    export interface IAudioWav {
+        kind: 'wav',
+        mimeType: 'audio/wav; codecs="1"'
+    }
+
+    export interface IAudioMP3 {
+        kind: 'mp3',
+        mimeType: 'audio/mpeg;'
+    }
+
+    export interface IAudioAAC {
+        kind: 'aac',
+        mimeType: 'audio/mp4; codecs="mp4a.40.2"'
+    }
+
+    export type AudioTypes = IAudioAAC | IAudioWav | IAudioOGG | IAudioMP3;
+
     export interface IAnimatedObject {
         define(): void;
         update(): void;
@@ -29,7 +52,7 @@ namespace jsGFwk {
     }
 
     export interface IAudioResource extends IResource {
-        add(name: string, path: string, format: any): void;
+        add(name: string, path: string, format: AudioTypes): void;
     }
 
     export interface IResourceManager {
@@ -56,6 +79,6 @@ namespace jsGFwk {
         clear(): void;
         line(start: IPoint, end: IPoint, color: IColor): void;
         rectangle(start: IPoint, width: number, height: number, color: IColor): void;
-        sprite(name: string, position: IPoint, ): void;
+        sprite(name: string, position: IPoint): void;
     }
 }
