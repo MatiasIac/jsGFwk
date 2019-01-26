@@ -30,6 +30,7 @@ var aim = {
         });
 
         stats.updateEnergy(this.firingDrainEnergy);
+        fireJuke.play();
     },
 
     init: function () {

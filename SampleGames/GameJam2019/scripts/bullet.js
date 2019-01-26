@@ -1,24 +1,48 @@
 var bullet = {
     onInit: function(params) {
-        this.params = params;
+        this.x = params.x;
+        this.y = params.y;
+        this.targetX = params.targetX;
+        this.targetY = params.targetY;
         this.speed = 3;
-        this.angle = Math.atan2(this.params.targetY - this.params.y, 
-            this.params.targetX - this.params.x);
+        this.width = 9;
+        this.height = 8;
+
+        this.angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
     },
     onUpdate: function() {
-        if (this.params.x < 0 || this.params.x > width) {
+        if (this.x < 0 || this.x > width) {
             this.destroy();
         }
 
-        if (this.params.y < 0 || this.params.y > height) {
+        if (this.y < 0 || this.y > height) {
             this.destroy();
         }
 
-        this.params.x += this.speed * Math.cos(this.angle);
-        this.params.y += this.speed * Math.sin(this.angle);
+        this.x += this.speed * Math.cos(this.angle);
+        this.y += this.speed * Math.sin(this.angle);
+
+        if (jsGFwk.Collisions.areCollidingBy(this, {
+            x: spaceship.x,
+            y: spaceship.y,
+            width: 18,
+            height: 39
+        }, jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+            particlesContainer.cloneObject({ x: this.x, y: this.y });
+            stats.updateLive(1);
+            mExplosionJuke.play();
+            this.destroy();
+        }
+
+        if (aidcapsule.isRectColliding(this) && aidcapsule.isAlive) {
+            particlesContainer.cloneObject({ x: this.x, y: this.y });
+            mExplosionJuke.play();
+            aidcapsule.hit();
+            this.destroy();
+        }
+
     },
     onDraw: function(context) {
-        context.drawImage(jsGFwk.Sprites.bullet.image,
-            this.params.x, this.params.y);
+        context.drawImage(jsGFwk.Sprites.bullet.image, this.x, this.y);
     }
 };

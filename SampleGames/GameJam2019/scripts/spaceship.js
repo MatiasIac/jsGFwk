@@ -20,6 +20,8 @@ var spaceship = {
     deltaAccumulator: 0,
     gasConsumption: 0.09,
     gasGain: -0.15,
+
+    isHit: false,
     
     emitCloud: function () {
         var self = this;
@@ -27,14 +29,29 @@ var spaceship = {
             x: self.x,
             y: self.y + (self.height)
         });
+        puffJuke.play();
+    },
+
+    hit: function() {
+        this.isHit = true;
     },
 
     init: function () {
-        this.x = 0;
-        this.y = 0;
+        var self = this;
+        this.x = width / 2;
+        this.y = height / 2;
         this.width = 29;
         this.height = 39;
         jsGFwk.Sprites.truster.reset();
+
+        this.hitTimer = new jsGFwk.Timer({
+			action: function () {
+                self.isHit = false;
+                self.width = 29;
+                self.height = 39;
+			},
+            tickTime: 0.2
+		});
     },
     update: function (delta) {
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] &&
@@ -47,15 +64,19 @@ var spaceship = {
             stats.updateGas(this.gasConsumption);
 
             this.trustersOn = true;
+
+            jsGFwk.ResourceManager.sounds.truster.audio.play();
         } else {
             this.trustersOn = false;
             this.deltaAccumulator += delta;
             stats.updateGas(this.gasGain);
 
-            if (this.deltaAccumulator >= 0.2) {
+            if (this.deltaAccumulator >= 0.3) {
                 this.emitCloud();
                 this.deltaAccumulator = 0;
             }
+
+            jsGFwk.ResourceManager.sounds.truster.audio.pause();
         }
 
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] &&
@@ -80,6 +101,12 @@ var spaceship = {
 
         this.y += this.downSpeed;
         this.x += this.sideSpeed;
+
+        if (this.isHit) {
+            this.width = 15 + (Math.random() * 35);
+            this.height = 15 + (Math.random() * 45);
+            this.hitTimer.tick(delta)
+        }
 
         if (this.y < 0) { this.y = 0; }
         if (this.y > (height - this.height)) { this.y = (height - this.height); }

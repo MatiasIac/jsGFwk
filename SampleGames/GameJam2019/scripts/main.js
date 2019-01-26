@@ -24,19 +24,50 @@ var height = 700;
 var asteroidContainer = jsGFwk.Container.createContainer('asteroids', asteroid, true);
 var bulletContainer = jsGFwk.Container.createContainer('bullets', bullet, true);
 var cloudsContainer = jsGFwk.Container.createContainer('clouds', cloud, true);
+var particlesContainer = jsGFwk.Container.createContainer('particles', particles, true);
+var fireJuke = null;
+var puffJuke = null;
+var mExplosionJuke = null;
 
 jsGFwk.Scenes.create({name: "main", 
     gameObjects: [
         starfield,
         cloudsContainer,
+        aidcapsule,
         spaceship,
         bulletContainer,
         asteroidContainer,
+        particlesContainer,
         aim,
         stats
     ]});
 
+var sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/fire.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/fire.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "fire", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/puff.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/puff.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "puff", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/truster.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/truster.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "truster", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/metalicexplosion.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/metalicexplosion.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "mexplosion", sources: sound});
+
 jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+    jsGFwk.Sprites.createSprite({
+        id: 'aid', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 114, top: 102, width: 21, height: 20
+    });
+
     jsGFwk.Sprites.createSprite({
         id: 'lightning', graphic: jsGFwk.ResourceManager.graphics.main.image,
         left: 21, top: 156, width: 14, height: 18
@@ -92,6 +123,27 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
     jsGFwk.Sprites.createSprite({
         id: 'bullet', graphic: jsGFwk.ResourceManager.graphics.main.image,
         left: 58, top: 80, width: 9, height: 8
+    });
+
+    jsGFwk.ResourceManager.sounds.truster.audio.volume = 0.2;
+    jsGFwk.ResourceManager.sounds.truster.audio.loop = true;
+
+    puffJuke = new jsGFwk.Jukebox({
+        volume: 0.005,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.puff
+    });
+
+    fireJuke = new jsGFwk.Jukebox({
+        volume: 0.2,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.fire 
+    });
+
+    mExplosionJuke = new jsGFwk.Jukebox({
+        volume: 0.1,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.mexplosion 
     });
 
     jsGFwk.Scenes.scenes.main.enable();

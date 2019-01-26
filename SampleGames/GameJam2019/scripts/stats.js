@@ -19,6 +19,7 @@ var stats = {
         this.live -= value;
         this.live = Math.max(0, this.live);
         this.live = Math.min(this.max, this.live);
+        spaceship.hit();
     },
 
     updateEnergy: function(value) {
