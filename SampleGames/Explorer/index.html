@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<title>Explorer</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkPath.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkJukebox.js"></script>
+    <script language="Javascript" src="../../Framework/jsGFwkCamera.js"></script>
+    <script language="Javascript" src="../../Framework/jsGFwkWebStorage.js"></script>
+    <script language="Javascript" src="../../Framework/jsGFwkGamepad.js"></script>
+	
+    <script language="Javascript" src="scripts/drone.js"></script>
+    <script language="Javascript" src="scripts/player.js"></script>
+    <script language="Javascript" src="scripts/main.js"></script>
+    
+	<body>
+        <canvas width="640" height="480" id="canvas"></canvas>
+	</body>
+</html>
+<script>
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(10, 10, 10)";
+	jsGFwk.settings.frameRate = 1000 / 60;
+	
+	jsGFwk.include("FastAnimation");
+	jsGFwk.include("Container");
+	jsGFwk.include("IO");
+	jsGFwk.include("Collisions");
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("Sprites");
+	jsGFwk.include("Fonts");
+	jsGFwk.include("Scenes");
+	jsGFwk.include("Path");
+    jsGFwk.include("Camera");
+    jsGFwk.include("Storage");
+    jsGFwk.include("Gamepad");
+        
+    jsGFwk.Scenes.create({name: "game", 
+        gameObjects: [bulletContainer, tracerContainer, enemyCloner, bulletEnemyContainer,
+                      wallsCloner, alanWake, pointsContainer, enemyControl, 
+                      wallsControl, page, cameraHandler] });
+    
+    jsGFwk.Scenes.scenes.game.enable();
+    
+    jsGFwk.start();
+
+</script>
