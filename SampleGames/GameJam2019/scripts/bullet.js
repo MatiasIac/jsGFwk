@@ -11,6 +11,8 @@ var bullet = {
         this.angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
     },
     onUpdate: function() {
+        var self = this;
+
         if (this.x < 0 || this.x > width) {
             this.destroy();
         }
@@ -40,6 +42,17 @@ var bullet = {
             aidcapsule.hit();
             this.destroy();
         }
+
+        asteroidContainer.eachCloned(function (item, event) {
+            if (jsGFwk.Collisions.areCollidingBy(self, 
+                item, jsGFwk.Collisions.collidingModes.RECTANGLE)) {
+                event.cancel = true;
+                particlesContainer.cloneObject({ x: self.x, y: self.y });
+                item.hit();
+                mExplosionJuke.play();
+                self.destroy();
+            }
+        });
 
     },
     onDraw: function(context) {

@@ -29,14 +29,24 @@ var fireJuke = null;
 var puffJuke = null;
 var mExplosionJuke = null;
 
-jsGFwk.Scenes.create({name: "main", 
+jsGFwk.Scenes.create({name: "hud", 
     gameObjects: [
         starfield,
+        angryAsteroid,
+        hud
+    ]});
+
+jsGFwk.Scenes.create({name: "main", 
+    gameObjects: [
+        asteroidController,
+        starfield,
+        earth,
         cloudsContainer,
         aidcapsule,
         spaceship,
         bulletContainer,
         asteroidContainer,
+        angryAsteroid,
         particlesContainer,
         aim,
         stats
@@ -125,6 +135,56 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         left: 58, top: 80, width: 9, height: 8
     });
 
+    jsGFwk.Sprites.createSpriteCollection("asteroids", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 21, top: 18, width: 21, height: 20},
+        {left: 53, top: 11, width: 21, height: 16},
+        {left: 87, top: 14, width: 20, height: 18},
+        {left: 51, top: 36, width: 16, height: 14},
+        {left: 17, top: 55, width: 21, height: 13},
+        {left: 67, top: 54, width: 15, height: 14}]);
+    jsGFwk.Sprites.asteroids.loop(false);
+
+    jsGFwk.Sprites.createSprite({
+        id: 'earth', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 53, top: 370, width: 249, height: 48
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'cloud1', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 74, top: 312, width: 65, height: 25
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'cloud2', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 176, top: 309, width: 108, height: 28
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'title', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 430, top: 284, width: 197, height: 134
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'main', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 388, top: 0, width: 251, height: 259
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'asteroidBase', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 668, top: 140, width: 162, height: 157
+    });
+
+    jsGFwk.Sprites.createSpriteCollection("faces", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 707, top: 297, width: 58, height: 87},
+        {left: 707, top: 389, width: 58, height: 87},
+        {left: 768, top: 389, width: 58, height: 87}]);
+    jsGFwk.Sprites.faces.loop(false);
+
+    jsGFwk.Sprites.createSprite({
+        id: 'instructions', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 216, top: 20, width: 100, height: 57
+    });
+
     jsGFwk.ResourceManager.sounds.truster.audio.volume = 0.2;
     jsGFwk.ResourceManager.sounds.truster.audio.loop = true;
 
@@ -146,7 +206,8 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         source: jsGFwk.ResourceManager.sounds.mexplosion 
     });
 
-    jsGFwk.Scenes.scenes.main.enable();
+    //jsGFwk.Scenes.scenes.main.enable();
+    jsGFwk.Scenes.scenes.hud.enable();
 }
 
 jsGFwk.start();

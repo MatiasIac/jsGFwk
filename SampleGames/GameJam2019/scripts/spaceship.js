@@ -54,28 +54,29 @@ var spaceship = {
 		});
     },
     update: function (delta) {
-        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W] &&
-            stats.gas > 0) {
-            if ((this.downSpeed * -1) < this.topSpeed) {
-                this.downSpeed -= this.trusterUpPower;
+        if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
+            if (stats.gas > 0) {
+                if ((this.downSpeed * -1) < this.topSpeed) {
+                    this.downSpeed -= this.trusterUpPower;
+                }
+                jsGFwk.Sprites.truster.next();
+                this.trustersOn = true;
+                jsGFwk.ResourceManager.sounds.truster.audio.play();
+            } else {
+                this.trustersOn = false;
             }
-            jsGFwk.Sprites.truster.next();
-
             stats.updateGas(this.gasConsumption);
-
-            this.trustersOn = true;
-
-            jsGFwk.ResourceManager.sounds.truster.audio.play();
         } else {
             this.trustersOn = false;
-            this.deltaAccumulator += delta;
             stats.updateGas(this.gasGain);
+        }
 
+        if (!this.trustersOn) {
+            this.deltaAccumulator += delta;
             if (this.deltaAccumulator >= 0.3) {
                 this.emitCloud();
                 this.deltaAccumulator = 0;
             }
-
             jsGFwk.ResourceManager.sounds.truster.audio.pause();
         }
 
@@ -123,7 +124,6 @@ var spaceship = {
         }
 
         context.drawImage(jsGFwk.Sprites.ship.image, -(this.width / 2), -(this.height / 2));
-
         context.restore();
     }
 };
