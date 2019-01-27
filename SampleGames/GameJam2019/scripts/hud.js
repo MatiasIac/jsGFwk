@@ -5,6 +5,9 @@ var hud = {
 
     init: function () {
         var self = this;
+
+        spaceshipDie = false;
+
         this.isTextShaking = true;
         this.textShakeX = 0;
         this.textShakeY = 0;

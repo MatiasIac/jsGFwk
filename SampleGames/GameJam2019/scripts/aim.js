@@ -19,6 +19,12 @@ var aim = {
     firingDrainEnergy: 0.9,
     energyRecovery: -0.1,
 
+    reset: function () {
+        jsGFwk.IO.mouse.unregisterMove(this.mouseMoveId);
+        jsGFwk.IO.mouse.unregisterDown(this.mouseDownId);
+        jsGFwk.IO.mouse.unregisterClick(this.mouseUpId);
+    },
+
     emitBullet: function () {
         var coord = jsGFwk.IO.mouse._lastMoveCoords;
 

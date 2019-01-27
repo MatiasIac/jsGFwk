@@ -28,6 +28,9 @@ var particlesContainer = jsGFwk.Container.createContainer('particles', particles
 var fireJuke = null;
 var puffJuke = null;
 var mExplosionJuke = null;
+var trusterJuker = null;
+
+var spaceshipDie = false;
 
 jsGFwk.Scenes.create({name: "hud", 
     gameObjects: [
@@ -38,6 +41,7 @@ jsGFwk.Scenes.create({name: "hud",
 
 jsGFwk.Scenes.create({name: "main", 
     gameObjects: [
+        globalController,
         asteroidController,
         starfield,
         earth,
@@ -185,8 +189,11 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         left: 216, top: 20, width: 100, height: 57
     });
 
-    jsGFwk.ResourceManager.sounds.truster.audio.volume = 0.2;
-    jsGFwk.ResourceManager.sounds.truster.audio.loop = true;
+    trusterJuker = new jsGFwk.Jukebox({
+        volume: 0.2,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.truster
+    });
 
     puffJuke = new jsGFwk.Jukebox({
         volume: 0.005,

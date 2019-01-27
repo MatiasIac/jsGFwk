@@ -17,12 +17,19 @@ var asteroid = {
 
         this.width = (Math.random() * this.width) + this.width;
         this.height = (Math.random() * this.height) + this.height;
-        this.life = 1;//(Math.random() * 2) + 1;
+        this.life = 1;
     },
-    onUpdate: function (delta) {
+    onUpdate: function () {
         this.y += this.speed;
 
         if (this.y > height) {
+            this.destroy();
+        }
+
+        if (spaceship.isRectColliding(this)) {
+            spaceship.hit();
+            stats.updateLive(10);
+            mExplosionJuke.play();
             this.destroy();
         }
     },

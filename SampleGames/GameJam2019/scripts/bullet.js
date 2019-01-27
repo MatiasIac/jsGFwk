@@ -8,6 +8,9 @@ var bullet = {
         this.width = 9;
         this.height = 8;
 
+        this.radius = 4;
+        this.center = { x: 2, y: 2 };
+
         this.angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
     },
     onUpdate: function() {
@@ -53,6 +56,13 @@ var bullet = {
                 self.destroy();
             }
         });
+
+        if (angryAsteroid.isRadColliding(this)) {
+            particlesContainer.cloneObject({ x: this.x, y: this.y });
+            mExplosionJuke.play();
+            angryAsteroid.hit();
+            this.destroy();
+        }
 
     },
     onDraw: function(context) {

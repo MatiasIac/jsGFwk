@@ -9,7 +9,7 @@ var earth = {
         this.cloudX2 = 0;
     },
 
-    update: function(delta) {
+    update: function() {
         this.cloudX1 = (Math.sin(this.moveAccumulatorCloud1) * 100) + (width - 200);
         this.moveAccumulatorCloud1 += 0.003;
 

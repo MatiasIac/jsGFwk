@@ -9,6 +9,12 @@ var stats = {
     gas: 72,
     live: 72,
 
+    reset: function() {
+        this.energy = this.max;
+        this.gas = this.max;
+        this.live = this.max;
+    },
+
     updateGas: function(value) {
         this.gas -= value;
         this.gas = Math.max(0, this.gas);
@@ -20,6 +26,10 @@ var stats = {
         this.live = Math.max(0, this.live);
         this.live = Math.min(this.max, this.live);
         spaceship.hit();
+
+        if (this.live <= 0) {
+            spaceship.die();
+        }
     },
 
     updateEnergy: function(value) {

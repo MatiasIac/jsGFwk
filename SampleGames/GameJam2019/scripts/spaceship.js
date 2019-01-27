@@ -32,6 +32,14 @@ var spaceship = {
         puffJuke.play();
     },
 
+    die: function() {
+        spaceshipDie = true;
+
+        for (var i = 0; i < 50; i++) {
+            particlesContainer.cloneObject({ x: this.x, y: this.y });
+        }      
+    },
+
     hit: function() {
         this.isHit = true;
     },
@@ -54,6 +62,10 @@ var spaceship = {
 		});
     },
     update: function (delta) {
+        if (spaceshipDie) { 
+            return; 
+        }
+
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.W]) {
             if (stats.gas > 0) {
                 if ((this.downSpeed * -1) < this.topSpeed) {
@@ -61,7 +73,7 @@ var spaceship = {
                 }
                 jsGFwk.Sprites.truster.next();
                 this.trustersOn = true;
-                jsGFwk.ResourceManager.sounds.truster.audio.play();
+                trusterJuker.play();
             } else {
                 this.trustersOn = false;
             }
@@ -77,7 +89,6 @@ var spaceship = {
                 this.emitCloud();
                 this.deltaAccumulator = 0;
             }
-            jsGFwk.ResourceManager.sounds.truster.audio.pause();
         }
 
         if (jsGFwk.IO.keyboard.getActiveKeys()[jsGFwk.IO.keyboard.key.A] &&
@@ -115,6 +126,10 @@ var spaceship = {
         if (this.x < (this.width * -1)) { this.x = width; }
     },
     draw: function (context) {
+        if (spaceshipDie) { 
+            return;
+        }
+
         context.save();
         context.translate(this.x + this.width / 2, this.y + this.height / 2);
         context.rotate((this.sideTilt * 700) * Math.PI / 180);

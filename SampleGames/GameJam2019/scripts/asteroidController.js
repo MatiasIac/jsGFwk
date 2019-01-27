@@ -11,14 +11,14 @@ var asteroidController = {
 
         this.waveTimer = new jsGFwk.Timer({
 			action: function () {
-                self.wave++;
-
                 if (self.wave <= self.maxWaves) {
-                    var asteroids = self.wave * self.asteroidsByWave;
-                    while (asteroids > 0) {
-                        asteroids--;
-                        asteroidContainer.cloneObject({ });
-                    }
+                    self.wave++;
+                }
+
+                var asteroids = self.wave * self.asteroidsByWave;
+                while (asteroids > 0) {
+                    asteroids--;
+                    asteroidContainer.cloneObject({ });
                 }
 			},
             tickTime: 10
