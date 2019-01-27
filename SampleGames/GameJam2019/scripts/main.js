@@ -30,6 +30,9 @@ var fireJuke = null;
 var puffJuke = null;
 var mExplosionJuke = null;
 var trusterJuker = null;
+var popJuke = null;
+var crankJuke = null;
+var powerUpJuke = null;
 
 var spaceshipDie = false;
 var endGame = false;
@@ -84,6 +87,21 @@ sound = {};
 sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/metalicexplosion.ogg" };
 sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/metalicexplosion.mp3" };
 jsGFwk.ResourceManager.addSound({ name: "mexplosion", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/pop.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/pop.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "pop", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/crank.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/crank.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "crank", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/power.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/power.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "powerup", sources: sound});
 
 jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
     jsGFwk.Sprites.createSprite({
@@ -231,6 +249,24 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         volume: 0.1,
         channels: 5,
         source: jsGFwk.ResourceManager.sounds.mexplosion 
+    });
+
+    popJuke = new jsGFwk.Jukebox({
+        volume: 0.1,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.pop 
+    });
+
+    crankJuke = new jsGFwk.Jukebox({
+        volume: 0.1,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.crank
+    });
+
+    powerUpJuke = new jsGFwk.Jukebox({
+        volume: 0.2,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.powerup
     });
 
     jsGFwk.Scenes.scenes.hud.enable();

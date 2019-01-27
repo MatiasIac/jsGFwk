@@ -15,6 +15,8 @@ var angryAsteroid = {
 
         if (this.life <= 0) {
             endGame = true;
+            popJuke.play();
+            
             for (var i = 0; i < 500; i++) {
                 particlesContainer.cloneObject({ 
                     x: (Math.random() * (width / 2)) + 80,

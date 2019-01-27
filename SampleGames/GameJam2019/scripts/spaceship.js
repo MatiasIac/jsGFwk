@@ -38,6 +38,7 @@ var spaceship = {
     die: function() {
         spaceshipDie = true;
 
+        popJuke.play();
         for (var i = 0; i < 50; i++) {
             particlesContainer.cloneObject({ x: this.x, y: this.y });
         }
