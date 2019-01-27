@@ -43,6 +43,8 @@ var stats = {
     },
 
     draw: function(context) {
+        context.drawImage(jsGFwk.Sprites.greenBar.image, 3, 5, (angryAsteroid.life / angryAsteroid.maxLife) * 72, 15);
+
         context.drawImage(jsGFwk.Sprites.lightning.image, 10, this.y);
         context.drawImage(jsGFwk.Sprites.yellowBar.image, 25, this.y, this.energy, 15);
 

@@ -5,8 +5,10 @@ var angryAsteroid = {
     radius: 78,
     center: { x: 85, y: 75 },
 
+    maxLife: 3000,
+
     reset: function() {
-        this.life = 3000;
+        this.life = this.maxLife;
         this.faceIndex = 0;
     },
 
@@ -15,6 +17,8 @@ var angryAsteroid = {
 
         if (this.life <= 0) {
             endGame = true;
+            popJuke.play();
+            
             for (var i = 0; i < 500; i++) {
                 particlesContainer.cloneObject({ 
                     x: (Math.random() * (width / 2)) + 80,
@@ -30,7 +34,7 @@ var angryAsteroid = {
         this.height = 157;
         this.faceIndex = 0;
 
-        this.life = 3000;
+        this.life = this.maxLife;
 
         this.x = (width / 2) - (this.width / 2);
         this.y = -70;

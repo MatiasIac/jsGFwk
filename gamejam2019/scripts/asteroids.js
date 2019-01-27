@@ -32,7 +32,7 @@ var asteroid = {
         if (spaceship.isRectColliding(this)) {
             spaceship.hit();
             stats.updateLive(10);
-            mExplosionJuke.play();
+            crankJuke.play();
             this.destroy();
         }
     },

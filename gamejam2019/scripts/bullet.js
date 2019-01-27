@@ -61,7 +61,7 @@ var bullet = {
                 }
                 
                 item.hit();
-                mExplosionJuke.play();
+                popJuke.play();
 
                 dropPowerUp({ x: item.x, y: item.y });
 

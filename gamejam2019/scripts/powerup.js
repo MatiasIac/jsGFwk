@@ -22,6 +22,7 @@ var powerup = {
                     stats.updateGas(-15);
                     break;
             }
+            powerUpJuke.play();
             this.destroy();
         }
 
