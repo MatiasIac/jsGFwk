@@ -103,6 +103,11 @@ sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/power.ogg" };
 sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/power.mp3" };
 jsGFwk.ResourceManager.addSound({ name: "powerup", sources: sound});
 
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/battleSoundtrack.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/battleSoundtrack.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "battle", sources: sound});
+
 jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
     jsGFwk.Sprites.createSprite({
         id: 'aid', graphic: jsGFwk.ResourceManager.graphics.main.image,
@@ -132,6 +137,11 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
     jsGFwk.Sprites.createSprite({
         id: 'redBar', graphic: jsGFwk.ResourceManager.graphics.main.image,
         left: 49, top: 213, width: 72, height: 15
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'greenBar', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 49, top: 244, width: 72, height: 15
     });
 
     jsGFwk.Sprites.createSprite({
@@ -224,8 +234,11 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
 
     jsGFwk.Sprites.createSprite({
         id: 'endtitle', graphic: jsGFwk.ResourceManager.graphics.main.image,
-        left: 872, top: 11, width: 270, height: 399
+        left: 872, top: 11, width: 270, height: 450
     });
+
+    jsGFwk.ResourceManager.sounds.battle.audio.volume = 0.5;
+    jsGFwk.ResourceManager.sounds.battle.audio.loop = true;
 
     trusterJuker = new jsGFwk.Jukebox({
         volume: 0.2,

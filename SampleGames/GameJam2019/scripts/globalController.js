@@ -6,6 +6,9 @@ var globalController = {
         spaceshipDie = false;
         endGame = false;
 
+        jsGFwk.ResourceManager.sounds.battle.audio.currentTime = 0;
+        jsGFwk.ResourceManager.sounds.battle.audio.play();
+
         this.dieTimer = new jsGFwk.Timer({
 			action: function () {
                 asteroidContainer.clearAll();
@@ -16,6 +19,7 @@ var globalController = {
                 stats.reset();
                 endGame = false;
 
+                jsGFwk.ResourceManager.sounds.battle.audio.pause();
                 jsGFwk.Scenes.scenes.hud.enable();
 			},
             tickTime: 3
@@ -31,6 +35,7 @@ var globalController = {
                 stats.reset();
                 endGame = false;
 
+                jsGFwk.ResourceManager.sounds.battle.audio.pause();
                 jsGFwk.Scenes.scenes.endgame.enable();
 			},
             tickTime: 3

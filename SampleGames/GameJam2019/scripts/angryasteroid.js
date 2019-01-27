@@ -5,8 +5,10 @@ var angryAsteroid = {
     radius: 78,
     center: { x: 85, y: 75 },
 
+    maxLife: 3000,
+
     reset: function() {
-        this.life = 3000;
+        this.life = this.maxLife;
         this.faceIndex = 0;
     },
 
@@ -32,7 +34,7 @@ var angryAsteroid = {
         this.height = 157;
         this.faceIndex = 0;
 
-        this.life = 3000;
+        this.life = this.maxLife;
 
         this.x = (width / 2) - (this.width / 2);
         this.y = -70;
