@@ -25,12 +25,14 @@ var asteroidContainer = jsGFwk.Container.createContainer('asteroids', asteroid, 
 var bulletContainer = jsGFwk.Container.createContainer('bullets', bullet, true);
 var cloudsContainer = jsGFwk.Container.createContainer('clouds', cloud, true);
 var particlesContainer = jsGFwk.Container.createContainer('particles', particles, true);
+var powerUpContainer = jsGFwk.Container.createContainer('powerups', powerup, true);
 var fireJuke = null;
 var puffJuke = null;
 var mExplosionJuke = null;
 var trusterJuker = null;
 
 var spaceshipDie = false;
+var endGame = false;
 
 jsGFwk.Scenes.create({name: "hud", 
     gameObjects: [
@@ -50,10 +52,17 @@ jsGFwk.Scenes.create({name: "main",
         spaceship,
         bulletContainer,
         asteroidContainer,
+        powerUpContainer,
         angryAsteroid,
         particlesContainer,
         aim,
         stats
+    ]});
+
+jsGFwk.Scenes.create({name: "endgame",
+    gameObjects: [
+        starfield,
+        endgame
     ]});
 
 var sound = {};
@@ -184,9 +193,20 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         {left: 768, top: 389, width: 58, height: 87}]);
     jsGFwk.Sprites.faces.loop(false);
 
+    jsGFwk.Sprites.createSpriteCollection("powerups", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 129, top: 14, width: 22, height: 18},
+        {left: 129, top: 39, width: 22, height: 18},
+        {left: 129, top: 62, width: 22, height: 18}]);
+    jsGFwk.Sprites.faces.loop(false);
+
     jsGFwk.Sprites.createSprite({
         id: 'instructions', graphic: jsGFwk.ResourceManager.graphics.main.image,
         left: 216, top: 20, width: 100, height: 57
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'endtitle', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 872, top: 11, width: 270, height: 399
     });
 
     trusterJuker = new jsGFwk.Jukebox({
@@ -213,8 +233,14 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         source: jsGFwk.ResourceManager.sounds.mexplosion 
     });
 
-    //jsGFwk.Scenes.scenes.main.enable();
     jsGFwk.Scenes.scenes.hud.enable();
 }
 
 jsGFwk.start();
+
+function dropPowerUp(coords) {
+    var r = Math.random() * 100;
+    if (r > 60) {
+        powerUpContainer.cloneObject({ x: coords.x, y: coords.y });
+    }
+}

@@ -23,6 +23,9 @@ var asteroid = {
         this.y += this.speed;
 
         if (this.y > height) {
+            spaceship.hit();
+            stats.updateLive(5);
+            mExplosionJuke.play();
             this.destroy();
         }
 

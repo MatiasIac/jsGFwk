@@ -33,14 +33,20 @@ var bullet = {
             width: 18,
             height: 39
         }, jsGFwk.Collisions.collidingModes.RECTANGLE)) {
-            particlesContainer.cloneObject({ x: this.x, y: this.y });
+            for (var i = 0; i < 10; i++) {
+                particlesContainer.cloneObject({ x: this.x, y: this.y });
+            }
+
             stats.updateLive(1);
             mExplosionJuke.play();
             this.destroy();
         }
 
         if (aidcapsule.isRectColliding(this) && aidcapsule.isAlive) {
-            particlesContainer.cloneObject({ x: this.x, y: this.y });
+            for (var i = 0; i < 10; i++) {
+                particlesContainer.cloneObject({ x: this.x, y: this.y });
+            }
+
             mExplosionJuke.play();
             aidcapsule.hit();
             this.destroy();
@@ -50,15 +56,23 @@ var bullet = {
             if (jsGFwk.Collisions.areCollidingBy(self, 
                 item, jsGFwk.Collisions.collidingModes.RECTANGLE)) {
                 event.cancel = true;
-                particlesContainer.cloneObject({ x: self.x, y: self.y });
+                for (var i = 0; i < 10; i++) {
+                    particlesContainer.cloneObject({ x: self.x, y: self.y });
+                }
+                
                 item.hit();
                 mExplosionJuke.play();
+
+                dropPowerUp({ x: item.x, y: item.y });
+
                 self.destroy();
             }
         });
 
-        if (angryAsteroid.isRadColliding(this)) {
-            particlesContainer.cloneObject({ x: this.x, y: this.y });
+        if (angryAsteroid.isRadColliding(this) && !endGame) {
+            for (var i = 0; i < 10; i++) {
+                particlesContainer.cloneObject({ x: this.x, y: this.y });
+            }
             mExplosionJuke.play();
             angryAsteroid.hit();
             this.destroy();

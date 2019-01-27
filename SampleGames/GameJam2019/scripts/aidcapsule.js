@@ -18,6 +18,7 @@ var aidcapsule = {
 
         if (this.life <= 0) {
             this.isAlive = false;
+            dropPowerUp({ x: this.x, y: this.y });
         }
     },
 
@@ -32,6 +33,20 @@ var aidcapsule = {
                 self.height = 20;
 			},
             tickTime: 0.2
+        });
+        
+        this.dropMissilesTimer = new jsGFwk.Timer({
+			action: function () {
+                for (var i = 0; i < 5; i++) {
+                    bulletContainer.cloneObject({
+                        x: self.x + 22,
+                        y: self.y + 5,
+                        targetX: (Math.random() * width) + 40,
+                        targetY: (Math.random() * height)
+                    });                    
+                }
+			},
+            tickTime: 6
 		});
     },
 
@@ -43,8 +58,10 @@ var aidcapsule = {
             if (this.isHit) {
                 this.width = 15 + (Math.random() * 25);
                 this.height = 15 + (Math.random() * 20);
-                this.endStretchingTimer.tick(delta)
+                this.endStretchingTimer.tick(delta);
             }
+
+            this.dropMissilesTimer.tick(delta);
         } else {
             this.deltaAccumulator += delta;
             if (this.deltaAccumulator > 20) {

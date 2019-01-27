@@ -22,6 +22,9 @@ var spaceship = {
     gasGain: -0.15,
 
     isHit: false,
+
+    radius: 10,
+    center: { x: 14, y: 20 },
     
     emitCloud: function () {
         var self = this;
@@ -37,7 +40,15 @@ var spaceship = {
 
         for (var i = 0; i < 50; i++) {
             particlesContainer.cloneObject({ x: this.x, y: this.y });
-        }      
+        }
+
+        this.sideSpeed = 0;
+        this.sideTilt = 0;
+        this.topTilt = 0.04;
+        this.trusterUpPower = 0.1;
+        this.topTrusterUpPower = 0.1;
+        this.topSpeed = 5;
+        this.downSpeed = 0;
     },
 
     hit: function() {
@@ -121,9 +132,13 @@ var spaceship = {
         }
 
         if (this.y < 0) { this.y = 0; }
-        if (this.y > (height - this.height)) { this.y = (height - this.height); }
+        if (this.y > (height - 10)) { stats.updateLive(100); }
         if (this.x > width) { this.x = 0; }
         if (this.x < (this.width * -1)) { this.x = width; }
+
+        if (this.isRadColliding(angryAsteroid)) {
+            this.die();
+        }
     },
     draw: function (context) {
         if (spaceshipDie) { 
