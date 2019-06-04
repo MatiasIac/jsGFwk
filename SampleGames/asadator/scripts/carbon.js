@@ -2,13 +2,19 @@ var carbon = {
     onInit: function (data) {
         this.x = data.x;
         this.y = data.y;
-        this.life = data.life;
+        this.life = 100;
+        this.timeAcc = 0;
 
-        this.img = jsGFwk.Sprites.carbon.spriteBag[parseInt(Math.random() * 2)].image;
+        this.img = jsGFwk.Sprites.carbon.spriteBag[parseInt(Math.random() * 3)].image;
     },
     onUpdate: function (tick) {
-        
-        this.life--;
+        this.timeAcc += tick;
+
+        if (this.timeAcc >= 0.2) {
+            this.life--;
+            gameController.reduceFuego();
+            this.timeAcc = 0;
+        }
 
         if (this.life <= 0) {
             this.destroy();

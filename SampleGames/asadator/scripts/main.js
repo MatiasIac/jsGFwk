@@ -48,6 +48,19 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         {left: 845, top: 418, width: 150, height: 150}]);
     jsGFwk.Sprites.carbon.loop(false);
 
+    jsGFwk.Sprites.createSpriteCollection("cortes", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 14, top: 14, width: 106, height: 107},
+        {left: 140, top: 14, width: 106, height: 107},
+        {left: 262, top: 14, width: 106, height: 107},
+        {left: 386, top: 14, width: 106, height: 107},
+        {left: 510, top: 14, width: 106, height: 107},
+        {left: 635, top: 14, width: 106, height: 107}]);
+    jsGFwk.Sprites.carbon.loop(false);
+
+    jsGFwk.Sprites.createSprite({
+        id: 'energia', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 783, top: 24, width: 10, height: 67
+    });
 
     jsGFwk.Scenes.scenes.main.enable();
 };
