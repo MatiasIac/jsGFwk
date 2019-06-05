@@ -93,13 +93,17 @@ var gameController = {
     },
     draw: function(ctx) {
         ctx.fillStyle = "red";
-        ctx.fillRect(this.btnCarbon.x, this.btnCarbon.y, this.btnCarbon.width, this.btnCarbon.height);
+        ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[6].image, 
+            this.btnCarbon.x, 
+            this.btnCarbon.y, 
+            this.btnCarbon.width, 
+            this.btnCarbon.height);
 
-        ctx.fillRect(this.btnCorte1.x, this.btnCorte1.y, this.btnCorte1.width, this.btnCorte1.height);
-        ctx.fillRect(this.btnCorte2.x, this.btnCorte2.y, this.btnCorte2.width, this.btnCorte2.height);
-        ctx.fillRect(this.btnCorte3.x, this.btnCorte3.y, this.btnCorte3.width, this.btnCorte3.height);
-        ctx.fillRect(this.btnCorte4.x, this.btnCorte4.y, this.btnCorte4.width, this.btnCorte4.height);
-        ctx.fillRect(this.btnCorte5.x, this.btnCorte5.y, this.btnCorte5.width, this.btnCorte5.height);
-        ctx.fillRect(this.btnCorte6.x, this.btnCorte6.y, this.btnCorte6.width, this.btnCorte6.height);
+        ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[0].image, this.btnCorte1.x, this.btnCorte1.y, this.btnCorte1.width, this.btnCorte1.height);
+        ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[1].image, this.btnCorte2.x, this.btnCorte2.y, this.btnCorte2.width, this.btnCorte2.height);
+        ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[2].image, this.btnCorte3.x, this.btnCorte3.y, this.btnCorte3.width, this.btnCorte3.height);
+        ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[3].image, this.btnCorte4.x, this.btnCorte4.y, this.btnCorte4.width, this.btnCorte4.height);
+        ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[4].image, this.btnCorte5.x, this.btnCorte5.y, this.btnCorte5.width, this.btnCorte5.height);
+        ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[5].image, this.btnCorte6.x, this.btnCorte6.y, this.btnCorte6.width, this.btnCorte6.height);
     }
 };

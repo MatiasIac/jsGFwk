@@ -1,5 +1,6 @@
 var corte = {
     onInit: function (data) {
+        this.acc = 0;
         this.type = data.tipo;
         this.pic = jsGFwk.Sprites.cortes.spriteBag[data.tipo].image;
         this.pos = data.pos;
@@ -10,8 +11,17 @@ var corte = {
             width: 106, height: 107
         };
     },
-    onUpdate: function(tick){
-        this.cook+=0.1;
+    onUpdate: function(tick) {
+        this.acc += tick;
+
+        if (this.acc > 0.2) {
+            this.cook += ((gameController.potenciaFuego / 1000) - 0.2);
+            this.acc = 0;
+        }
+
+        if (this.cook < 0) { 
+            this.cook = 0;
+        }
     },
     onDraw: function(ctx) {
         ctx.drawImage(this.pic, this.rect.x, this.rect.y);

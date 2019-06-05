@@ -57,6 +57,16 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         {left: 635, top: 14, width: 106, height: 107}]);
     jsGFwk.Sprites.carbon.loop(false);
 
+    jsGFwk.Sprites.createSpriteCollection("botones", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 713, top: 626, width: 83, height: 82},
+        {left: 815, top: 626, width: 83, height: 82},
+        {left: 713, top: 728, width: 83, height: 82},
+        {left: 815, top: 728, width: 83, height: 82},
+        {left: 713, top: 830, width: 83, height: 82},
+        {left: 815, top: 830, width: 83, height: 82},
+        {left: 909, top: 830, width: 83, height: 82}]);
+    jsGFwk.Sprites.carbon.loop(false);
+
     jsGFwk.Sprites.createSprite({
         id: 'energia', graphic: jsGFwk.ResourceManager.graphics.main.image,
         left: 783, top: 24, width: 10, height: 67
