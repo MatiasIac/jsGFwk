@@ -22,6 +22,14 @@ var corte = {
         if (this.cook < 0) { 
             this.cook = 0;
         }
+
+        //burn
+        var cookval = 67 * (this.cook / 100);
+        
+        if (cookval >= 99) {
+            gameController.quemado(this.pos);
+            this.destroy();
+        }
     },
     onDraw: function(ctx) {
         ctx.drawImage(this.pic, this.rect.x, this.rect.y);

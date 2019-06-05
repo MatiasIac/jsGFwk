@@ -20,6 +20,7 @@ var height = 600;
 
 var corteContainer = jsGFwk.Container.createContainer('cortes', corte, true);
 var carbonContainer = jsGFwk.Container.createContainer('carbobes', carbon, true);
+var pedidosContainer = jsGFwk.Container.createContainer('pedidos', pedido, true);
 
 jsGFwk.Scenes.create({name: "main", 
     gameObjects: [

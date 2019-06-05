@@ -19,12 +19,17 @@ var gameController = {
         this.potenciaFuego--;
     },
 
+    quemado: function(pos) {
+        this.enParrilla[pos] = -1;
+    },
+
     init: function () {
         var self = this;
         this.pedidos = [];
         this.enParrilla = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
         this.dinero = 0;
         this.potenciaFuego = 0;
+        this.accPedidos = 0;
 
         this.mouseUpId = jsGFwk.IO.mouse.registerClick(function(e) {
             e.width = 1;
@@ -89,7 +94,16 @@ var gameController = {
         });
     },
     update: function(tick) {
+        this.accPedidos += tick;
 
+        if (this.accPedidos > 0.5) {
+            this.accPedidos = 0;
+
+            //move pedidos to the right
+            pedidosContainer.eachCloned(function(item) {
+                item.x--;
+            });
+        }
     },
     draw: function(ctx) {
         ctx.fillStyle = "red";
