@@ -3,8 +3,7 @@ var gameController = {
     visible: true,
 
     pedidos: [],
-    enParrilla: -1,
-    maxParrilla: 11,
+    enParrilla: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     potenciaFuego: 0,
     dinero: 0,
 
@@ -23,12 +22,21 @@ var gameController = {
     init: function () {
         var self = this;
         this.pedidos = [];
+        this.enParrilla = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
         this.dinero = 0;
         this.potenciaFuego = 0;
 
         this.mouseUpId = jsGFwk.IO.mouse.registerClick(function(e) {
             e.width = 1;
             e.height = 1;
+
+            corteContainer.eachCloned(function (item, event) {
+                if (jsGFwk.Collisions.areCollidingBy(item.rect, e, 0) === true) {
+                    self.enParrilla[item.pos] = -1;
+                    item.destroy();
+                    event.cancel = true;
+                }
+            });
 
             if (jsGFwk.Collisions.areCollidingBy(self.btnCarbon, e, 0) === true) {
                 carbonContainer.cloneObject({
@@ -38,39 +46,44 @@ var gameController = {
                 self.potenciaFuego += 100;
             }
 
-            if (self.enParrilla < self.maxParrilla) {
-                var corte = -1;
+            var corte = -1;
 
-                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte1, e, 0) === true) {
-                    corte = 0;
-                }
+            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte1, e, 0) === true) {
+                corte = 0;
+            }
 
-                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte2, e, 0) === true) {
-                    corte = 1;
-                }
+            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte2, e, 0) === true) {
+                corte = 1;
+            }
 
-                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte3, e, 0) === true) {
-                    corte = 2;
-                }
+            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte3, e, 0) === true) {
+                corte = 2;
+            }
 
-                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte4, e, 0) === true) {
-                    corte = 3;
-                }
+            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte4, e, 0) === true) {
+                corte = 3;
+            }
 
-                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte5, e, 0) === true) {
-                    corte = 4;
-                }
+            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte5, e, 0) === true) {
+                corte = 4;
+            }
 
-                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte6, e, 0) === true) {
-                    corte = 5;
-                }
+            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte6, e, 0) === true) {
+                corte = 5;
+            }
 
-                if (corte >= 0) {
-                    self.enParrilla++;
-                    corteContainer.cloneObject({
-                        pos: self.enParrilla,
-                        tipo: corte,
-                    });
+            if (corte >= 0) {
+                for (var i = 0; i < self.enParrilla.length; i++) {
+                    var item = self.enParrilla[i];
+                    
+                    if (item === -1) {
+                        corteContainer.cloneObject({
+                            pos: i,
+                            tipo: corte,
+                        });
+                        self.enParrilla[i] = corte;
+                        break;
+                    }
                 }
             }
         });
