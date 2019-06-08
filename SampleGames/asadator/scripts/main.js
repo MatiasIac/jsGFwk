@@ -15,23 +15,36 @@ jsGFwk.include("Gamepad");
 
 jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/sprites.png" });
 
-var width = 800;
+var width = 950;
 var height = 600;
 
 var corteContainer = jsGFwk.Container.createContainer('cortes', corte, true);
 var carbonContainer = jsGFwk.Container.createContainer('carbobes', carbon, true);
-var pedidosContainer = jsGFwk.Container.createContainer('pedidos', pedido, true);
+var dineroContainer = jsGFwk.Container.createContainer('dineros', dinero, true);
 
 jsGFwk.Scenes.create({name: "main", 
     gameObjects: [
-        gameController,
         fojon,
+        gameController,
         carbonContainer,
         parrilla,
-        corteContainer
+        gaucho,
+        pedido,
+        corteContainer,
+        dineroContainer
     ]});
 
 jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+
+    jsGFwk.Sprites.createSprite({
+        id: 'clock', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 1679, top: 837, width: 41, height: 46
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'background', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 1901, top: 350, width: 950, height: 600
+    });
 
     jsGFwk.Sprites.createSprite({
         id: 'fogon', graphic: jsGFwk.ResourceManager.graphics.main.image,
@@ -43,11 +56,35 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         left: 9, top: 527, width: 639, height: 369
     });
 
+    jsGFwk.Sprites.createSprite({
+        id: 'dialog', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 1887, top: 38, width: 346, height: 251
+    });
+
+    jsGFwk.Sprites.createSpriteCollection("vidas", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 1554, top: 891, width: 13, height: 11},
+        {left: 1569, top: 891, width: 13, height: 11}]);
+    jsGFwk.Sprites.vidas.loop(false);
+
+    jsGFwk.Sprites.createSpriteCollection("gaucho", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 1033, top: 38, width: 354, height: 571},
+        {left: 1413, top: 37, width: 354, height: 571}]);
+    jsGFwk.Sprites.gaucho.loop(true);
+
     jsGFwk.Sprites.createSpriteCollection("carbon", jsGFwk.ResourceManager.graphics.main.image,
         [{left: 857, top: 158, width: 107, height: 104},
         {left: 857, top: 289, width: 107, height: 115},
         {left: 845, top: 418, width: 150, height: 150}]);
     jsGFwk.Sprites.carbon.loop(false);
+
+    jsGFwk.Sprites.createSpriteCollection("pedidos", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 1104, top: 732, width: 79, height: 73},
+        {left: 1211, top: 732, width: 79, height: 73},
+        {left: 1347, top: 732, width: 79, height: 73},
+        {left: 1475, top: 732, width: 79, height: 73},
+        {left: 1606, top: 732, width: 79, height: 73},
+        {left: 1724, top: 732, width: 79, height: 73}]);
+    jsGFwk.Sprites.pedidos.loop(false);
 
     jsGFwk.Sprites.createSpriteCollection("cortes", jsGFwk.ResourceManager.graphics.main.image,
         [{left: 14, top: 14, width: 106, height: 107},
@@ -70,7 +107,7 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
 
     jsGFwk.Sprites.createSprite({
         id: 'energia', graphic: jsGFwk.ResourceManager.graphics.main.image,
-        left: 783, top: 24, width: 10, height: 67
+        left: 808, top: 24, width: 10, height: 67
     });
 
     jsGFwk.Scenes.scenes.main.enable();

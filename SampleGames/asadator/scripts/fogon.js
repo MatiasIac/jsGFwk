@@ -8,6 +8,7 @@ var fojon = {
 
     },
     draw: function (ctx) {
-        ctx.drawImage(jsGFwk.Sprites.fogon.image, 80, 200)
+        ctx.drawImage(jsGFwk.Sprites.background.image, 0, 0);
+        ctx.drawImage(jsGFwk.Sprites.fogon.image, 80, 200);
     }
 };

@@ -4,7 +4,7 @@ var corte = {
         this.type = data.tipo;
         this.pic = jsGFwk.Sprites.cortes.spriteBag[data.tipo].image;
         this.pos = data.pos;
-        this.cook = 0;
+        this.cook = 18;
         this.rect = {
             x: ((data.pos % 4) * 146) + 110,
             y: ((parseInt(data.pos / 4)) * 110) + 215,
@@ -25,18 +25,25 @@ var corte = {
 
         //burn
         var cookval = 67 * (this.cook / 100);
+        if (cookval > 57) {
+            this.rect.width = 106 + (Math.random() * (cookval - 57));
+            this.rect.height = 107 + (Math.random() * (cookval - 57));
+        } else {
+            this.rect.width = 106;
+            this.rect.height = 107;
+        }
         
-        if (cookval >= 99) {
+        if (cookval >= 67) {
             gameController.quemado(this.pos);
             this.destroy();
         }
     },
     onDraw: function(ctx) {
-        ctx.drawImage(this.pic, this.rect.x, this.rect.y);
+        ctx.drawImage(this.pic, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
 
         var cookval = 67 * (this.cook / 100);
         ctx.drawImage(jsGFwk.Sprites.energia.image, 
-            this.rect.x + 87, (this.rect.y + 20) + (67 - cookval),
-            10, cookval);
+            0, (67 - cookval), 10, cookval,
+            this.rect.x + 87, (this.rect.y + 20) + (67 - cookval), 10, cookval);
     }
 };

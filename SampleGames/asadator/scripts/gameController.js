@@ -2,18 +2,20 @@ var gameController = {
     id: "gameController",
     visible: true,
 
-    pedidos: [],
     enParrilla: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     potenciaFuego: 0,
-    dinero: 0,
+    dinero: 500,
+    vidas: 3,
+
+    nombreCortes: ["bife angosto", "chirzo", "asado", "tapa de asado", "chinchulin", "matambre"],
 
     btnCarbon: { x: 10, y: 500, width: 50, height: 50 },
-    btnCorte1: { x: 10, y: 30, width: 50, height: 50 },
-    btnCorte2: { x: 10, y: 90, width: 50, height: 50 },
-    btnCorte3: { x: 10, y: 150, width: 50, height: 50 },
-    btnCorte4: { x: 10, y: 210, width: 50, height: 50 },
-    btnCorte5: { x: 10, y: 270, width: 50, height: 50 },
-    btnCorte6: { x: 10, y: 330, width: 50, height: 50 },
+    btnCorte1: { x: 10, y: 130, width: 50, height: 50 },
+    btnCorte2: { x: 10, y: 190, width: 50, height: 50 },
+    btnCorte3: { x: 10, y: 250, width: 50, height: 50 },
+    btnCorte4: { x: 10, y: 310, width: 50, height: 50 },
+    btnCorte5: { x: 10, y: 370, width: 50, height: 50 },
+    btnCorte6: { x: 10, y: 430, width: 50, height: 50 },
 
     reduceFuego: function() {
         this.potenciaFuego--;
@@ -23,13 +25,20 @@ var gameController = {
         this.enParrilla[pos] = -1;
     },
 
+    pedidoPerdido: function() {
+        this.vidas--;
+
+        if (this.vidas <= 0) {
+            //end game
+        }
+    },
+
     init: function () {
         var self = this;
-        this.pedidos = [];
         this.enParrilla = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
-        this.dinero = 0;
+        this.dinero = 500;
         this.potenciaFuego = 0;
-        this.accPedidos = 0;
+        this.vidas = 3;
 
         this.mouseUpId = jsGFwk.IO.mouse.registerClick(function(e) {
             e.width = 1;
@@ -37,76 +46,91 @@ var gameController = {
 
             corteContainer.eachCloned(function (item, event) {
                 if (jsGFwk.Collisions.areCollidingBy(item.rect, e, 0) === true) {
-                    self.enParrilla[item.pos] = -1;
-                    item.destroy();
+
+                    if (item.cook < 90) {
+                        gaucho.decir("¡No me gusta el\nasado frio!");
+                    } else {
+                        if (self.enParrilla[item.pos] === pedido.tipo) {
+                            self.dinero += 300;
+                            dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "+ $300"});
+                            pedido.tipo = -1;
+                        }
+
+                        self.enParrilla[item.pos] = -1;
+                        item.destroy();
+                    }
+
                     event.cancel = true;
                 }
             });
 
-            if (jsGFwk.Collisions.areCollidingBy(self.btnCarbon, e, 0) === true) {
-                carbonContainer.cloneObject({
-                    x: parseInt(Math.random() * 560) + 75,
-                    y: parseInt(Math.random() * 300) + 195
-                });
-                self.potenciaFuego += 100;
+            if (self.dinero >= 10) {
+                if (jsGFwk.Collisions.areCollidingBy(self.btnCarbon, e, 0) === true) {
+                    carbonContainer.cloneObject({
+                        x: parseInt(Math.random() * 560) + 75,
+                        y: parseInt(Math.random() * 300) + 195
+                    });
+                    self.potenciaFuego += 100;
+                    self.dinero -= 10;
+                    dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "- $10"});
+                }
             }
 
-            var corte = -1;
+            if (self.dinero >= 50) {
+                var corte = -1;
 
-            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte1, e, 0) === true) {
-                corte = 0;
-            }
+                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte1, e, 0) === true) {
+                    corte = 0;
+                }
 
-            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte2, e, 0) === true) {
-                corte = 1;
-            }
+                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte2, e, 0) === true) {
+                    corte = 1;
+                }
 
-            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte3, e, 0) === true) {
-                corte = 2;
-            }
+                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte3, e, 0) === true) {
+                    corte = 2;
+                }
 
-            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte4, e, 0) === true) {
-                corte = 3;
-            }
+                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte4, e, 0) === true) {
+                    corte = 3;
+                }
 
-            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte5, e, 0) === true) {
-                corte = 4;
-            }
+                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte5, e, 0) === true) {
+                    corte = 4;
+                }
 
-            if (jsGFwk.Collisions.areCollidingBy(self.btnCorte6, e, 0) === true) {
-                corte = 5;
-            }
+                if (jsGFwk.Collisions.areCollidingBy(self.btnCorte6, e, 0) === true) {
+                    corte = 5;
+                }
 
-            if (corte >= 0) {
-                for (var i = 0; i < self.enParrilla.length; i++) {
-                    var item = self.enParrilla[i];
-                    
-                    if (item === -1) {
-                        corteContainer.cloneObject({
-                            pos: i,
-                            tipo: corte,
-                        });
-                        self.enParrilla[i] = corte;
-                        break;
+                if (corte >= 0) {
+                    for (var i = 0; i < self.enParrilla.length; i++) {
+                        var item = self.enParrilla[i];
+                        
+                        if (item === -1) {
+                            corteContainer.cloneObject({
+                                pos: i,
+                                tipo: corte,
+                            });
+                            self.enParrilla[i] = corte;
+                            self.dinero -= 50;
+                            dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "+ $50"});
+                            break;
+                        }
                     }
                 }
             }
         });
     },
     update: function(tick) {
-        this.accPedidos += tick;
-
-        if (this.accPedidos > 0.5) {
-            this.accPedidos = 0;
-
-            //move pedidos to the right
-            pedidosContainer.eachCloned(function(item) {
-                item.x--;
-            });
+        if (pedido.tipo === -1) {
+            var tipo = parseInt(Math.random() * 6);
+            var tiempo = parseInt(Math.random() * 10) + 20;
+            pedido.setPedido(tipo, tiempo);
+            gaucho.decir("Como me gustaría comer\n" + this.nombreCortes[tipo]);
         }
     },
     draw: function(ctx) {
-        ctx.fillStyle = "red";
         ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[6].image, 
             this.btnCarbon.x, 
             this.btnCarbon.y, 
@@ -119,5 +143,13 @@ var gameController = {
         ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[3].image, this.btnCorte4.x, this.btnCorte4.y, this.btnCorte4.width, this.btnCorte4.height);
         ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[4].image, this.btnCorte5.x, this.btnCorte5.y, this.btnCorte5.width, this.btnCorte5.height);
         ctx.drawImage(jsGFwk.Sprites.botones.spriteBag[5].image, this.btnCorte6.x, this.btnCorte6.y, this.btnCorte6.width, this.btnCorte6.height);
+
+        ctx.fillStyle = "#E0C941";
+        ctx.font = "30pt arial";
+        ctx.fillText('$ ' + this.dinero, 30, 80);
+
+        for (var i = 0; i < 3; i++) {
+            ctx.drawImage(jsGFwk.Sprites.vidas.spriteBag[(i < this.vidas ? 0 : 1)].image, 330 + (i * 15), 75);            
+        }
     }
 };
