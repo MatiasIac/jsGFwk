@@ -7,7 +7,7 @@ var gameController = {
     dinero: 500,
     vidas: 3,
 
-    nombreCortes: ["bife angosto", "chirzo", "asado", "tapa de asado", "chinchulin", "matambre"],
+    nombreCortes: ["bife angosto", "chorizo", "asado", "tapa de asado", "chinchulin", "matambre"],
 
     btnCarbon: { x: 10, y: 500, width: 50, height: 50 },
     btnCorte1: { x: 10, y: 130, width: 50, height: 50 },
@@ -23,6 +23,12 @@ var gameController = {
 
     quemado: function(pos) {
         this.enParrilla[pos] = -1;
+        
+        var x = ((pos % 4) * 146) + 110;
+        var y = ((parseInt(pos / 4)) * 110) + 215;
+
+        this.dinero -= 50;
+        dineroContainer.cloneObject({x: x, y: y, dinero: "- $50"});
     },
 
     pedidoPerdido: function() {
@@ -30,6 +36,8 @@ var gameController = {
 
         if (this.vidas <= 0) {
             //end game
+            jsGFwk.IO.mouse.unregisterClick(this.mouseUpId);
+            jsGFwk.Scenes.scenes.start.enable();
         }
     },
 
@@ -39,6 +47,9 @@ var gameController = {
         this.dinero = 500;
         this.potenciaFuego = 0;
         this.vidas = 3;
+        corteContainer.clearAll();
+        carbonContainer.clearAll();
+        dineroContainer.clearAll();
 
         this.mouseUpId = jsGFwk.IO.mouse.registerClick(function(e) {
             e.width = 1;
@@ -51,9 +62,18 @@ var gameController = {
                         gaucho.decir("¡No me gusta el\nasado frio!");
                     } else {
                         if (self.enParrilla[item.pos] === pedido.tipo) {
-                            self.dinero += 300;
-                            dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "+ $300"});
-                            pedido.tipo = -1;
+                            pedido.cantidad--;
+                            
+                            if (pedido.cantidad <= 0) {
+                                self.dinero += 300;
+                                dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "+ $300"});
+                                pedido.tipo = -1;
+                            } else {
+                                self.dinero += 70;
+                                dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "+ $70"});
+                            }
+
+                            setRecord(self.dinero);
                         }
 
                         self.enParrilla[item.pos] = -1;
@@ -67,10 +87,10 @@ var gameController = {
             if (self.dinero >= 10) {
                 if (jsGFwk.Collisions.areCollidingBy(self.btnCarbon, e, 0) === true) {
                     carbonContainer.cloneObject({
-                        x: parseInt(Math.random() * 560) + 75,
-                        y: parseInt(Math.random() * 300) + 195
+                        x: parseInt(Math.random() * 550) + 75,
+                        y: parseInt(Math.random() * 300) + 160
                     });
-                    self.potenciaFuego += 100;
+                    self.potenciaFuego += 150;
                     self.dinero -= 10;
                     dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "- $10"});
                 }
@@ -125,8 +145,9 @@ var gameController = {
     update: function(tick) {
         if (pedido.tipo === -1) {
             var tipo = parseInt(Math.random() * 6);
-            var tiempo = parseInt(Math.random() * 10) + 20;
-            pedido.setPedido(tipo, tiempo);
+            var tiempo = parseInt(Math.random() * 20) + 20;
+            var cantidad = parseInt(Math.random() * 5) + 1;
+            pedido.setPedido(tipo, tiempo, cantidad);
             gaucho.decir("Como me gustaría comer\n" + this.nombreCortes[tipo]);
         }
     },

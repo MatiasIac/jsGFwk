@@ -33,7 +33,7 @@ var corte = {
             this.rect.height = 107;
         }
         
-        if (cookval >= 67) {
+        if (cookval >= 67 || cookval <= 0) {
             gameController.quemado(this.pos);
             this.destroy();
         }

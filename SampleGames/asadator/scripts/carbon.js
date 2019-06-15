@@ -2,7 +2,7 @@ var carbon = {
     onInit: function (data) {
         this.x = data.x;
         this.y = data.y;
-        this.life = 100;
+        this.life = 150;
         this.timeAcc = 0;
 
         this.img = jsGFwk.Sprites.carbon.spriteBag[parseInt(Math.random() * 3)].image;

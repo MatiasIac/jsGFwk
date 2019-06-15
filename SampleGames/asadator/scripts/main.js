@@ -1,5 +1,5 @@
 jsGFwk.settings.canvas = "canvas";
-jsGFwk.settings.clearColor = "green";
+jsGFwk.settings.clearColor = "white";
 jsGFwk.settings.frameRate = 1000 / 60;
 
 jsGFwk.include("FastAnimation");
@@ -22,6 +22,11 @@ var corteContainer = jsGFwk.Container.createContainer('cortes', corte, true);
 var carbonContainer = jsGFwk.Container.createContainer('carbobes', carbon, true);
 var dineroContainer = jsGFwk.Container.createContainer('dineros', dinero, true);
 
+jsGFwk.Scenes.create({name: "start", 
+    gameObjects: [
+        initgame
+    ]});
+
 jsGFwk.Scenes.create({name: "main", 
     gameObjects: [
         fojon,
@@ -34,7 +39,36 @@ jsGFwk.Scenes.create({name: "main",
         dineroContainer
     ]});
 
+var gameStatus = {
+    lastrecord: 0
+};
+
+function setRecord(dinero) {
+    if (dinero > gameStatus.lastrecord) {
+        gameStatus.lastrecord = dinero;
+        jsGFwk.Storage.setData({name: 'asadator_stored_game', data: gameStatus});
+    }
+}
+
 jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+
+    var storedValues = jsGFwk.Storage.getFromJson('asadator_stored_game');
+    gameStatus = storedValues || gameStatus;
+
+    jsGFwk.Sprites.createSprite({
+        id: 'splash', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 3103, top: 138, width: 950, height: 600
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'splash2', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 4319, top: 138, width: 950, height: 600
+    });
+
+    jsGFwk.Sprites.createSprite({
+        id: 'startbutton', graphic: jsGFwk.ResourceManager.graphics.main.image,
+        left: 3990, top: 836, width: 249, height: 62
+    });
 
     jsGFwk.Sprites.createSprite({
         id: 'clock', graphic: jsGFwk.ResourceManager.graphics.main.image,
@@ -70,6 +104,12 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         [{left: 1033, top: 38, width: 354, height: 571},
         {left: 1413, top: 37, width: 354, height: 571}]);
     jsGFwk.Sprites.gaucho.loop(true);
+
+    jsGFwk.Sprites.createSpriteCollection("carboninicio", jsGFwk.ResourceManager.graphics.main.image,
+        [{left: 3208, top: 803, width: 194, height: 134},
+        {left: 3462, top: 803, width: 194, height: 134},
+        {left: 3704, top: 803, width: 194, height: 134}]);
+    jsGFwk.Sprites.carboninicio.loop(true);
 
     jsGFwk.Sprites.createSpriteCollection("carbon", jsGFwk.ResourceManager.graphics.main.image,
         [{left: 857, top: 158, width: 107, height: 104},
@@ -110,7 +150,7 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
         left: 808, top: 24, width: 10, height: 67
     });
 
-    jsGFwk.Scenes.scenes.main.enable();
+    jsGFwk.Scenes.scenes.start.enable();
 };
 
 jsGFwk.start();
