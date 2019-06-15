@@ -43,6 +43,7 @@ var initgame = {
         });
 
         this.mouseUpId = jsGFwk.IO.mouse.registerClick(function(e) {
+            jsGFwk.ResourceManager.sounds.music.audio.play();
             self.gameStarted++;
             self.startGame();
         });

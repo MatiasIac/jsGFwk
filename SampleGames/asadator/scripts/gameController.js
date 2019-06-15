@@ -73,6 +73,7 @@ var gameController = {
                                 dineroContainer.cloneObject({x: e.x, y: e.y, dinero: "+ $70"});
                             }
 
+                            coinJuke.play();
                             setRecord(self.dinero);
                         }
 
@@ -85,6 +86,8 @@ var gameController = {
             });
 
             if (self.dinero >= 10) {
+                actionJuke.play();
+                
                 if (jsGFwk.Collisions.areCollidingBy(self.btnCarbon, e, 0) === true) {
                     carbonContainer.cloneObject({
                         x: parseInt(Math.random() * 550) + 75,
@@ -124,6 +127,8 @@ var gameController = {
                 }
 
                 if (corte >= 0) {
+                    actionJuke.play();
+
                     for (var i = 0; i < self.enParrilla.length; i++) {
                         var item = self.enParrilla[i];
                         

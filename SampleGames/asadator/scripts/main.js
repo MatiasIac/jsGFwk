@@ -50,6 +50,24 @@ function setRecord(dinero) {
     }
 }
 
+var sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/music.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/music.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "music", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/coin.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/coin.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "coin", sources: sound});
+
+sound = {};
+sound[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/action.ogg" };
+sound[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/action.mp3" };
+jsGFwk.ResourceManager.addSound({ name: "action", sources: sound});
+
+var coinJuke = null;
+var actionJuke = null;
+
 jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
 
     var storedValues = jsGFwk.Storage.getFromJson('asadator_stored_game');
@@ -148,6 +166,22 @@ jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
     jsGFwk.Sprites.createSprite({
         id: 'energia', graphic: jsGFwk.ResourceManager.graphics.main.image,
         left: 808, top: 24, width: 10, height: 67
+    });
+
+    jsGFwk.ResourceManager.sounds.music.audio.volume = 0.05;
+    jsGFwk.ResourceManager.sounds.music.audio.loop = true;
+    jsGFwk.ResourceManager.sounds.music.audio.autoplay = true;
+
+    coinJuke = new jsGFwk.Jukebox({
+        volume: 0.2,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.coin
+    });
+
+    actionJuke = new jsGFwk.Jukebox({
+        volume: 0.2,
+        channels: 5,
+        source: jsGFwk.ResourceManager.sounds.action
     });
 
     jsGFwk.Scenes.scenes.start.enable();
