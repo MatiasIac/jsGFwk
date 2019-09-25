@@ -15,14 +15,14 @@
                 <!--a-asset-item id="monster" src="monster/Monster.gltf"></a-asset-item-->
             </a-assets>
             <!-- a-box position='0 0.5 0' material='opacity: 0.5;'></a-box-->
-            <a-marker-camera preset='hiro' id="avo">
+            <a-marker-camera preset='hiro' id="avoMarker">
                 <!--a-entity gltf-model="#monster" scale="0.05 0.05 0.05"></a-entity-->
                 <a-entity gltf-model="#avo" scale="0.3 0.3 0.3"></a-entity>
             </a-marker-camera>
         </a-scene>
     </body>
 	<script>
-		var avoMarker = document.getElementById('avo');
+		var avoMarker = document.getElementById('avoMarker');
 		
 		avoMarker.addEventListener("markerFound", function() {
 			alert('found');
