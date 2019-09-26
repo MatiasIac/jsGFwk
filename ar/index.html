@@ -24,29 +24,25 @@
 	<script>
 		var isVisible = false;
 		
-		AFRAME.registerComponent('markerhandler', {
-			init: function() {
-				this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
-			},
-			tick: function(t, dt) {
-				
-				if (document.querySelector("#avoMarker").object3D.visible == true && isVisible == false) {
-					isVisible = true;
-					alert('visible');
-				} else {
-					isVisible = false;
-				}
-
+		AFRAME.registerComponent('registerevents', {
+			init: function () {
+				var marker = this.el;
+				marker.addEventListener('markerFound', function() {
+					var markerId = marker.id;
+					
+					if (markerId === 'avoMarker' && isVisible == false) {
+						isVisible = true;
+						alert('found');
+					}
+				});
+				marker.addEventListener('markerLost', function() {
+					var markerId = marker.id;
+					
+					if (markerId === 'avoMarker') {
+						isVisible = false;
+					}
+				});
 			}
 		});
-	
-	
-		/*var avoMarker = document.getElementById('avoMarker');
-		
-		avoMarker.addEventListener("markerFound", function() {
-			alert('found');
-		});*/
-		
-		
 	</script>
 </html>
