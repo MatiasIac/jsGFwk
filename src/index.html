@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head></head>
+    <script src="jsgfwk.js" lang="javascript"></script>
+    <script src="animator2d.js" lang="javascript"></script>
+    <body>
+
+        <canvas id="canvas" width="640" height="480"></canvas>
+
+        <script>
+            const game = new jsGFwk();
+            game.include(new Animator2D());
+
+            let myGameObject = {
+                id: crypto.randomUUID(),
+                visible: true,
+                x: 0,
+                y: 0,
+                width: 100,
+                height: 100,
+                update: function () {
+                    this.x += 1;
+                    this.y += 1;
+                },
+                draw: function (context) {
+                    context.fillStyle = '#FF0000';
+                    context.fillRect(this.x, this.y, 100, 100);
+                }
+            };
+
+            game.createObject(myGameObject);
+
+            game.start();
+        </script>
+    </body>
+</html>

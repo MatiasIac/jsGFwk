@@ -1,98 +1,19 @@
-# jsGFwk
+# jsGFwk v3
 
-A simple framework for game development.
+jsGFwk is a simple, but powerful, JavaScript videogame framework.
+
+The first version of jsGFwk was built more than 7 years ago in 40 hours. From that point the framework kept evolving, adding new features and plug ins to it.
+
+The main difference (and its reason to exists) with other frameworks in the market is that jsFGwk doesn't tries to take control of what is happening on your game. It only provides a foundation to build games and gives you full control through your code.
+
+Additionally, it is intended to be extended with plug ins, meaning that, if you find a better way to do something that the jsGFwk does out of the box, you can code it and add it into the foundation.
+
+Each file in the framework is, actually, a plug in that provides a particular functionality. From sound, keyboard and mouse handling, to drawing in the screen or saving data into the browser.
 
 ## What's this?
 
-This is a simple minimalistic game framework for JavaScript and HTML5
+This is the third version of jsGFwk and it will become the official one.
 
-This framework will allow you to:
+The key difference with the older version is the JavaScript language version used on v3.
 
-- Create simple 2D games with HTML5 and JavaScript
-- Handles image and sound resources for your games
-- Includes basic rect boxing collision
-- Handles keyboard and mouse for your games
-
-More important:
-
-- To be used as a foundation for complex games or to work with other frameworks
-
-AND REMEMBER. SIMPLICITY IS THE BEST.
-
-## How to use it in node
-
-First install it: (adding a published package in npm in the future)
-
-```sh
-npm install --save github:MatiasIac/jsGFwk
-```
-
-Then you need to load an instance of the framework.
-
-The framework can be loaded multiple times on node:
-
-Add a file, such as: framework.js in your project:
-
-### ES5: 
-
-```js
-const jsGFwkSetup = require('jsgfwk');
-module.exports = jsGFwkSetup({
-  // Here you can put the modules you want to load,
-  // All are by default loaded, but you can disable one using:
-  fastAnimations: false,
-  // To disable fastAnimations, under this list is a list of plugins.
-})
-```
-
-### ES6:
-
-```js
-import jsGFwkSetup from 'jsgfwk';
-
-export default jsGFwkSetup({
-  // Here you can put the modules you want to load,
-  // All are by default loaded, but you can disable one using:
-  fastAnimations: false,
-  // To disable fastAnimations, under this list is a list of plugins.  
-})
-
-```
-
-## What Plugins are available
-
-| Plugin Name       | Description               | Configuration name |
-| ----------------- | ------------------------- | ------------------ |
-| Basic Animations  |                           |  basicAnimations   |
-| Fast Animations   |                           |  fastAnimations    |
-| Camera            |                           |  camera            |
-| Collisions        |                           |  collisions        |
-| Container         |                           |  container         |
-| Debugger          |                           |  debugger          |
-| Effects           |                           |  effects           |
-| Fonts             |                           |  fonts             |
-| Gamepad           |                           |  gamepad           |
-| Images            |                           |  images            |
-| IO                |                           |  io                |
-| Jukebox           |                           |  jukebox           |
-| Path              |                           |  path              |
-| Resource Manager  |                           |  resourceManager   |
-| Scenes            |                           |  scenes            |
-| Sprites           |                           |  sprites           |
-| Sugar             |Simplifies getters/settes  |  (Not exported)    |
-| Timers            |                           |  timers            |
-| Web Storage       |                           |  webStorage        |
-
-## Testing the framework
-
-First, clone this repository and install dependencies:
-
-```sh 
-npm install
-```
-
-Then just run:
-
-```sh 
-npm run test
-```
+This version is trying to keep retrocompatibily when it is possible. If you have used version 1, you might need to change the way that you import the plug ins.
