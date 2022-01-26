@@ -17,13 +17,13 @@ class Animator2D {
         this._lastFrame = thisFrame;
         
         this._2Dbuffer.save();
-        this._2Dbuffer.fillStyle = _gfwk.settings.clearColor;
+        this._2Dbuffer.fillStyle = this._gfwk.settings.clearColor;
         this._2Dbuffer.fillRect(0, 0, this._canvas.width, this._canvas.height);
         this._2Dbuffer.restore();
         
-        for (let name in _gfwk._gameObjects) {
-            if (_gfwk._gameObjects[name] !== null) {
-                const o = _gfwk._gameObjects[name];
+        for (let name in this._gfwk._gameObjects) {
+            if (this._gfwk._gameObjects[name] !== null) {
+                const o = this._gfwk._gameObjects[name];
 
                 if (o !== undefined && o.update) o.update(delta);
 
@@ -36,18 +36,18 @@ class Animator2D {
         }
 
         //execute any extension that requires a pre render
-        for (let i = 0; i < _gfwk._includes.length; i++) {
-            if (_gfwk._includes[i].onPreRender !== undefined) {
-                _gfwk._2Dbuffer.save();
-                    _gfwk._includes[i].onPreRender(this._2Dbuffer);
+        for (let i = 0; i < this._gfwk._includes.length; i++) {
+            if (this._gfwk._includes[i].onPreRender !== undefined) {
+                this._gfwk._2Dbuffer.save();
+                    this._gfwk._includes[i].onPreRender(this._2Dbuffer);
                 this._2Dbuffer.restore();
             }
         }
         
         //execute any object that includes a post render
-        for (let name in _gfwk._gameObjects) {
+        for (let name in this._gfwk._gameObjects) {
             this._2Dbuffer.save();
-                _gfwk._gameObjects[name].postRender !== undefined && _gfwk._gameObjects[name].postRender(this._2Dbuffer);
+                this._gfwk._gameObjects[name].postRender !== undefined && this._gfwk._gameObjects[name].postRender(this._2Dbuffer);
             this._2Dbuffer.restore();
         }
         
@@ -57,7 +57,7 @@ class Animator2D {
     }
 
     onStart() {
-		this._canvas = document.getElementById(_gfwk.settings.canvas);
+		this._canvas = document.getElementById(this._gfwk.settings.canvas);
 		this._2Dcontext = this._canvas.getContext("2d");
 		this._bufferCanvas = document.createElement('canvas');
 		this._bufferCanvas.width = this._canvas.width;

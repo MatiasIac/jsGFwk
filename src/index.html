@@ -3,15 +3,20 @@
     <head></head>
     <script src="jsgfwk.js" lang="javascript"></script>
     <script src="animator2d.js" lang="javascript"></script>
+    <script src="collisions.js" lang="javascript"></script>
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
 
         <script>
             const game = new jsGFwk();
-            game.include(new Animator2D());
+            const animator = new Animator2D();
+            const collisions = new Collisions();
+            
+            game.include(animator);
+            game.include(collisions);
 
-            let myGameObject = {
+            let redRectangleObject = {
                 id: crypto.randomUUID(),
                 visible: true,
                 x: 0,
@@ -21,14 +26,30 @@
                 update: function () {
                     this.x += 1;
                     this.y += 1;
+
+                    this.visible = !this.isRectColliding(blueRectangleObject);
                 },
                 draw: function (context) {
                     context.fillStyle = '#FF0000';
-                    context.fillRect(this.x, this.y, 100, 100);
+                    context.fillRect(this.x, this.y, this.width, this.height);
                 }
             };
 
-            game.createObject(myGameObject);
+            let blueRectangleObject = {
+                id: crypto.randomUUID(),
+                visible: true,
+                x: 200,
+                y: 200,
+                width: 20,
+                height: 20,
+                draw: function (context) {
+                    context.fillStyle = '#0000FF';
+                    context.fillRect(this.x, this.y, this.width, this.height);
+                }
+            };
+
+            game.createObject(redRectangleObject);
+            game.createObject(blueRectangleObject);
 
             game.start();
         </script>

@@ -10,9 +10,7 @@ class jsGFwk {
         clearColor: "rgb(0,0,0)",
     };
 
-    constructor() { 
-        window._gfwk = this;
-    }
+    constructor() { }
 
     _destroyObject(id) {
         delete this._gameObjects[id];
@@ -55,6 +53,7 @@ class jsGFwk {
         }
 
         this._includes[this._includes.length] = component;
+        component._gfwk= this;
     }
 
     start() {
