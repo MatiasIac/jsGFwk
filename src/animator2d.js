@@ -27,7 +27,7 @@ class Animator2D {
 
                 if (o !== undefined && o.update) o.update(delta);
 
-                if (o !== undefined && (o.draw && o.visible)) {
+                if (o !== undefined && (o.draw && o.isVisible)) {
                     this._2Dbuffer.save();
                         o.draw(this._2Dbuffer);
                     this._2Dbuffer.restore();

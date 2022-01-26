@@ -17,15 +17,17 @@ class jsGFwk {
     }
 
     createObject(object) {
-        if (object.id === undefined) return;
+        object.id = object.id || crypto.randomUUID();
 
-        object.destroy = this._destroyObject.bind(this, object.id);
+        if (object.name === undefined) return;
+
+        object.destroy = this._destroyObject.bind(this, object.name);
         
-        this._gameObjects[object.id] = object;
+        this._gameObjects[object.name] = object;
         
         for (var i = 0; i < this._includes.length; i++) {
             if (this._includes[i].onObjectCreated !== undefined) {
-                this._includes[i].onObjectCreated(this._gameObjects[object.id]);
+                this._includes[i].onObjectCreated(this._gameObjects[object.name]);
             }
         }
         
@@ -42,8 +44,8 @@ class jsGFwk {
         arr.sort((a, b) => a.zOrder - b.zOrder);
         
         for (let i = 0; i < arr.length; i++) {
-            delete this._gameObjects[arr[i].id];
-            this._gameObjects[arr[i].id] = arr[i];
+            delete this._gameObjects[arr[i].name];
+            this._gameObjects[arr[i].name] = arr[i];
         }
     }
 

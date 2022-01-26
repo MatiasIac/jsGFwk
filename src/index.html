@@ -4,6 +4,8 @@
     <script src="jsgfwk.js" lang="javascript"></script>
     <script src="animator2d.js" lang="javascript"></script>
     <script src="collisions.js" lang="javascript"></script>
+    <script src="sprites.js" lang="javascript"></script>
+    <script src="resourcesManager.js" lang="javascript"></script>
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
@@ -12,13 +14,30 @@
             const game = new jsGFwk();
             const animator = new Animator2D();
             const collisions = new Collisions();
-            
+            const resourceManager = new ResourcesManager();
+
             game.include(animator);
             game.include(collisions);
+            game.include(resourceManager);
+            
+            ResourcesManager.addGraphic({ 
+                name: "graphics", 
+                source: "./examples/jumpingBase.png" 
+            });
+
+            var sources = {};
+            sources[ResourcesManager.SOUNDS.FORMAT.WAVE] = { source: "./examples/ezq.wav" };
+            sources[ResourcesManager.SOUNDS.FORMAT.OGG] = { source: "./examples/ezq.ogg" };
+            sources[ResourcesManager.SOUNDS.FORMAT.MP3] = { source: "./examples/ezq.mp3" };
+            
+            ResourcesManager.addSound({ 
+                name: "music", 
+                sources: sources
+            });
 
             let redRectangleObject = {
-                id: crypto.randomUUID(),
-                visible: true,
+                name: crypto.randomUUID(),
+                isVisible: true,
                 x: 0,
                 y: 0,
                 width: 100,
@@ -27,7 +46,7 @@
                     this.x += 1;
                     this.y += 1;
 
-                    this.visible = !this.isRectColliding(blueRectangleObject);
+                    this.isVisible = !this.isRectColliding(blueRectangleObject);
                 },
                 draw: function (context) {
                     context.fillStyle = '#FF0000';
@@ -36,8 +55,8 @@
             };
 
             let blueRectangleObject = {
-                id: crypto.randomUUID(),
-                visible: true,
+                name: crypto.randomUUID(),
+                isVisible: true,
                 x: 200,
                 y: 200,
                 width: 20,
@@ -50,6 +69,10 @@
 
             game.createObject(redRectangleObject);
             game.createObject(blueRectangleObject);
+
+            ResourcesManager.onResourcesLoadedCompleted = function () {
+                console.log("All resources loaded!");
+            };
 
             game.start();
         </script>
