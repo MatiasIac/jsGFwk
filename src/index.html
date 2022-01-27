@@ -10,6 +10,7 @@
     <script src="keyboardIO.js" lang="javascript"></script>
     <script src="touchIO.js" lang="javascript"></script>
     <script src="mouseIO.js" lang="javascript"></script>
+    <script src="clock.js" lang="javascript"></script>
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
@@ -60,7 +61,15 @@
                 y: 0,
                 width: 100,
                 height: 100,
-                update: function () {
+                init: function () {
+                    // we set a random clock that will trigger after 3 seconds
+                    this.myClock = new Clock({ action: function() { console.log("clock triggered"); }, triggerTime: 3 });
+                },
+                update: function (delta) {
+                    // we update the clock
+                    // with the delta time
+                    this.myClock.tick(delta);
+                    
                     this.x += 1;
                     this.y += 1;
 
