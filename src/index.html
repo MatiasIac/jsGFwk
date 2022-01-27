@@ -11,9 +11,33 @@
     <script src="touchIO.js" lang="javascript"></script>
     <script src="mouseIO.js" lang="javascript"></script>
     <script src="clock.js" lang="javascript"></script>
+    <script src="gameObjects.js" lang="javascript"></script>
+    <script src="containers.js" lang="javascript"></script>
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
+
+        <script>
+            class FallingGuy extends VisualGameObject {
+
+                constructor() {
+                    super("fallingGuy", 200, 200, 0, 0, 0);
+                }
+
+                update(delta) {
+                    sprites.SPRITES_BAG.fallingGuy.moveNextSprite();
+
+                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.W] === true) { this.y -= 1; }
+                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.S] === true) { this.y += 1; }
+                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.D] === true) { this.x += 1; }
+                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.A] === true) { this.x -= 1; }
+                }
+
+                draw(context) {
+                    context.drawImage(sprites.SPRITES_BAG.fallingGuy.sprite.image, this.x, this.y);
+                }
+            }
+        </script>
 
         <script>
             const game = new jsGFwk();
@@ -33,9 +57,22 @@
             game.include(touchIO);
             game.include(mouseIO);
 
-            touchIO.registerTouch(function (c) {
-                console.log(c);
+            const cloneContainer = Containers.create("dotBluePrint", {
+                init: function (params) {
+                    this.x = params.x;
+                    this.y = params.y;
+                },
+                update: function (delta) {
+                    this.y++;
+                    if (this.y > 480) { this.destroy(); }
+                },
+                draw: function (context) {
+                    context.fillStyle = "yellow";
+                    context.fillRect(this.x, this.y, 5, 5);
+                }
             });
+
+            touchIO.registerTouch(function (c) { console.log(c); });
 
             resourceManager.addGraphic({ 
                 name: "graphics", 
@@ -54,33 +91,28 @@
                 sources: sources
             });
 
-            let redRectangleObject = {
-                name: crypto.randomUUID(),
-                isVisible: true,
-                x: 0,
-                y: 0,
-                width: 100,
-                height: 100,
-                init: function () {
-                    // we set a random clock that will trigger after 3 seconds
-                    this.myClock = new Clock({ action: function() { console.log("clock triggered"); }, triggerTime: 3 });
-                },
-                update: function (delta) {
-                    // we update the clock
-                    // with the delta time
-                    this.myClock.tick(delta);
-                    
-                    this.x += 1;
-                    this.y += 1;
-
-                    this.isVisible = !this.isRectColliding(blueRectangleObject);
-                },
-                draw: function (context) {
-                    context.fillStyle = '#FF0000';
-                    context.fillRect(this.x, this.y, this.width, this.height);
-                }
+            // creating an object from the hierarchy game objects
+            let redRectangleObject = new VisualGameObject(crypto.randomUUID(), 0, 0, 100, 100, 0, true);
+            redRectangleObject.init = function () {
+                // we set a random clock that will trigger after 3 seconds
+                this.myClock = new Clock({ action: function() { console.log("clock triggered"); }, triggerTime: 3 });
             };
+            redRectangleObject.update = function (delta) {
+                // we update the clock with the delta time
+                this.myClock.tick(delta);
 
+                this.x += 1;
+                this.y += 1;
+
+                this.isVisible = !this.isRectColliding(blueRectangleObject);
+            };
+            redRectangleObject.draw = function (context) {
+                context.fillStyle = '#FF0000';
+                context.fillRect(this.x, this.y, this.width, this.height);
+            };
+            //
+
+            // inline visual game object
             let blueRectangleObject = {
                 name: crypto.randomUUID(),
                 isVisible: true,
@@ -106,35 +138,10 @@
                     context.fillRect(this.x, this.y, this.width, this.height);
                 }
             };
+            //
 
-            let fallingGuyObject = {
-                name: crypto.randomUUID(),
-                isVisible: true,
-                x: 200,
-                y: 200,
-                update: function (delta) {
-                    sprites.SPRITES_BAG.fallingGuy.moveNextSprite();
-
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.W] === true) {
-                        this.y -= 1;
-                    }
-
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.S] === true) {
-                        this.y += 1;
-                    }
-
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.D] === true) {
-                        this.x += 1;
-                    }
-
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.A] === true) {
-                        this.x -= 1;
-                    }
-                },
-                draw: function (context) {
-                    context.drawImage(sprites.SPRITES_BAG.fallingGuy.sprite.image, this.x, this.y);
-                }
-            };
+            // creating a visual game object from a class
+            let fallingGuyObject = new FallingGuy();
 
             resourceManager.onResourcesLoadedCompleted = function () {
                 console.log("All resources loaded!");
@@ -154,6 +161,7 @@
                 game.createObject(redRectangleObject);
                 game.createObject(blueRectangleObject);
                 game.createObject(fallingGuyObject);
+                game.createObject(cloneContainer);
             };
 
             game.start();
