@@ -9,6 +9,7 @@
     <script src="imageFilters.js" lang="javascript"></script>
     <script src="keyboardIO.js" lang="javascript"></script>
     <script src="touchIO.js" lang="javascript"></script>
+    <script src="mouseIO.js" lang="javascript"></script>
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
@@ -21,6 +22,7 @@
             const sprites = new Sprites();
             const keyboardIO = new KeyboardIO();
             const touchIO = new TouchIO();
+            const mouseIO = new MouseIO();
 
             game.include(animator);
             game.include(collisions);
@@ -28,6 +30,7 @@
             game.include(sprites);
             game.include(keyboardIO);
             game.include(touchIO);
+            game.include(mouseIO);
 
             touchIO.registerTouch(function (c) {
                 console.log(c);
@@ -72,10 +75,23 @@
             let blueRectangleObject = {
                 name: crypto.randomUUID(),
                 isVisible: true,
-                x: 200,
-                y: 200,
+                x: 0,
+                y: 0,
                 width: 20,
                 height: 20,
+                init: function () {
+                    const self = this;
+
+                    this.mouseMoveId = mouseIO.registerMove(function (c) {
+                        self.x = c.x;
+                        self.y = c.y;
+                    });
+
+                    this.mouseClickId = mouseIO.registerClick(function (c) {
+                        console.log(c);
+                        mouseIO.unregisterMove(self.mouseMoveId);
+                    });
+                },
                 draw: function (context) {
                     context.fillStyle = '#0000FF';
                     context.fillRect(this.x, this.y, this.width, this.height);
