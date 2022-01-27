@@ -6,6 +6,7 @@
     <script src="collisions.js" lang="javascript"></script>
     <script src="sprites.js" lang="javascript"></script>
     <script src="resourcesManager.js" lang="javascript"></script>
+    <script src="imageFilters.js" lang="javascript"></script>
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
@@ -15,21 +16,25 @@
             const animator = new Animator2D();
             const collisions = new Collisions();
             const resourceManager = new ResourcesManager();
+            const sprites = new Sprites();
 
             game.include(animator);
             game.include(collisions);
             game.include(resourceManager);
+            game.include(sprites);
             
             resourceManager.addGraphic({ 
                 name: "graphics", 
                 source: "./examples/jumpingBase.png" 
             });
 
+            // defining the sounds of the game
             var sources = {};
             sources[ResourcesManager.SOUND_FORMATS.WAVE] = { source: "./examples/ezq.wav" };
             sources[ResourcesManager.SOUND_FORMATS.OGG] = { source: "./examples/ezq.ogg" };
             sources[ResourcesManager.SOUND_FORMATS.MP3] = { source: "./examples/ezq.mp3" };
             
+            // adding the sound to the resource manager
             resourceManager.addSound({ 
                 name: "music", 
                 sources: sources
@@ -61,17 +66,34 @@
                 y: 200,
                 width: 20,
                 height: 20,
+                update: function (delta) {
+                    sprites.SPRITES_BAG.fallingGuy.moveNextSprite();
+                },
                 draw: function (context) {
                     context.fillStyle = '#0000FF';
                     context.fillRect(this.x, this.y, this.width, this.height);
+
+                    context.drawImage(sprites.SPRITES_BAG.fallingGuy.sprite.image, 400, 10);
                 }
             };
 
-            game.createObject(redRectangleObject);
-            game.createObject(blueRectangleObject);
-
             resourceManager.onResourcesLoadedCompleted = function () {
                 console.log("All resources loaded!");
+
+                // creating the sprites
+                sprites.createCollection("fallingGuy", resourceManager.GRAPHICS.graphics.image, 
+					[{left: 409, top: 34, width: 66, height: 26},
+					 {left: 480, top: 34, width: 66, height: 26},
+					 {left: 558, top: 34, width: 66, height: 26}],
+                    /*ImageFilters.INVERTCOLOR*/);
+
+                // reseting the sprites
+                sprites.SPRITES_BAG.fallingGuy.loop(true);
+                sprites.SPRITES_BAG.fallingGuy.reset();
+
+                // adding the objects to the game
+                game.createObject(redRectangleObject);
+                game.createObject(blueRectangleObject);
             };
 
             game.start();
