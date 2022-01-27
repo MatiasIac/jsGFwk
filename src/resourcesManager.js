@@ -1,19 +1,24 @@
 class ResourcesManager {
 
     _name = "ResourcesManager";
-    static _totalResources = 0;
-    static _loadedResources = 0;
+    _totalResources = 0;
+    _loadedResources = 0;
 
-    static PERCENTAGE_LOADED = 0;
+    PERCENTAGE_LOADED = 0;
 
-    static SOUNDS = {
-        FORMAT: { 
-            OGG: 'audio/ogg; codecs="vorbis"',
-            WAVE: 'audio/wav; codecs="1"',
-            MP3: 'audio/mpeg;',
-            AAC: 'audio/mp4; codecs="mp4a.40.2"'
-        },
-        isMuted: false,
+    static SOUND_FORMATS = { 
+        OGG: 'audio/ogg; codecs="vorbis"',
+        WAVE: 'audio/wav; codecs="1"',
+        MP3: 'audio/mpeg;',
+        AAC: 'audio/mp4; codecs="mp4a.40.2"'
+    };
+
+    SOUNDS = {
+        //TODO: Analyze if this is actually necessary
+        //having these features in the sound manager is not a good idea
+        //and, instead, should be implemented in each sound source
+        
+        /*isMuted: false,
         mute: function() {
             this.isMuted = true;
             this.doMute();
@@ -37,26 +42,26 @@ class ResourcesManager {
                                 ResourcesManager.SOUNDS[soundSource]._volume;
                 }
             }
-        }
+        }*/
     };
 
-    static GRAPHICS = {};
+    GRAPHICS = {};
 
     constructor() { }
 
-    static _loadDispatcher() {
-        ResourcesManager._loadedResources++;
-        ResourcesManager.PERCENTAGE_LOADED = (ResourcesManager._loadedResources * 100) / ResourcesManager._totalResources;
+    _loadDispatcher(object) {
+        this._loadedResources++;
+        this.PERCENTAGE_LOADED = (this._loadedResources * 100) / this._totalResources;
         
-        if (ResourcesManager._loadedResources == ResourcesManager._totalResources) {
-            ResourcesManager._detachEvents();
-            ResourcesManager.onResourcesLoadedCompleted();
+        if (this._loadedResources == this._totalResources) {
+            this._detachEvents();
+            this.onResourcesLoadedCompleted();
         } else {
-            ResourcesManager.onResourceLoaded(this);
+            this.onResourceLoaded(object);
         }
     }
 
-    static _detachEvents() {
+    _detachEvents() {
         for (let soundSource in this.SOUNDS) {
             if (this.SOUNDS.hasOwnProperty(soundSource) && 
                 (soundSource !== 'FORMAT' && soundSource !== 'isMuted' && soundSource !== 'mute' && soundSource !== 'unMute' && soundSource !== 'doMute')) {
@@ -66,56 +71,58 @@ class ResourcesManager {
         }
     }
 
-    static addGraphic(source) {
+    addGraphic(source) {
         const image = new Image();
-        image.onload = this._loadDispatcher;
+        image.onload = this._loadDispatcher.bind(this, image);
         source.image = image;
         this.GRAPHICS[source.name] = source;
         this._totalResources++;
     }
 
-    static addSound(source) {
+    addSound(source) {
         const sound = new Audio();
         let errorFound = false;
         
         if (source.sources != undefined) {
-            for (let format in this.SOUNDS.FORMAT) {
-                if (!!(sound.canPlayType && sound.canPlayType(this.SOUNDS.FORMAT[format]).replace(/no/, ''))) {
-                    if (source.sources[this.SOUNDS.FORMAT[format]] == undefined) { 
+            for (let format in ResourcesManager.SOUND_FORMATS) {
+                if (!!(sound.canPlayType && sound.canPlayType(ResourcesManager.SOUND_FORMATS[format]).replace(/no/, ''))) {
+                    if (source.sources[ResourcesManager.SOUND_FORMATS[format]] == undefined) { 
                         errorFound = true;
                         break;
                     }
 
-                    source.source = source.sources[this.SOUNDS.FORMAT[format]].source;
+                    source.source = source.sources[ResourcesManager.SOUND_FORMATS[format]].source;
                     break;
                 }
             }
         }
         
         if (!errorFound) {
-            sound.addEventListener('canplaythrough', this._loadDispatcher, false);
+            sound.addEventListener('canplaythrough', this._loadDispatcher.bind(this, sound), false);
             source.audio = sound;
             this.SOUNDS[source.name] = source;
             this._totalResources++;
         }
     }
 
-    static onResourcesLoadedCompleted() { };
+    onResourcesLoadedCompleted() { };
 		
-    static onResourceLoaded() { };
+    onResourceLoaded() { };
 
     onStart() {
+        const self = this;
+
         setTimeout(function () {
-            for (let imageSource in ResourcesManager.GRAPHICS) {
-                if (ResourcesManager.GRAPHICS.hasOwnProperty(imageSource)) {
-                    ResourcesManager.GRAPHICS[imageSource].image.src = ResourcesManager.GRAPHICS[imageSource].source;
+            for (let imageSource in self.GRAPHICS) {
+                if (self.GRAPHICS.hasOwnProperty(imageSource)) {
+                    self.GRAPHICS[imageSource].image.src = self.GRAPHICS[imageSource].source;
                 }
             }
             
-            for (let soundSource in ResourcesManager.SOUNDS) {
-                if (ResourcesManager.SOUNDS.hasOwnProperty(soundSource) && 
+            for (let soundSource in self.SOUNDS) {
+                if (self.SOUNDS.hasOwnProperty(soundSource) && 
                     (soundSource !== 'FORMAT' && soundSource !== 'isMuted' && soundSource !== 'mute' && soundSource !== 'unMute' && soundSource !== 'doMute')) {
-                        ResourcesManager.SOUNDS[soundSource].audio.src = ResourcesManager.SOUNDS[soundSource].source;
+                        self.SOUNDS[soundSource].audio.src = self.SOUNDS[soundSource].source;
                 }
             }
         }, 2000);

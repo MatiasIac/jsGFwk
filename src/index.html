@@ -20,17 +20,17 @@
             game.include(collisions);
             game.include(resourceManager);
             
-            ResourcesManager.addGraphic({ 
+            resourceManager.addGraphic({ 
                 name: "graphics", 
                 source: "./examples/jumpingBase.png" 
             });
 
             var sources = {};
-            sources[ResourcesManager.SOUNDS.FORMAT.WAVE] = { source: "./examples/ezq.wav" };
-            sources[ResourcesManager.SOUNDS.FORMAT.OGG] = { source: "./examples/ezq.ogg" };
-            sources[ResourcesManager.SOUNDS.FORMAT.MP3] = { source: "./examples/ezq.mp3" };
+            sources[ResourcesManager.SOUND_FORMATS.WAVE] = { source: "./examples/ezq.wav" };
+            sources[ResourcesManager.SOUND_FORMATS.OGG] = { source: "./examples/ezq.ogg" };
+            sources[ResourcesManager.SOUND_FORMATS.MP3] = { source: "./examples/ezq.mp3" };
             
-            ResourcesManager.addSound({ 
+            resourceManager.addSound({ 
                 name: "music", 
                 sources: sources
             });
@@ -70,7 +70,7 @@
             game.createObject(redRectangleObject);
             game.createObject(blueRectangleObject);
 
-            ResourcesManager.onResourcesLoadedCompleted = function () {
+            resourceManager.onResourcesLoadedCompleted = function () {
                 console.log("All resources loaded!");
             };
 
