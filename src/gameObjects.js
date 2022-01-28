@@ -34,3 +34,7 @@ class VisualGameObject extends GameObject {
 
     draw(context) { }
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = { GameObject, VisualGameObject };
+}

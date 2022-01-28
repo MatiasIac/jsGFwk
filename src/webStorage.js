@@ -42,3 +42,7 @@ class WebStorage {
 		return JSON.parse(data);
 	}
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = WebStorage;
+}

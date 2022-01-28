@@ -1,0 +1,44 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../jsGFwk.js"></script>
+<script language="Javascript" src="../jsGFwkBasicAnimation.js"></script>
+<script language="Javascript" src="../jsGFwkFonts.js"></script>
+<body>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	
+	jsGFwk.include("BasicAnimation");
+	jsGFwk.include("Fonts");
+	
+	jsGFwk.Fonts.createFont({name: 'zxBold', source: './fonts/zxBold.ttf'});
+	jsGFwk.Fonts.createFont({name: 'zxNormal', source: './fonts/zxNormal.ttf'});
+	
+	jsGFwk.createObject({
+		id: "FontTest",
+		visible: true,
+		upadte: function(delta) {
+			
+		},
+		draw: function(context){
+			context.save();
+				context.fillStyle = "white";
+				context.font = "30pt zxBold";
+				context.fillText("Font Test: zxBold.ttf", 20, 20);
+				
+				context.fillStyle = "yellow";
+				context.font = "40pt zxNormal";
+				context.fillText("Font Test: zxNormal.ttf", 20, 50);
+				
+				context.fillStyle = "red";
+				context.font = "20pt Arial";
+				context.fillText("Font Test: arial.ttf", 20, 80);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.start();
+</script>
+</html>

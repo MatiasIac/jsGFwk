@@ -32,3 +32,7 @@ class Fonts {
 		headSection[0].appendChild(styleSection);
     }
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Fonts;
+}

@@ -128,3 +128,7 @@ class ResourcesManager {
         }, 2000);
     }
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = ResourcesManager;
+}

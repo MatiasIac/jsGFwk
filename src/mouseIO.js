@@ -100,3 +100,7 @@ class MouseIO {
 		document.getElementById(this._gfwk.settings.canvas).addEventListener("DOMMouseScroll", function(e) { self._mouseWheel(e); }, false);        
 	}
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = MouseIO;
+}

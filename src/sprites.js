@@ -137,3 +137,7 @@ class Sprites {
         imageSource.src = Sprites._cropFromImage(object, filter);
 	}
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = { SpriteCollection, Sprites };
+}

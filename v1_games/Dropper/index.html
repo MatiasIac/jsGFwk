@@ -1,0 +1,161 @@
+<html>
+	<head>
+		<title>Centry Attack</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkPath.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkTimers.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkJukebox.js"></script>
+	
+	<script language="Javascript" src="scripts/hud.js"></script>
+	<script language="Javascript" src="scripts/pill.js"></script>
+	<script language="Javascript" src="scripts/pillController.js"></script>
+	<script language="Javascript" src="scripts/fakeplayer.js"></script>
+	<script language="Javascript" src="scripts/player.js"></script>
+	<script language="Javascript" src="scripts/monitor.js"></script>
+	<script language="Javascript" src="scripts/enemyController.js"></script>
+	<script language="Javascript" src="scripts/enemy.js"></script>
+	<script language="Javascript" src="scripts/estela.js"></script>
+	<script language="Javascript" src="scripts/gameover.js"></script>
+	
+	<body style="border:0px; margin:0px;
+		padding:0px; background-color: black;">
+		<canvas width="640" height="480" id="canvas"></canvas>
+	</body>
+</html>
+<script>
+	//http://www.somethinghitme.com/2013/11/13/snippets-i-always-forget-movement/
+	var satX = 0, satY = 0, satAcc = 0, satRad = 4,
+		DEGREE_CONVERTION_VALUE = 0.0174532925199432957,
+		finalDegree = 0, points = 0, playedTime = 0;
+	
+	function resetGame() {
+		satX = 0;
+		satY = 0;
+		satAcc = 0;
+		satRad = 4;
+		finalDegree = 0;
+		points = 0;
+		playedTime = 0;
+	}
+	
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(50, 50, 50)";
+	jsGFwk.settings.frameRate = 1000 / 60;
+	
+	jsGFwk.include("FastAnimation");
+	jsGFwk.include("Container");
+	jsGFwk.include("IO");
+	jsGFwk.include("Collisions");
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("Sprites");
+	jsGFwk.include("Fonts");
+	jsGFwk.include("Scenes");
+	jsGFwk.include("Path");
+	
+	jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'fonts/zxBold.ttf' });
+	jsGFwk.ResourceManager.addGraphic({ name: "splash", source: "images/centrySplash.png" });
+	jsGFwk.ResourceManager.addGraphic({ name: "monitor", source: "images/monitor.png" });
+	jsGFwk.ResourceManager.addGraphic({ name: "main", source: "images/main.png" });
+	
+	var hitSounds = {};
+		hitSounds[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/hit.wav" };
+		hitSounds[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/hit.ogg" };
+		hitSounds[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/hit.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "hit", sources: hitSounds});
+	
+	var powerUpSounds = {};
+		powerUpSounds[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/powerup.wav" };
+		powerUpSounds[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/powerup.ogg" };
+		powerUpSounds[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/powerup.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "powerup", sources: powerUpSounds});
+
+	var shotPlayerSounds = {};
+		shotPlayerSounds[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/shotplayer.wav" };
+		shotPlayerSounds[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/shotplayer.ogg" };
+		shotPlayerSounds[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/shotplayer.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "shot", sources: shotPlayerSounds});
+	
+	var explodeSounds = {};
+		explodeSounds[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/explode.wav" };
+		explodeSounds[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/explode.ogg" };
+		explodeSounds[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/explode.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "explode", sources: explodeSounds});
+
+	var finalExplosionSounds = {};
+		finalExplosionSounds[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/finalexplosion.wav" };
+		finalExplosionSounds[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/finalexplosion.ogg" };
+		finalExplosionSounds[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/finalexplosion.mp3" };
+	jsGFwk.ResourceManager.addSound({ name: "finalexplode", sources: finalExplosionSounds});
+	
+	var music = {};
+		music[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/music.mp3" };
+		music[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/music.ogg" };
+	jsGFwk.ResourceManager.addSound({ name: "music", sources: music});
+	
+	var enemyJuke = {};
+	var finalenemyJuke = {};
+	
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+				jsGFwk.Sprites.createSprite({id: "formationTall", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 6, left: 18, width: 79, height: 20});
+				jsGFwk.Sprites.createSprite({id: "formationWide", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 6, left: 102, width: 79, height: 20});
+				jsGFwk.Sprites.createSprite({id: "formationCircle", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 6, left: 186, width: 79, height: 20});
+				jsGFwk.Sprites.createSprite({id: "actionbackground", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 39, left: 18, width: 79, height: 20});
+				jsGFwk.Sprites.createSprite({id: "dropButton", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 79, left: 174, width: 43, height: 35});
+				jsGFwk.Sprites.createSprite({id: "dropButtonHalo", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 69, left: 236, width: 62, height: 56});
+				
+				jsGFwk.Sprites.createSprite({id: "monitorBackground", graphic: jsGFwk.ResourceManager.graphics.monitor.image, top: 0, left: 0, width: 640, height: 480});
+				
+				jsGFwk.Sprites.createSprite({id: "energyBar", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 402, left: 16, width: 136, height: 22});
+				jsGFwk.Sprites.createSprite({id: "energyBarHalo", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 436, left: 4, width: 161, height: 40});
+				jsGFwk.Sprites.createSprite({id: "shieldBar", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 385, left: 183, width: 131, height: 7});
+				
+				jsGFwk.Sprites.createSprite({id: "greenPill", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 205, left: 32, width: 46, height: 46});
+				jsGFwk.Sprites.createSprite({id: "redPill", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 267, left: 32, width: 46, height: 46});
+				jsGFwk.Sprites.createSprite({id: "orangePill", graphic: jsGFwk.ResourceManager.graphics.main.image, top: 326, left: 32, width: 46, height: 46});
+			
+				jsGFwk.Container.createContainer("estela", estela);
+				jsGFwk.Container.createContainer("enemies", enemy);
+				jsGFwk.Container.createContainer("pills", pill);
+			
+				jsGFwk.Scenes.create({name: "hud", 
+					gameObjects: [fakePlayer, hud, monitor] });
+			
+				jsGFwk.Scenes.create({name: "game", 
+					gameObjects: [player, enemyController, pillController, monitor] });
+					
+				jsGFwk.Scenes.create({name: "endGame", 
+					gameObjects: [gameOver, monitor] });
+				
+				enemyJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.explode });
+				finalenemyJuke = new jsGFwk.Jukebox({volume: 0.3, channels: 5, source: jsGFwk.ResourceManager.sounds.finalexplode });
+				
+				jsGFwk.Scenes.scenes.hud.enable();
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) { },
+		draw: function (context) { 
+			context.save();
+				context.fillStyle = "white";
+				context.fillText("Connecting..." + parseInt((jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources) + "%"
+					, 30, 40);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.start();
+</script>

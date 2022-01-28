@@ -88,3 +88,7 @@ class Containers {
 		return newContainer;
 	}
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = { Container, Containers };
+}

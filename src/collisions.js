@@ -63,3 +63,7 @@ class Collisions {
 		object.isRadColliding = this._circleCollisionChecker;
 	}
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Collisions;
+}

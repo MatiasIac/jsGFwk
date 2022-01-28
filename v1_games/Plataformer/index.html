@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkBasicAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="Scripts/map.js"></script>
+	<script language="Javascript" src="Scripts/player.js"></script>
+	<script language="Javascript" src="Scripts/enemy.js"></script>
+	<script language="Javascript" src="Scripts/star.js"></script>
+	<script language="Javascript" src="Scripts/hud.js"></script>
+</head>
+<body>
+	<canvas id="myCanvas" width="600" height="600"></canvas>
+</body>
+<script language="Javascript">
+	
+	jsGFwk.settings.canvas = "myCanvas";
+	
+	jsGFwk.include("BasicAnimation");
+	jsGFwk.include("IO");
+	jsGFwk.include("ResourceManager");
+
+	//carga de elementos
+	jsGFwk.ResourceManager.addGraphic({name:"tile1",source:"Graphics/tile1.jpg"});
+	jsGFwk.ResourceManager.addGraphic({name:"tile2",source:"Graphics/tile2.jpg"});
+	jsGFwk.ResourceManager.addGraphic({name:"enemySprite",source:"Graphics/EnemySpriteSheet.png"});
+	jsGFwk.ResourceManager.addGraphic({name:"elementsSprite",source:"Graphics/elements.png"});
+	jsGFwk.ResourceManager.addGraphic({name:"playerSprite",source:"Graphics/player.png"});
+	
+	jsGFwk.ResourceManager.addSound({name:"backgroundSound",source:"Sounds/BackgroundMusic.mp3"});
+	jsGFwk.ResourceManager.addSound({name:"enemySound",source:"Sounds/EnemyDeath.mp3"});
+	jsGFwk.ResourceManager.addSound({name:"playerSound",source:"Sounds/PlayerDeath.mp3"});
+	jsGFwk.ResourceManager.addSound({name:"starSound",source:"Sounds/StarPickUpSound.mp3"});
+	
+	var elementsArray = [];
+	
+	//Simulation for a loading progress bar
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+				//Creates a new game object
+				createAGameObject();
+				//Destroy this loader
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) {
+			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+			this.barWidth = (a * 620) / 100;
+		},
+		draw: function (context) {
+			context.save();
+				context.fillStyle = "#FF0000";
+				context.fillRect(0,0, 640, 480);
+				
+				context.fillStyle = "#FFFFFF";
+				context.fillText("Loading...", 300, 240);
+				
+				context.strokeStyle = "#FFFFFF";
+				context.strokeRect(10, 260, 620, 30);
+				context.fillRect(10, 260, this.barWidth, 30);
+			context.restore();
+		}
+	});
+	
+	//creacion de elementos
+	this.createAGameObject = function(){
+		jsGFwk.createObject(map);
+		jsGFwk.createObject(player);
+		jsGFwk.createObject(hud);		
+	};
+	
+	jsGFwk.start();
+	
+</script>
+</html>

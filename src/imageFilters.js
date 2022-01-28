@@ -166,3 +166,7 @@ class ImageFilters {
         ImageFilters._convolute2(context, weights, img);
     }		
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = ImageFilters;
+}

@@ -1,0 +1,3 @@
+Theme=LIGHT
+Theme=DARK
+Scale=240

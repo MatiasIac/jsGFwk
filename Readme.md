@@ -1,4 +1,12 @@
-# jsGFwk v3
+# jsGFwk v3.beta
+
+## IMPORTANT NOTE
+
+This version is missing some already existent plugins.
+
+Additionally, the distribution (**dist** directory) file isn't completed and isn't working yet.
+
+#
 
 jsGFwk is a simple, but powerful, JavaScript videogame framework.
 

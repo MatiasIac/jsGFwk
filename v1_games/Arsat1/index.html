@@ -1,0 +1,182 @@
+<html>
+	<head>
+		<title>ArSat I</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkEffects.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkPath.js"></script>
+	
+	<script language="Javascript" src="scripts/background.js"></script>
+	<script language="Javascript" src="scripts/puntos.js"></script>
+	<script language="Javascript" src="scripts/arsat.js"></script>
+	<script language="Javascript" src="scripts/enemigo.js"></script>
+	<script language="Javascript" src="scripts/enemiesControl.js"></script>
+	<script language="Javascript" src="scripts/nestor.js"></script>
+	
+	<body>
+		<canvas id="canvas" width="640" height="480"></canvas>
+	</body>
+	<script>
+	
+		var GLOBALS = {
+			width: 640, height: 480,
+			altitud: 0, won: false, lost: false, lives: 3,
+			maxAltitud: 35786,
+			vulturesClicked: 0
+		};
+	
+		jsGFwk.settings.canvas = "canvas";
+		jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
+		jsGFwk.settings.frameRate = 1000 / 60;
+		
+		jsGFwk.include("FastAnimation");
+		jsGFwk.include("Container");
+		jsGFwk.include("IO");
+		jsGFwk.include("Collisions");
+		jsGFwk.include("ResourceManager");
+		jsGFwk.include("Sprites");
+		jsGFwk.include("Scenes");
+		jsGFwk.include("Fonts");
+		jsGFwk.include("Effects");
+		jsGFwk.include("Path");
+		
+		jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'fonts/zxBold.ttf' });
+		
+		jsGFwk.ResourceManager.addGraphic({ name: "satelites", source: "images/satellites8bit.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "vultures", source: "images/vulture8bit.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "nestor", source: "images/rocket.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "starfield", source: "images/estrellas_fondo.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "life", source: "images/smallHeart.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "patilla", source: "images/rocketMenem8bit.png" });
+		
+		var sources = {};
+		sources[jsGFwk.ResourceManager.sounds.format.wav] = { source: "fx/vultureDead.wav" };
+		sources[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/vultureDead.ogg" };
+		sources[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/vultureDead.mp3" };
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead0", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead1", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead2", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead3", sources: sources});
+		jsGFwk.ResourceManager.addSound({ name: "voltureDead4", sources: sources});
+		
+		var sourcesMarcha = {};
+		sourcesMarcha[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/marcha.ogg" };
+		sourcesMarcha[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/marcha.mp3" };
+		jsGFwk.ResourceManager.addSound({ name: "marcha", sources: sourcesMarcha});
+		
+		var sourcesEstratosfera = {};
+		sourcesEstratosfera[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "fx/estratosfera.ogg" };
+		sourcesEstratosfera[jsGFwk.ResourceManager.sounds.format.mp3] = { source: "fx/estratosfera.mp3" };
+		jsGFwk.ResourceManager.addSound({ name: "estratosfera", sources: sourcesEstratosfera});
+		
+		jsGFwk.createObject({
+			id: "progress",
+			visible: true,
+			barWidth: 0,
+			init: function() {
+					jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+						jsGFwk.Sprites.createSprite({id: "arsat", 
+					graphic: jsGFwk.ResourceManager.graphics.satelites.image,
+					top: 45, left: 137, width: 120, height: 100});
+					
+					jsGFwk.Sprites.createSprite({id: "smallHeart", 
+						graphic: jsGFwk.ResourceManager.graphics.life.image,
+						top: 0, left: 0, width: 16, height: 16});
+						
+					jsGFwk.Sprites.createSprite({id: "rocketMenem", 
+						graphic: jsGFwk.ResourceManager.graphics.patilla.image,
+						top: 0, left: 0, width: 250, height: 232});
+
+					jsGFwk.Sprites.createSprite({id: "deadVulture", 
+						graphic: jsGFwk.ResourceManager.graphics.vultures.image,
+						top: 217, left: 300, width: 290, height: 200});
+						
+					jsGFwk.Sprites.createSpriteCollection("flappingVulture", jsGFwk.ResourceManager.graphics.vultures.image, 
+						[{left: 10, top: 0, width: 287, height: 200},
+						 {left: 300, top: 25, width: 290, height: 170},
+						 {left: 0, top: 200, width: 285, height: 217},
+						 {left: 300, top: 25, width: 290, height: 170}]);
+					jsGFwk.Sprites.flappingVulture.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("flappingVultureInverted", jsGFwk.ResourceManager.graphics.vultures.image, 
+						[{left: 10, top: 0, width: 287, height: 200, inverted: true},
+						 {left: 300, top: 25, width: 290, height: 170, inverted: true},
+						 {left: 0, top: 200, width: 285, height: 217, inverted: true},
+						 {left: 300, top: 25, width: 290, height: 170, inverted: true}]);
+					jsGFwk.Sprites.flappingVultureInverted.loop(true);
+					
+					jsGFwk.Sprites.createSpriteCollection("nestor", jsGFwk.ResourceManager.graphics.nestor.image, 
+						[{left: 0, top: 0, width: 272, height: 322},
+						 {left: 274, top: 0, width: 272, height: 348}]);
+					jsGFwk.Sprites.nestor.loop(true);
+					
+					jsGFwk.createObject(background);
+					jsGFwk.createObject(nestor);
+					jsGFwk.createObject(arsat);
+					jsGFwk.createObject(puntos);
+					jsGFwk.Container.createContainer("vultures", enemigo);
+					jsGFwk.createObject(enemiesControl);
+					
+					jsGFwk.ResourceManager.sounds.marcha.audio.loop = true;
+					jsGFwk.ResourceManager.sounds.marcha.audio.play();
+					jsGFwk._gameObjects.progress.destroy();
+				};
+			},
+			update: function(delta) {
+				var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+				this.barWidth = (a * 640) / 100;
+			},
+			draw: function (context) {
+				context.save();
+					context.fillStyle = "rgb(117, 170, 219)";
+					context.fillRect(0,0, 640, 480);
+								
+					context.strokeStyle = "#FFFFFF";
+					context.fillStyle = "#FFFFFF";
+					context.strokeRect(0, 180, 640, 100);
+					context.fillRect(0, 180, this.barWidth, 100);
+					
+					context.fillStyle = "yellow";
+					context.font = "20pt zxBold";
+					context.fillText("Fuelling...", 270, 240);
+				context.restore();
+			}
+		});
+		
+		jsGFwk.start();
+		
+		var fakePointer = { x: 0, y: 0 };
+		jsGFwk.Collisions.onObjectCreated(fakePointer);
+		
+		jsGFwk.IO.mouse.registerClick(function (coord) {
+			fakePointer.x = coord.x;
+			fakePointer.y = coord.y;
+			
+			jsGFwk._gameObjects.vultures.eachCloned(function (item) {
+				if (!item.isDead) {
+					if (fakePointer.isRectColliding(item)) {
+						for (var i=0; i < 5; i++) {
+							if (jsGFwk.ResourceManager.sounds["voltureDead" + i].audio.paused) {
+								jsGFwk.ResourceManager.sounds["voltureDead" + i].audio.volume = 0.5;
+								jsGFwk.ResourceManager.sounds["voltureDead" + i].audio.play();
+								break;
+							}
+						}
+						GLOBALS.vulturesClicked++;
+						item.isDead = true;
+						item.updatePointer = item.deadUpdate;
+						item.drawPointer = item.deadDraw;
+					}
+				}
+			})
+		});
+	</script>
+</html>

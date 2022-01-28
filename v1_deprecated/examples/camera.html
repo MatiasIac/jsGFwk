@@ -1,0 +1,132 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../jsGFwk.js"></script>
+<script language="Javascript" src="../jsGFwk2dFastAnimation.js"></script>
+<script language="Javascript" src="../jsGFwkRM.js"></script>
+<script language="Javascript" src="../jsGFwkIO.js"></script>
+<script language="Javascript" src="../jsGFwkSprites.js"></script>
+<script language="Javascript" src="../jsGFwkCamera.js"></script>
+<body>
+	<h1>Use the mouse to move the sprite</h1>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+	
+	jsGFwk.include("FastAnimation");
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("IO");
+	jsGFwk.include("Sprites");
+	jsGFwk.include("Camera");
+	
+	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "./graphics/jumpingBase.png" });
+	
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+				createAGameObject();
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) {
+			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+			this.barWidth = (a * 620) / 100;
+		},
+		draw: function (context) {
+			context.save();
+				context.fillStyle = "#FF0000";
+				context.fillRect(0,0, 640, 480);
+				
+				context.fillStyle = "#FFFFFF";
+				context.fillText("Loading...", 300, 240);
+				
+				context.strokeStyle = "#FFFFFF";
+				context.strokeRect(10, 260, 620, 30);
+				context.fillRect(10, 260, this.barWidth, 30);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.Camera.createCamera({
+		name: "camera1",
+		targetPosition: { x: 0, y: 0, width: 640, height: 480 },
+		originPosition: { x: 0, y: 0, width: 640, height: 480 },
+		enabled: true
+	});
+	
+	jsGFwk.Camera.createCamera({
+		name: "camera2",
+		originPosition: { x: 0, y: 1, width: 150, height: 150 },
+		targetPosition: { x: 0, y: 1, width: 150, height: 150 },
+		enabled: false,
+		filter: jsGFwk.Sprites.filters.GRAYSCALE
+	});
+	
+	jsGFwk.Camera.createCamera({
+		name: "camera3",
+		originPosition: { x: 150, y: 300, width: 150, height: 150 },
+		targetPosition: { x: 150, y: 200, width: 150, height: 150 },
+		enabled: false
+	});
+	
+	jsGFwk.start();
+	
+	function createAGameObject() {
+		jsGFwk.Camera.cameras.camera2.enabled = true;
+		jsGFwk.Camera.cameras.camera3.enabled = true;
+		
+		jsGFwk.createObject({
+			id: "cameraControl",
+			visible: true,
+			cameraDirection: 1,
+			update: function(delta) {
+				jsGFwk.Camera.cameras.camera2.targetPosition.x += this.cameraDirection;
+				if (jsGFwk.Camera.cameras.camera2.targetPosition.x >= 490 || 
+					jsGFwk.Camera.cameras.camera2.targetPosition.x <= 0) {
+					this.cameraDirection *= -1;
+				}
+			},
+			draw: function(context) {
+				context.save();
+					context.strokeRect(jsGFwk.Camera.cameras.camera2.targetPosition.x,
+						jsGFwk.Camera.cameras.camera2.targetPosition.y, 150, 150);
+					context.strokeRect(jsGFwk.Camera.cameras.camera3.targetPosition.x,
+						jsGFwk.Camera.cameras.camera3.targetPosition.y, 150, 150);
+				context.restore();
+			}
+		});
+		
+		jsGFwk.createObject({
+			id: "fallingCharacter",
+			x: 10,
+			y: 10,
+			init: function () {
+				jsGFwk.Sprites.createSpriteCollection("fallingGuy", jsGFwk.ResourceManager.graphics.character.image, 
+					[{left: 409, top: 34, width: 66, height: 26},
+					 {left: 480, top: 34, width: 66, height: 26},
+					 {left: 558, top: 34, width: 66, height: 26},
+					]);
+			
+				jsGFwk.IO.mouse.registerMove(function (coord) {
+					jsGFwk._gameObjects.fallingCharacter.x = coord.x;
+					jsGFwk._gameObjects.fallingCharacter.y = coord.y;
+				});
+				
+				jsGFwk.Sprites.fallingGuy.loop(true);
+			},
+			visible: true,
+			update: function(delta) {
+				jsGFwk.Sprites.fallingGuy.next();
+			},
+			draw: function (context) {
+				context.drawImage(jsGFwk.Sprites.fallingGuy.sprite.image, this.x, this.y);
+			}
+		});
+	}
+</script>
+</html>

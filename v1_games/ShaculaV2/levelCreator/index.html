@@ -1,0 +1,250 @@
+<html>
+    <head></head>
+    <body style="margin:0; padding:0">
+        <div id="canvas" style="background-color: gray;
+            width: 630; height: 480; float: left; margin-right: 10px; cursor: crosshair;
+            background-color: #a2ca77; border: 1px solid">
+            <div id="coords" style="position: relative; color:red; font-family: arial; font-size:8pt;">
+                X: <span id="coordx"></span> - Y: <span id="coordy"></span>
+            </div>
+            <div id="frame" style="position: absolute; display:none; border: 1px solid red; width: 0px; height:0px; top: -10px;"></div>
+        </div>
+
+        <div>
+            <label>Texture:</label>
+            <br>
+            <select onchange="changeTexture(this)">
+                <option value="1">Stars</option>
+                <option value="2">Red Brick</option>
+                <option value="3">Dark Brick</option>
+                <option value="4">Bright Brick</option>
+                <option value="5">Moss Brick</option>
+                <option value="6">Wood</option>
+                <option value="7">Invisible</option>
+                <option value="8">Lava</option>
+            </select>
+            <br>
+            <label>Paint as:</label>
+            <br>
+            <div style="display:block;">
+                <div style="float:left; margin-right:10px;">
+                    <input type="radio" value="1" name="paint" id='paintWall' onclick="changePaintOption(1)" checked> 
+                    <label for="paintWall">Wall</label>
+                    <br>
+                    <select size="5" id="wallObjects" onchange="showLocation(this)">
+                    </select>
+                    <br>
+                    <input type="button" value="Delete" onclick="deleteSelected('wall')">
+                </div>
+                <div>
+                    <input type="radio" value="2" name="paint" id='paintBack' onclick="changePaintOption(2)"> 
+                    <label for="paintBack">Background</label>
+                    <br>
+                    <select size="5" id="backgroundObjects" onchange="showLocation(this)">
+                    </select>
+                    <br>
+                    <input type="button" value="Delete" onclick="deleteSelected('background')">
+                </div>
+            </div>
+            <br>
+            <input type="button" value="Refresh" onclick="refresh()">
+            <br>
+            <input type="checkbox" value="1" onclick="showGrid(this)" id="showgrid"> 
+            <label for="showgrid">Show Grid</label>
+            <br>
+            <br>
+            <label>JSON Level:</label>
+            <br>
+            <textarea id="result" style="width: 300px; height: 150px;"></textarea>
+            <br>
+            <input type="button" value="Get JSON Level" onclick="getjson()">
+            <input type="button" value="Save Image" onclick="saveimage()">
+        </div>
+        <canvas width="630" height="480" id="lienzo" style="display: none;"></canvas>
+    </body>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var result = document.getElementById('result');
+        var c = document.getElementById('lienzo');
+        var divCoord = document.getElementById('coords');
+        var xcoord = document.getElementById('coordx');
+        var ycoord = document.getElementById('coordy');
+        var frame = document.getElementById('frame');
+        var wallList = document.getElementById('wallObjects');
+        var backgroundList = document.getElementById('backgroundObjects');
+        var ctx = c.getContext('2d');
+
+        var clickState = false;
+        var x = 0, y = 0;
+        var currentTexture = '1';
+        var paintOption = 1;
+        var gridEnabled = false;
+        var texture_1 = new Image();
+        var texture_2 = new Image();
+        var texture_3 = new Image();
+        var texture_4 = new Image();
+        var texture_5 = new Image();
+        var texture_6 = new Image();
+        var texture_8 = new Image();
+
+        texture_1.src = "images/star.png";
+        texture_2.src = "images/red.png";
+        texture_3.src = "images/dark.png";
+        texture_4.src = "images/bright.png";
+        texture_5.src = "images/moss.png";
+        texture_6.src = "images/wood.png";
+        texture_8.src = "images/lava.png";
+
+        function refresh() {
+            ctx.clearRect(0, 0, 630, 480);
+
+            for (var i = 0; i < backgroundList.length; i++) {
+                var option = JSON.parse(backgroundList.options[i].value);
+
+                if (option.texture == 'none') {
+                    continue;
+                }
+
+                var pattern = ctx.createPattern(window[option.texture], 'repeat');
+                ctx.fillStyle = pattern;
+                ctx.fillRect(option.x,option.y, option.width, option.height);
+            }
+
+            for (var i = 0; i < wallList.length; i++) {
+                var option = JSON.parse(wallList.options[i].value);
+                
+                if (option.texture == 'none') {
+                    continue;
+                }
+
+                var pattern = ctx.createPattern(window[option.texture], 'repeat');
+                ctx.fillStyle = pattern;
+                ctx.fillRect(option.x,option.y, option.width, option.height);
+            }
+
+            if (gridEnabled) {
+                ctx.fillStyle = "gray";
+                ctx.setLineDash([2, 5]);
+
+                for (var i = 0; i < 630; i += 30) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i, 480);
+                    ctx.stroke();
+                }
+
+                for (var i = 0; i < 480; i += 30) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, i);
+                    ctx.lineTo(630, i);
+                    ctx.stroke();
+                }
+            }
+
+            var bg = lienzo.toDataURL();
+            canvas.style.backgroundImage = "url('" + bg + "')";
+        }
+
+        function showGrid(check) {
+            gridEnabled = check.checked;
+            refresh();
+        }
+
+        function changeTexture(dd) {
+            currentTexture = dd.value;
+        }
+
+        function changePaintOption(option) {
+            paintOption = option;
+        }
+
+        function divClick(event) {
+            if (!clickState) {
+                x = event.offsetX;
+                y = event.offsetY;
+                clickState = true;
+            } else {
+                clickState = false;
+
+                var texture = 'texture_' + currentTexture;
+                if (currentTexture == '7') {
+                    texture = 'none';
+                }
+
+                var option = document.createElement("option");
+                option.value = JSON.stringify({
+                        x: x, y: y,
+                        width: event.offsetX - x,
+                        height: event.offsetY - y,
+                        texture: texture
+                    });
+
+                if (paintOption === 1) {
+                    option.text = "wall";
+                    wallList.add(option);       
+                } else {
+                    option.text = "background";
+                    backgroundList.add(option);
+                }
+
+                frame.style.display = 'none';
+
+                refresh();
+            }
+        }
+
+        function divMouseMove(event) {
+            divCoord.style.top = (event.offsetY + 2) + 'px';
+            divCoord.style.left = (event.offsetX + 2) + 'px';
+            xcoord.innerHTML = event.offsetX;
+            ycoord.innerHTML = event.offsetY;
+        }
+
+        function getjson() {
+            var level = [];
+
+            for (var i = 0; i < wallList.length; i++) {
+                var option = JSON.parse(wallList.options[i].value);
+                level.push({
+                    x: option.x,
+                    y: option.y,
+                    width: option.width,
+                    height: option.height
+                });
+            }
+
+            result.innerHTML = JSON.stringify(level);
+        }
+
+        function showLocation(dd) {
+            var element = JSON.parse(dd.value);
+            frame.style.display = '';
+            frame.style.top = element.y + 'px';
+            frame.style.left = element.x + 'px';
+            frame.style.width = element.width + 'px';
+            frame.style.height = element.height + 'px';
+        }
+
+        function deleteSelected(list) {
+            var o = window[list + 'List'];
+
+            o.remove(o.selectedIndex);
+
+            frame.style.display = 'none';
+            refresh();
+        }
+
+        function saveimage() {
+            var tempgrid = gridEnabled;
+            gridEnabled = false;
+            refresh();
+            var dataURL = lienzo.toDataURL('image/png');
+            window.open(dataURL);
+            gridEnabled = tempgrid;
+        }
+
+        canvas.addEventListener('click', divClick, false);
+        canvas.addEventListener('mousemove', divMouseMove, false);
+
+    </script>
+</html>

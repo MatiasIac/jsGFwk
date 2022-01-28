@@ -1,0 +1,78 @@
+<html>
+	<head>
+		<title>Eiriel Runaway</title>
+	</head>
+	<script language="Javascript" src="../../Framework/jsGFwk.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwk2dFastAnimation.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkContainer.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkIO.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkCollisions.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkRM.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkSprites.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkScenes.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkFonts.js"></script>
+	<script language="Javascript" src="../../Framework/jsGFwkEffects.js"></script>
+	
+	<script language="Javascript" src="scripts/main.js"></script>
+	
+	<body>
+		<canvas id="canvas" width="700" height="300"></canvas>
+	</body>
+	<script>
+		jsGFwk.settings.canvas = "canvas";
+		jsGFwk.settings.clearColor = "#7E997B";
+		jsGFwk.settings.frameRate = 1000 / 60;
+		jsGFwk.settings.width = 700;
+		jsGFwk.settings.height = 300;
+		
+		jsGFwk.include("FastAnimation");
+		jsGFwk.include("Container");
+		jsGFwk.include("IO");
+		jsGFwk.include("Collisions");
+		jsGFwk.include("ResourceManager");
+		jsGFwk.include("Sprites");
+		jsGFwk.include("Scenes");
+		jsGFwk.include("Fonts");
+		jsGFwk.include("Effects");
+		
+		jsGFwk.Fonts.createFont({ name: 'zxBold', source: 'fonts/zxBold.ttf' });
+		
+		jsGFwk.ResourceManager.addGraphic({ name: "eriel", source: "images/eiriel.png" });
+		jsGFwk.ResourceManager.addGraphic({ name: "kiwi", source: "images/kiwi.png" });
+				
+		jsGFwk.createObject({
+			id: "progress",
+			visible: true,
+			barWidth: 0,
+			init: function() {
+				jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+					jsGFwk.Scenes.create({name: "main", gameObjects: [controller] });
+					jsGFwk.Scenes.scenes.main.enable();
+					
+					jsGFwk._gameObjects.progress.destroy();
+				};
+			},
+			update: function(delta) {
+				var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+				this.barWidth = (a * 300) / 100;
+			},
+			draw: function (context) {
+				context.save();
+					context.fillStyle = "#15181F";
+					context.fillRect(0,0, 700, 480);
+								
+					context.strokeStyle = "#AA0000";
+					context.fillStyle = "red";
+					context.strokeRect(200, 180, 300, 20);
+					context.fillRect(200, 180, this.barWidth, 20);
+					
+					context.fillStyle = "white";
+					context.font = "11pt times";
+					context.fillText("Picking flowers...", 300, 150);
+				context.restore();
+			}
+		});
+		
+		jsGFwk.start();
+	</script>
+</html>

@@ -1,0 +1,30 @@
+D:\AntKiller\AntKiller\bin\Debug\ReverseMap\resources.pri
+D:\AntKiller\AntKiller\bin\Debug\AppxManifest.xml
+D:\AntKiller\AntKiller\bin\Debug\AntKiller.build.appxrecipe
+D:\AntKiller\AntKiller\bld\Debug\priconfig.xml
+D:\AntKiller\AntKiller\bld\Debug\priconfig.xml.intermediate
+D:\AntKiller\AntKiller\bld\Debug\layout.resfiles
+D:\AntKiller\AntKiller\bld\Debug\layout.resfiles.intermediate
+D:\AntKiller\AntKiller\bld\Debug\resources.resfiles
+D:\AntKiller\AntKiller\bld\Debug\resources.resfiles.intermediate
+D:\AntKiller\AntKiller\bld\Debug\pri.resfiles
+D:\AntKiller\AntKiller\bld\Debug\pri.resfiles.intermediate
+D:\AntKiller\AntKiller\bld\Debug\qualifiers.txt
+D:\AntKiller\AntKiller\bld\Debug\qualifiers.txt.intermediate
+D:\AntKiller\AntKiller\bld\Debug\MultipleQualifiersPerDimensionFound.txt
+D:\AntKiller\AntKiller\bld\Debug\ProjectArchitectures.txt
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bin\Debug\ReverseMap\resources.pri
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bin\Debug\AppxManifest.xml
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bin\Debug\AntKiller.build.appxrecipe
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\priconfig.xml
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\priconfig.xml.intermediate
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\layout.resfiles
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\layout.resfiles.intermediate
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\resources.resfiles
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\resources.resfiles.intermediate
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\pri.resfiles
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\pri.resfiles.intermediate
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\qualifiers.txt
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\qualifiers.txt.intermediate
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\MultipleQualifiersPerDimensionFound.txt
+C:\Users\Matias\Documents\GitHub\jsGFwk\SampleGames\AntKiller\Windows Phone Port\AntKiller\AntKiller\bld\Debug\ProjectArchitectures.txt

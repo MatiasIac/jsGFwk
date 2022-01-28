@@ -1,0 +1,91 @@
+<html>
+<head>
+</head>
+<script language="Javascript" src="../jsGFwk.js"></script>
+<script language="Javascript" src="../jsGFwkBasicAnimation.js"></script>
+<script language="Javascript" src="../jsGFwkRM.js"></script>
+<script language="Javascript" src="../jsGFwkIO.js"></script>
+<body>
+	<h1>Use D key to move the game object with typing mode</h1>
+	<h1>Use RIGHT ARROW key to move the game object with flow mode</h1>
+	<canvas id="canvas" width="640" height="480"></canvas>
+</body>
+<script language="Javascript">
+	jsGFwk.settings.canvas = "canvas";
+	jsGFwk.settings.clearColor = "rgb(255,255,255)";
+	
+	//Include external component libraries
+	jsGFwk.include("BasicAnimation");
+	jsGFwk.include("ResourceManager");
+	jsGFwk.include("IO");
+	//************************************
+	
+	jsGFwk.ResourceManager.addGraphic({ name: "character", source: "./graphics/jumpingBase.png" });
+	
+	//Simulation for a loading progress bar
+	jsGFwk.createObject({
+		id: "progress",
+		visible: true,
+		barWidth: 0,
+		init: function() {
+			jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+				//Creates a new game object
+				createAGameObject();
+				//Destroy this loader
+				jsGFwk._gameObjects.progress.destroy();
+			};
+		},
+		update: function(delta) {
+			var a = (jsGFwk.ResourceManager._totalLoadedResources * 100) / jsGFwk.ResourceManager._totalResources;
+			this.barWidth = (a * 620) / 100;
+		},
+		draw: function (context) {
+			context.save();
+				context.fillStyle = "#FF0000";
+				context.fillRect(0,0, 640, 480);
+				
+				context.fillStyle = "#FFFFFF";
+				context.fillText("Loading...", 300, 240);
+				
+				context.strokeStyle = "#FFFFFF";
+				context.strokeRect(10, 260, 620, 30);
+				context.fillRect(10, 260, this.barWidth, 30);
+			context.restore();
+		}
+	});
+	
+	jsGFwk.start();
+	
+	function createAGameObject() {
+		//Creates a new game object to handle a character
+		jsGFwk.createObject({
+			id: "character",
+			x: 10,
+			y: 10,
+			init: function () {
+				//Use this way to create UI for text typing
+				jsGFwk.IO.keyboard.registerKeypress(function (code) {
+					if (code == 68) { 
+						//Due the closure of JS, we access to this object
+						//using the internal game object collection
+						jsGFwk._gameObjects.character.x++; 
+					}
+				});
+			},
+			visible: true,
+			update: function(delta) {
+				//Use this way to handle game object movements
+				if (jsGFwk.IO.keyboard._activeKey[39]) {
+					this.x++;
+				}
+			},
+			draw: function (context) {
+				//Takes the graphic from the resources loaded.
+				context.drawImage(jsGFwk.ResourceManager.graphics.character.image,
+					10, 102, 100, 120,
+					this.x, this.y, 100, 120);
+			}
+		});
+	}
+</script>
+</html>

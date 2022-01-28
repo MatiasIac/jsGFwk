@@ -64,3 +64,7 @@ class KeyboardIO {
 		document.addEventListener("keyup", function(e) { self._keyReleased(e); }, false);
 	}
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = KeyboardIO;
+}

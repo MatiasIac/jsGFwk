@@ -39,3 +39,7 @@ class TouchIO {
         document.getElementById(this._gfwk.settings.canvas).addEventListener("touchend", function(e) { self._touchEnd(e); }, false);
 	}
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = TouchIO;
+}

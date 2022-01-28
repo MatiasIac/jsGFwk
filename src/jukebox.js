@@ -58,3 +58,7 @@ class Jukebox {
         this._volume = volume;
     }
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Jukebox;
+}
