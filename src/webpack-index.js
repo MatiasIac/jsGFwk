@@ -1,17 +1,15 @@
-const jsGFwk = require('./jsgfwk.js');
-const Animator2D = require('./animator2d.js');
+import { Engine } from './engine.js'
+import { Animator2D } from './animator2d.js'
 //import { GameObject, VisualGameObject } from './gameObjects.js';
-const Clock = require('./clock.js');
-const Collisions = require('./collisions.js');
+import { Clock } from './clock.js'
+import { Collisions } from './collisions.js'
 //import { Container, Containers } from './containers.js';
 
-module.exports = { 
-    Engine: jsGFwk, 
-    Animator2D: Animator2D,
+export { Engine, Animator2D,
     //GameObject: GameObject,
     //VisualGameObject: VisualGameObject,
-    Clock: Clock,
-    Collisions: Collisions,
+    Clock,
+    Collisions,
     /*Container: Container,
     Containers: Containers*/ 
-};
+}

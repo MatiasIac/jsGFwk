@@ -1,4 +1,4 @@
-class jsGFwk {
+class Engine {
     _gameObjects = {};
     _includes = [];
 
@@ -75,6 +75,8 @@ class jsGFwk {
     }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = jsGFwk;
-}
+export { Engine }
+
+/*if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Engine;
+}*/

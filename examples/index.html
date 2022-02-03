@@ -3,7 +3,8 @@
     <head>
         <title>jsGFWK v3 sample page</title>
     </head>
-        <script src="../src/jsgfwk.js" lang="javascript"></script>
+        
+        <script src="../src/engine.js" lang="javascript"></script>
         <script src="../src/animator2d.js" lang="javascript"></script>
         <script src="../src/collisions.js" lang="javascript"></script>
         <script src="../src/sprites.js" lang="javascript"></script>
@@ -19,7 +20,8 @@
         <script src="../src/fonts.js" lang="javascript"></script>
         <script src="../src/jukebox.js" lang="javascript"></script>
         <script src="../src/scenesManager.js" lang="javascript"></script>
-        <!--script src="../dist/jsgfwk-bundle.js" lang="javascript"></script-->
+        
+        <!-- <script src="../dist/jsgfwk-bundle.js" lang="javascript"></script> -->
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
@@ -47,7 +49,7 @@
         </script>
 
         <script>
-            const game = new jsGFwk();
+            const game = new Engine();
             const animator = new Animator2D();
             const collisions = new Collisions();
             const resourceManager = new ResourcesManager();

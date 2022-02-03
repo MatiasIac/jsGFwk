@@ -6,7 +6,9 @@ module.exports = {
   output: {
     filename: 'jsgfwk-bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'var',
-    library: "jsGFwk"
+    //libraryTarget: 'var',
+    library: "jsGFwk",
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
   },
 };
