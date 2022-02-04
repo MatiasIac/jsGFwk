@@ -4,8 +4,6 @@
 
 This version is missing some minor legacy plugins. But, with Alpha 1, the framework has been bundled and can be found in **dist** directory!!
 
-#
-
 ## What's this?
 
 This is the third version of jsGFwk and it will become the official one.
