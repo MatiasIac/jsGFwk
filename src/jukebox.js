@@ -59,6 +59,4 @@ class Jukebox {
     }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = Jukebox;
-}
+export { Jukebox };

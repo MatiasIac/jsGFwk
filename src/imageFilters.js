@@ -167,6 +167,4 @@ class ImageFilters {
     }		
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = ImageFilters;
-}
+export { ImageFilters };

@@ -101,6 +101,4 @@ class MouseIO {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = MouseIO;
-}
+export { MouseIO };

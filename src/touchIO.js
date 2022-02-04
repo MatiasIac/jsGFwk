@@ -40,6 +40,4 @@ class TouchIO {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = TouchIO;
-}
+export { TouchIO };

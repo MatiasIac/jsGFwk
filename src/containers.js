@@ -1,3 +1,5 @@
+import { VisualGameObject } from './gameObjects.js';
+
 class Container extends VisualGameObject {
 
 	_managedObjects = {};
@@ -89,6 +91,4 @@ class Containers {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = { Container, Containers };
-}
+export { Container, Containers };

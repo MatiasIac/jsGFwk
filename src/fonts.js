@@ -33,6 +33,4 @@ class Fonts {
     }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = Fonts;
-}
+export { Fonts };

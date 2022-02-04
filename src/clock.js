@@ -27,6 +27,4 @@ class Clock {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = Clock;
-}
+export { Clock };

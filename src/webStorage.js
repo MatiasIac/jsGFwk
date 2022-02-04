@@ -43,6 +43,4 @@ class WebStorage {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = WebStorage;
-}
+export { WebStorage };

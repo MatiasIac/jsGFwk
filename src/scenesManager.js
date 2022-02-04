@@ -50,6 +50,4 @@ class ScenesManager {
     _onSceneDeactivated() { this._activeScene = undefined; }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = { Scene, ScenesManager };
-}
+export { Scene, ScenesManager };

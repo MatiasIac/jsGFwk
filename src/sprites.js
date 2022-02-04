@@ -138,6 +138,4 @@ class Sprites {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = { SpriteCollection, Sprites };
-}
+export { SpriteCollection, Sprites };

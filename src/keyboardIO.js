@@ -65,6 +65,4 @@ class KeyboardIO {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-	module.exports = KeyboardIO;
-}
+export { KeyboardIO };

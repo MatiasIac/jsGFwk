@@ -3,31 +3,13 @@
     <head>
         <title>jsGFWK v3 sample page</title>
     </head>
-        
-        <script src="../src/engine.js" lang="javascript"></script>
-        <script src="../src/animator2d.js" lang="javascript"></script>
-        <script src="../src/collisions.js" lang="javascript"></script>
-        <script src="../src/sprites.js" lang="javascript"></script>
-        <script src="../src/resourcesManager.js" lang="javascript"></script>
-        <script src="../src/imageFilters.js" lang="javascript"></script>
-        <script src="../src/keyboardIO.js" lang="javascript"></script>
-        <script src="../src/touchIO.js" lang="javascript"></script>
-        <script src="../src/mouseIO.js" lang="javascript"></script>
-        <script src="../src/clock.js" lang="javascript"></script>
-        <script src="../src/gameObjects.js" lang="javascript"></script>
-        <script src="../src/containers.js" lang="javascript"></script>
-        <script src="../src/webStorage.js" lang="javascript"></script>
-        <script src="../src/fonts.js" lang="javascript"></script>
-        <script src="../src/jukebox.js" lang="javascript"></script>
-        <script src="../src/scenesManager.js" lang="javascript"></script>
-        
-        <!-- <script src="../dist/jsgfwk-bundle.js" lang="javascript"></script> -->
+        <script src="../dist/jsgfwk-bundle.js" lang="javascript"></script>
     <body>
 
         <canvas id="canvas" width="640" height="480"></canvas>
 
         <script>
-            class FallingGuy extends VisualGameObject {
+            class FallingGuy extends jsGFwk.VisualGameObject {
 
                 constructor() {
                     super("fallingGuy", 200, 200, 0, 0, 0);
@@ -36,10 +18,10 @@
                 update(delta) {
                     sprites.SPRITES_BAG.fallingGuy.moveNextSprite();
 
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.W] === true) { this.y -= 1; }
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.S] === true) { this.y += 1; }
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.D] === true) { this.x += 1; }
-                    if (keyboardIO.getActiveKeys()[KeyboardIO.KEYS.A] === true) { this.x -= 1; }
+                    if (keyboardIO.getActiveKeys()[jsGFwk.KeyboardIO.KEYS.W] === true) { this.y -= 1; }
+                    if (keyboardIO.getActiveKeys()[jsGFwk.KeyboardIO.KEYS.S] === true) { this.y += 1; }
+                    if (keyboardIO.getActiveKeys()[jsGFwk.KeyboardIO.KEYS.D] === true) { this.x += 1; }
+                    if (keyboardIO.getActiveKeys()[jsGFwk.KeyboardIO.KEYS.A] === true) { this.x -= 1; }
                 }
 
                 draw(context) {
@@ -49,17 +31,17 @@
         </script>
 
         <script>
-            const game = new Engine();
-            const animator = new Animator2D();
-            const collisions = new Collisions();
-            const resourceManager = new ResourcesManager();
-            const sprites = new Sprites();
-            const keyboardIO = new KeyboardIO();
-            const touchIO = new TouchIO();
-            const mouseIO = new MouseIO();
-            const webStorage = new WebStorage();
-            const myJukebox = new Jukebox();
-            const scenesManager = new ScenesManager();
+            const game = new jsGFwk.Engine();
+            const animator = new jsGFwk.Animator2D();
+            const collisions = new jsGFwk.Collisions();
+            const resourceManager = new jsGFwk.ResourcesManager();
+            const sprites = new jsGFwk.Sprites();
+            const keyboardIO = new jsGFwk.KeyboardIO();
+            const touchIO = new jsGFwk.TouchIO();
+            const mouseIO = new jsGFwk.MouseIO();
+            const webStorage = new jsGFwk.WebStorage();
+            const myJukebox = new jsGFwk.Jukebox();
+            const scenesManager = new jsGFwk.ScenesManager();
 
             game.include(animator);
             game.include(collisions);
@@ -70,17 +52,17 @@
             game.include(mouseIO);
             game.include(scenesManager);
 
-            Fonts.buildFont("spectrumBold", "./fonts/zxBold.ttf");
-            Fonts.buildFont("spectrumNormal", "./fonts/zxNormal.ttf");
+            jsGFwk.Fonts.buildFont("spectrumBold", "./fonts/zxBold.ttf");
+            jsGFwk.Fonts.buildFont("spectrumNormal", "./fonts/zxNormal.ttf");
 
             // saving some data into the storage
             let data = webStorage.getJson("myData");
             if (data === null) { data = { "counter": 0 }; }
             data.counter++;
-            webStorage.setData(data, "myData", WebStorage.STORAGE_TYPES.JSON);
+            webStorage.setData(data, "myData", jsGFwk.WebStorage.STORAGE_TYPES.JSON);
             //
 
-            const cloneContainer = Containers.create("dotBluePrint", {
+            const cloneContainer = jsGFwk.Containers.create("dotBluePrint", {
                 init: function (params) {
                     this.x = params.x;
                     this.y = params.y;
@@ -108,23 +90,23 @@
 
             // defining the sounds of the game
             let sources = {};
-            sources[ResourcesManager.SOUND_FORMATS.WAVE] = { source: "./sounds/ezq.wav" };
-            sources[ResourcesManager.SOUND_FORMATS.OGG] = { source: "./sounds/ezq.ogg" };
-            sources[ResourcesManager.SOUND_FORMATS.MP3] = { source: "./sounds/ezq.mp3" };
+            sources[jsGFwk.ResourcesManager.SOUND_FORMATS.WAVE] = { source: "./sounds/ezq.wav" };
+            sources[jsGFwk.ResourcesManager.SOUND_FORMATS.OGG] = { source: "./sounds/ezq.ogg" };
+            sources[jsGFwk.ResourcesManager.SOUND_FORMATS.MP3] = { source: "./sounds/ezq.mp3" };
             
             // adding the sound to the resource manager
             resourceManager.addSound({ name: "music", sources: sources });
 
             sources = {};
-            sources[ResourcesManager.SOUND_FORMATS.OGG] = { source: "./sounds/explosion.ogg" };
-            sources[ResourcesManager.SOUND_FORMATS.MP3] = { source: "./sounds/explosion.mp3" };
+            sources[jsGFwk.ResourcesManager.SOUND_FORMATS.OGG] = { source: "./sounds/explosion.ogg" };
+            sources[jsGFwk.ResourcesManager.SOUND_FORMATS.MP3] = { source: "./sounds/explosion.mp3" };
             resourceManager.addSound({ name: "explosion", sources: sources });
 
             // creating an object from the hierarchy game objects
-            let redRectangleObject = new VisualGameObject(crypto.randomUUID(), 0, 0, 100, 100, 0, true);
+            let redRectangleObject = new jsGFwk.VisualGameObject(crypto.randomUUID(), 0, 0, 100, 100, 0, true);
             redRectangleObject.init = function () {
                 // we set a random clock that will trigger after 3 seconds
-                this.myClock = new Clock({ action: function() { console.log("clock triggered"); }, triggerTime: 3 });
+                this.myClock = new jsGFwk.Clock({ action: function() { console.log("clock triggered"); }, triggerTime: 3 });
             };
             redRectangleObject.update = function (delta) {
                 // we update the clock with the delta time
