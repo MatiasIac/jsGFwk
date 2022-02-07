@@ -134,7 +134,7 @@ class Sprites {
             image: imageSource
         };
 
-        imageSource.src = Sprites._cropFromImage(object, filter);
+        imageSource.src = Sprites._genSprite(object, filter);
 	}
 }
 

@@ -14,6 +14,7 @@ import { Scene, ScenesManager } from './scenesManager.js';
 import { Container, Containers } from './containers.js';
 import { Fonts } from './fonts.js';
 import { ImageFilters } from './imageFilters.js';
+import { ImageManipulation } from './imageManipulation.js';
 
 export { 
     Engine, 
@@ -35,5 +36,6 @@ export {
     Container,
     Containers,
     Fonts,
-    ImageFilters
+    ImageFilters,
+    ImageManipulation
 }
