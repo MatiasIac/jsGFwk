@@ -131,7 +131,7 @@ class Sprites {
             left: object.left,
             width: object.width,
             height: object.height,
-            image: imageSource
+            graphic: imageSource
         };
 
         imageSource.src = Sprites._genSprite(object, filter);
