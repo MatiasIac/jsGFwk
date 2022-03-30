@@ -1,5 +1,5 @@
 class GameObject {
-    name = crypto.randomUUID();
+    name = "__gameObject__";
     zOrder = 0;
     isVisible = false;
 

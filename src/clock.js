@@ -7,10 +7,10 @@ class Clock {
     _action = { };
 
     constructor(process) { 
-        if (process !== undefined) {
-			this.setAction(process.action || this._action);
-			this.triggerTime = process.triggerTime || this.triggerTime;
-		}
+      if (process !== undefined) {
+			  this.setAction(process.action || this._action);
+		    this.triggerTime = process.triggerTime || this.triggerTime;
+		  }
     }
 
     reset() { this._counter = 0; }

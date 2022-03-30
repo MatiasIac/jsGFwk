@@ -109,7 +109,7 @@
             resourceManager.addSound({ name: "explosion", sources: sources });
 
             // creating an object from the hierarchy game objects
-            let redRectangleObject = new jsGFwk.VisualGameObject(crypto.randomUUID(), 0, 0, 100, 100, 0, true);
+            let redRectangleObject = new jsGFwk.VisualGameObject("MyGameObject", 0, 0, 100, 100, 0, true);
             redRectangleObject.init = function () {
                 // we set a random clock that will trigger after 3 seconds
                 this.myClock = new jsGFwk.Clock({ action: function() { console.log("clock triggered"); }, triggerTime: 3 });
@@ -130,7 +130,7 @@
 
             // inline visual game object
             let blueRectangleObject = {
-                name: crypto.randomUUID(),
+                name: "BlueRectangle",
                 isVisible: true,
                 x: 0,
                 y: 0,
@@ -160,7 +160,7 @@
 
             // creating a visual game object to display fonts
             let textDisplayObject = {
-                name: crypto.randomUUID(),
+                name: "TextDisplay",
                 isVisible: true,
                 draw: function(context) {
                     context.fillStyle = '#FFFFFF';
