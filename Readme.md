@@ -26,5 +26,121 @@ Each file in the framework is, actually, a plug in that provides a particular fu
 
 #
 
-![jsGFwk](./jsGFwkLogo.png)
+<img src="./jsGFwkLogo.png" alt="jsGFwk" width="400" />
 
+This is a very brief introduction of how to use jsGFwk. It is recommended to review the example located [here](./examples/index.html) for a complete example of the different plug ins and components.
+
+### Setup your project
+
+To get the latest version of jsGFwk, please check the latest releases [here](https://github.com/MatiasIac/jsGFwk/tags). Search for the *dist* folder and download the bundle file. Place this file into a folder called *scripts* (Or any other name that makes sense to you).
+
+Include the jsGFwk bundle into your web page.
+
+```html
+<script src="./scripts/jsgfwk-bundle.js" lang="javascript"></script>
+```
+
+Following, define a canvas where your game will take place.
+
+```html
+<canvas id="canvas" width="640" height="480"></canvas>
+```
+
+### Plugins
+
+**Engine** - Core engine coordinator.
+
+```javascript
+const game = new jsGFwk.Engine();
+```
+
+**Animator** - 2D graphic engine.
+
+```javascript
+const animator = new jsGFwk.Animator2D();
+```
+
+**Collisions** - Collision detector and provider.
+
+```javascript
+const collisions = new jsGFwk.Collisions();
+```
+
+**ResourceManager** - Load and handles all the game resources.
+
+```javascript
+const resourceManager = new jsGFwk.ResourcesManager();
+```
+
+**Sprites** - Creates sprintes from loaded resources.
+
+```javascript
+const sprites = new jsGFwk.Sprites();
+```
+
+**KeyboardIO** - Provides keyboard handling capabilities to the game.
+
+```javascript
+const keyboardIO = new jsGFwk.KeyboardIO();
+```
+
+**TouchIO** - Provides touch capabilities on devices that support it.
+
+```javascript
+const touchIO = new jsGFwk.TouchIO();
+```
+
+**MouseIO** - Provides mouse handling capabilities to the game.
+
+```javascript
+const mouseIO = new jsGFwk.MouseIO();
+```
+
+**WebStorage** - A simple interface with the browser web storage.
+
+```javascript
+const webStorage = new jsGFwk.WebStorage();
+```
+
+**Jukebox** - Handles sounds allowing the creation of multiple sound channels and others.
+
+```javascript
+const myJukebox = new jsGFwk.Jukebox();
+```
+
+**ScenesManager** - Allow encapsulate different game objects into a particular scene helping transitioning them between scenes and game states.
+
+```javascript
+const scenesManager = new jsGFwk.ScenesManager();
+```
+
+### Game plug in
+
+jsGFwk can run several games in the same page. Each game is managed by a set of plugins and coordinated by a particular engine or plugin.
+
+Define a new game engine.
+
+```javascript
+const game = new jsGFwk.Engine();
+```
+
+Once all the elements were defined, start your game as follows:
+
+```javascript
+game.start();
+```
+
+### Including plugins
+
+Most of plugins will not work unless they are added into a game engine instance. The game engine will control them and give them the necessary resources to work. Add the instantiated plugins that you want to use as the following example.
+
+```javascript
+game.include(animator);
+game.include(collisions);
+game.include(resourceManager);
+game.include(sprites);
+game.include(keyboardIO);
+game.include(touchIO);
+game.include(mouseIO);
+game.include(scenesManager);
+```
