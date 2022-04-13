@@ -13,37 +13,7 @@ class ResourcesManager {
         AAC: 'audio/mp4; codecs="mp4a.40.2"'
     };
 
-    SOUNDS = {
-        //TODO: Analyze if this is actually necessary
-        //having these features in the sound manager is not a good idea
-        //and, instead, should be implemented in each sound source
-        
-        /*isMuted: false,
-        mute: function() {
-            this.isMuted = true;
-            this.doMute();
-        },
-        unMute: function () {
-            this.isMuted = false;
-            this.doMute();
-        },
-        doMute: function () {
-            for (var soundSource in ResourcesManager.SOUNDS) {
-                if (ResourcesManager.SOUNDS.hasOwnProperty(soundSource) && 
-                    (soundSource !== 'format' && soundSource !== 'isMuted' && soundSource !== 'mute' && soundSource !== 'unMute' && soundSource !== 'doMute')) {
-                        ResourcesManager.SOUNDS[soundSource]._volume = this.isMuted ? 
-                            ResourcesManager.SOUNDS[soundSource].audio.volume : 
-                            ResourcesManager.SOUNDS[soundSource]._volume;
-
-                        ResourcesManager.SOUNDS[soundSource].audio.volume = this.isMuted ? 
-                            0 :
-                            ResourcesManager.SOUNDS[soundSource]._volume = this.isMuted ? 
-                                ResourcesManager.SOUNDS[soundSource].audio.volume : 
-                                ResourcesManager.SOUNDS[soundSource]._volume;
-                }
-            }
-        }*/
-    };
+    SOUNDS = {};
 
     GRAPHICS = {};
 
