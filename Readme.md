@@ -24,6 +24,20 @@ Additionally, it is intended to be extended with plug ins, meaning that, if you 
 
 Each file in the framework is, actually, a plug in that provides a particular functionality. From sound, keyboard and mouse handling, to drawing in the screen or saving data into the browser.
 
+## Build the framework
+
+In order to build the framework (*If you need it*), you need to have NodeJS and WebPack CLI installed.
+
+Once you have this, run:
+
+```
+npm run build
+```
+
+The ```dist``` folder will contains the build results.
+
+This action is only required if you are doing any modification. The framework is already built and located in the same framework.
+
 #
 
 <img src="./jsGFwkLogo.png" alt="jsGFwk" width="400" />
