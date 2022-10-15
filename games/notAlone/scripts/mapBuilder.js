@@ -3,17 +3,18 @@ class MapBuilder {
     mapConstants = { };
 
     constructor() {
-        //water
-        this._setMapConstants(0, 0, 255, 0, false);
-        //dirt
-        this._setMapConstants(204, 102, 0, 1, false);
+        for (let index = 0; index < MAP_TILES.length; index++) {
+            const element = MAP_TILES[index];
+            this._setMapConstants(element)
+        }
     }
 
     _createKey = (r, g, b) => `${r}, ${g}, ${b}`;
 
-    _setMapConstants(r, g, b, tile, isSolid) {
+    _setMapConstants(element) {
+        let { r, g, b, tileIndex, isSolid } = element;
         isSolid = isSolid || false;
-        this.mapConstants[this._createKey(r, g, b)] = { tile, isSolid };
+        this.mapConstants[this._createKey(r, g, b)] = { tileIndex, isSolid };
     }
 
     _createEmptyMapArray(width, height) {

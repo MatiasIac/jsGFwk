@@ -29,7 +29,10 @@ resourceManager.onResourcesLoadedCompleted = function () {
 
     sprites.createCollection("mapTiles", resourceManager.GRAPHICS.tiles.image, [
         {left: 0, top: 0, width: 20, height: 20},
-        {left: 20, top: 0, width: 20, height: 20}
+        {left: 20, top: 0, width: 20, height: 20},
+        {left: 40, top: 0, width: 20, height: 20},
+        {left: 60, top: 0, width: 20, height: 20},
+        {left: 80, top: 0, width: 20, height: 20}
     ]);
 
     MAP_MATRIX = mapBuilder.createMap(resourceManager.GRAPHICS.map.image);

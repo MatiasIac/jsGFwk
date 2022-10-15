@@ -16,7 +16,7 @@ class BackgroundMap extends jsGFwk.VisualGameObject {
             for (let vy = VIEWPORT_Y; vy < (VIEWPORT_Y + VIEWPORT_HEIGHT); vy++) {
                 const item = MAP_MATRIX[vx][vy];
                 
-                context.drawImage(sprites.SPRITES_BAG.mapTiles.sprites[item.tile].image, xp * TILE_SIZE, yp * TILE_SIZE);
+                context.drawImage(sprites.SPRITES_BAG.mapTiles.sprites[item.tileIndex].image, xp * TILE_SIZE, yp * TILE_SIZE);
             
                 yp++;
             }
