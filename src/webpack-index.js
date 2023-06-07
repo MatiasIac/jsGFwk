@@ -15,6 +15,7 @@ import { Container, Containers } from './containers.js';
 import { Fonts } from './fonts.js';
 import { ImageFilters } from './imageFilters.js';
 import { ImageManipulation } from './imageManipulation.js';
+import { Camera } from './camera.js';
 
 export { 
     Engine, 
@@ -37,5 +38,6 @@ export {
     Containers,
     Fonts,
     ImageFilters,
-    ImageManipulation
+    ImageManipulation,
+    Camera
 }
