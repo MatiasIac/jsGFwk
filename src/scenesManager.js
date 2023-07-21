@@ -31,7 +31,7 @@ class ScenesManager {
 
     _name = "ScenesManager";
     _activeScene = undefined;
-    scenes = [];
+    SCENES = [];
 
     constructor() { }
 
@@ -42,7 +42,7 @@ class ScenesManager {
         scene._deactivationCallback = this._onSceneDeactivated.bind(this);
         scene._sceneManager = this;
 
-        this.scenes[name] = scene;
+        this.SCENES[name] = scene;
     }
 
     _onSceneActivated(scene) { this._activeScene = scene; }
