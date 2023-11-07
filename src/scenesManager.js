@@ -10,14 +10,18 @@ class Scene {
     }
 
     deactivate() {
-        var i = 0;
+        let i = 0;
         for (; i < this._sceneObjects.length; this._sceneObjects[i++].destroy());
 
         this._deactivationCallback();
     }
 
     activate() {
-        var i = 0;
+        if (this._sceneManager._activeScene !== undefined) { 
+            this._sceneManager._activeScene.deactivate(); 
+        }
+
+        let i = 0;
         for (; i < this._sceneObjects.length; this._sceneManager._gfwk.createObject(this._sceneObjects[i++]));
 
         this._activationCallback(this);
