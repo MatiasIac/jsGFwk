@@ -37,5 +37,5 @@ resourceManager.onResourcesLoadedCompleted = function () {
 
     MAP_MATRIX = mapBuilder.createMap(resourceManager.GRAPHICS.map.image);
     
-    scenesManager.scenes.game.activate();
+    scenesManager.SCENES.game.activate();
 };
