@@ -40,7 +40,7 @@ class SpriteCollection {
 
 		for (let i = 0; i < this.sprites.length; i++) {
 			let img = new Image();
-			img.src = self.sprites[i].image.src;
+			img.src = this.sprites[i].image.src;
 
 			cloned.sprites.push({
 				height: this.sprites[i].height,

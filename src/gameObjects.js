@@ -25,7 +25,7 @@ class VisualGameObject extends GameObject {
         super.name = name;
         super.zOrder = zOrder || 0;
 
-        this.isVisible = isVisible || true;
+        this.isVisible = (isVisible !== undefined ? isVisible : true);
         this.x = x || this.x;
         this.y = y || this.y;
         this.width = width || this.width;

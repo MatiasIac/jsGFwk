@@ -12,6 +12,11 @@ class MouseIO {
     _lastDownCoords = {};
     _lastMoveCoords = {};
     _isMousePressed = false;
+    _canvas = null;
+    _mouseDownHandler = null;
+    _mouseUpHandler = null;
+    _mouseMoveHandler = null;
+    _mouseWheelHandler = null;
 
     constructor() { }
     
@@ -89,16 +94,50 @@ class MouseIO {
     unregisterWheel(id) { this._mouseWhellCallers.splice(id, 1); }
 
     onStart() {
-        const self = this;
+        if (this._mouseDownHandler !== null) { return; }
 
         this._canvas = document.getElementById(this._gfwk.settings.canvas);
+        if (!this._canvas) { return; }
 
-		document.getElementById(this._gfwk.settings.canvas).addEventListener("mousedown", function(e) { self._mouseDown(e); }, false);
-		document.getElementById(this._gfwk.settings.canvas).addEventListener("mouseup", function(e) { self._mouseUp(e); }, false);
-		document.getElementById(this._gfwk.settings.canvas).addEventListener("mousemove", function(e) { self._mouseMove(e); }, false);
-		document.getElementById(this._gfwk.settings.canvas).addEventListener("mousewheel", function(e) { self._mouseWheel(e); }, false);
-		document.getElementById(this._gfwk.settings.canvas).addEventListener("DOMMouseScroll", function(e) { self._mouseWheel(e); }, false);        
+        this._mouseDownHandler = this._mouseDown.bind(this);
+        this._mouseUpHandler = this._mouseUp.bind(this);
+        this._mouseMoveHandler = this._mouseMove.bind(this);
+        this._mouseWheelHandler = this._mouseWheel.bind(this);
+
+		this._canvas.addEventListener("mousedown", this._mouseDownHandler, false);
+		this._canvas.addEventListener("mouseup", this._mouseUpHandler, false);
+		this._canvas.addEventListener("mousemove", this._mouseMoveHandler, false);
+		this._canvas.addEventListener("mousewheel", this._mouseWheelHandler, false);
+		this._canvas.addEventListener("DOMMouseScroll", this._mouseWheelHandler, false);        
 	}
+
+    onStop() {
+        if (!this._canvas) { return; }
+
+        if (this._mouseDownHandler !== null) {
+            this._canvas.removeEventListener("mousedown", this._mouseDownHandler, false);
+            this._mouseDownHandler = null;
+        }
+
+        if (this._mouseUpHandler !== null) {
+            this._canvas.removeEventListener("mouseup", this._mouseUpHandler, false);
+            this._mouseUpHandler = null;
+        }
+
+        if (this._mouseMoveHandler !== null) {
+            this._canvas.removeEventListener("mousemove", this._mouseMoveHandler, false);
+            this._mouseMoveHandler = null;
+        }
+        
+        if (this._mouseWheelHandler !== null) {
+            this._canvas.removeEventListener("mousewheel", this._mouseWheelHandler, false);
+            this._canvas.removeEventListener("DOMMouseScroll", this._mouseWheelHandler, false);
+            this._mouseWheelHandler = null;
+        }
+
+        this._isMousePressed = false;
+        this._canvas = null;
+    }
 }
 
 export { MouseIO };

@@ -1,160 +1,116 @@
-# jsGFwk v3: Release 1
+# jsGFwk v3
 
-## IMPORTANT NOTE
+jsGFwk is a lightweight HTML5/Canvas framework that gives you just the right amount of structure for building 2D games without hijacking your main loop. Every capability—rendering, collisions, input, sprites, audio, scenes, storage—is implemented as an optional plug-in, so you decide exactly how much of the framework to use.
 
-This version is missing some minor legacy plugins but it is already fully functional. Main plugins have been migrated and tested. You are welcome to use each individual file (As in the old framework) to use *jsGFwk*, or simple use the bundle that can be found in **dist** directory.
+This repository hosts the third generation of the framework. It keeps backward compatibility with older projects where possible, but it modernizes the source by using ES modules and a webpack-based bundle (`dist/jsgfwk-bundle.js`) that you can drop into any project, including Electron or plain browser deployments.
 
-## What's this?
+> **Tip:** The quickest way to understand the API is to open `examples/index.html`, which wires up every plug-in and demonstrates sprites, audio, storage, containers, and scenes in a single page.
 
-This is the third version of jsGFwk and it will become the official one.
+---
 
-The key difference with the older version is the JavaScript language version used on v3.
+## Getting Started
 
-This version is trying to keep retrocompatibily when it is possible. If you have used version 1, you might need to change the way that you import the plug ins and some minor upgrades to some functions.
+1. **Reference the bundle and canvas in your page**  
+   ```html
+   <script src="./scripts/jsgfwk-bundle.js"></script>
+   <canvas id="canvas" width="640" height="480"></canvas>
+   ```
 
-## What's jsGFwk?
+2. **Instantiate the engine and include the plug-ins you need**
+   ```javascript
+   const game = new jsGFwk.Engine();
+   const animator = new jsGFwk.Animator2D();
+   const resourceManager = new jsGFwk.ResourcesManager();
+   const sprites = new jsGFwk.Sprites();
+   const keyboardIO = new jsGFwk.KeyboardIO();
 
-jsGFwk is a simple, but powerful, JavaScript videogame framework.
+   game.include(animator);
+   game.include(resourceManager);
+   game.include(sprites);
+   game.include(keyboardIO);
+   ```
 
-The first version of jsGFwk was built more than 7 years ago in 40 hours. From that point the framework kept evolving, adding new features and plug ins to it.
+3. **Create your game objects, load assets, then start the loop**
+   ```javascript
+   resourceManager.addGraphic({ name: "atlas", source: "./graphics/jumpingBase.png" });
+   resourceManager.onResourcesLoadedCompleted = () => {
+       sprites.createCollection("fallingGuy", resourceManager.GRAPHICS.atlas.image, [{ left: 0, top: 0, width: 64, height: 32 }]);
+       game.createObject(new jsGFwk.VisualGameObject("player", 50, 50, 64, 32));
+   };
 
-The main difference (*and its reason to exists*) with other frameworks in the market is that jsGFwk doesn't tries to take control of what is happening on your game. It only provides a foundation to build games and gives you full control through your code.
+   game.start();
+   ```
 
-Additionally, it is intended to be extended with plug ins, meaning that, if you find a better way to do something that the jsGFwk does out of the box, you can code it and add it into the foundation.
+---
 
-Each file in the framework is, actually, a plug in that provides a particular functionality. From sound, keyboard and mouse handling, to drawing in the screen or saving data into the browser.
+## Architecture Highlights
 
-## Build the framework
+### Engine & Animator
+- `Engine` keeps the registry of game objects, injects each included plug-in (`game.include(...)`), and owns lifecycle hooks (`onStart`, `onStop`, `onObjectCreated`).
+- `Animator2D` is the double-buffered renderer. It clears the buffer, runs every object’s `update(delta)` and `draw(context)` methods, and then blits the buffer to the visible canvas every frame via `requestAnimationFrame`.
 
-In order to build the framework (*If you need it*), you need to have NodeJS and WebPack CLI installed.
+### Game Objects & Scenes
+- `GameObject` / `VisualGameObject` are the base classes. Visual objects track position, size, visibility, and collision helpers injected by the `Collisions` plug-in.
+- `ScenesManager` groups collections of objects into named scenes. Activating a scene creates all its objects at once; deactivating destroys them, making state transitions easy to manage.
+- `Containers` let you clone lightweight blueprint objects at runtime (great for particles or bullets) and destroy them individually.
 
-Once you have this, run:
+### Assets, Sprites, and Image Tools
+- `ResourcesManager` queues graphics (`addGraphic`) and audio (`addSound`) files, tracks load progress, and exposes the loaded assets through `GRAPHICS` and `SOUNDS`. Register `onResourcesLoadedCompleted` to know when you can safely build sprites or play audio.
+- `Sprites` slices sprite sheets into reusable collections and supports inverted frames and optional filters.
+- `ImageManipulation` and `ImageFilters` provide helpers for merging regions of images, applying convolution filters (blur, sharpen, emboss, etc.), or generating grayscale/inverted variants on the fly.
 
-```
-npm run build
-```
+### Input, Storage, and Interaction
+- `KeyboardIO`, `MouseIO`, and `TouchIO` attach DOM listeners when the engine starts and remove them on stop, exposing simple registration APIs (`registerKeypress`, `registerClick`, `registerTouch`, etc.).
+- `WebStorage` wraps the browser’s `localStorage` to save structured data (`setData` / `getJson`), handy for remembering high scores or configuration.
 
-The ```dist``` folder will contains the build results.
+### Audio & Timing
+- `Jukebox` wraps HTML5 `Audio`, allowing you to create multiple playback channels from a single source, control volume per channel, and trigger overlapping effects.
+- `Clock` is a lightweight timer that ticks in `update(delta)` and fires an action when its trigger time elapses—ideal for scripted events.
 
-This action is only required if you are doing any modification. The framework is already built and located in the same framework.
+### Fonts and Camera
+- `Fonts.buildFont(name, path)` injects `@font-face` rules at runtime so you can render custom TTF/OTF fonts on your canvas.
+- `Camera` is a placeholder plug-in ready for view transforms or scrolling logic if your project needs it.
 
-#
+---
 
-<img src="./jsGFwkLogo.png" alt="jsGFwk" width="400" />
-
-This is a very brief introduction of how to use jsGFwk. It is recommended to review the example located [here](./examples/index.html) for a complete example of the different plug ins and components.
-
-### Setup your project
-
-To get the latest version of jsGFwk, please check the latest releases [here](https://github.com/MatiasIac/jsGFwk/tags). Search for the *dist* folder and download the bundle file. Place this file into a folder called *scripts* (Or any other name that makes sense to you).
-
-Include the jsGFwk bundle into your web page.
-
-```html
-<script src="./scripts/jsgfwk-bundle.js" lang="javascript"></script>
-```
-
-Following, define a canvas where your game will take place.
-
-```html
-<canvas id="canvas" width="640" height="480"></canvas>
-```
-
-### Plugins
-
-**Engine** - Core engine coordinator.
+## Putting It Together
 
 ```javascript
 const game = new jsGFwk.Engine();
-```
-
-**Animator** - 2D graphic engine.
-
-```javascript
 const animator = new jsGFwk.Animator2D();
-```
-
-**Collisions** - Collision detector and provider.
-
-```javascript
 const collisions = new jsGFwk.Collisions();
-```
-
-**ResourceManager** - Load and handles all the game resources.
-
-```javascript
-const resourceManager = new jsGFwk.ResourcesManager();
-```
-
-**Sprites** - Creates sprintes from loaded resources.
-
-```javascript
-const sprites = new jsGFwk.Sprites();
-```
-
-**KeyboardIO** - Provides keyboard handling capabilities to the game.
-
-```javascript
-const keyboardIO = new jsGFwk.KeyboardIO();
-```
-
-**TouchIO** - Provides touch capabilities on devices that support it.
-
-```javascript
-const touchIO = new jsGFwk.TouchIO();
-```
-
-**MouseIO** - Provides mouse handling capabilities to the game.
-
-```javascript
-const mouseIO = new jsGFwk.MouseIO();
-```
-
-**WebStorage** - A simple interface with the browser web storage.
-
-```javascript
-const webStorage = new jsGFwk.WebStorage();
-```
-
-**Jukebox** - Handles sounds allowing the creation of multiple sound channels and others.
-
-```javascript
-const myJukebox = new jsGFwk.Jukebox();
-```
-
-**ScenesManager** - Allow encapsulate different game objects into a particular scene helping transitioning them between scenes and game states.
-
-```javascript
 const scenesManager = new jsGFwk.ScenesManager();
-```
 
-### Game plug in
+game.include(animator);
+game.include(collisions);
+game.include(scenesManager);
 
-jsGFwk can run several games in the same page. Each game is managed by a set of plugins and coordinated by a particular engine or plugin.
+const player = new jsGFwk.VisualGameObject("Player", 100, 100, 32, 32, 1, true);
+player.update = (delta) => { /* movement logic */ };
+player.draw = (ctx) => {
+    ctx.fillStyle = "#00FFAA";
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+};
 
-Define a new game engine.
-
-```javascript
-const game = new jsGFwk.Engine();
-```
-
-Once all the elements were defined, start your game as follows:
-
-```javascript
+scenesManager.create("main", [player]);
+scenesManager.SCENES.main.activate();
 game.start();
 ```
 
-### Including plugins
+- Use `game.createObject` for ad-hoc objects or rely on `ScenesManager` for deterministic activation/deactivation.
+- Call `sprites.SPRITES_BAG.yourSprite.moveNextSprite()` in `update` to animate frame collections.
+- Register mouse/keyboard callbacks through their respective IO plug-ins to keep your objects focused on gameplay logic.
 
-Most of plugins will not work unless they are added into a game engine instance. The game engine will control them and give them the necessary resources to work. Add the instantiated plugins that you want to use as the following example.
+---
 
-```javascript
-game.include(animator);
-game.include(collisions);
-game.include(resourceManager);
-game.include(sprites);
-game.include(keyboardIO);
-game.include(touchIO);
-game.include(mouseIO);
-game.include(scenesManager);
-```
+## Examples & Legacy Content
+
+- `examples/index.html` showcases the full engine: animated sprites, clones, clocks, fonts, sounds, scenes, and storage. Use it as a starting point for your own prototypes.
+- `games/` and `v1_games/` contain additional experiments and legacy demos that you can port or learn from.
+- `v1_deprecated/` preserves older plug-ins in case you need to reference the previous architecture.
+
+---
+
+<img src="./jsGFwkLogo.png" alt="jsGFwk" width="400" />
+
+If you build something cool with jsGFwk, drop a note or contribute improvements—new plug-ins are easy to add, and the community examples help everyone ship faster.

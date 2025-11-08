@@ -3,6 +3,8 @@ class KeyboardIO {
     _name = "KeyboardIO";
     _keyboardCallers = [];
     _activeKey = [];
+    _keyDownHandler = null;
+    _keyUpHandler = null;
 
     static KEYS = {
         "A": 65,
@@ -58,11 +60,28 @@ class KeyboardIO {
     }
 
     onStart() {
-        const self = this;
+        if (this._keyDownHandler !== null || this._keyUpHandler !== null) { return; }
 
-		document.addEventListener("keydown", function(e) { self._keyPressed(e); }, false);
-		document.addEventListener("keyup", function(e) { self._keyReleased(e); }, false);
+        this._keyDownHandler = this._keyPressed.bind(this);
+        this._keyUpHandler = this._keyReleased.bind(this);
+
+		document.addEventListener("keydown", this._keyDownHandler, false);
+		document.addEventListener("keyup", this._keyUpHandler, false);
 	}
+
+    onStop() {
+        if (this._keyDownHandler !== null) {
+            document.removeEventListener("keydown", this._keyDownHandler, false);
+            this._keyDownHandler = null;
+        }
+
+        if (this._keyUpHandler !== null) {
+            document.removeEventListener("keyup", this._keyUpHandler, false);
+            this._keyUpHandler = null;
+        }
+
+        this._activeKey = [];
+    }
 }
 
 export { KeyboardIO };
