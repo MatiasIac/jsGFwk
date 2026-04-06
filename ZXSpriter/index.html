@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ZXSpriter</title>
+    <style>
+        :root {
+            color-scheme: only light;
+            --bg-a: #0f1822;
+            --bg-b: #19283a;
+            --panel: #101922;
+            --line: #2a4157;
+            --text: #d8e4f1;
+            --muted: #93a7bc;
+            --accent: #4bd3ff;
+            --ok: #5be89c;
+            --error: #ff7f7f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            font-family: "Trebuchet MS", Verdana, sans-serif;
+            color: var(--text);
+            background: #000000;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .app {
+            width: min(1200px, 100%);
+            margin: 0 auto;
+            padding: 18px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-title {
+            grid-column: 1 / -1;
+            margin: 0;
+            padding: 8px 4px 2px;
+            font-size: clamp(24px, 3.1vw, 38px);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #f2f7ff;
+            text-shadow: 0 0 14px rgba(90, 192, 255, 0.25);
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: linear-gradient(180deg, #101a24, var(--panel));
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--line);
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .panel-body {
+            padding: 14px;
+            display: grid;
+            gap: 14px;
+        }
+
+        .toolbar {
+            display: grid;
+            gap: 10px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        input[type="number"],
+        select,
+        textarea,
+        button {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #0f1720;
+            color: var(--text);
+            font: inherit;
+        }
+
+        input[type="number"],
+        select,
+        button {
+            height: 34px;
+            padding: 0 10px;
+            font-size: 14px;
+        }
+
+        input[type="checkbox"] {
+            transform: translateY(1px);
+        }
+
+        button {
+            cursor: pointer;
+            transition: background-color 140ms ease, border-color 140ms ease, transform 80ms ease;
+        }
+
+        button:hover {
+            border-color: var(--accent);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .tool-button[data-active="true"] {
+            background: #17344a;
+            border-color: var(--accent);
+            color: #c6ecff;
+        }
+
+        .editor-wrap {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 8px;
+            background: #0b1117;
+            width: fit-content;
+            max-width: 100%;
+            overflow: auto;
+        }
+
+        #editorCanvas {
+            display: block;
+            image-rendering: pixelated;
+            cursor: crosshair;
+            border: 1px solid #27445f;
+            background: black;
+        }
+
+        #previewCanvas {
+            display: block;
+            image-rendering: pixelated;
+            border: 1px solid #27445f;
+            background: black;
+        }
+
+        .io {
+            min-height: 480px;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 10px;
+        }
+
+        #spriteArray {
+            width: 100%;
+            min-height: 350px;
+            resize: vertical;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.3;
+            padding: 10px;
+            outline: none;
+        }
+
+        #spriteArray:focus {
+            border-color: var(--accent);
+        }
+
+        .status {
+            font-size: 12px;
+            color: var(--muted);
+            min-height: 16px;
+        }
+
+        .status.ok {
+            color: var(--ok);
+        }
+
+        .status.error {
+            color: var(--error);
+        }
+
+        .note {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .inline-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 980px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+
+            .io {
+                min-height: 360px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <h1 class="app-title">jsGFWK Spectrum Spriter</h1>
+        <section class="panel">
+            <header class="panel-header">Editor</header>
+            <div class="panel-body">
+                <div class="toolbar">
+                    <div class="row">
+                        <label for="spriteWidth">Width</label>
+                        <input id="spriteWidth" type="number" min="1" max="128" step="1" value="16">
+
+                        <label for="spriteHeight">Height</label>
+                        <input id="spriteHeight" type="number" min="1" max="128" step="1" value="16">
+
+                        <span class="inline-group">
+                            <input id="preserveOnResize" type="checkbox" checked>
+                            <label for="preserveOnResize">Preserve</label>
+                        </span>
+                        <button id="resizeButton" type="button">Resize</button>
+                        <button id="clearButton" type="button">Clear</button>
+                    </div>
+
+                    <div class="row">
+                        <label>Tool</label>
+                        <button class="tool-button" data-tool="draw" data-active="true" type="button">Draw 1</button>
+                        <button class="tool-button" data-tool="erase" data-active="false" type="button">Erase 0</button>
+                        <button class="tool-button" data-tool="toggle" data-active="false" type="button">Toggle</button>
+                        <span class="note">Right click always erases.</span>
+                    </div>
+
+                    <div class="row">
+                        <label for="paperColor">Paper</label>
+                        <select id="paperColor"></select>
+                        <span class="inline-group">
+                            <input id="paperBright" type="checkbox">
+                            <label for="paperBright">Bright</label>
+                        </span>
+
+                        <label for="inkColor">Ink</label>
+                        <select id="inkColor"></select>
+                        <span class="inline-group">
+                            <input id="inkBright" type="checkbox" checked>
+                            <label for="inkBright">Bright</label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="editor-wrap">
+                        <canvas id="editorCanvas" width="64" height="64"></canvas>
+                    </div>
+                    <div class="editor-wrap">
+                        <canvas id="previewCanvas" width="64" height="64"></canvas>
+                    </div>
+                </div>
+                <p class="note">
+                    Editor is the large workspace. Preview is rendered 4x smaller in pixel scale than the editor.
+                </p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <header class="panel-header">Import / Export</header>
+            <div class="panel-body io">
+                <div class="row">
+                    <button id="importButton" type="button">Import From Text</button>
+                    <button id="copyButton" type="button">Copy Array</button>
+                </div>
+                <textarea id="spriteArray" spellcheck="false" aria-label="Sprite bit array export"></textarea>
+                <div>
+                    <div id="status" class="status">
+                        Export updates in real time. Paste an array and click Import (or just paste to auto-import).
+                    </div>
+                    <p class="note">
+                        Format expected by <code>createMonochromeSprite(width, height, rows)</code>:
+                        <code>["0011","1111","0001"]</code>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            const ZX_COLORS = [
+                { index: 0, name: "Black", normal: [0, 0, 0], bright: [0, 0, 0] },
+                { index: 1, name: "Blue", normal: [0, 0, 205], bright: [0, 0, 255] },
+                { index: 2, name: "Red", normal: [205, 0, 0], bright: [255, 0, 0] },
+                { index: 3, name: "Magenta", normal: [205, 0, 205], bright: [255, 0, 255] },
+                { index: 4, name: "Green", normal: [0, 205, 0], bright: [0, 255, 0] },
+                { index: 5, name: "Cyan", normal: [0, 205, 205], bright: [0, 255, 255] },
+                { index: 6, name: "Yellow", normal: [205, 205, 0], bright: [255, 255, 0] },
+                { index: 7, name: "White", normal: [205, 205, 205], bright: [255, 255, 255] },
+            ];
+
+            const PREVIEW_SCALE = 2;
+            const EDIT_SCALE = PREVIEW_SCALE * 4;
+
+            const spriteWidthInput = document.getElementById("spriteWidth");
+            const spriteHeightInput = document.getElementById("spriteHeight");
+            const preserveOnResizeInput = document.getElementById("preserveOnResize");
+            const resizeButton = document.getElementById("resizeButton");
+            const clearButton = document.getElementById("clearButton");
+            const toolButtons = Array.from(document.querySelectorAll(".tool-button"));
+            const paperColorSelect = document.getElementById("paperColor");
+            const paperBrightInput = document.getElementById("paperBright");
+            const inkColorSelect = document.getElementById("inkColor");
+            const inkBrightInput = document.getElementById("inkBright");
+            const editorCanvas = document.getElementById("editorCanvas");
+            const previewCanvas = document.getElementById("previewCanvas");
+            const editorContext = editorCanvas.getContext("2d");
+            const previewContext = previewCanvas.getContext("2d");
+            const textArea = document.getElementById("spriteArray");
+            const importButton = document.getElementById("importButton");
+            const copyButton = document.getElementById("copyButton");
+            const statusEl = document.getElementById("status");
+
+            let spriteWidth = 16;
+            let spriteHeight = 16;
+            let bits = new Uint8Array(spriteWidth * spriteHeight);
+            let activeTool = "draw";
+            let dragAction = null;
+            let isDragging = false;
+            let lastPaintIndex = -1;
+
+            function toCssColor(rgb) {
+                return "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
+            }
+
+            function getSelectedColor(selectEl, isBright) {
+                const index = Number(selectEl.value);
+                const color = ZX_COLORS[index] || ZX_COLORS[0];
+                return isBright ? color.bright : color.normal;
+            }
+
+            function bitIndex(x, y) {
+                return (y * spriteWidth) + x;
+            }
+
+            function fillColorOptions(selectEl) {
+                for (const c of ZX_COLORS) {
+                    const option = document.createElement("option");
+                    option.value = String(c.index);
+                    option.textContent = c.name;
+                    selectEl.appendChild(option);
+                }
+            }
+
+            function setStatus(text, type) {
+                statusEl.textContent = text;
+                statusEl.className = "status";
+                if (type) {
+                    statusEl.classList.add(type);
+                }
+            }
+
+            function setTool(toolName) {
+                activeTool = toolName;
+                for (const button of toolButtons) {
+                    button.dataset.active = String(button.dataset.tool === toolName);
+                }
+            }
+
+            function getArrayRows() {
+                const rows = [];
+                for (let y = 0; y < spriteHeight; y++) {
+                    let row = "";
+                    for (let x = 0; x < spriteWidth; x++) {
+                        row += bits[bitIndex(x, y)] ? "1" : "0";
+                    }
+                    rows.push(row);
+                }
+                return rows;
+            }
+
+            function formatRowsAsArray(rows) {
+                if (!rows.length) {
+                    return "[]";
+                }
+
+                const lines = rows.map(function (row) {
+                    return '  "' + row + '"';
+                });
+                return "[\n" + lines.join(",\n") + "\n]";
+            }
+
+            function updateExport() {
+                const rows = getArrayRows();
+                textArea.value = formatRowsAsArray(rows);
+            }
+
+            function applyPaintAction(index, action) {
+                const oldValue = bits[index];
+                let newValue = oldValue;
+
+                if (action === "toggle") {
+                    newValue = oldValue ? 0 : 1;
+                } else if (action === 1 || action === "draw") {
+                    newValue = 1;
+                } else if (action === 0 || action === "erase") {
+                    newValue = 0;
+                }
+
+                if (newValue !== oldValue) {
+                    bits[index] = newValue;
+                    return true;
+                }
+
+                return false;
+            }
+
+            function renderEditor() {
+                const paperRgb = getSelectedColor(paperColorSelect, paperBrightInput.checked);
+                const inkRgb = getSelectedColor(inkColorSelect, inkBrightInput.checked);
+                const paperCss = toCssColor(paperRgb);
+                const inkCss = toCssColor(inkRgb);
+
+                editorCanvas.width = spriteWidth * EDIT_SCALE;
+                editorCanvas.height = spriteHeight * EDIT_SCALE;
+                editorContext.imageSmoothingEnabled = false;
+
+                editorContext.fillStyle = paperCss;
+                editorContext.fillRect(0, 0, editorCanvas.width, editorCanvas.height);
+
+                for (let y = 0; y < spriteHeight; y++) {
+                    for (let x = 0; x < spriteWidth; x++) {
+                        if (bits[bitIndex(x, y)] === 1) {
+                            editorContext.fillStyle = inkCss;
+                            editorContext.fillRect(
+                                x * EDIT_SCALE,
+                                y * EDIT_SCALE,
+                                EDIT_SCALE,
+                                EDIT_SCALE
+                            );
+                        }
+                    }
+                }
+
+                editorContext.strokeStyle = "rgba(255,255,255,0.16)";
+                editorContext.lineWidth = 1;
+                for (let gx = 0; gx <= spriteWidth; gx++) {
+                    const xPos = gx * EDIT_SCALE + 0.5;
+                    editorContext.beginPath();
+                    editorContext.moveTo(xPos, 0);
+                    editorContext.lineTo(xPos, editorCanvas.height);
+                    editorContext.stroke();
+                }
+                for (let gy = 0; gy <= spriteHeight; gy++) {
+                    const yPos = gy * EDIT_SCALE + 0.5;
+                    editorContext.beginPath();
+                    editorContext.moveTo(0, yPos);
+                    editorContext.lineTo(editorCanvas.width, yPos);
+                    editorContext.stroke();
+                }
+            }
+
+            function renderPreview() {
+                const paperRgb = getSelectedColor(paperColorSelect, paperBrightInput.checked);
+                const inkRgb = getSelectedColor(inkColorSelect, inkBrightInput.checked);
+                const paperCss = toCssColor(paperRgb);
+                const inkCss = toCssColor(inkRgb);
+
+                previewCanvas.width = spriteWidth * PREVIEW_SCALE;
+                previewCanvas.height = spriteHeight * PREVIEW_SCALE;
+                previewContext.imageSmoothingEnabled = false;
+                previewContext.fillStyle = paperCss;
+                previewContext.fillRect(0, 0, previewCanvas.width, previewCanvas.height);
+
+                previewContext.fillStyle = inkCss;
+                for (let y = 0; y < spriteHeight; y++) {
+                    for (let x = 0; x < spriteWidth; x++) {
+                        if (bits[bitIndex(x, y)] === 1) {
+                            previewContext.fillRect(
+                                x * PREVIEW_SCALE,
+                                y * PREVIEW_SCALE,
+                                PREVIEW_SCALE,
+                                PREVIEW_SCALE
+                            );
+                        }
+                    }
+                }
+            }
+
+            function rerenderAll() {
+                renderEditor();
+                renderPreview();
+                updateExport();
+            }
+
+            function resizeSprite(newWidth, newHeight, preserve) {
+                newWidth = Math.max(1, Math.min(128, newWidth | 0));
+                newHeight = Math.max(1, Math.min(128, newHeight | 0));
+
+                const next = new Uint8Array(newWidth * newHeight);
+                if (preserve) {
+                    const copyWidth = Math.min(spriteWidth, newWidth);
+                    const copyHeight = Math.min(spriteHeight, newHeight);
+                    for (let y = 0; y < copyHeight; y++) {
+                        for (let x = 0; x < copyWidth; x++) {
+                            next[(y * newWidth) + x] = bits[(y * spriteWidth) + x];
+                        }
+                    }
+                }
+
+                spriteWidth = newWidth;
+                spriteHeight = newHeight;
+                bits = next;
+                spriteWidthInput.value = String(spriteWidth);
+                spriteHeightInput.value = String(spriteHeight);
+                rerenderAll();
+            }
+
+            function getCanvasPixelFromEvent(event) {
+                const rect = editorCanvas.getBoundingClientRect();
+                const localX = event.clientX - rect.left;
+                const localY = event.clientY - rect.top;
+                const x = Math.floor(localX / EDIT_SCALE);
+                const y = Math.floor(localY / EDIT_SCALE);
+                if (x < 0 || x >= spriteWidth || y < 0 || y >= spriteHeight) {
+                    return null;
+                }
+                return { x, y };
+            }
+
+            function paintFromEvent(event, action) {
+                const pixel = getCanvasPixelFromEvent(event);
+                if (!pixel) {
+                    return;
+                }
+                const idx = bitIndex(pixel.x, pixel.y);
+                if (idx === lastPaintIndex && action !== "toggle") {
+                    return;
+                }
+                const changed = applyPaintAction(idx, action);
+                lastPaintIndex = idx;
+                if (changed) {
+                    renderEditor();
+                    renderPreview();
+                    updateExport();
+                }
+            }
+
+            function determineActionForPointerDown(event) {
+                if (event.button === 2) {
+                    return 0;
+                }
+
+                if (activeTool === "draw") {
+                    return 1;
+                }
+                if (activeTool === "erase") {
+                    return 0;
+                }
+                return "toggle";
+            }
+
+            function parseRowsFromText(raw) {
+                const trimmed = raw.trim();
+                if (!trimmed) {
+                    throw new Error("Paste a non-empty array.");
+                }
+
+                let candidate = trimmed;
+                const firstBracket = candidate.indexOf("[");
+                const lastBracket = candidate.lastIndexOf("]");
+                if (firstBracket >= 0 && lastBracket > firstBracket) {
+                    candidate = candidate.slice(firstBracket, lastBracket + 1);
+                }
+
+                candidate = candidate.replace(/'/g, "\"");
+                const parsed = JSON.parse(candidate);
+
+                if (!Array.isArray(parsed) || parsed.length === 0) {
+                    throw new Error("Array must contain at least one row.");
+                }
+
+                const rows = parsed.map(function (item) {
+                    return String(item);
+                });
+
+                const width = rows[0].length;
+                if (width === 0) {
+                    throw new Error("Rows cannot be empty.");
+                }
+
+                for (let i = 0; i < rows.length; i++) {
+                    if (rows[i].length !== width) {
+                        throw new Error("All rows must have the same width.");
+                    }
+                    if (!/^[01Xx#]+$/.test(rows[i])) {
+                        throw new Error("Rows can only contain 0/1/X/# characters.");
+                    }
+                    rows[i] = rows[i].replace(/[Xx#]/g, "1");
+                }
+
+                return rows;
+            }
+
+            function importFromText() {
+                try {
+                    const rows = parseRowsFromText(textArea.value);
+                    const newWidth = rows[0].length;
+                    const newHeight = rows.length;
+                    const nextBits = new Uint8Array(newWidth * newHeight);
+
+                    for (let y = 0; y < newHeight; y++) {
+                        for (let x = 0; x < newWidth; x++) {
+                            nextBits[(y * newWidth) + x] = rows[y][x] === "1" ? 1 : 0;
+                        }
+                    }
+
+                    spriteWidth = newWidth;
+                    spriteHeight = newHeight;
+                    bits = nextBits;
+                    spriteWidthInput.value = String(spriteWidth);
+                    spriteHeightInput.value = String(spriteHeight);
+                    rerenderAll();
+                    setStatus("Imported sprite " + spriteWidth + "x" + spriteHeight + ".", "ok");
+                } catch (error) {
+                    setStatus("Import error: " + error.message, "error");
+                }
+            }
+
+            function clearSprite() {
+                bits.fill(0);
+                rerenderAll();
+            }
+
+            function copyArrayToClipboard() {
+                if (!navigator.clipboard || !navigator.clipboard.writeText) {
+                    textArea.focus();
+                    textArea.select();
+                    setStatus("Clipboard API unavailable. Use Ctrl+C to copy.", "error");
+                    return;
+                }
+
+                navigator.clipboard.writeText(textArea.value).then(function () {
+                    setStatus("Array copied to clipboard.", "ok");
+                }).catch(function () {
+                    textArea.focus();
+                    textArea.select();
+                    setStatus("Clipboard write failed. Use Ctrl+C to copy.", "error");
+                });
+            }
+
+            function initializeColorSelectors() {
+                fillColorOptions(paperColorSelect);
+                fillColorOptions(inkColorSelect);
+                paperColorSelect.value = "0";
+                inkColorSelect.value = "7";
+            }
+
+            function wireEvents() {
+                resizeButton.addEventListener("click", function () {
+                    resizeSprite(
+                        Number(spriteWidthInput.value),
+                        Number(spriteHeightInput.value),
+                        preserveOnResizeInput.checked
+                    );
+                    setStatus("Sprite resized to " + spriteWidth + "x" + spriteHeight + ".", "ok");
+                });
+
+                clearButton.addEventListener("click", function () {
+                    clearSprite();
+                    setStatus("Sprite cleared.", "ok");
+                });
+
+                toolButtons.forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        setTool(button.dataset.tool);
+                    });
+                });
+
+                paperColorSelect.addEventListener("change", function () {
+                    renderEditor();
+                    renderPreview();
+                });
+                paperBrightInput.addEventListener("change", function () {
+                    renderEditor();
+                    renderPreview();
+                });
+                inkColorSelect.addEventListener("change", function () {
+                    renderEditor();
+                    renderPreview();
+                });
+                inkBrightInput.addEventListener("change", function () {
+                    renderEditor();
+                    renderPreview();
+                });
+
+                editorCanvas.addEventListener("contextmenu", function (event) {
+                    event.preventDefault();
+                });
+
+                editorCanvas.addEventListener("pointerdown", function (event) {
+                    dragAction = determineActionForPointerDown(event);
+                    isDragging = true;
+                    lastPaintIndex = -1;
+                    paintFromEvent(event, dragAction);
+                    editorCanvas.setPointerCapture(event.pointerId);
+                    event.preventDefault();
+                });
+
+                editorCanvas.addEventListener("pointermove", function (event) {
+                    if (!isDragging) {
+                        return;
+                    }
+                    paintFromEvent(event, dragAction);
+                    event.preventDefault();
+                });
+
+                function endPointerDrag(event) {
+                    if (isDragging) {
+                        isDragging = false;
+                        dragAction = null;
+                        lastPaintIndex = -1;
+                    }
+                    if (event && typeof editorCanvas.releasePointerCapture === "function") {
+                        try {
+                            editorCanvas.releasePointerCapture(event.pointerId);
+                        } catch (_ignore) {
+                        }
+                    }
+                }
+
+                editorCanvas.addEventListener("pointerup", endPointerDrag);
+                editorCanvas.addEventListener("pointercancel", endPointerDrag);
+                editorCanvas.addEventListener("pointerleave", function () {
+                    if (!isDragging) {
+                        return;
+                    }
+                });
+
+                importButton.addEventListener("click", importFromText);
+                copyButton.addEventListener("click", copyArrayToClipboard);
+
+                textArea.addEventListener("paste", function () {
+                    window.setTimeout(importFromText, 0);
+                });
+            }
+
+            initializeColorSelectors();
+            wireEvents();
+            rerenderAll();
+        })();
+    </script>
+</body>
+</html>
