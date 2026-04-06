@@ -244,6 +244,8 @@
                         </span>
                         <button id="resizeButton" type="button">Resize</button>
                         <button id="clearButton" type="button">Clear</button>
+                        <button id="flipHButton" type="button">Flip Horizontal</button>
+                        <button id="flipVButton" type="button">Flip Vertical</button>
                     </div>
 
                     <div class="row">
@@ -327,6 +329,8 @@
             const preserveOnResizeInput = document.getElementById("preserveOnResize");
             const resizeButton = document.getElementById("resizeButton");
             const clearButton = document.getElementById("clearButton");
+            const flipHButton = document.getElementById("flipHButton");
+            const flipVButton = document.getElementById("flipVButton");
             const toolButtons = Array.from(document.querySelectorAll(".tool-button"));
             const paperColorSelect = document.getElementById("paperColor");
             const paperBrightInput = document.getElementById("paperBright");
@@ -652,6 +656,34 @@
                 rerenderAll();
             }
 
+            function flipHorizontal() {
+                const next = new Uint8Array(spriteWidth * spriteHeight);
+                for (let y = 0; y < spriteHeight; y++) {
+                    for (let x = 0; x < spriteWidth; x++) {
+                        const sourceIndex = (y * spriteWidth) + x;
+                        const targetX = spriteWidth - 1 - x;
+                        const targetIndex = (y * spriteWidth) + targetX;
+                        next[targetIndex] = bits[sourceIndex];
+                    }
+                }
+                bits = next;
+                rerenderAll();
+            }
+
+            function flipVertical() {
+                const next = new Uint8Array(spriteWidth * spriteHeight);
+                for (let y = 0; y < spriteHeight; y++) {
+                    const targetY = spriteHeight - 1 - y;
+                    for (let x = 0; x < spriteWidth; x++) {
+                        const sourceIndex = (y * spriteWidth) + x;
+                        const targetIndex = (targetY * spriteWidth) + x;
+                        next[targetIndex] = bits[sourceIndex];
+                    }
+                }
+                bits = next;
+                rerenderAll();
+            }
+
             function copyArrayToClipboard() {
                 if (!navigator.clipboard || !navigator.clipboard.writeText) {
                     textArea.focus();
@@ -689,6 +721,16 @@
                 clearButton.addEventListener("click", function () {
                     clearSprite();
                     setStatus("Sprite cleared.", "ok");
+                });
+
+                flipHButton.addEventListener("click", function () {
+                    flipHorizontal();
+                    setStatus("Sprite flipped horizontally.", "ok");
+                });
+
+                flipVButton.addEventListener("click", function () {
+                    flipVertical();
+                    setStatus("Sprite flipped vertically.", "ok");
                 });
 
                 toolButtons.forEach(function (button) {
