@@ -16,6 +16,21 @@ import { Fonts } from './fonts.js';
 import { ImageFilters } from './imageFilters.js';
 import { ImageManipulation } from './imageManipulation.js';
 import { Camera } from './camera.js';
+import {
+    SpectrumRenderer,
+    SpectrumAnimator2D,
+    BitmapBuffer,
+    AttributeBuffer,
+    createMonochromeSprite,
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    ATTRIBUTE_CELL_SIZE,
+    ATTRIBUTE_WIDTH,
+    ATTRIBUTE_HEIGHT,
+    DEFAULT_ATTRIBUTE,
+    ATTRIBUTE_MODES,
+    DRAW_MODES,
+} from './spectrum-index.js';
 
 export { 
     Engine, 
@@ -39,5 +54,18 @@ export {
     Fonts,
     ImageFilters,
     ImageManipulation,
-    Camera
+    Camera,
+    SpectrumRenderer,
+    SpectrumAnimator2D,
+    BitmapBuffer,
+    AttributeBuffer,
+    createMonochromeSprite,
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    ATTRIBUTE_CELL_SIZE,
+    ATTRIBUTE_WIDTH,
+    ATTRIBUTE_HEIGHT,
+    DEFAULT_ATTRIBUTE,
+    ATTRIBUTE_MODES,
+    DRAW_MODES
 }
