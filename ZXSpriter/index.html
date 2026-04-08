@@ -213,6 +213,63 @@
             gap: 6px;
         }
 
+        .saved-strip {
+            display: grid;
+            gap: 8px;
+            border-top: 1px solid var(--line);
+            padding-top: 10px;
+        }
+
+        .saved-strip-title {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .saved-strip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: flex-start;
+            min-height: 44px;
+        }
+
+        .saved-sprite-button {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #0f1720;
+            color: var(--muted);
+            padding: 6px;
+            display: grid;
+            gap: 6px;
+            justify-items: center;
+        }
+
+        .saved-sprite-button[data-active="true"] {
+            border-color: var(--accent);
+            background: #17344a;
+            color: #c6ecff;
+        }
+
+        .saved-sprite-canvas {
+            display: block;
+            image-rendering: pixelated;
+            border: 1px solid #27445f;
+            background: black;
+        }
+
+        .saved-sprite-label {
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .empty-saved-note {
+            font-size: 12px;
+            color: var(--muted);
+            padding: 8px 0;
+        }
+
         @media (max-width: 980px) {
             .app {
                 grid-template-columns: 1fr;
@@ -242,6 +299,7 @@
                             <input id="preserveOnResize" type="checkbox" checked>
                             <label for="preserveOnResize">Preserve</label>
                         </span>
+                        <button id="addButton" type="button">Add</button>
                         <button id="resizeButton" type="button">Resize</button>
                         <button id="clearButton" type="button">Clear</button>
                         <button id="flipHButton" type="button">Flip Horizontal</button>
@@ -284,6 +342,10 @@
                 <p class="note">
                     Editor is the large workspace. Preview is rendered 4x smaller in pixel scale than the editor.
                 </p>
+                <div class="saved-strip">
+                    <div class="saved-strip-title">Saved Sprites (1:1) - Click To Edit</div>
+                    <div id="savedSprites" class="saved-strip-list"></div>
+                </div>
             </div>
         </section>
 
@@ -327,6 +389,7 @@
             const spriteWidthInput = document.getElementById("spriteWidth");
             const spriteHeightInput = document.getElementById("spriteHeight");
             const preserveOnResizeInput = document.getElementById("preserveOnResize");
+            const addButton = document.getElementById("addButton");
             const resizeButton = document.getElementById("resizeButton");
             const clearButton = document.getElementById("clearButton");
             const flipHButton = document.getElementById("flipHButton");
@@ -344,6 +407,7 @@
             const importButton = document.getElementById("importButton");
             const copyButton = document.getElementById("copyButton");
             const statusEl = document.getElementById("status");
+            const savedSpritesEl = document.getElementById("savedSprites");
 
             let spriteWidth = 16;
             let spriteHeight = 16;
@@ -352,15 +416,23 @@
             let dragAction = null;
             let isDragging = false;
             let lastPaintIndex = -1;
+            let savedSprites = [];
+            let activeSavedSpriteIndex = -1;
+            const savedSpriteButtons = [];
+            const savedSpriteCanvases = [];
+            const savedSpriteLabels = [];
 
             function toCssColor(rgb) {
                 return "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
             }
 
-            function getSelectedColor(selectEl, isBright) {
-                const index = Number(selectEl.value);
+            function getColorByIndex(index, isBright) {
                 const color = ZX_COLORS[index] || ZX_COLORS[0];
                 return isBright ? color.bright : color.normal;
+            }
+
+            function getSelectedColor(selectEl, isBright) {
+                return getColorByIndex(Number(selectEl.value), isBright);
             }
 
             function bitIndex(x, y) {
@@ -389,6 +461,174 @@
                 for (const button of toolButtons) {
                     button.dataset.active = String(button.dataset.tool === toolName);
                 }
+            }
+
+            function getCurrentColorState() {
+                return {
+                    paperColor: Number(paperColorSelect.value),
+                    paperBright: paperBrightInput.checked,
+                    inkColor: Number(inkColorSelect.value),
+                    inkBright: inkBrightInput.checked,
+                };
+            }
+
+            function captureCurrentSprite() {
+                const colors = getCurrentColorState();
+                return {
+                    width: spriteWidth,
+                    height: spriteHeight,
+                    bits: Uint8Array.from(bits),
+                    paperColor: colors.paperColor,
+                    paperBright: colors.paperBright,
+                    inkColor: colors.inkColor,
+                    inkBright: colors.inkBright,
+                };
+            }
+
+            function syncActiveSavedSprite() {
+                if (activeSavedSpriteIndex < 0) {
+                    return;
+                }
+                const sprite = savedSprites[activeSavedSpriteIndex];
+                if (!sprite) {
+                    return;
+                }
+                const colors = getCurrentColorState();
+                sprite.width = spriteWidth;
+                sprite.height = spriteHeight;
+                sprite.bits = bits;
+                sprite.paperColor = colors.paperColor;
+                sprite.paperBright = colors.paperBright;
+                sprite.inkColor = colors.inkColor;
+                sprite.inkBright = colors.inkBright;
+            }
+
+            function drawBitsToCanvas(canvas, context, width, height, spriteBits, paperRgb, inkRgb, scale) {
+                canvas.width = width * scale;
+                canvas.height = height * scale;
+                context.imageSmoothingEnabled = false;
+                context.fillStyle = toCssColor(paperRgb);
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle = toCssColor(inkRgb);
+
+                for (let y = 0; y < height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        if (spriteBits[(y * width) + x] === 1) {
+                            context.fillRect(
+                                x * scale,
+                                y * scale,
+                                scale,
+                                scale
+                            );
+                        }
+                    }
+                }
+            }
+
+            function updateSavedSpriteSelection() {
+                for (let i = 0; i < savedSpriteButtons.length; i++) {
+                    savedSpriteButtons[i].dataset.active = String(i === activeSavedSpriteIndex);
+                }
+            }
+
+            function renderSavedSpriteAtIndex(index) {
+                if (index < 0) {
+                    return;
+                }
+                const sprite = savedSprites[index];
+                const canvas = savedSpriteCanvases[index];
+                if (!sprite || !canvas) {
+                    return;
+                }
+
+                const context = canvas.getContext("2d");
+                const paperRgb = getColorByIndex(
+                    Number(sprite.paperColor ?? 0),
+                    Boolean(sprite.paperBright)
+                );
+                const inkRgb = getColorByIndex(
+                    Number(sprite.inkColor ?? 7),
+                    Boolean(sprite.inkBright)
+                );
+
+                drawBitsToCanvas(canvas, context, sprite.width, sprite.height, sprite.bits, paperRgb, inkRgb, 1);
+                canvas.style.width = sprite.width + "px";
+                canvas.style.height = sprite.height + "px";
+
+                if (savedSpriteLabels[index]) {
+                    savedSpriteLabels[index].textContent = "#" + (index + 1) + " - " + sprite.width + "x" + sprite.height;
+                }
+            }
+
+            function renderSavedSprites() {
+                savedSpritesEl.innerHTML = "";
+                savedSpriteButtons.length = 0;
+                savedSpriteCanvases.length = 0;
+                savedSpriteLabels.length = 0;
+
+                if (savedSprites.length === 0) {
+                    const emptyEl = document.createElement("div");
+                    emptyEl.className = "empty-saved-note";
+                    emptyEl.textContent = "No saved sprites yet. Click Add to store the current sprite.";
+                    savedSpritesEl.appendChild(emptyEl);
+                    return;
+                }
+
+                savedSprites.forEach(function (sprite, index) {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "saved-sprite-button";
+
+                    const canvas = document.createElement("canvas");
+                    canvas.className = "saved-sprite-canvas";
+                    const label = document.createElement("div");
+                    label.className = "saved-sprite-label";
+
+                    button.appendChild(canvas);
+                    button.appendChild(label);
+                    button.addEventListener("click", function () {
+                        loadSavedSprite(index);
+                    });
+
+                    savedSpritesEl.appendChild(button);
+                    savedSpriteButtons[index] = button;
+                    savedSpriteCanvases[index] = canvas;
+                    savedSpriteLabels[index] = label;
+
+                    renderSavedSpriteAtIndex(index);
+                });
+
+                updateSavedSpriteSelection();
+            }
+
+            function loadSavedSprite(index) {
+                const sprite = savedSprites[index];
+                if (!sprite) {
+                    return;
+                }
+
+                spriteWidth = sprite.width;
+                spriteHeight = sprite.height;
+                bits = sprite.bits;
+                spriteWidthInput.value = String(spriteWidth);
+                spriteHeightInput.value = String(spriteHeight);
+
+                paperColorSelect.value = String(Number(sprite.paperColor ?? 0));
+                paperBrightInput.checked = Boolean(sprite.paperBright);
+                inkColorSelect.value = String(Number(sprite.inkColor ?? 7));
+                inkBrightInput.checked = Boolean(sprite.inkBright);
+
+                activeSavedSpriteIndex = index;
+                updateSavedSpriteSelection();
+                rerenderAll();
+                setStatus("Loaded sprite #" + (index + 1) + " for editing.", "ok");
+            }
+
+            function resetEditorForNewSprite() {
+                bits = new Uint8Array(spriteWidth * spriteHeight);
+                activeSavedSpriteIndex = -1;
+                updateSavedSpriteSelection();
+                rerenderAll();
             }
 
             function getArrayRows() {
@@ -487,34 +727,25 @@
             function renderPreview() {
                 const paperRgb = getSelectedColor(paperColorSelect, paperBrightInput.checked);
                 const inkRgb = getSelectedColor(inkColorSelect, inkBrightInput.checked);
-                const paperCss = toCssColor(paperRgb);
-                const inkCss = toCssColor(inkRgb);
 
-                previewCanvas.width = spriteWidth * PREVIEW_SCALE;
-                previewCanvas.height = spriteHeight * PREVIEW_SCALE;
-                previewContext.imageSmoothingEnabled = false;
-                previewContext.fillStyle = paperCss;
-                previewContext.fillRect(0, 0, previewCanvas.width, previewCanvas.height);
-
-                previewContext.fillStyle = inkCss;
-                for (let y = 0; y < spriteHeight; y++) {
-                    for (let x = 0; x < spriteWidth; x++) {
-                        if (bits[bitIndex(x, y)] === 1) {
-                            previewContext.fillRect(
-                                x * PREVIEW_SCALE,
-                                y * PREVIEW_SCALE,
-                                PREVIEW_SCALE,
-                                PREVIEW_SCALE
-                            );
-                        }
-                    }
-                }
+                drawBitsToCanvas(
+                    previewCanvas,
+                    previewContext,
+                    spriteWidth,
+                    spriteHeight,
+                    bits,
+                    paperRgb,
+                    inkRgb,
+                    PREVIEW_SCALE
+                );
             }
 
             function rerenderAll() {
                 renderEditor();
                 renderPreview();
                 updateExport();
+                syncActiveSavedSprite();
+                renderSavedSpriteAtIndex(activeSavedSpriteIndex);
             }
 
             function resizeSprite(newWidth, newHeight, preserve) {
@@ -567,6 +798,8 @@
                     renderEditor();
                     renderPreview();
                     updateExport();
+                    syncActiveSavedSprite();
+                    renderSavedSpriteAtIndex(activeSavedSpriteIndex);
                 }
             }
 
@@ -718,6 +951,19 @@
                     setStatus("Sprite resized to " + spriteWidth + "x" + spriteHeight + ".", "ok");
                 });
 
+                addButton.addEventListener("click", function () {
+                    if (activeSavedSpriteIndex < 0) {
+                        savedSprites.push(captureCurrentSprite());
+                        renderSavedSprites();
+                        setStatus("Sprite #" + savedSprites.length + " added. Started a new blank sprite.", "ok");
+                    } else {
+                        syncActiveSavedSprite();
+                        renderSavedSpriteAtIndex(activeSavedSpriteIndex);
+                        setStatus("Current sprite updated. Started a new blank sprite.", "ok");
+                    }
+                    resetEditorForNewSprite();
+                });
+
                 clearButton.addEventListener("click", function () {
                     clearSprite();
                     setStatus("Sprite cleared.", "ok");
@@ -742,18 +988,26 @@
                 paperColorSelect.addEventListener("change", function () {
                     renderEditor();
                     renderPreview();
+                    syncActiveSavedSprite();
+                    renderSavedSpriteAtIndex(activeSavedSpriteIndex);
                 });
                 paperBrightInput.addEventListener("change", function () {
                     renderEditor();
                     renderPreview();
+                    syncActiveSavedSprite();
+                    renderSavedSpriteAtIndex(activeSavedSpriteIndex);
                 });
                 inkColorSelect.addEventListener("change", function () {
                     renderEditor();
                     renderPreview();
+                    syncActiveSavedSprite();
+                    renderSavedSpriteAtIndex(activeSavedSpriteIndex);
                 });
                 inkBrightInput.addEventListener("change", function () {
                     renderEditor();
                     renderPreview();
+                    syncActiveSavedSprite();
+                    renderSavedSpriteAtIndex(activeSavedSpriteIndex);
                 });
 
                 editorCanvas.addEventListener("contextmenu", function (event) {
@@ -808,6 +1062,7 @@
             }
 
             initializeColorSelectors();
+            renderSavedSprites();
             wireEvents();
             rerenderAll();
         })();

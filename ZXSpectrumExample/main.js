@@ -42,6 +42,25 @@ const heroSprite = createMonochromeSprite(12, 16, [
     "000000000000",
 ]);
 
+const tankSprite = createMonochromeSprite(16, 16, [
+  "1000000111100000",
+  "0010001110110000",
+  "0001011111011000",
+  "0001011111111100",
+  "0010111111111100",
+  "0101011110000010",
+  "0111011000000000",
+  "0000111000110100",
+  "0001111000000000",
+  "0000000110001000",
+  "0011111001110100",
+  "0100011100101110",
+  "0001001110000111",
+  "1011101110010111",
+  "0000001110000111",
+  "1010111101011110"
+]);
+
 const hudIcon = createMonochromeSprite(8, 8, [
     "00111100",
     "01111110",
@@ -85,7 +104,7 @@ class BackgroundLayer extends VisualGameObject {
             attributeMode: ATTRIBUTE_MODES.BACKGROUND_LOCKED,
         });
 
-        for (let y = 16; y < 192; y += 8) {
+        /*for (let y = 16; y < 192; y += 8) {
             for (let x = 0; x < 256; x += 8) {
                 renderer.drawTile(x, y, grassTile, {
                     ink: 4,
@@ -95,7 +114,7 @@ class BackgroundLayer extends VisualGameObject {
                     attributeMode: ATTRIBUTE_MODES.AUTHENTIC_OVERWRITE,
                 });
             }
-        }
+        }*/
     }
 }
 
@@ -128,8 +147,8 @@ class Hero extends VisualGameObject {
     }
 
     drawSpectrum(renderer) {
-        renderer.drawSprite(this.x | 0, this.y | 0, heroSprite, {
-            ink: 6,
+        renderer.drawSprite(this.x | 0, this.y | 0, tankSprite, {
+            ink: 7,
             paper: 0,
             bright: true,
             mode: DRAW_MODES.TRANSPARENT,
