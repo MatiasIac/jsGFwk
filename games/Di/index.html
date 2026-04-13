@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Di ZX Port Scaffold</title>
+    <style>
+        :root {
+            color-scheme: only light;
+            --bg-main: #111821;
+            --bg-panel: #0a0f16;
+            --line: #2a3a4e;
+            --text-main: #d8e4f1;
+            --text-subtle: #90a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(900px 620px at 12% 8%, #223246 0%, transparent 60%),
+                radial-gradient(1000px 760px at 80% 90%, #1a2838 0%, transparent 60%),
+                linear-gradient(180deg, var(--bg-main), #0f141d);
+            color: var(--text-main);
+            font-family: "Trebuchet MS", "Verdana", sans-serif;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+        }
+
+        .layout {
+            width: min(960px, 100%);
+            display: grid;
+            gap: 14px;
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 12px;
+            background: linear-gradient(180deg, #131b27, var(--bg-panel));
+        }
+
+        .canvas-wrap {
+            overflow: hidden;
+        }
+
+        #canvas {
+            width: min(100%, 768px);
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            image-rendering: pixelated;
+            border: 1px solid #253649;
+            background: #000;
+        }
+
+        .title {
+            margin: 0 0 8px;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+        }
+
+        .line {
+            margin: 4px 0;
+            line-height: 1.4;
+            font-size: 14px;
+            color: var(--text-subtle);
+        }
+
+        @media (max-width: 840px) {
+            body {
+                padding: 12px;
+            }
+
+            .panel {
+                padding: 10px;
+            }
+
+            #canvas {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="layout">
+        <section class="panel canvas-wrap">
+            <p class="title">Di ZX Spectrum Port Scaffold</p>
+            <canvas id="canvas" width="768" height="576"></canvas>
+        </section>
+        <section class="panel">
+            <p id="levelStats" class="line">Loading level data...</p>
+            <p id="status" class="line">Initializing scaffold...</p>
+        </section>
+    </main>
+
+    <script src="../../dist/jsgfwk-bundle.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
