@@ -48,7 +48,7 @@ class RuntimeState {
 
         if (this.statusElement) {
             const base = "Controls: A/D move, W or Space jump, Shift sprint. Exits activate on touch.";
-            const info = `Legacy source: ${LEGACY_LEVEL_SOURCE}`;
+            const info = `Level source: ${LEGACY_LEVEL_SOURCE}`;
 
             this.statusElement.textContent = this.message
                 ? `${base} ${this.message}`
@@ -201,7 +201,11 @@ class RuntimeState {
     }
 
     touchesSpike(rect) {
-        return this.level.spikes.some((spike) => intersects(rect, spike));
+        const spikes = Array.isArray(this.level?.enemies?.spikes)
+            ? this.level.enemies.spikes
+            : (Array.isArray(this.level?.spikes) ? this.level.spikes : []);
+
+        return spikes.some((spike) => intersects(rect, spike));
     }
 }
 

@@ -20,6 +20,10 @@ class WorldLayer extends VisualGameObject {
     }
 
     drawSpectrum(renderer) {
+        const enemies = this.runtime.level.enemies || {};
+        const spikes = Array.isArray(enemies.spikes) ? enemies.spikes : (this.runtime.level.spikes || []);
+        const bats = Array.isArray(enemies.bats) ? enemies.bats : (this.runtime.level.bats || []);
+
         for (const platform of this.runtime.level.platforms) {
             drawRectAsTiles(renderer, platform, WALL_TILE_SPRITES, DRAW_STYLE.wall);
         }
@@ -28,20 +32,16 @@ class WorldLayer extends VisualGameObject {
             drawRectAsTiles(renderer, exit, SPRITES.exit, DRAW_STYLE.exit);
         }
 
-        for (const spike of this.runtime.level.spikes) {
+        for (const spike of spikes) {
             drawRectAsTiles(renderer, spike, SPRITES.spike, DRAW_STYLE.spike);
         }
 
-        for (const bat of this.runtime.level.bats) {
+        for (const bat of bats) {
             renderer.drawTile(bat.x, bat.y, SPRITES.marker, DRAW_STYLE.markerA);
         }
 
         for (const blood of this.runtime.level.blood) {
             renderer.drawTile(blood.x, blood.y, SPRITES.marker, DRAW_STYLE.markerB);
-        }
-
-        for (const lever of this.runtime.level.levers) {
-            renderer.drawTile(lever.x, lever.y, SPRITES.marker, DRAW_STYLE.markerC);
         }
     }
 }

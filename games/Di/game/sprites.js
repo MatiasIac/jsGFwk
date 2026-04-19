@@ -35,6 +35,30 @@ function drawRectAsTiles(renderer, rect, spriteOrSpriteSet, drawOptions) {
     }
 }
 
+function buildWall1616() {
+    const rows = [
+        "0111111111111110",
+        "1100111111110111",
+        "1011011010110101",
+        "1000000000001001",
+        "1001000101001001",
+        "1011001000001011",
+        "1000000000100001",
+        "0111111111111110",
+        "0000000000000000",
+        "1111111000111111",
+        "0100110101010110",
+        "0000110101110110",
+        "0010000101001000",
+        "0100000101000100",
+        "1111111000111111",
+        "0000000000000000"
+    ];
+
+    return createMonochromeSprite(TILE_SIZE, TILE_SIZE, rows);
+}
+
+
 function buildWallTile(width = TILE_SIZE, height = TILE_SIZE) {
     const rows = [];
 
@@ -81,22 +105,22 @@ function buildBorderTile() {
 
 function buildMarkerTile() {
     const rows = [
-        "0000000000000000",
-        "0000000000000000",
-        "0000011111100000",
+        "0000001000000000",
+        "0000001100000000",
+        "0000001110000000",
+        "0000011110000000",
+        "0000011110000000",
+        "0000111111000000",
+        "0000111111100000",
         "0000111111110000",
+        "0001111111110000",
         "0001111111111000",
         "0011111111111100",
-        "0011111111111100",
-        "0011111111111100",
-        "0011111111111100",
-        "0011111111111100",
-        "0001111111111000",
-        "0000111111110000",
-        "0000011111100000",
-        "0000000000000000",
-        "0000000000000000",
-        "0000000000000000",
+        "0011111111000100",
+        "0011111110000100",
+        "0011111100000100",
+        "0001111100001100",
+        "0000111111111000"
     ];
 
     return createMonochromeSprite(TILE_SIZE, TILE_SIZE, rows);
@@ -124,6 +148,7 @@ function buildSpikeTile() {
 
     return createMonochromeSprite(TILE_SIZE, TILE_SIZE, rows);
 }
+
 
 function mirrorRows(rows) {
     return rows.map((row) => row.split("").reverse().join(""));
@@ -241,7 +266,7 @@ function buildPlayerSprites() {
 }
 
 const WALL_TILE_SPRITES = {
-    "16x16": buildWallTile(16, 16),
+    "16x16": buildWall1616(),
     "8x16": buildWallTile(8, 16),
     "16x8": buildWallTile(16, 8),
     "8x8": buildWallTile(8, 8),
@@ -285,18 +310,11 @@ const DRAW_STYLE = {
         attributeMode: ATTRIBUTE_MODES.BACKGROUND_LOCKED,
     },
     markerB: {
-        ink: 4,
+        ink: 2,
         paper: 0,
         bright: true,
         mode: DRAW_MODES.TRANSPARENT,
-        attributeMode: ATTRIBUTE_MODES.BACKGROUND_LOCKED,
-    },
-    markerC: {
-        ink: 5,
-        paper: 0,
-        bright: true,
-        mode: DRAW_MODES.TRANSPARENT,
-        attributeMode: ATTRIBUTE_MODES.BACKGROUND_LOCKED,
+        attributeMode: ATTRIBUTE_MODES.AUTHENTIC_OVERWRITE,
     },
     player: {
         ink: 7,

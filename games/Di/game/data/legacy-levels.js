@@ -1,2208 +1,2386 @@
-export const LEGACY_LEVEL_SOURCE = "v1_deprecated/v1_games/ShaculaV2/scripts/level.js";
+export const LEGACY_LEVEL_SOURCE = "games/Di/game/data/legacy-levels.js (ZX-native)";
 
+// ZX-native level schema:
+// - Coordinates and sizes are already in 256x192 pixel space.
+// - platforms and exits are collision rectangles.
+// - enemies groups enemy start definitions by type.
+// - legacy adapter in game/level-port.js still accepts old keys for compatibility.
 export const LEGACY_LEVELS = [
   {
-    "startingPoint": {
-      "x": 100,
-      "y": 150
+    index: 0,
+    startingPoint: {
+      x: 32,
+      y: 48
     },
-    "platforms": [
+    platforms: [
       {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 480
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 192
       },
       {
-        "x": 30,
-        "y": 60,
-        "width": 210,
-        "height": 30
+        x: 0,
+        y: 16,
+        width: 112,
+        height: 32
       },
       {
-        "x": 240,
-        "y": 30,
-        "width": 30,
-        "height": 240
+        x: 96,
+        y: 0,
+        width: 16,
+        height: 112
       },
       {
-        "x": 60,
-        "y": 450,
-        "width": 390,
-        "height": 30
+        x: 16,
+        y: 176,
+        width: 176,
+        height: 16
       },
       {
-        "x": 510,
-        "y": 450,
-        "width": 120,
-        "height": 30
+        x: 192,
+        y: 176,
+        width: 64,
+        height: 16
       },
       {
-        "x": 270,
-        "y": 240,
-        "width": 360,
-        "height": 30
+        x: 96,
+        y: 96,
+        width: 160,
+        height: 16
       },
       {
-        "x": 600,
-        "y": 270,
-        "width": 30,
-        "height": 180
+        x: 240,
+        y: 96,
+        width: 16,
+        height: 96
       },
       {
-        "x": 570,
-        "y": 330,
-        "width": 30,
-        "height": 30
+        x: 224,
+        y: 128,
+        width: 32,
+        height: 16
       },
       {
-        "x": 30,
-        "y": 135,
-        "width": 30,
-        "height": 5
+        x: 0,
+        y: 48,
+        width: 32,
+        height: 16
       },
       {
-        "x": 210,
-        "y": 210,
-        "width": 30,
-        "height": 5
+        x: 80,
+        y: 80,
+        width: 32,
+        height: 16
       },
       {
-        "x": 30,
-        "y": 300,
-        "width": 30,
-        "height": 5
+        x: 0,
+        y: 112,
+        width: 32,
+        height: 16
       }
     ],
-    "spikes": [
+    enemies: {
+      spikes: [
+        {
+          x: 48,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 64,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.7
+        },
+        {
+          x: 96,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.2
+        },
+        {
+          x: 112,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.1
+        },
+        {
+          x: 144,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
+        }
+      ],
+      bats: [
+        {
+          x: 32,
+          y: 96,
+          axis: 'vertical',
+          range: 41,
+          speed: 0.02,
+          direction: 1
+        },
+        {
+          x: 64,
+          y: 80,
+          axis: 'vertical',
+          range: 41,
+          speed: 0.01,
+          direction: 1
+        }
+      ],
+      fallingWalls: [
+        {
+          x: 96,
+          y: 96,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 128,
+          y: 96,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 144,
+          y: 96,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        }
+      ],
+      saws: []
+    },
+    exits: [
       {
-        "x": 120,
-        "y": 443,
-        "delay": 1.5
+        x: 0,
+        y: 176,
+        width: 32,
+        height: 16,
+        id: 'exit-0-0',
+        goTo: 1,
+        type: 'door',
+        showsAt: {
+          x: 16,
+          y: 0
+        }
       },
       {
-        "x": 180,
-        "y": 443,
-        "delay": 1.7
-      },
-      {
-        "x": 240,
-        "y": 443,
-        "delay": 1.2
-      },
-      {
-        "x": 300,
-        "y": 443,
-        "delay": 1.1
-      },
-      {
-        "x": 360,
-        "y": 443,
-        "delay": 1.3
-      }
-    ],
-    "bats": [
-      {
-        "x": 80,
-        "y": 270,
-        "max": 100,
-        "upDown": true,
-        "speed": 0.02
-      },
-      {
-        "x": 170,
-        "y": 230,
-        "max": 100,
-        "upDown": true,
-        "speed": 0.01
-      }
-    ],
-    "blood": [],
-    "fallingWalls": [
-      {
-        "x": 270,
-        "y": 270,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 330,
-        "y": 270,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 390,
-        "y": 270,
-        "fallSpeed": 1.5
-      }
-    ],
-    "levers": [
-      {
-        "x": 578,
-        "y": 318,
-        "state": 0,
-        "wall": {
-          "x": 30,
-          "y": 450,
-          "width": 30,
-          "height": 30
+        x: 176,
+        y: 176,
+        width: 32,
+        height: 16,
+        id: 'exit-0-1',
+        goTo: 1,
+        type: 'door',
+        showsAt: {
+          x: 192,
+          y: 0
         }
       }
     ],
-    "movableWalls": [],
-    "item": {
-      "item": 2,
-      "x": 40,
-      "y": 115,
-      "width": 18,
-      "height": 18
+    item: {
+      x: 16,
+      y: 32,
+      width: 16,
+      height: 32,
+      item: 2
+    }
+  },
+  {
+    index: 1,
+    startingPoint: {
+      x: 48,
+      y: 32
     },
-    "saws": [],
-    "exit": [
+    platforms: [
       {
-        "x": 29,
-        "y": 476,
-        "width": 30,
-        "height": 4,
-        "goTo": 1,
-        "showsAt": {
-          "x": 41,
-          "y": 21
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 192
+      },
+      {
+        x: 0,
+        y: 176,
+        width: 256,
+        height: 16
+      },
+      {
+        x: 16,
+        y: 0,
+        width: 176,
+        height: 16
+      },
+      {
+        x: 192,
+        y: 0,
+        width: 64,
+        height: 16
+      },
+      {
+        x: 32,
+        y: 0,
+        width: 32,
+        height: 144
+      },
+      {
+        x: 32,
+        y: 144,
+        width: 224,
+        height: 16
+      },
+      {
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 80
+      },
+      {
+        x: 240,
+        y: 96,
+        width: 16,
+        height: 48
+      },
+      {
+        x: 112,
+        y: 48,
+        width: 96,
+        height: 16
+      },
+      {
+        x: 240,
+        y: 144,
+        width: 16,
+        height: 48
+      },
+      {
+        x: 96,
+        y: 96,
+        width: 64,
+        height: 16
+      }
+    ],
+    enemies: {
+      spikes: [
+        {
+          x: 48,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 48,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.6
+        },
+        {
+          x: 64,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.7
+        },
+        {
+          x: 80,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.8
+        },
+        {
+          x: 96,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.9
+        },
+        {
+          x: 96,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 2
+        },
+        {
+          x: 112,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 2.1
+        }
+      ],
+      bats: [
+        {
+          x: 160,
+          y: 160,
+          axis: 'horizontal',
+          range: 41,
+          speed: 0.02,
+          direction: 1
+        },
+        {
+          x: 128,
+          y: 32,
+          axis: 'horizontal',
+          range: 61,
+          speed: 0.02,
+          direction: 1
+        }
+      ],
+      fallingWalls: [
+        {
+          x: 96,
+          y: 96,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 112,
+          y: 48,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 128,
+          y: 48,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 160,
+          y: 48,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        }
+      ],
+      saws: [
+        {
+          x: 0,
+          y: 32,
+          width: 32,
+          height: 16,
+          motion: 'linear',
+          center: {
+            x: 0,
+            y: 32
+          },
+          range: 1,
+          speed: 0
+        },
+        {
+          x: 16,
+          y: 64,
+          width: 32,
+          height: 32,
+          motion: 'linear',
+          center: {
+            x: 16,
+            y: 64
+          },
+          range: 1,
+          speed: 0
+        },
+        {
+          x: 0,
+          y: 96,
+          width: 32,
+          height: 32,
+          motion: 'linear',
+          center: {
+            x: 0,
+            y: 96
+          },
+          range: 1,
+          speed: 0
+        }
+      ]
+    },
+    exits: [
+      {
+        x: 0,
+        y: 0,
+        width: 32,
+        height: 16,
+        id: 'exit-1-0',
+        goTo: 0,
+        type: 'door',
+        showsAt: {
+          x: 16,
+          y: 176
         }
       },
       {
-        "x": 449,
-        "y": 476,
-        "width": 61,
-        "height": 4,
-        "goTo": 1,
-        "showsAt": {
-          "x": 475,
-          "y": 14
+        x: 176,
+        y: 0,
+        width: 32,
+        height: 16,
+        id: 'exit-1-1',
+        goTo: 0,
+        type: 'door',
+        showsAt: {
+          x: 192,
+          y: 176
+        }
+      },
+      {
+        x: 240,
+        y: 64,
+        width: 16,
+        height: 32,
+        id: 'exit-1-2',
+        goTo: 2,
+        type: 'door',
+        showsAt: {
+          x: 0,
+          y: 80
+        }
+      }
+    ],
+    blood: [
+      {
+        x: 160,
+        y: 32,
+        isActive: true
+      },
+      {
+        x: 16,
+        y: 160,
+        isActive: true
+      }
+    ]
+  },
+  {
+    index: 2,
+    startingPoint: {
+      x: 48,
+      y: 32
+    },
+    platforms: [
+      {
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 80
+      },
+      {
+        x: 0,
+        y: 96,
+        width: 16,
+        height: 96
+      },
+      {
+        x: 240,
+        y: 160,
+        width: 16,
+        height: 32
+      },
+      {
+        x: 0,
+        y: 0,
+        width: 256,
+        height: 16
+      },
+      {
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 144
+      },
+      {
+        x: 48,
+        y: 96,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 160,
+        y: 48,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 112,
+        y: 176,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 176,
+        y: 128,
+        width: 32,
+        height: 16
+      },
+      {
+        x: 0,
+        y: 16,
+        width: 64,
+        height: 32
+      }
+    ],
+    enemies: {
+      spikes: [],
+      bats: [],
+      fallingWalls: [],
+      saws: [
+        {
+          x: 48,
+          y: 96,
+          width: 32,
+          height: 16,
+          motion: 'circular',
+          center: {
+            x: 48,
+            y: 96
+          },
+          radius: 41,
+          speed: 0.02
+        },
+        {
+          x: 160,
+          y: 48,
+          width: 32,
+          height: 32,
+          motion: 'circular',
+          center: {
+            x: 160,
+            y: 48
+          },
+          radius: 41,
+          speed: 0.03
+        },
+        {
+          x: 176,
+          y: 112,
+          width: 32,
+          height: 32,
+          motion: 'circular',
+          center: {
+            x: 176,
+            y: 112
+          },
+          radius: 28,
+          speed: 0.025
+        }
+      ]
+    },
+    exits: [
+      {
+        x: 0,
+        y: 64,
+        width: 16,
+        height: 32,
+        id: 'exit-2-0',
+        goTo: 1,
+        type: 'door',
+        showsAt: {
+          x: 240,
+          y: 80
+        }
+      },
+      {
+        x: 240,
+        y: 144,
+        width: 16,
+        height: 32,
+        id: 'exit-2-1',
+        goTo: 3,
+        type: 'door',
+        showsAt: {
+          x: 0,
+          y: 144
+        }
+      },
+      {
+        x: 0,
+        y: 176,
+        width: 256,
+        height: 16,
+        id: 'exit-2-2',
+        goTo: 5,
+        type: 'door',
+        showsAt: {
+          x: 112,
+          y: 0
+        }
+      }
+    ],
+    blood: [
+      {
+        x: 0,
+        y: 0,
+        isActive: true
+      }
+    ]
+  },
+  {
+    index: 3,
+    startingPoint: {
+      x: 48,
+      y: 32
+    },
+    platforms: [
+      {
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 144
+      },
+      {
+        x: 0,
+        y: 160,
+        width: 16,
+        height: 32
+      },
+      {
+        x: 0,
+        y: 160,
+        width: 256,
+        height: 32
+      },
+      {
+        x: 224,
+        y: 0,
+        width: 32,
+        height: 176
+      },
+      {
+        x: 16,
+        y: 0,
+        width: 224,
+        height: 32
+      },
+      {
+        x: 0,
+        y: 48,
+        width: 48,
+        height: 32
+      },
+      {
+        x: 96,
+        y: 80,
+        width: 48,
+        height: 32
+      },
+      {
+        x: 192,
+        y: 128,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 208,
+        y: 144,
+        width: 32,
+        height: 16
+      }
+    ],
+    enemies: {
+      spikes: [
+        {
+          x: 16,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 32,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 48,
+          y: 160,
+          width: 16,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 48,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 64,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 80,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 96,
+          y: 160,
+          width: 16,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 96,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 112,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 128,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 144,
+          y: 160,
+          width: 16,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 144,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 160,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 176,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        }
+      ],
+      bats: [
+        {
+          x: 96,
+          y: 128,
+          axis: 'horizontal',
+          range: 41,
+          speed: 0.03,
+          direction: 1
+        }
+      ],
+      fallingWalls: [],
+      saws: []
+    },
+    exits: [
+      {
+        x: 0,
+        y: 144,
+        width: 16,
+        height: 32,
+        id: 'exit-3-0',
+        goTo: 2,
+        type: 'door',
+        showsAt: {
+          x: 240,
+          y: 144
+        }
+      },
+      {
+        x: 0,
+        y: 0,
+        width: 32,
+        height: 16,
+        id: 'exit-3-1',
+        goTo: 4,
+        type: 'door',
+        showsAt: {
+          x: 16,
+          y: 176
+        }
+      }
+    ],
+    blood: [
+      {
+        x: 192,
+        y: 144,
+        isActive: true
+      }
+    ]
+  },
+  {
+    index: 4,
+    startingPoint: {
+      x: 48,
+      y: 128
+    },
+    platforms: [
+      {
+        x: 240,
+        y: 32,
+        width: 16,
+        height: 160
+      },
+      {
+        x: 16,
+        y: 176,
+        width: 240,
+        height: 16
+      },
+      {
+        x: 0,
+        y: 128,
+        width: 16,
+        height: 64
+      },
+      {
+        x: 0,
+        y: 128,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 16,
+        y: 112,
+        width: 48,
+        height: 32
+      },
+      {
+        x: 160,
+        y: 32,
+        width: 96,
+        height: 16
+      },
+      {
+        x: 176,
+        y: 48,
+        width: 32,
+        height: 64
+      },
+      {
+        x: 48,
+        y: 96,
+        width: 160,
+        height: 32
+      },
+      {
+        x: 176,
+        y: 128,
+        width: 80,
+        height: 16
+      },
+      {
+        x: 96,
+        y: 144,
+        width: 48,
+        height: 48
+      },
+      {
+        x: 144,
+        y: 128,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 192,
+        y: 80,
+        width: 32,
+        height: 16
+      }
+    ],
+    enemies: {
+      spikes: [
+        {
+          x: 144,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 144,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.7
+        },
+        {
+          x: 160,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.2
+        },
+        {
+          x: 176,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.1
+        },
+        {
+          x: 192,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
+        },
+        {
+          x: 192,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
+        },
+        {
+          x: 208,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
+        },
+        {
+          x: 224,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
+        }
+      ],
+      bats: [
+        {
+          x: 224,
+          y: 80,
+          axis: 'vertical',
+          range: 33,
+          speed: 0.02,
+          direction: 1
+        }
+      ],
+      fallingWalls: [
+        {
+          x: 80,
+          y: 112,
+          width: 16,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        }
+      ],
+      saws: []
+    },
+    exits: [
+      {
+        x: 0,
+        y: 176,
+        width: 32,
+        height: 16,
+        id: 'exit-4-0',
+        goTo: 3,
+        type: 'door',
+        showsAt: {
+          x: 16,
+          y: 0
+        }
+      }
+    ],
+    blood: [
+      {
+        x: 224,
+        y: 160,
+        isActive: true
+      }
+    ],
+    coffin: {
+      x: 192,
+      y: 64,
+      width: 32,
+      height: 32
+    },
+    stakeDoor: {
+      x: 176,
+      y: 112,
+      width: 32,
+      height: 32
+    }
+  },
+  {
+    index: 5,
+    startingPoint: {
+      x: 48,
+      y: 32
+    },
+    platforms: [
+      {
+        x: 0,
+        y: 176,
+        width: 160,
+        height: 16
+      },
+      {
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 176
+      },
+      {
+        x: 160,
+        y: 160,
+        width: 96,
+        height: 32
+      },
+      {
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 176
+      },
+      {
+        x: 176,
+        y: 144,
+        width: 80,
+        height: 32
+      },
+      {
+        x: 192,
+        y: 144,
+        width: 64,
+        height: 16
+      },
+      {
+        x: 192,
+        y: 128,
+        width: 64,
+        height: 16
+      },
+      {
+        x: 208,
+        y: 112,
+        width: 48,
+        height: 32
+      },
+      {
+        x: 96,
+        y: 32,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 144,
+        y: 80,
+        width: 32,
+        height: 16
+      }
+    ],
+    enemies: {
+      spikes: [],
+      bats: [],
+      fallingWalls: [],
+      saws: []
+    },
+    exits: [
+      {
+        x: 0,
+        y: 0,
+        width: 256,
+        height: 16,
+        id: 'exit-5-0',
+        goTo: 2,
+        type: 'door',
+        showsAt: {
+          x: 64,
+          y: 176
+        }
+      },
+      {
+        x: 0,
+        y: 160,
+        width: 16,
+        height: 32,
+        id: 'exit-5-1',
+        goTo: 6,
+        type: 'door',
+        showsAt: {
+          x: 240,
+          y: 160
+        }
+      },
+      {
+        x: 144,
+        y: 176,
+        width: 32,
+        height: 16,
+        id: 'exit-5-2',
+        goTo: 7,
+        type: 'door',
+        showsAt: {
+          x: 160,
+          y: 0
         }
       }
     ]
   },
   {
-    "startingPoint": {
-      "x": 150,
-      "y": 100
+    index: 6,
+    startingPoint: {
+      x: 48,
+      y: 48
     },
-    "platforms": [
+    platforms: [
       {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 480
+        x: 0,
+        y: 0,
+        width: 256,
+        height: 16
       },
       {
-        "x": 30,
-        "y": 450,
-        "width": 600,
-        "height": 30
+        x: 0,
+        y: 176,
+        width: 256,
+        height: 16
       },
       {
-        "x": 60,
-        "y": 0,
-        "width": 390,
-        "height": 30
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 176
       },
       {
-        "x": 510,
-        "y": 0,
-        "width": 120,
-        "height": 30
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 192
       },
       {
-        "x": 90,
-        "y": 30,
-        "width": 30,
-        "height": 299
+        x: 32,
+        y: 32,
+        width: 192,
+        height: 16
       },
       {
-        "x": 90,
-        "y": 360,
-        "width": 540,
-        "height": 30
+        x: 32,
+        y: 48,
+        width: 32,
+        height: 112
       },
       {
-        "x": 600,
-        "y": 30,
-        "width": 30,
-        "height": 150
+        x: 48,
+        y: 144,
+        width: 176,
+        height: 16
       },
       {
-        "x": 600,
-        "y": 240,
-        "width": 30,
-        "height": 120
+        x: 192,
+        y: 48,
+        width: 32,
+        height: 96
       },
       {
-        "x": 300,
-        "y": 120,
-        "width": 180,
-        "height": 30
+        x: 192,
+        y: 80,
+        width: 16,
+        height: 16
       },
       {
-        "x": 600,
-        "y": 390,
-        "width": 30,
-        "height": 60
+        x: 224,
+        y: 96,
+        width: 32,
+        height: 32
       },
       {
-        "x": 240,
-        "y": 240,
-        "width": 150,
-        "height": 30
+        x: 208,
+        y: 48,
+        width: 32,
+        height: 32
       }
     ],
-    "spikes": [
-      {
-        "x": 120,
-        "y": 443,
-        "delay": 1.5
-      },
-      {
-        "x": 150,
-        "y": 443,
-        "delay": 1.6
-      },
-      {
-        "x": 180,
-        "y": 443,
-        "delay": 1.7
-      },
-      {
-        "x": 210,
-        "y": 443,
-        "delay": 1.8
-      },
-      {
-        "x": 240,
-        "y": 443,
-        "delay": 1.9
-      },
-      {
-        "x": 270,
-        "y": 443,
-        "delay": 2
-      },
-      {
-        "x": 300,
-        "y": 443,
-        "delay": 2.1
-      }
-    ],
-    "bats": [
-      {
-        "x": 400,
-        "y": 400,
-        "max": 100,
-        "upDown": false,
-        "speed": 0.02
-      },
-      {
-        "x": 350,
-        "y": 100,
-        "max": 150,
-        "upDown": false,
-        "speed": 0.02
-      }
-    ],
-    "blood": [
-      {
-        "x": 425,
-        "y": 85,
-        "isActive": true
-      },
-      {
-        "x": 45,
-        "y": 410,
-        "isActive": true
-      }
-    ],
-    "fallingWalls": [
-      {
-        "x": 270,
-        "y": 270,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 300,
-        "y": 150,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 330,
-        "y": 150,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 430,
-        "y": 150,
-        "fallSpeed": 1.5
-      }
-    ],
-    "levers": [
-      {
-        "x": 578,
-        "y": 438,
-        "state": 0,
-        "wall": {
-          "x": 90,
-          "y": 330,
-          "width": 30,
-          "height": 30
+    enemies: {
+      spikes: [
+        {
+          x: 48,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 64,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.7
+        },
+        {
+          x: 96,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.2
+        },
+        {
+          x: 112,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.1
+        },
+        {
+          x: 144,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
+        },
+        {
+          x: 160,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
+        },
+        {
+          x: 192,
+          y: 176,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.3
         }
-      }
-    ],
-    "movableWalls": [],
-    "saws": [
-      {
-        "x": 30,
-        "y": 90,
-        "type": "linear",
-        "speed": 0,
-        "range": 0
-      },
-      {
-        "x": 60,
-        "y": 180,
-        "type": "linear",
-        "speed": 0,
-        "range": 0
-      },
-      {
-        "x": 30,
-        "y": 270,
-        "type": "linear",
-        "speed": 0,
-        "range": 0
-      }
-    ],
-    "exit": [
-      {
-        "x": 31,
-        "y": 0,
-        "width": 30,
-        "height": 3,
-        "goTo": 0,
-        "showsAt": {
-          "x": 41,
-          "y": 443
+      ],
+      bats: [
+        {
+          x: 96,
+          y: 16,
+          axis: 'horizontal',
+          range: 41,
+          speed: 0.02,
+          direction: 1
         }
-      },
+      ],
+      fallingWalls: [
+        {
+          x: 80,
+          y: 48,
+          width: 32,
+          height: 16,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 96,
+          y: 48,
+          width: 32,
+          height: 16,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 128,
+          y: 48,
+          width: 32,
+          height: 16,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 144,
+          y: 48,
+          width: 32,
+          height: 16,
+          trigger: 'below',
+          fallSpeed: 1.5
+        }
+      ],
+      saws: [
+        {
+          x: 0,
+          y: 160,
+          width: 32,
+          height: 32,
+          motion: 'linear',
+          center: {
+            x: 0,
+            y: 160
+          },
+          range: 1,
+          speed: 0
+        }
+      ]
+    },
+    exits: [
       {
-        "x": 450,
-        "y": 0,
-        "width": 59,
-        "height": 3,
-        "goTo": 0,
-        "showsAt": {
-          "x": 475,
-          "y": 443
+        x: 240,
+        y: 160,
+        width: 16,
+        height: 32,
+        id: 'exit-6-0',
+        goTo: 5,
+        type: 'door',
+        showsAt: {
+          x: 0,
+          y: 160
         }
       },
       {
-        "x": 627,
-        "y": 180,
-        "width": 3,
-        "height": 60,
-        "goTo": 2,
-        "showsAt": {
-          "x": 13,
-          "y": 206
+        x: 48,
+        y: 128,
+        width: 16,
+        height: 16,
+        id: 'exit-6-1',
+        goTo: 11,
+        type: 'portal',
+        showsAt: {
+          x: 176,
+          y: 144
         }
+      }
+    ],
+    blood: [
+      {
+        x: 16,
+        y: 0,
+        isActive: true
+      }
+    ],
+    item: {
+      x: 192,
+      y: 64,
+      width: 16,
+      height: 32,
+      item: 3
+    },
+    portal: {
+      x: 48,
+      y: 128,
+      width: 16,
+      height: 16
+    }
+  },
+  {
+    index: 7,
+    startingPoint: {
+      x: 48,
+      y: 48
+    },
+    platforms: [
+      {
+        x: 160,
+        y: 0,
+        width: 96,
+        height: 16
+      },
+      {
+        x: 0,
+        y: 0,
+        width: 160,
+        height: 16
+      },
+      {
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 32
+      },
+      {
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 32
+      },
+      {
+        x: 16,
+        y: 176,
+        width: 240,
+        height: 16
+      },
+      {
+        x: 0,
+        y: 144,
+        width: 16,
+        height: 48
+      },
+      {
+        x: 0,
+        y: 144,
+        width: 64,
+        height: 16
+      },
+      {
+        x: 32,
+        y: 144,
+        width: 32,
+        height: 32
+      },
+      {
+        x: 144,
+        y: 48,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 64,
+        y: 80,
+        width: 48,
+        height: 16
+      }
+    ],
+    enemies: {
+      spikes: [],
+      bats: [],
+      fallingWalls: [],
+      saws: []
+    },
+    exits: [
+      {
+        x: 144,
+        y: 0,
+        width: 32,
+        height: 16,
+        id: 'exit-7-0',
+        goTo: 5,
+        type: 'door',
+        showsAt: {
+          x: 160,
+          y: 176
+        }
+      },
+      {
+        x: 0,
+        y: 16,
+        width: 16,
+        height: 128,
+        id: 'exit-7-1',
+        goTo: 8,
+        type: 'door',
+        showsAt: {
+          x: 240,
+          y: 64
+        }
+      },
+      {
+        x: 240,
+        y: 16,
+        width: 16,
+        height: 176,
+        id: 'exit-7-2',
+        goTo: 9,
+        type: 'door',
+        showsAt: {
+          x: 0,
+          y: 96
+        }
+      },
+      {
+        x: 0,
+        y: 176,
+        width: 32,
+        height: 16,
+        id: 'exit-7-3',
+        goTo: 11,
+        type: 'door',
+        showsAt: {
+          x: 0,
+          y: 0
+        }
+      }
+    ],
+    blood: [
+      {
+        x: 160,
+        y: 32,
+        isActive: true
       }
     ]
   },
   {
-    "startingPoint": {
-      "x": 150,
-      "y": 100
+    index: 8,
+    startingPoint: {
+      x: 48,
+      y: 48
     },
-    "platforms": [
+    platforms: [
       {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 180
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 32
       },
       {
-        "x": 0,
-        "y": 240,
-        "width": 30,
-        "height": 240
+        x: 0,
+        y: 0,
+        width: 256,
+        height: 16
       },
       {
-        "x": 600,
-        "y": 420,
-        "width": 30,
-        "height": 60
+        x: 0,
+        y: 176,
+        width: 256,
+        height: 16
       },
       {
-        "x": 30,
-        "y": 0,
-        "width": 600,
-        "height": 30
+        x: 208,
+        y: 128,
+        width: 48,
+        height: 64
       },
       {
-        "x": 600,
-        "y": 30,
-        "width": 30,
-        "height": 330
+        x: 192,
+        y: 144,
+        width: 32,
+        height: 48
       },
       {
-        "x": 150,
-        "y": 270,
-        "width": 60,
-        "height": 5
+        x: 160,
+        y: 144,
+        width: 48,
+        height: 48
       },
       {
-        "x": 420,
-        "y": 150,
-        "width": 60,
-        "height": 5
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 192
       },
       {
-        "x": 300,
-        "y": 450,
-        "width": 60,
-        "height": 5
+        x: 0,
+        y: 112,
+        width: 112,
+        height: 32
       },
       {
-        "x": 450,
-        "y": 330,
-        "width": 60,
-        "height": 5
+        x: 64,
+        y: 96,
+        width: 48,
+        height: 32
       },
       {
-        "x": 30,
-        "y": 60,
-        "width": 120,
-        "height": 30
+        x: 96,
+        y: 96,
+        width: 32,
+        height: 16
+      },
+      {
+        x: 96,
+        y: 80,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 80,
+        y: 128,
+        width: 32,
+        height: 48
+      },
+      {
+        x: 48,
+        y: 0,
+        width: 16,
+        height: 64
+      },
+      {
+        x: 32,
+        y: 48,
+        width: 32,
+        height: 16
       }
     ],
-    "spikes": [],
-    "bats": [],
-    "blood": [
+    enemies: {
+      spikes: [],
+      bats: [
+        {
+          x: 96,
+          y: 64,
+          axis: 'horizontal',
+          range: 41,
+          speed: 0.04,
+          direction: 1
+        },
+        {
+          x: 112,
+          y: 144,
+          axis: 'vertical',
+          range: 24,
+          speed: 0.03,
+          direction: 1
+        }
+      ],
+      fallingWalls: [
+        {
+          x: 32,
+          y: 48,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 0,
+          y: 0,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        }
+      ],
+      saws: []
+    },
+    exits: [
       {
-        "x": 35,
-        "y": 27,
-        "isActive": true
+        x: 240,
+        y: 16,
+        width: 16,
+        height: 128,
+        id: 'exit-8-0',
+        goTo: 7,
+        type: 'door',
+        showsAt: {
+          x: 0,
+          y: 96
+        }
       }
     ],
-    "fallingWalls": [],
-    "levers": [],
-    "movableWalls": [],
-    "saws": [
+    blood: [
       {
-        "x": 155,
-        "y": 250,
-        "type": "circular",
-        "speed": 0.02,
-        "range": 100
-      },
-      {
-        "x": 420,
-        "y": 150,
-        "type": "circular",
-        "speed": 0.03,
-        "range": 100
-      },
-      {
-        "x": 470,
-        "y": 300,
-        "type": "circular",
-        "speed": 0.025,
-        "range": 70
+        x: 32,
+        y: 32,
+        isActive: true
       }
     ],
-    "exit": [
+    skeletonDoor: {
+      x: 80,
+      y: 160,
+      width: 32,
+      height: 32
+    },
+    batteryContainer: {
+      x: 16,
+      y: 144,
+      width: 48,
+      height: 48
+    }
+  },
+  {
+    index: 9,
+    startingPoint: {
+      x: 48,
+      y: 48
+    },
+    platforms: [
       {
-        "x": 0,
-        "y": 180,
-        "width": 3,
-        "height": 60,
-        "goTo": 1,
-        "showsAt": {
-          "x": 603,
-          "y": 208
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 32
+      },
+      {
+        x: 0,
+        y: 0,
+        width: 256,
+        height: 16
+      },
+      {
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 96
+      },
+      {
+        x: 192,
+        y: 0,
+        width: 64,
+        height: 48
+      },
+      {
+        x: 176,
+        y: 80,
+        width: 80,
+        height: 16
+      },
+      {
+        x: 0,
+        y: 176,
+        width: 256,
+        height: 16
+      },
+      {
+        x: 80,
+        y: 128,
+        width: 128,
+        height: 64
+      },
+      {
+        x: 192,
+        y: 144,
+        width: 32,
+        height: 48
+      },
+      {
+        x: 208,
+        y: 144,
+        width: 32,
+        height: 48
+      },
+      {
+        x: 224,
+        y: 160,
+        width: 32,
+        height: 32
+      },
+      {
+        x: 48,
+        y: 144,
+        width: 48,
+        height: 48
+      },
+      {
+        x: 48,
+        y: 144,
+        width: 16,
+        height: 48
+      },
+      {
+        x: 32,
+        y: 160,
+        width: 32,
+        height: 32
+      },
+      {
+        x: 32,
+        y: 96,
+        width: 32,
+        height: 16
+      },
+      {
+        x: 80,
+        y: 48,
+        width: 48,
+        height: 16
+      },
+      {
+        x: 16,
+        y: 16,
+        width: 32,
+        height: 16
+      }
+    ],
+    enemies: {
+      spikes: [
+        {
+          x: 96,
+          y: 128,
+          width: 16,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 96,
+          y: 128,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 112,
+          y: 128,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 144,
+          y: 128,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 160,
+          y: 128,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 176,
+          y: 128,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        }
+      ],
+      bats: [
+        {
+          x: 32,
+          y: 96,
+          axis: 'horizontal',
+          range: 41,
+          speed: 0.02,
+          direction: 1
+        },
+        {
+          x: 160,
+          y: 64,
+          axis: 'horizontal',
+          range: 41,
+          speed: 0.02,
+          direction: 1
+        }
+      ],
+      fallingWalls: [
+        {
+          x: 96,
+          y: 0,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 112,
+          y: 0,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 128,
+          y: 0,
+          width: 16,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        },
+        {
+          x: 128,
+          y: 0,
+          width: 32,
+          height: 32,
+          trigger: 'below',
+          fallSpeed: 1.5
+        }
+      ],
+      saws: []
+    },
+    exits: [
+      {
+        x: 0,
+        y: 16,
+        width: 16,
+        height: 176,
+        id: 'exit-9-0',
+        goTo: 7,
+        type: 'door',
+        showsAt: {
+          x: 240,
+          y: 96
         }
       },
       {
-        "x": 627,
-        "y": 360,
-        "width": 3,
-        "height": 60,
-        "goTo": 3,
-        "showsAt": {
-          "x": 32,
-          "y": 389
+        x: 240,
+        y: 96,
+        width: 16,
+        height: 96,
+        id: 'exit-9-1',
+        goTo: 10,
+        type: 'door',
+        showsAt: {
+          x: 0,
+          y: 112
         }
+      }
+    ],
+    blood: [
+      {
+        x: 176,
+        y: 16,
+        isActive: true
       },
       {
-        "x": 30,
-        "y": 478,
-        "width": 570,
-        "height": 2,
-        "goTo": 5,
-        "showsAt": {
-          "x": 292,
-          "y": 22
-        }
+        x: 16,
+        y: 16,
+        isActive: true
       }
     ]
   },
   {
-    "startingPoint": {
-      "x": 150,
-      "y": 100
+    index: 10,
+    startingPoint: {
+      x: 192,
+      y: 128
     },
-    "platforms": [
+    platforms: [
       {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 360
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 96
       },
       {
-        "x": 0,
-        "y": 420,
-        "width": 30,
-        "height": 60
+        x: 0,
+        y: 144,
+        width: 16,
+        height: 48
       },
       {
-        "x": 30,
-        "y": 420,
-        "width": 600,
-        "height": 60
+        x: 0,
+        y: 144,
+        width: 96,
+        height: 16
       },
       {
-        "x": 570,
-        "y": 0,
-        "width": 60,
-        "height": 420
+        x: 80,
+        y: 144,
+        width: 176,
+        height: 48
       },
       {
-        "x": 60,
-        "y": 0,
-        "width": 510,
-        "height": 60
+        x: 0,
+        y: 32,
+        width: 48,
+        height: 16
       },
       {
-        "x": 30,
-        "y": 120,
-        "width": 60,
-        "height": 60
+        x: 0,
+        y: 0,
+        width: 256,
+        height: 16
       },
       {
-        "x": 270,
-        "y": 210,
-        "width": 60,
-        "height": 60
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 144
       },
       {
-        "x": 510,
-        "y": 330,
-        "width": 60,
-        "height": 30
-      },
-      {
-        "x": 540,
-        "y": 360,
-        "width": 30,
-        "height": 30
+        x: 192,
+        y: 64,
+        width: 64,
+        height: 48
       }
     ],
-    "spikes": [
+    enemies: {
+      spikes: [],
+      bats: [],
+      fallingWalls: [],
+      saws: []
+    },
+    exits: [
       {
-        "x": 60,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 90,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 120,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 150,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 180,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 210,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 240,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 270,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 300,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 330,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 360,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 390,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 420,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 450,
-        "y": 413,
-        "delay": 1.5
-      }
-    ],
-    "bats": [
-      {
-        "x": 250,
-        "y": 330,
-        "max": 100,
-        "upDown": false,
-        "speed": 0.03
-      }
-    ],
-    "blood": [
-      {
-        "x": 510,
-        "y": 380,
-        "isActive": true
-      }
-    ],
-    "fallingWalls": [],
-    "levers": [
-      {
-        "x": -30,
-        "y": -30,
-        "state": 0,
-        "walls": [
-          {
-            "x": 30,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 60,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 90,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 120,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 150,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 180,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 210,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 240,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 330,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 360,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 390,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 420,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 450,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 480,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 510,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 540,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          }
-        ]
-      }
-    ],
-    "movableWalls": [],
-    "exit": [
-      {
-        "x": 0,
-        "y": 360,
-        "width": 3,
-        "height": 60,
-        "goTo": 2,
-        "showsAt": {
-          "x": 602,
-          "y": 389
-        }
-      },
-      {
-        "x": 30,
-        "y": 0,
-        "width": 30,
-        "height": 3,
-        "goTo": 4,
-        "showsAt": {
-          "x": 44,
-          "y": 447
+        x: 0,
+        y: 96,
+        width: 16,
+        height: 48,
+        id: 'exit-10-0',
+        goTo: 9,
+        type: 'door',
+        showsAt: {
+          x: 240,
+          y: 128
         }
       }
-    ]
+    ],
+    blood: [
+      {
+        x: 144,
+        y: 128,
+        isActive: true
+      },
+      {
+        x: 32,
+        y: 48,
+        isActive: true
+      }
+    ],
+    item: {
+      x: 208,
+      y: 64,
+      width: 16,
+      height: 16,
+      item: 1
+    }
   },
   {
-    "startingPoint": {
-      "x": 150,
-      "y": 350
+    index: 11,
+    startingPoint: {
+      x: 16,
+      y: 16
     },
-    "platforms": [
+    platforms: [
       {
-        "x": 600,
-        "y": 90,
-        "width": 30,
-        "height": 390
+        x: 0,
+        y: 0,
+        width: 16,
+        height: 192
       },
       {
-        "x": 60,
-        "y": 450,
-        "width": 540,
-        "height": 30
+        x: 16,
+        y: 0,
+        width: 240,
+        height: 16
       },
       {
-        "x": 0,
-        "y": 330,
-        "width": 30,
-        "height": 150
+        x: 0,
+        y: 32,
+        width: 64,
+        height: 112
       },
       {
-        "x": 30,
-        "y": 330,
-        "width": 60,
-        "height": 30
+        x: 0,
+        y: 160,
+        width: 112,
+        height: 32
       },
       {
-        "x": 60,
-        "y": 300,
-        "width": 90,
-        "height": 30
+        x: 48,
+        y: 32,
+        width: 64,
+        height: 80
       },
       {
-        "x": 420,
-        "y": 90,
-        "width": 180,
-        "height": 30
+        x: 48,
+        y: 112,
+        width: 64,
+        height: 64
       },
       {
-        "x": 450,
-        "y": 120,
-        "width": 30,
-        "height": 150
+        x: 96,
+        y: 32,
+        width: 32,
+        height: 64
       },
       {
-        "x": 120,
-        "y": 270,
-        "width": 360,
-        "height": 30
+        x: 128,
+        y: 32,
+        width: 80,
+        height: 16
       },
       {
-        "x": 450,
-        "y": 330,
-        "width": 150,
-        "height": 30
+        x: 144,
+        y: 48,
+        width: 64,
+        height: 48
       },
       {
-        "x": 240,
-        "y": 390,
-        "width": 90,
-        "height": 60
+        x: 144,
+        y: 96,
+        width: 64,
+        height: 48
       },
       {
-        "x": 390,
-        "y": 355,
-        "width": 60,
-        "height": 5
+        x: 96,
+        y: 176,
+        width: 64,
+        height: 16
       },
       {
-        "x": 480,
-        "y": 210,
-        "width": 60,
-        "height": 5
+        x: 128,
+        y: 112,
+        width: 32,
+        height: 48
+      },
+      {
+        x: 240,
+        y: 0,
+        width: 16,
+        height: 192
+      },
+      {
+        x: 144,
+        y: 128,
+        width: 32,
+        height: 32
+      },
+      {
+        x: 192,
+        y: 128,
+        width: 16,
+        height: 48
+      },
+      {
+        x: 160,
+        y: 144,
+        width: 32,
+        height: 48
+      },
+      {
+        x: 176,
+        y: 176,
+        width: 80,
+        height: 16
+      },
+      {
+        x: 224,
+        y: 32,
+        width: 32,
+        height: 112
+      },
+      {
+        x: 192,
+        y: 144,
+        width: 32,
+        height: 32
       }
     ],
-    "spikes": [
-      {
-        "x": 360,
-        "y": 443,
-        "delay": 1.5
-      },
-      {
-        "x": 390,
-        "y": 443,
-        "delay": 1.7
-      },
-      {
-        "x": 420,
-        "y": 443,
-        "delay": 1.2
-      },
-      {
-        "x": 450,
-        "y": 443,
-        "delay": 1.1
-      },
-      {
-        "x": 480,
-        "y": 443,
-        "delay": 1.3
-      },
-      {
-        "x": 510,
-        "y": 443,
-        "delay": 1.3
-      },
-      {
-        "x": 540,
-        "y": 443,
-        "delay": 1.3
-      },
-      {
-        "x": 570,
-        "y": 443,
-        "delay": 1.3
-      }
-    ],
-    "bats": [
-      {
-        "x": 555,
-        "y": 210,
-        "max": 80,
-        "upDown": true,
-        "speed": 0.02
-      }
-    ],
-    "blood": [
-      {
-        "x": 570,
-        "y": 400,
-        "isActive": true
-      }
-    ],
-    "fallingWalls": [
-      {
-        "x": 200,
-        "y": 300,
-        "fallSpeed": 1.5
-      }
-    ],
-    "levers": [
-      {
-        "x": -20,
-        "y": -20,
-        "state": 0,
-        "wall": {
-          "x": 30,
-          "y": 400,
-          "width": 30,
-          "height": 30
+    enemies: {
+      spikes: [
+        {
+          x: 48,
+          y: 160,
+          width: 16,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 32,
+          y: 160,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 96,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 112,
+          y: 176,
+          width: 32,
+          height: 16,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
+        },
+        {
+          x: 192,
+          y: 144,
+          width: 32,
+          height: 32,
+          state: 'off',
+          damageState: 'on',
+          delay: 1.5
         }
-      }
-    ],
-    "stakeDoor": {
-      "x": 450,
-      "y": 300,
-      "width": 30,
-      "height": 30
-    },
-    "coffin": {
-      "x": 500,
-      "y": 175,
-      "width": 30,
-      "height": 30
-    },
-    "movableWalls": [],
-    "exit": [
-      {
-        "x": 30,
-        "y": 478,
-        "width": 30,
-        "height": 2,
-        "goTo": 3,
-        "showsAt": {
-          "x": 43,
-          "y": 6
-        }
-      }
-    ]
-  },
-  {
-    "startingPoint": {
-      "x": 150,
-      "y": 100
-    },
-    "platforms": [
-      {
-        "x": 0,
-        "y": 450,
-        "width": 390,
-        "height": 30
-      },
-      {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 419
-      },
-      {
-        "x": 420,
-        "y": 420,
-        "width": 210,
-        "height": 60
-      },
-      {
-        "x": 600,
-        "y": -1,
-        "width": 30,
-        "height": 421
-      },
-      {
-        "x": 450,
-        "y": 390,
-        "width": 150,
-        "height": 30
-      },
-      {
-        "x": 480,
-        "y": 360,
-        "width": 120,
-        "height": 30
-      },
-      {
-        "x": 510,
-        "y": 330,
-        "width": 90,
-        "height": 30
-      },
-      {
-        "x": 540,
-        "y": 300,
-        "width": 60,
-        "height": 30
-      },
-      {
-        "x": 270,
-        "y": 90,
-        "width": 60,
-        "height": 30
-      },
-      {
-        "x": 390,
-        "y": 210,
-        "width": 30,
-        "height": 5
-      }
-    ],
-    "spikes": [],
-    "bats": [],
-    "blood": [],
-    "fallingWalls": [],
-    "levers": [],
-    "movableWalls": [],
-    "exit": [
-      {
-        "x": 30,
-        "y": 0,
-        "width": 570,
-        "height": 2,
-        "goTo": 2,
-        "showsAt": {
-          "x": 189,
-          "y": 442
-        }
-      },
-      {
-        "x": 0,
-        "y": 420,
-        "width": 2,
-        "height": 30,
-        "goTo": 6,
-        "showsAt": {
-          "x": 597,
-          "y": 421
-        }
-      },
-      {
-        "x": 390,
-        "y": 478,
-        "width": 30,
-        "height": 2,
-        "goTo": 7,
-        "showsAt": {
-          "x": 403,
-          "y": 5
-        }
-      }
-    ]
-  },
-  {
-    "startingPoint": {
-      "x": 150,
-      "y": 150
-    },
-    "platforms": [
-      {
-        "x": 0,
-        "y": 0,
-        "width": 630,
-        "height": 30
-      },
-      {
-        "x": 0,
-        "y": 450,
-        "width": 630,
-        "height": 30
-      },
-      {
-        "x": 600,
-        "y": 30,
-        "width": 30,
-        "height": 390
-      },
-      {
-        "x": 0,
-        "y": 30,
-        "width": 30,
-        "height": 420
-      },
-      {
-        "x": 90,
-        "y": 90,
-        "width": 450,
-        "height": 30
-      },
-      {
-        "x": 90,
-        "y": 120,
-        "width": 30,
-        "height": 270
-      },
-      {
-        "x": 120,
-        "y": 360,
-        "width": 420,
-        "height": 30
-      },
-      {
-        "x": 510,
-        "y": 120,
-        "width": 30,
-        "height": 209
-      },
-      {
-        "x": 480,
-        "y": 205,
-        "width": 30,
-        "height": 5
-      },
-      {
-        "x": 570,
-        "y": 270,
-        "width": 30,
-        "height": 30
-      },
-      {
-        "x": 540,
-        "y": 150,
-        "width": 30,
-        "height": 30
-      }
-    ],
-    "spikes": [
-      {
-        "x": 120,
-        "y": 443,
-        "delay": 1.5
-      },
-      {
-        "x": 180,
-        "y": 443,
-        "delay": 1.7
-      },
-      {
-        "x": 240,
-        "y": 443,
-        "delay": 1.2
-      },
-      {
-        "x": 300,
-        "y": 443,
-        "delay": 1.1
-      },
-      {
-        "x": 360,
-        "y": 443,
-        "delay": 1.3
-      },
-      {
-        "x": 420,
-        "y": 443,
-        "delay": 1.3
-      },
-      {
-        "x": 480,
-        "y": 443,
-        "delay": 1.3
-      }
-    ],
-    "bats": [
-      {
-        "x": 250,
-        "y": 70,
-        "max": 100,
-        "upDown": false,
-        "speed": 0.02
-      }
-    ],
-    "blood": [
-      {
-        "x": 40,
-        "y": 30,
-        "isActive": true
-      }
-    ],
-    "fallingWalls": [
-      {
-        "x": 210,
-        "y": 120,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 270,
-        "y": 120,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 330,
-        "y": 120,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 390,
-        "y": 120,
-        "fallSpeed": 1.5
-      }
-    ],
-    "levers": [
-      {
-        "x": 480,
-        "y": 348,
-        "state": 0,
-        "wall": {
-          "x": 510,
-          "y": 330,
-          "width": 30,
-          "height": 30
-        }
-      }
-    ],
-    "saws": [
-      {
-        "x": 30,
-        "y": 420,
-        "type": "linear",
-        "speed": 0,
-        "range": 1
-      }
-    ],
-    "movableWalls": [],
-    "portal": {
-      "x": 120,
-      "y": 328
-    },
-    "item": {
-      "item": 3,
-      "x": 488,
-      "y": 188,
-      "width": 18,
-      "height": 18
-    },
-    "exit": [
-      {
-        "x": 628,
-        "y": 420,
-        "width": 2,
-        "height": 30,
-        "goTo": 5,
-        "showsAt": {
-          "x": 14,
-          "y": 420
-        }
-      },
-      {
-        "x": 120,
-        "y": 330,
-        "width": 19,
-        "height": 28,
-        "goTo": 11,
-        "type": "portal",
-        "showsAt": {
-          "x": 450,
-          "y": 360
-        }
-      }
-    ]
-  },
-  {
-    "startingPoint": {
-      "x": 150,
-      "y": 150
-    },
-    "platforms": [
-      {
-        "x": 420,
-        "y": 0,
-        "width": 210,
-        "height": 30
-      },
-      {
-        "x": 0,
-        "y": 0,
-        "width": 390,
-        "height": 30
-      },
-      {
-        "x": 600,
-        "y": 30,
-        "width": 30,
-        "height": 30
-      },
-      {
-        "x": 0,
-        "y": 30,
-        "width": 30,
-        "height": 30
-      },
-      {
-        "x": 60,
-        "y": 450,
-        "width": 570,
-        "height": 30
-      },
-      {
-        "x": 0,
-        "y": 360,
-        "width": 30,
-        "height": 120
-      },
-      {
-        "x": 30,
-        "y": 360,
-        "width": 90,
-        "height": 30
-      },
-      {
-        "x": 90,
-        "y": 390,
-        "width": 30,
-        "height": 30
-      },
-      {
-        "x": 375,
-        "y": 145,
-        "width": 75,
-        "height": 5
-      },
-      {
-        "x": 180,
-        "y": 235,
-        "width": 60,
-        "height": 5
-      }
-    ],
-    "spikes": [],
-    "bats": [],
-    "blood": [
-      {
-        "x": 410,
-        "y": 110,
-        "isActive": true
-      }
-    ],
-    "fallingWalls": [],
-    "levers": [
-      {
-        "x": -10,
-        "y": -10,
-        "state": 0,
-        "wall": {
-          "x": 90,
-          "y": 420,
-          "width": 30,
-          "height": 30
-        }
-      }
-    ],
-    "movableWalls": [],
-    "exit": [
-      {
-        "x": 390,
-        "y": 0,
-        "width": 30,
-        "height": 2,
-        "goTo": 5,
-        "showsAt": {
-          "x": 403,
-          "y": 450
-        }
-      },
-      {
-        "x": 0,
-        "y": 60,
-        "width": 2,
-        "height": 300,
-        "goTo": 8,
-        "showsAt": {
-          "x": 610,
-          "y": 190
-        }
-      },
-      {
-        "x": 628,
-        "y": 60,
-        "width": 2,
-        "height": 390,
-        "goTo": 9,
-        "showsAt": {
-          "x": 14,
-          "y": 268
-        }
-      },
-      {
-        "x": 30,
-        "y": 478,
-        "width": 30,
-        "height": 2,
-        "goTo": 11,
-        "showsAt": {
-          "x": 32,
-          "y": 4
-        }
-      }
-    ]
-  },
-  {
-    "startingPoint": {
-      "x": 150,
-      "y": 150
-    },
-    "platforms": [
-      {
-        "x": 600,
-        "y": 0,
-        "width": 30,
-        "height": 60
-      },
-      {
-        "x": 0,
-        "y": 0,
-        "width": 600,
-        "height": 30
-      },
-      {
-        "x": 0,
-        "y": 450,
-        "width": 630,
-        "height": 30
-      },
-      {
-        "x": 540,
-        "y": 330,
-        "width": 90,
-        "height": 120
-      },
-      {
-        "x": 480,
-        "y": 360,
-        "width": 60,
-        "height": 90
-      },
-      {
-        "x": 420,
-        "y": 390,
-        "width": 60,
-        "height": 60
-      },
-      {
-        "x": 0,
-        "y": 30,
-        "width": 30,
-        "height": 420
-      },
-      {
-        "x": 30,
-        "y": 300,
-        "width": 210,
-        "height": 30
-      },
-      {
-        "x": 180,
-        "y": 270,
-        "width": 90,
-        "height": 30
-      },
-      {
-        "x": 240,
-        "y": 240,
-        "width": 60,
-        "height": 30
-      },
-      {
-        "x": 270,
-        "y": 210,
-        "width": 60,
-        "height": 30
-      },
-      {
-        "x": 210,
-        "y": 330,
-        "width": 30,
-        "height": 90
-      },
-      {
-        "x": 120,
-        "y": 30,
-        "width": 30,
-        "height": 120
-      },
-      {
-        "x": 90,
-        "y": 120,
-        "width": 30,
-        "height": 30
-      }
-    ],
-    "spikes": [],
-    "bats": [
-      {
-        "x": 250,
-        "y": 170,
-        "max": 100,
-        "upDown": false,
-        "speed": 0.04
-      },
-      {
-        "x": 280,
-        "y": 360,
-        "max": 60,
-        "upDown": true,
-        "speed": 0.03
-      }
-    ],
-    "blood": [
-      {
-        "x": 97,
-        "y": 88,
-        "isActive": true
-      }
-    ],
-    "fallingWalls": [
-      {
-        "x": 90,
-        "y": 150,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 31,
-        "y": 31,
-        "fallSpeed": 1.5
-      }
-    ],
-    "levers": [],
-    "movableWalls": [],
-    "batteryContainer": {
-      "x": 40,
-      "y": 396,
-      "width": 95,
-      "height": 54
-    },
-    "skeletonDoor": {
-      "x": 210,
-      "y": 420,
-      "width": 30,
-      "height": 30
-    },
-    "exit": [
-      {
-        "x": 628,
-        "y": 60,
-        "width": 2,
-        "height": 270,
-        "goTo": 7,
-        "showsAt": {
-          "x": 10,
-          "y": 260
-        }
-      }
-    ]
-  },
-  {
-    "startingPoint": {
-      "x": 150,
-      "y": 150
-    },
-    "platforms": [
-      {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 60
-      },
-      {
-        "x": 30,
-        "y": 0,
-        "width": 600,
-        "height": 30
-      },
-      {
-        "x": 600,
-        "y": 30,
-        "width": 30,
-        "height": 210
-      },
-      {
-        "x": 480,
-        "y": 30,
-        "width": 120,
-        "height": 60
-      },
-      {
-        "x": 450,
-        "y": 210,
-        "width": 150,
-        "height": 30
-      },
-      {
-        "x": 0,
-        "y": 450,
-        "width": 630,
-        "height": 30
-      },
-      {
-        "x": 210,
-        "y": 330,
-        "width": 270,
-        "height": 121
-      },
-      {
-        "x": 480,
-        "y": 360,
-        "width": 60,
-        "height": 90
-      },
-      {
-        "x": 540,
-        "y": 390,
-        "width": 30,
-        "height": 60
-      },
-      {
-        "x": 570,
-        "y": 420,
-        "width": 30,
-        "height": 30
-      },
-      {
-        "x": 150,
-        "y": 360,
-        "width": 60,
-        "height": 90
-      },
-      {
-        "x": 120,
-        "y": 390,
-        "width": 30,
-        "height": 60
-      },
-      {
-        "x": 90,
-        "y": 420,
-        "width": 30,
-        "height": 30
-      },
-      {
-        "x": 90,
-        "y": 240,
-        "width": 60,
-        "height": 5
-      },
-      {
-        "x": 210,
-        "y": 150,
-        "width": 68,
-        "height": 5
-      },
-      {
-        "x": 60,
-        "y": 75,
-        "width": 40,
-        "height": 5
-      }
-    ],
-    "spikes": [
-      {
-        "x": 240,
-        "y": 323,
-        "delay": 1.5
-      },
-      {
-        "x": 270,
-        "y": 323,
-        "delay": 1.5
-      },
-      {
-        "x": 300,
-        "y": 323,
-        "delay": 1.5
-      },
-      {
-        "x": 390,
-        "y": 323,
-        "delay": 1.5
-      },
-      {
-        "x": 420,
-        "y": 323,
-        "delay": 1.5
-      },
-      {
-        "x": 450,
-        "y": 323,
-        "delay": 1.5
-      }
-    ],
-    "bats": [
-      {
-        "x": 100,
-        "y": 270,
-        "max": 100,
-        "upDown": false,
-        "speed": 0.02
-      },
-      {
-        "x": 400,
-        "y": 170,
-        "max": 100,
-        "upDown": false,
-        "speed": 0.02
-      }
-    ],
-    "blood": [
-      {
-        "x": 450,
-        "y": 50,
-        "isActive": true
-      },
-      {
-        "x": 74,
-        "y": 40,
-        "isActive": true
-      }
-    ],
-    "fallingWalls": [
-      {
-        "x": 260,
-        "y": 30,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 290,
-        "y": 30,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 320,
-        "y": 30,
-        "fallSpeed": 1.5
-      },
-      {
-        "x": 350,
-        "y": 30,
-        "fallSpeed": 1.5
-      }
-    ],
-    "levers": [
-      {
-        "x": 575,
-        "y": 198,
-        "state": 0,
-        "walls": [
-          {
-            "x": 450,
-            "y": 90,
-            "width": 30,
-            "height": 30
+      ],
+      bats: [],
+      fallingWalls: [],
+      saws: [
+        {
+          x: 144,
+          y: 160,
+          width: 32,
+          height: 32,
+          motion: 'linear',
+          center: {
+            x: 144,
+            y: 160
           },
-          {
-            "x": 420,
-            "y": 90,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 390,
-            "y": 90,
-            "width": 30,
-            "height": 30
-          }
-        ]
-      }
-    ],
-    "movableWalls": [],
-    "exit": [
-      {
-        "x": 0,
-        "y": 60,
-        "width": 2,
-        "height": 390,
-        "goTo": 7,
-        "showsAt": {
-          "x": 611,
-          "y": 250
+          range: 1,
+          speed: 0
         }
-      },
-      {
-        "x": 628,
-        "y": 240,
-        "width": 2,
-        "height": 210,
-        "goTo": 10,
-        "showsAt": {
-          "x": 15,
-          "y": 292
-        }
-      }
-    ]
-  },
-  {
-    "startingPoint": {
-      "x": 495,
-      "y": 320
+      ]
     },
-    "platforms": [
+    exits: [
       {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 240
+        x: 0,
+        y: 0,
+        width: 32,
+        height: 16,
+        id: 'exit-11-0',
+        goTo: 7,
+        type: 'door',
+        showsAt: {
+          x: 16,
+          y: 176
+        }
       },
       {
-        "x": 0,
-        "y": 360,
-        "width": 30,
-        "height": 120
+        x: 144,
+        y: 176,
+        width: 32,
+        height: 16,
+        id: 'exit-11-1',
+        goTo: 12,
+        type: 'door',
+        showsAt: {
+          x: 160,
+          y: 0
+        }
       },
       {
-        "x": 30,
-        "y": 360,
-        "width": 180,
-        "height": 5
-      },
-      {
-        "x": 210,
-        "y": 360,
-        "width": 420,
-        "height": 120
-      },
-      {
-        "x": 30,
-        "y": 90,
-        "width": 60,
-        "height": 30
-      },
-      {
-        "x": 30,
-        "y": 0,
-        "width": 600,
-        "height": 3
-      },
-      {
-        "x": 626,
-        "y": 3,
-        "width": 4,
-        "height": 357
-      },
-      {
-        "x": 495,
-        "y": 183,
-        "width": 135,
-        "height": 90
+        x: 160,
+        y: 144,
+        width: 32,
+        height: 16,
+        id: 'exit-11-2',
+        goTo: 6,
+        type: 'door',
+        showsAt: {
+          x: 48,
+          y: 128
+        }
       }
     ],
-    "spikes": [],
-    "bats": [],
-    "blood": [
+    blood: [
       {
-        "x": 420,
-        "y": 320,
-        "isActive": true
+        x: 0,
+        y: 144,
+        isActive: true
       },
       {
-        "x": 70,
-        "y": 50,
-        "isActive": true
+        x: 160,
+        y: 144,
+        isActive: true
       }
     ],
-    "fallingWalls": [],
-    "levers": [
-      {
-        "x": 40,
-        "y": 78,
-        "state": 0,
-        "walls": [
-          {
-            "x": 0,
-            "y": 240,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 0,
-            "y": 270,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 0,
-            "y": 300,
-            "width": 30,
-            "height": 30
-          },
-          {
-            "x": 0,
-            "y": 330,
-            "width": 30,
-            "height": 30
-          }
-        ]
-      }
-    ],
-    "movableWalls": [],
-    "item": {
-      "item": 1,
-      "x": 530,
-      "y": 160,
-      "width": 18,
-      "height": 18
+    portal: {
+      x: 160,
+      y: 128,
+      width: 32,
+      height: 32
     },
-    "exit": [
-      {
-        "x": 0,
-        "y": 240,
-        "width": 2,
-        "height": 120,
-        "goTo": 9,
-        "showsAt": {
-          "x": 606,
-          "y": 350
-        }
-      }
-    ]
-  },
-  {
-    "startingPoint": {
-      "x": 60,
-      "y": 40
-    },
-    "platforms": [
-      {
-        "x": 0,
-        "y": 0,
-        "width": 30,
-        "height": 480
-      },
-      {
-        "x": 60,
-        "y": 0,
-        "width": 570,
-        "height": 30
-      },
-      {
-        "x": 30,
-        "y": 90,
-        "width": 90,
-        "height": 270
-      },
-      {
-        "x": 30,
-        "y": 420,
-        "width": 240,
-        "height": 60
-      },
-      {
-        "x": 150,
-        "y": 90,
-        "width": 120,
-        "height": 180
-      },
-      {
-        "x": 150,
-        "y": 300,
-        "width": 120,
-        "height": 120
-      },
-      {
-        "x": 270,
-        "y": 90,
-        "width": 30,
-        "height": 150
-      },
-      {
-        "x": 330,
-        "y": 90,
-        "width": 180,
-        "height": 30
-      },
-      {
-        "x": 360,
-        "y": 120,
-        "width": 150,
-        "height": 90
-      },
-      {
-        "x": 360,
-        "y": 240,
-        "width": 150,
-        "height": 90
-      },
-      {
-        "x": 270,
-        "y": 451,
-        "width": 120,
-        "height": 29
-      },
-      {
-        "x": 330,
-        "y": 300,
-        "width": 30,
-        "height": 90
-      },
-      {
-        "x": 600,
-        "y": 30,
-        "width": 30,
-        "height": 450
-      },
-      {
-        "x": 360,
-        "y": 330,
-        "width": 60,
-        "height": 60
-      },
-      {
-        "x": 480,
-        "y": 330,
-        "width": 30,
-        "height": 90
-      },
-      {
-        "x": 420,
-        "y": 390,
-        "width": 30,
-        "height": 90
-      },
-      {
-        "x": 450,
-        "y": 450,
-        "width": 150,
-        "height": 30
-      },
-      {
-        "x": 570,
-        "y": 90,
-        "width": 30,
-        "height": 240
-      },
-      {
-        "x": 510,
-        "y": 390,
-        "width": 30,
-        "height": 30
-      }
-    ],
-    "spikes": [
-      {
-        "x": 120,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 90,
-        "y": 413,
-        "delay": 1.5
-      },
-      {
-        "x": 270,
-        "y": 444,
-        "delay": 1.5
-      },
-      {
-        "x": 300,
-        "y": 444,
-        "delay": 1.5
-      },
-      {
-        "x": 510,
-        "y": 384,
-        "delay": 1.5
-      }
-    ],
-    "bats": [],
-    "blood": [
-      {
-        "x": 35,
-        "y": 380,
-        "isActive": true
-      },
-      {
-        "x": 400,
-        "y": 380,
-        "isActive": true
-      }
-    ],
-    "saws": [
-      {
-        "x": 390,
-        "y": 420,
-        "type": "linear",
-        "speed": 0,
-        "range": 1
-      }
-    ],
-    "fallingWalls": [],
-    "levers": [],
-    "movableWalls": [],
-    "portal": {
-      "x": 420,
-      "y": 358
-    },
-    "foreground": true,
-    "exit": [
-      {
-        "x": 30,
-        "y": 0,
-        "width": 30,
-        "height": 2,
-        "goTo": 7,
-        "showsAt": {
-          "x": 41,
-          "y": 444
-        }
-      },
-      {
-        "x": 390,
-        "y": 478,
-        "width": 30,
-        "height": 2,
-        "goTo": 12,
-        "showsAt": {
-          "x": 400,
-          "y": 15
-        }
-      },
-      {
-        "x": 420,
-        "y": 360,
-        "width": 18,
-        "height": 30,
-        "goTo": 6,
-        "showsAt": {
-          "x": 150,
-          "y": 330
-        }
-      }
-    ]
+    foreground: true
   }
 ];

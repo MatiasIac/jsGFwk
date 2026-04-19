@@ -6,14 +6,15 @@ This folder contains a starter port of **ShaculaV2** from `v1_deprecated/v1_game
 
 - ZX screen setup at `256x192` using `SpectrumAnimator2D`
 - Tile size locked to `16x16` (16 columns x 12 rows)
-- Legacy level data copied from:
-  - `v1_deprecated/v1_games/ShaculaV2/scripts/level.js`
-- Legacy room conversion from `630x480` rectangles/points to ZX tile coordinates
+- Level data kept in ZX-native coordinates inside:
+  - `games/Di/game/data/legacy-levels.js`
+- Enemy definitions grouped by type (`spikes`, `bats`, `fallingWalls`, `saws`) under `level.enemies`
+- Preferred level keys are now `exits` (instead of legacy `exit`) and `enemies.*` (instead of scattered enemy arrays)
 - Placeholder rendering for:
   - platforms
   - exits
   - spikes
-  - bat/blood/lever markers
+  - bat/blood markers
 - Basic player controller:
   - `A` / `D` movement
   - `W` or `Space` jump
@@ -41,8 +42,8 @@ This folder contains a starter port of **ShaculaV2** from `v1_deprecated/v1_game
 - `main.js`: game bootstrap, scene wiring, and public debug/runtime API
 - `game/config.js`: screen/tile constants
 - `game/sprites.js`: all sprite graphics and draw styles
-- `game/level-port.js`: legacy-to-ZX level adapter
-- `game/data/legacy-levels.js`: sanitized levels extracted from the legacy game
+- `game/level-port.js`: level normalizer (accepts ZX-native data and keeps legacy fallback mapping)
+- `game/data/legacy-levels.js`: ZX-native room data used by this port
 - `game/runtime/RuntimeState.js`: level state, transitions, and status messaging
 - `game/objects/WorldLayer.js`: room/platform rendering
 - `game/objects/Player.js`: movement, collision, exits, hazards, and player animation
@@ -53,8 +54,8 @@ This folder contains a starter port of **ShaculaV2** from `v1_deprecated/v1_game
 ## Notes for continuation
 
 - The scaffold currently focuses on room structure and flow.
-- Legacy systems like levers, movable walls, saw behavior, item swapping, and light/radar are not implemented yet.
-- Converted levels are available in `window.diPort.levels` for quick debugging in the browser console.
+- Legacy systems like movable walls, saw behavior, item swapping, and light/radar are not implemented yet.
+- Normalized levels are available in `window.diPort.levels` for quick debugging in the browser console.
 - Runtime lighting controls in browser console:
   - `window.diPort.setCurrentRoomLightRadius(4, 2)` (`radiusCells`, `dimLevels`)
   - `window.diPort.setRoomLightRadius(3, 5, 1)` (0-based level index)
